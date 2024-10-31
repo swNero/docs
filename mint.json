@@ -27,13 +27,13 @@
   },
   "tabs": [
     {
-      "name": "API Reference",
-      "url": "api-reference"
-    },
-    {
       "name": "API test",
       "url": "api-reference/CPO_Services",
       "openapi": "api-reference/CPO_Services/CPO_Analytics.json"
+    },
+    {
+      "name": "API Reference",
+      "url": "api-reference"
     }
   ],
   "anchors": [
