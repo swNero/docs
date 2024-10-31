@@ -1,0 +1,827 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "cpo-charging-station-group-service",
+    "description": "A service for grouping charging stations and manipulating with charging station groups",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/cpo-chargingstation-group/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/chargingstation-groups/{providerId}/{chargingStationGroupUuid}": {
+      "get": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Get one Charging Station Group by its UUID",
+        "description": "Get one Charging Station Group by its UUID, filtered by Provider ID.",
+        "operationId": "getChargingStationGroupByProviderIdAndGroupUuid",
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chargingStationGroupUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging Station Group Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Update a Charging Station Group",
+        "description": "Updates Charging Station Group Name. Must be unique per Location. Filter for Provider ID is applied.",
+        "operationId": "updateChargingStationGroup",
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chargingStationGroupUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChargingStationGroupUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChargingStationGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Charging Station Group not found"
+          },
+          "409": {
+            "description": "Charging Station Group name not unique"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Delete Charging Station Group",
+        "description": "Delete a Charging Station Group by its UUID, filtered by ProviderID.",
+        "operationId": "deleteChargingStationGroup",
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chargingStationGroupUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Location must have at least one Group"
+          },
+          "404": {
+            "description": "Charging Station Group Not Found"
+          },
+          "409": {
+            "description": "Conflict - Group has connected Charging Stations"
+          }
+        }
+      }
+    },
+    "/chargingstation-groups/charging-station/{providerId}/{locationId}/{chargingStationGroupUuid}/{identityKey}": {
+      "put": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Add or Move Charging Station to a Charging Station Group.",
+        "description": "Add a Charging Station to a Charging Station Group, or move it from its current to another one.  Filter for Provider ID is applied.",
+        "operationId": "moveOrAddChargingStationToAGroup",
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chargingStationGroupUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Charging Station Group does not belong to the provided Location"
+          },
+          "404": {
+            "description": "Charging Station Group Not Found"
+          }
+        }
+      }
+    },
+    "/chargingstation-groups": {
+      "get": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Get all Charging Station Groups",
+        "description": "Get all Charging Station Groups, without filtering.",
+        "operationId": "getAllChargingStationGroups",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Create Charging Station Group(s)",
+        "description": "Creates one or more Charging Station Groups, linked to one Location (min=1). If validate=true, extra validations are done. Filter for Provider ID is applied.",
+        "operationId": "createChargingStationGroups",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidChargingStationGroupListCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Create request contains duplicate names"
+          },
+          "409": {
+            "description": "Charging Station Group name already exists, for the current Location"
+          }
+        }
+      }
+    },
+    "/chargingstation-groups/{providerId}": {
+      "get": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Get all Charging Station Groups of the current Provider",
+        "description": "Get all Charging Station Groups, filtered by Provider ID.",
+        "operationId": "getAllChargingStationGroupsByProviderId",
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chargingstation-groups/search": {
+      "get": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Get Charging Station Group by Identity Key",
+        "description": "Get the Charging Station Group, that a specific Charging Station belongs to (Identity Key), filtered by Provider ID.",
+        "operationId": "getChargingStationGroupByProviderIdAndIdentityKey",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging Station Identity Key Not Found"
+          }
+        }
+      }
+    },
+    "/chargingstation-groups/location/{providerId}/{locationId}": {
+      "get": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Get Charging Station Group(s) for one Location",
+        "description": "Get all Charging Station Groups that belong to the requested Location, of the current Provider.",
+        "operationId": "getAllChargingStationGroupsByProviderIdAndLocationId",
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location Not Found"
+          }
+        }
+      }
+    },
+    "/chargingstation-groups/location/{locationId}": {
+      "get": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Get Charging Station Group(s) for one Location, without filtering",
+        "description": "Get all Charging Station Groups that belong to the requested Location, without filtering.",
+        "operationId": "getAllChargingStationGroupsByLocationId",
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location Not Found"
+          }
+        }
+      }
+    },
+    "/chargingstation-groups/location/{locationId}/{providerId}": {
+      "delete": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Delete Charging Station Group(s)",
+        "description": "Delete Charging Station Group(s) by location id and provider id.",
+        "operationId": "deleteChargingStationGroupsByLocationIdAndProviderId",
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested Location was not found, for this Provider ID."
+          },
+          "409": {
+            "description": "Conflict - Group has connected Charging Stations"
+          }
+        }
+      }
+    },
+    "/chargingstation-groups/charging-station/{identityKey}": {
+      "delete": {
+        "tags": [
+          "Charging Station Groups"
+        ],
+        "summary": "Remove one Charging Station from its Charging Station Group.",
+        "operationId": "removeChargingStationFromAGroup",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationGroup"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging Station Group Not Found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ChargingStationGroup": {
+        "required": [
+          "chargingStationGroupName",
+          "chargingStationGroupUuid",
+          "locationId",
+          "providerId"
+        ],
+        "type": "object",
+        "properties": {
+          "chargingStationGroupUuid": {
+            "type": "string",
+            "description": "Unique Charging Station Group UUID",
+            "format": "uuid",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "locationId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "pattern": "^(?i)[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89abAB][0-9A-F]{3}-[0-9A-F]{12}$",
+            "type": "string",
+            "description": "The Location ID, of the current Charging Station Group.",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "chargingStationGroupName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "pattern": "^[^@#`/%:;,=?^$()#|+~&%{}.!<>'\"\\[\\]\\\\]+?$",
+            "type": "string",
+            "description": "The Charging Station Group name",
+            "example": "Test Group No1"
+          },
+          "chargingStationIdentityKeys": {
+            "type": "array",
+            "description": "The Identity Keys of Charging Stations that belong to this Group.",
+            "items": {
+              "$ref": "#/components/schemas/ChargingStationGroupIdentityKey"
+            }
+          },
+          "providerId": {
+            "maxLength": 6,
+            "minLength": 6,
+            "pattern": "^[A-Z]{2}\\*[0-9A-Z]{3}$",
+            "type": "string",
+            "description": "The ID of the Provider.",
+            "example": "DE*ERG"
+          }
+        }
+      },
+      "ChargingStationGroupIdentityKey": {
+        "type": "object",
+        "properties": {
+          "identityKey": {
+            "type": "string"
+          }
+        },
+        "description": "The Identity Keys of Charging Stations that belong to this Group."
+      },
+      "ChargingStationGroupUpdateRequest": {
+        "required": [
+          "chargingStationGroupName"
+        ],
+        "type": "object",
+        "properties": {
+          "chargingStationGroupName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "pattern": "^[^@#`/%:;,=?^$()#|+~&%{}.!<>'\"\\[\\]\\\\]+?$",
+            "type": "string",
+            "description": "This contains the Charging Station Group name",
+            "example": "Test Updated Group Name"
+          }
+        }
+      },
+      "ChargingStationGroupCreateRequest": {
+        "required": [
+          "chargingStationGroupName"
+        ],
+        "type": "object",
+        "properties": {
+          "chargingStationGroupName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "pattern": "^[^@#`/%:;,=?^$()#|+~&%{}.!<>'\"\\[\\]\\\\]+?$",
+            "type": "string",
+            "description": "This contains the Charging Station Group name",
+            "example": "Test Group No1"
+          }
+        }
+      },
+      "ValidChargingStationGroupListCreateRequest": {
+        "required": [
+          "chargingStationGroupCreateRequests",
+          "locationId",
+          "providerId"
+        ],
+        "type": "object",
+        "properties": {
+          "chargingStationGroupCreateRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChargingStationGroupCreateRequest"
+            }
+          },
+          "locationId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "pattern": "^(?i)[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89abAB][0-9A-F]{3}-[0-9A-F]{12}$",
+            "type": "string",
+            "description": "This contains the location ID, of the current Charging Station Group.",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "providerId": {
+            "maxLength": 6,
+            "minLength": 6,
+            "pattern": "^[A-Z]{2}\\*[0-9A-Z]{3}$",
+            "type": "string",
+            "description": "This contains the CPO Provider ID.",
+            "example": "DE*ERG"
+          },
+          "validate": {
+            "type": "boolean",
+            "description": "If true, extra validations need to be done during creation of a group. Default = false"
+          }
+        }
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[CHARGINGSTATION-GROUP] Requested Location was not found.\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
+      },
+      "LOCATION_NOT_FOUND_FOR_THIS_PROVIDER": {
+        "value": "{\n  \"message\" : \"[CHARGINGSTATION-GROUP] Requested Location was not found, for this Provider ID.\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND_FOR_THIS_PROVIDER\"\n}"
+      },
+      "GROUP_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[CHARGINGSTATION-GROUP] Requested Charging Station Group was not found.\",\n  \"errorCode\" : \"GROUP_NOT_FOUND\"\n}"
+      },
+      "IDENTITY_KEY_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[CHARGINGSTATION-GROUP] Requested Charging Station was not found.\",\n  \"errorCode\" : \"IDENTITY_KEY_NOT_FOUND\"\n}"
+      },
+      "GROUP_NAME_UNIQUE_PER_LOCATION": {
+        "value": "{\n  \"message\" : \"[CHARGINGSTATION-GROUP] Charging Station Group name must be unique per Location.\",\n  \"errorCode\" : \"GROUP_NAME_UNIQUE_PER_LOCATION\"\n}"
+      },
+      "GROUP_UUID_AND_LOCATION_ID_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[CHARGINGSTATION-GROUP] Charging Station Group does not belong to this Location.\",\n  \"errorCode\" : \"GROUP_UUID_AND_LOCATION_ID_DO_NOT_MATCH\"\n}"
+      },
+      "CANNOT_DELETE_GROUP_WITH_CONNECTED_CHARGING_STATIONS": {
+        "value": "{\n  \"message\" : \"[CHARGINGSTATION-GROUP] Group cannot be deleted when it has connectedCharging Stations to it.\",\n  \"errorCode\" : \"CANNOT_DELETE_GROUP_WITH_CONNECTED_CHARGING_STATIONS\"\n}"
+      },
+      "LOCATION_MUST_HAVE_AT_LEAST_ONE_GROUP": {
+        "value": "{\n  \"message\" : \"[CHARGINGSTATION-GROUP] Group cannot be deleted, when it is the last one of a specific Location.\",\n  \"errorCode\" : \"LOCATION_MUST_HAVE_AT_LEAST_ONE_GROUP\"\n}"
+      },
+      "CREATE_REQUEST_CONTAINS_DUPLICATE_NAMES": {
+        "value": "{\n  \"message\" : \"[CHARGINGSTATION-GROUP] Create Request contains duplicate names.\",\n  \"errorCode\" : \"CREATE_REQUEST_CONTAINS_DUPLICATE_NAMES\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "CPO Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "CPO Charging Station Group",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
