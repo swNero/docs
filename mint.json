@@ -28,7 +28,7 @@
   "tabs": [
     {
       "name": "API test",
-      "url": "api-reference/CPO_Services",
+      "url": "api-reference",
       "openapi": "api-reference/CPO_Services/CPO_Analytics.json"
     },
     {
