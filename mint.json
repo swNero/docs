@@ -33,7 +33,7 @@
     {
       "name": "API test",
       "url": "api-reference/CPO_Services",
-      "openapi": "api-reference/CPO_Services/CPO_Analytics"
+      "openapi": "api-reference/CPO_Services/CPO_Analytics.json"
     }
   ],
   "anchors": [
