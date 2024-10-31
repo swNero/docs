@@ -29,11 +29,7 @@
     {
       "name": "API test",
       "url": "api-reference",
-      "openapi": "/api-reference/CPO_Services/CPO_Analytics.json"
-    },
-    {
-      "name": "API Reference0",
-      "url": "api-reference"
+      "openapi": "/api-reference/openapi.json"
     }
   ],
   "anchors": [
@@ -77,14 +73,6 @@
       "group": "API Documentation",
       "pages": [
         "api-reference/introduction"
-      ]
-    },
-    {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
       ]
     },
     {
