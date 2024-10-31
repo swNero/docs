@@ -29,7 +29,7 @@
     {
       "name": "API test",
       "url": "api-reference",
-      "openapi": "/CPO_Services/CPO_Analytics.json"
+      "openapi": "/api-reference/CPO_Services/CPO_Analytics.json"
     },
     {
       "name": "API Reference0",
