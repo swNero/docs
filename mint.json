@@ -85,9 +85,15 @@
     {
       "group": "CPO Services",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        {
+            "group": "CPO Alert Management",
+            "pages": [
+                "api-reference/endpoint/get",
+                "api-reference/endpoint/create",
+                "api-reference/endpoint/delete"
+            ]
+        }
+        
       ]
     }
   ],
