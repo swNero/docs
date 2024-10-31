@@ -1,97 +1,94 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "cpo-analytics-service",
-    "description": "Analytics service used for calculating KPIs",
-    "contact": {
-      "name": "P3 digital services GmbH",
-      "email": "contact@energystacks.io"
+    "title": "OpenAPI Plant Store",
+    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "license": {
+      "name": "MIT"
     },
-    "version": "v1"
+    "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/cpo-analytics/v1",
-      "description": "Generated server url"
+      "url": "http://sandbox.mintlify.com"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
     }
   ],
   "paths": {
-    "/dashboard/transactionTimeSlices": {
+    "/plants": {
       "get": {
-        "tags": [
-          "Dashboard"
-        ],
-        "summary": "Get transaction time slices",
-        "description": "Get transaction time slices",
-        "operationId": "getTransactionTimeSlices",
+        "description": "Returns all plants from the system that the user has access to",
         "parameters": [
           {
-            "name": "dateStart",
+            "name": "limit",
             "in": "query",
-            "required": false,
+            "description": "The maximum number of results to return",
             "schema": {
-              "type": "string",
-              "format": "date-time"
+              "type": "integer",
+              "format": "int32"
             }
-          },
-          {
-            "name": "tenantId",
-            "in": "query",
-            "description": "Tenant ID",
-            "required": false,
-            "example": "12345"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful Operation",
+            "description": "Plant response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TransactionTimeSlice"
+                    "$ref": "#/components/schemas/Plant"
                   }
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/dashboard/stats/transactions": {
-      "get": {
-        "tags": [
-          "Dashboard"
-        ],
-        "summary": "Get transaction stats",
-        "description": "Returns the transaction statistics",
-        "operationId": "getTransactionsStats",
-        "parameters": [
-          {
-            "name": "dateStart",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
           },
-          {
-            "name": "tenantId",
-            "in": "query",
-            "description": "Tenant ID",
-            "required": false,
-            "example": "12345"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Operation",
+          "400": {
+            "description": "Unexpected error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionStatsResponse"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new plant in the store",
+        "requestBody": {
+          "description": "Plant to add to the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPlant"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "plant response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plant"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -99,30 +96,32 @@
         }
       }
     },
-    "/dashboard/stats/chargingstations": {
-      "get": {
-        "tags": [
-          "Dashboard"
-        ],
-        "summary": "Get charging station stats",
-        "description": "Returns the charging station statistics",
-        "operationId": "getChargingStationStats",
+    "/plants/{id}": {
+      "delete": {
+        "description": "Deletes a single plant based on the ID supplied",
         "parameters": [
           {
-            "name": "tenantId",
-            "in": "query",
-            "description": "Tenant ID",
-            "required": false,
-            "example": "12345"
+            "name": "id",
+            "in": "path",
+            "description": "ID of plant to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful Operation",
+          "204": {
+            "description": "Plant deleted",
+            "content": {}
+          },
+          "400": {
+            "description": "unexpected error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChargingStationStatsResponse"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -133,754 +132,63 @@
   },
   "components": {
     "schemas": {
-      "TransactionTimeSlice": {
-        "type": "object",
-        "properties": {
-          "dateSlice": {
-            "type": "string",
-            "description": "The date and time of the time slice",
-            "format": "date-time",
-            "example": "2024-03-19T14:11:43Z"
-          },
-          "activeTransactions": {
-            "type": "integer",
-            "description": "The number of active transactions during the time slice",
-            "format": "int32",
-            "example": 147
-          },
-          "maxTotalPower": {
-            "type": "number",
-            "description": "The maximum total power during the time slice in kW",
-            "example": 2218.73
-          },
-          "connectorErrorRate": {
-            "type": "number",
-            "description": "The error rate of the time slice",
-            "example": 100
-          },
-          "latestCompletedTransactions": {
-            "type": "integer",
-            "description": "Transactions that were completed before this and after last timeslice",
-            "format": "int32",
-            "example": 120
-          },
-          "latestIssueTransactions": {
-            "type": "integer",
-            "description": "Number of latestCompletedTransactions with issues",
-            "format": "int32",
-            "example": 12
-          },
-          "completedTransactionsLast30Days": {
-            "type": "integer",
-            "description": "Number of completed transactions in the last 30 days",
-            "format": "int64",
-            "example": 1200
-          },
-          "issueTransactionsLast30Days": {
-            "type": "integer",
-            "description": "Number of completedTransactionsLast30Days with issues",
-            "format": "int64",
-            "example": 120
-          },
-          "averageConnectorUptime": {
-            "type": "number",
-            "description": "Average uptime of all connectors in the last 24h",
-            "example": 70.32
-          },
-          "totalConsumption": {
-            "type": "number",
-            "description": "The total consumption during the time slice in kWh",
-            "example": 2234.15
-          }
-        },
-        "description": "The transaction time slices of the last 24 hours"
-      },
-      "BrokerTransaction": {
-        "type": "object",
-        "properties": {
-          "identityKey": {
-            "type": "string",
-            "description": "The identity key of the charging station",
-            "example": "ERG-WB-0238563"
-          },
-          "chargingStationName": {
-            "type": "string",
-            "description": "Name of the charging station",
-            "example": "Charging Station 123"
-          },
-          "transactionId": {
-            "type": "string",
-            "description": "The transaction ID",
-            "example": "157495"
-          },
-          "evseId": {
-            "type": "string",
-            "description": "The Evse ID of the connector",
-            "example": "DE*ERG*E10001*1"
-          },
-          "connectorId": {
-            "type": "integer",
-            "description": "The connector ID",
-            "format": "int32",
-            "example": 1
-          },
-          "reservationId": {
-            "type": "integer",
-            "description": "The id of the reservation that terminates as a result of this transaction.",
-            "format": "int32",
-            "example": 4752
-          },
-          "idTagStart": {
-            "type": "string",
-            "description": "The identifier for which a transaction has to be started",
-            "example": "08a8c5d2f13b9100"
-          },
-          "idTagInfoStart": {
-            "$ref": "#/components/schemas/OcppIdTagInfo"
-          },
-          "idTagStop": {
-            "type": "string",
-            "description": "The identifier which requested to stop the charging. It is optional because a Charge Point may terminate charging without the presence of an idTag, e.g. in case of a reset.",
-            "example": "08a8c5d2f13b9100"
-          },
-          "reason": {
-            "type": "string",
-            "description": "The reason for stopping a transaction",
-            "example": "Local",
-            "enum": [
-              "DeAuthorized",
-              "EmergencyStop",
-              "EVDisconnected",
-              "HardReset",
-              "Local",
-              "Other",
-              "PowerLoss",
-              "Reboot",
-              "Remote",
-              "SoftReset",
-              "UnlockCommand"
-            ]
-          },
-          "transactionData": {
-            "type": "array",
-            "description": "Transaction usage details relevant for billing purposes",
-            "items": {
-              "$ref": "#/components/schemas/OcppMeterValue"
-            }
-          },
-          "meterValues": {
-            "type": "array",
-            "description": "Optional meter values sampled during the transaction",
-            "items": {
-              "$ref": "#/components/schemas/OcppMeterValue"
-            }
-          },
-          "meterStart": {
-            "type": "integer",
-            "description": "The meter value in Wh for the connector at start of the transaction",
-            "format": "int32",
-            "example": 51021
-          },
-          "meterLatest": {
-            "type": "integer",
-            "description": "The latest meter value in Wh for the connector",
-            "format": "int32",
-            "example": 53129
-          },
-          "meterStop": {
-            "type": "integer",
-            "description": "The meter value in Wh for the connector at end of the transaction",
-            "format": "int32",
-            "example": 57418
-          },
-          "powerLatest": {
-            "type": "number",
-            "description": "The latest power in Watt measured for the connector",
-            "example": 23125.56
-          },
-          "timestampStart": {
-            "type": "string",
-            "description": "The date and time on which the transaction is started",
-            "format": "date-time",
-            "example": "2024-03-19T14:11:43Z"
-          },
-          "timestampStop": {
-            "type": "string",
-            "description": "The date and time on which the transaction is stopped",
-            "format": "date-time",
-            "example": "2024-03-19T14:11:43Z"
-          },
-          "timestampLastUpdate": {
-            "type": "string",
-            "description": "The date and time on which the transaction was updated",
-            "format": "date-time",
-            "example": "2024-03-19T14:11:43Z"
-          }
-        },
-        "description": "The list of transactions of the last 24 hours"
-      },
-      "OcppIdTagInfo": {
+      "Plant": {
         "required": [
-          "status"
+          "name"
         ],
         "type": "object",
         "properties": {
-          "expiryDate": {
-            "type": "string",
-            "description": "This contains the date at which idTag should be removed from the Authorization Cache.",
-            "format": "date-time"
+          "name": {
+            "description": "The name of the plant",
+            "type": "string"
           },
-          "parentIdTag": {
-            "maxLength": 20,
-            "minLength": 0,
-            "type": "string",
-            "description": "This contains the parent-identifier. Case-insensitive, max length 20."
-          },
-          "status": {
-            "type": "string",
-            "description": "This contains whether the idTag has been accepted or not by the Central System.",
-            "enum": [
-              "Accepted",
-              "Blocked",
-              "Expired",
-              "Invalid",
-              "ConcurrentTx"
-            ]
+          "tag": {
+            "description": "Tag to specify the type",
+            "type": "string"
           }
-        },
-        "description": "Information about authorization status expiry and parent id."
+        }
       },
-      "OcppMeterValue": {
-        "required": [
-          "sampledValue",
-          "timestamp"
-        ],
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "type": "string",
-            "description": "Timestamp for measured value(s).",
-            "format": "date-time"
+      "NewPlant": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Plant"
           },
-          "sampledValue": {
-            "type": "array",
-            "description": "One or more measured values",
-            "items": {
-              "$ref": "#/components/schemas/OcppSampledValue"
+          {
+            "required": [
+              "id"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "Identification number of the plant",
+                "type": "integer",
+                "format": "int64"
+              }
             }
           }
-        },
-        "description": "Optional meter values sampled during the transaction"
+        ]
       },
-      "OcppSampledValue": {
+      "Error": {
         "required": [
-          "value"
+          "error",
+          "message"
         ],
         "type": "object",
         "properties": {
-          "value": {
-            "type": "string",
-            "description": "Value as a “Raw” (decimal) number or “SignedData”. Field Type is “string” to allow for digitally signed data readings. Decimal numeric values are also acceptable to allow fractional values for measurands such as Temperature and Current."
-          },
-          "context": {
-            "type": "string",
-            "description": "Type of detail value: start, end or sample.",
-            "example": "Sample.Periodic",
-            "enum": [
-              "Interruption.Begin",
-              "Interruption.End",
-              "Other",
-              "Sample.Clock",
-              "Sample.Periodic",
-              "Transaction.Begin",
-              "Transaction.End",
-              "Trigger"
-            ]
-          },
-          "format": {
-            "type": "string",
-            "description": "Raw or signed data. Default = “Raw”",
-            "example": "Raw",
-            "enum": [
-              "Raw",
-              "SignedData"
-            ]
-          },
-          "measurand": {
-            "type": "string",
-            "description": "Type of measurement.",
-            "example": "Energy.Active.Import.Register",
-            "enum": [
-              "Current.Export",
-              "Current.Import",
-              "Current.Offered",
-              "Energy.Active.Export.Register",
-              "Energy.Active.Import.Register",
-              "Energy.Reactive.Export.Register",
-              "Energy.Reactive.Import.Register",
-              "Energy.Active.Export.Interval",
-              "Energy.Active.Import.Interval",
-              "Energy.Reactive.Export.Interval",
-              "Energy.Reactive.Import.Interval",
-              "Frequency",
-              "Power.Active.Export",
-              "Power.Active.Import",
-              "Power.Factor",
-              "Power.Offered",
-              "Power.Reactive.Export",
-              "Power.Reactive.Import",
-              "RPM",
-              "SoC",
-              "Temperature",
-              "Voltage"
-            ]
-          },
-          "phase": {
-            "type": "string",
-            "description": "Indicates how the measured value is to be interpreted. For instance between L1 and neutral (L1-N) Please note that not all values of phase are applicable to all Measurands. When phase is absent, the measured value is interpreted as an overall value.",
-            "enum": [
-              "L1",
-              "L2",
-              "L3",
-              "N",
-              "L1-N",
-              "L2-N",
-              "L3-N",
-              "L1-L2",
-              "L2-L3",
-              "L3-L1"
-            ]
-          },
-          "location": {
-            "type": "string",
-            "description": "Location of measurement. Default=”Outlet”",
-            "example": "Outlet",
-            "enum": [
-              "Body",
-              "Cable",
-              "EV",
-              "Inlet",
-              "Outlet"
-            ]
-          },
-          "unit": {
-            "type": "string",
-            "description": "Unit of the value.",
-            "example": "Wh",
-            "enum": [
-              "Wh",
-              "kWh",
-              "varh",
-              "kvarh",
-              "W",
-              "kW",
-              "VA",
-              "kVA",
-              "var",
-              "kvar",
-              "A",
-              "V",
-              "Celsius",
-              "Fahrenheit",
-              "K",
-              "Percent"
-            ]
-          }
-        },
-        "description": "One or more measured values"
-      },
-      "TransactionStatsResponse": {
-        "type": "object",
-        "properties": {
-          "transactionsTotal": {
+          "error": {
             "type": "integer",
-            "description": "The total number of transactions",
-            "format": "int64",
-            "example": 154849
-          },
-          "transactionsLast24": {
-            "type": "integer",
-            "description": "The number of transactions for the last 24 hours",
-            "format": "int64",
-            "example": 2144
-          },
-          "energyTotal": {
-            "type": "integer",
-            "description": "The total energy of all transactions in Wh",
-            "format": "int64",
-            "example": 57158400
-          },
-          "energyTotalLast24": {
-            "type": "integer",
-            "description": "The total energy of all transactions for the last 24 hours in Wh ",
-            "format": "int64",
-            "example": 7358200
-          },
-          "issuesLast24": {
-            "type": "integer",
-            "description": "The number of OCPP issues during the last 24 hours",
-            "format": "int64"
-          },
-          "successRateLast24": {
-            "type": "integer",
-            "description": "The charging transaction success rate during the last 24 hours",
             "format": "int32"
           },
-          "transactionListLast24": {
-            "type": "array",
-            "description": "The list of transactions of the last 24 hours",
-            "items": {
-              "$ref": "#/components/schemas/BrokerTransaction"
-            }
-          },
-          "transactionTimeSlices": {
-            "type": "array",
-            "description": "The transaction time slices of the last 24 hours",
-            "items": {
-              "$ref": "#/components/schemas/TransactionTimeSlice"
-            }
+          "message": {
+            "type": "string"
           }
         }
-      },
-      "ChargingStationStatsResponse": {
-        "type": "object",
-        "properties": {
-          "chargingStationsTotal": {
-            "type": "integer",
-            "description": "The number of total charging stations",
-            "format": "int64",
-            "example": 463
-          },
-          "chargingStationsOnline": {
-            "type": "integer",
-            "description": "The number of online charging stations",
-            "format": "int64",
-            "example": 447
-          },
-          "chargingStationsCsmsConnected": {
-            "type": "integer",
-            "description": "The number of CSMS connected charging stations",
-            "format": "int64",
-            "example": 442
-          },
-          "modelStats": {
-            "type": "array",
-            "description": "Model statistics",
-            "items": {
-              "$ref": "#/components/schemas/ModelStats"
-            }
-          },
-          "ocppProtocolStats": {
-            "type": "array",
-            "description": "OCPP protocol statistics",
-            "items": {
-              "$ref": "#/components/schemas/OcppProtocolStats"
-            }
-          },
-          "ocppStatusStats": {
-            "type": "array",
-            "description": "OCPP status statistics",
-            "items": {
-              "$ref": "#/components/schemas/OcppStatusStats"
-            }
-          },
-          "connectorStats": {
-            "$ref": "#/components/schemas/ConnectorStats"
-          }
-        }
-      },
-      "ConnectorStats": {
-        "type": "object",
-        "properties": {
-          "connectorsTotal": {
-            "type": "integer",
-            "description": "The number of total connectors",
-            "format": "int64",
-            "example": 749
-          },
-          "ocppStatusStats": {
-            "type": "array",
-            "description": "OCPP status statistics",
-            "items": {
-              "$ref": "#/components/schemas/OcppStatusStats"
-            }
-          }
-        },
-        "description": "Connector statistics"
-      },
-      "ModelStats": {
-        "type": "object",
-        "properties": {
-          "modelName": {
-            "type": "string",
-            "description": "This contains a value that identifies the model of the Charging Station",
-            "example": "WallBox NG Pro"
-          },
-          "count": {
-            "type": "integer",
-            "description": "The amount of charging stations of the specific model",
-            "format": "int64"
-          }
-        },
-        "description": "Model statistics"
-      },
-      "OcppProtocolStats": {
-        "type": "object",
-        "properties": {
-          "ocppProtocol": {
-            "type": "string",
-            "description": "The OCPP protocol version",
-            "example": "V_16",
-            "enum": [
-              "V_15",
-              "V_16",
-              "V_20",
-              "V_201"
-            ]
-          },
-          "count": {
-            "type": "integer",
-            "description": "The number of charging stations which negotiated the protocol version",
-            "format": "int64"
-          }
-        },
-        "description": "OCPP protocol statistics"
-      },
-      "OcppStatusStats": {
-        "type": "object",
-        "properties": {
-          "ocppStatus": {
-            "type": "string",
-            "description": "The OCPP status",
-            "example": "Available",
-            "enum": [
-              "Undefined",
-              "Available",
-              "Preparing",
-              "Charging",
-              "Occupied",
-              "SuspendedEVSE",
-              "SuspendedEV",
-              "Finishing",
-              "Reserved",
-              "Unavailable",
-              "Faulted"
-            ]
-          },
-          "count": {
-            "type": "integer",
-            "description": "The number of elements having the specific OCPP status",
-            "format": "int64"
-          }
-        },
-        "description": "OCPP status statistics"
       }
     },
-    "examples": {
-      "UNSORTABLE_COLUMN": {
-        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
-      },
-      "REST_STATUS_ELASTICSEARCH_RELATED": {
-        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
-      },
-      "ALERT_ALREADY_CREATED": {
-        "value": "{\n  \"message\" : \"Alert already exists\",\n  \"errorCode\" : \"ALERT_ALREADY_CREATED\"\n}"
-      },
-      "ALERT_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"Alert not found\",\n  \"errorCode\" : \"ALERT_NOT_FOUND\"\n}"
-      },
-      "ALERT_DOESNT_EXIST": {
-        "value": "{\n  \"message\" : \"Alert with this connectorId and identityKey doesn't exist\",\n  \"errorCode\" : \"ALERT_DOESNT_EXIST\"\n}"
-      },
-      "END_DATETIME_NOT_AFTER_START_DATETIME": {
-        "value": "{\n  \"message\" : \"timeTo cannot be before or equal to timeFrom.\",\n  \"errorCode\" : \"END_DATETIME_NOT_AFTER_START_DATETIME\"\n}"
-      },
-      "PROCESSING_ERROR": {
-        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
-      },
-      "ACCESS_DENIED": {
-        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
-      },
-      "INTERNAL_SERVER_ERROR": {
-        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
-      },
-      "BAD_REQUEST": {
-        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
-      },
-      "NOT_FOUND": {
-        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
-      },
-      "UNAUTHORIZED": {
-        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
-      },
-      "FORBIDDEN": {
-        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
-      },
-      "UNAUTHENTICATED": {
-        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
-      },
-      "METHOD_ARGUMENT_TYPE_MISMATCH": {
-        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
-      },
-      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
-        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
-      },
-      "METHOD_NOT_ALLOWED": {
-        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
-      },
-      "MISSING_REQUEST_PARAMETER": {
-        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
-      },
-      "MISSING_REQUEST_PART": {
-        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
-      },
-      "UNSUPPORTED_MEDIA_TYPE": {
-        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
-      },
-      "LIST_CONTAINS_NULL_VALUES": {
-        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
-      },
-      "REMOTE_CALL_FAILED": {
-        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
-      },
-      "ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
-      },
-      "SOFTLY_DELETED": {
-        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
-      },
-      "WRONG_SORTING_COLUMN": {
-        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
-      },
-      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
-        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
-      },
-      "FAILED_TO_DELETE_TEMPORARY_FILE": {
-        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
-      },
-      "TENANT_ID_MUST_BE_SINGLETON": {
-        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
-      },
-      "TENANT_ID_MUST_BE_INTEGER": {
-        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
-      },
-      "INVALID_PROPERTY": {
-        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
-      },
-      "RPC_TIMEOUT": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] The RPC call to the charging station did not respond in time.\",\n  \"errorCode\" : \"RPC_TIMEOUT\"\n}"
-      },
-      "RPC_ERROR": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] An error occured during the remote procedure call\",\n  \"errorCode\" : \"RPC_ERROR\"\n}"
-      },
-      "UNABLE_TO_DELETE_CSMS": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot delete CSMS with connected charging stations to it.\",\n  \"errorCode\" : \"UNABLE_TO_DELETE_CSMS\"\n}"
-      },
-      "NOT_UNIQUE_NAME": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided name is not unique.\",\n  \"errorCode\" : \"NOT_UNIQUE_NAME\"\n}"
-      },
-      "DEFAULT_CSMS_CANNOT_CHANGE_TO_NOT_DEFAULT": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Default CSMS cannot change to not-default.\",\n  \"errorCode\" : \"DEFAULT_CSMS_CANNOT_CHANGE_TO_NOT_DEFAULT\"\n}"
-      },
-      "CANNOT_DELETE_DEFAULT_CSMS": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot delete Default CSMS, unless it is the only one and with no connected charging stations to it.\",\n  \"errorCode\" : \"CANNOT_DELETE_DEFAULT_CSMS\"\n}"
-      },
-      "CSMS_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested CSMS not found.\",\n  \"errorCode\" : \"CSMS_NOT_FOUND\"\n}"
-      },
-      "CSMS_URL_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided CSMS url is not unique.\",\n  \"errorCode\" : \"CSMS_URL_ALREADY_EXISTS\"\n}"
-      },
-      "CHARGING_STATION_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested Charging Station not found.\",\n  \"errorCode\" : \"CHARGING_STATION_NOT_FOUND\"\n}"
-      },
-      "UNABLE_TO_CONNECT_TO_CSMS": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot connect to CSMS, endpoint is not reachable\",\n  \"errorCode\" : \"UNABLE_TO_CONNECT_TO_CSMS\"\n}"
-      },
-      "CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] A Charging Station with the same Identity key already exists.\",\n  \"errorCode\" : \"CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS\"\n}"
-      },
-      "BIG_QUERY_CONNECTION": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] BigQuery connection error\",\n  \"errorCode\" : \"BIG_QUERY_CONNECTION\"\n}"
-      },
-      "WRONG_OCPP_VERSION": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] The negotiated OCPP protocol version is not supporting this request\",\n  \"errorCode\" : \"WRONG_OCPP_VERSION\"\n}"
-      },
-      "CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested Charging Station Shadow Connector not found.\",\n  \"errorCode\" : \"CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND\"\n}"
-      },
-      "LOCATION_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Location with the specified UUID not found\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
-      },
-      "INVALID_IDENTITY_KEY": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] One or more specified charging station identity keys are not valid\",\n  \"errorCode\" : \"INVALID_IDENTITY_KEY\"\n}"
-      },
-      "FAILED_TO_DELETE_LOCATION": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Failed to delete Location which has charging station/s bound to it\",\n  \"errorCode\" : \"FAILED_TO_DELETE_LOCATION\"\n}"
-      },
-      "INVALID_LOCATION_RELATION": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] One or more charging stations are not assigned to the specified location\",\n  \"errorCode\" : \"INVALID_LOCATION_RELATION\"\n}"
-      },
-      "WRONG_PASSWORD": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] The given password does not match with the confirmation password\",\n  \"errorCode\" : \"WRONG_PASSWORD\"\n}"
-      },
-      "UNABLE_TO_UPDATE_CSMS_CREDENTIALS": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] No changes were requested.\",\n  \"errorCode\" : \"UNABLE_TO_UPDATE_CSMS_CREDENTIALS\"\n}"
-      },
-      "DUPLICATE_CONNECTOR_ID": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Connectors with the same id in the request.\",\n  \"errorCode\" : \"DUPLICATE_CONNECTOR_ID\"\n}"
-      },
-      "PAGE_SIZE_EXCEEDED": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Max number of the results per page is 100.\",\n  \"errorCode\" : \"PAGE_SIZE_EXCEEDED\"\n}"
-      },
-      "TARIFF_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Tariff with the specified UUID not found\",\n  \"errorCode\" : \"TARIFF_NOT_FOUND\"\n}"
-      },
-      "EVSE_ID_NOT_UNIQUE": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided EVSE ID already exists.\",\n  \"errorCode\" : \"EVSE_ID_NOT_UNIQUE\"\n}"
-      },
-      "EVSE_ID_DUPLICATES": {
-        "value": "{\n  \"message\" : \"[OCPP-BROKER] Two or more EVSE ID's are identical. All EVSE ID's must be unique.\",\n  \"errorCode\" : \"EVSE_ID_DUPLICATES\"\n}"
-      },
-      "RABBITMQ_LISTENER_ERROR": {
-        "value": "{\n  \"message\" : \"[RABBITMQ] An error occurred in RabbitMQ listener\",\n  \"errorCode\" : \"RABBITMQ_LISTENER_ERROR\"\n}"
-      },
-      "INVALID_RABBITMQ_RPC_RESPONSE": {
-        "value": "{\n  \"message\" : \"[RABBITMQ] Invalid RabbitMQ RPC response\",\n  \"errorCode\" : \"INVALID_RABBITMQ_RPC_RESPONSE\"\n}"
-      },
-      "USER_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
-      },
-      "USER_ALREADY_HAS_ACCESS": {
-        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
-      },
-      "USER_ACCESS_REQUEST_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
-      },
-      "FILE_IS_NOT_IMAGE": {
-        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
-      },
-      "FORMAT_NOT_SUPPORTED": {
-        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
-      },
-      "EXTENSION_MISSING": {
-        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
-      }
-    },
-    "headers": {
-      "api-category": {
-        "description": "CPO Services",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      },
-      "display-name": {
-        "description": "CPO Analytics",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }
