@@ -29,6 +29,10 @@
     {
       "name": "Fleet Services",
       "url": "api-reference/Fleet_Services"
+    },
+    {
+      "name": "CPO Services",
+      "url": "api-reference/CPO_Services"
     }
   ],
   "anchors": [
@@ -160,6 +164,10 @@
           ]
         }
       ]
+    },
+    {
+      "group": "...",
+      "pages": "api-reference/CPO_Services/coming_soon"
     }
   ],
   "footerSocials": {
