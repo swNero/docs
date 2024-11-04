@@ -91,6 +91,30 @@
             "api-reference/Fleet_Services/vehicles/get-vehicle-charging-curve-by-vehicle-uuid",
             "api-reference/Fleet_Services/vehicles/get-the-details-for-the-specified-vehicle-uuids-from-the-vehicle-db"
           ]
+        },
+        {
+          "group": "Vehicle Brand",
+          "pages": [
+            "api-reference/Fleet_Services/vehicle-brand/get-the-details-for-the-specified-vehicle-brand-from-the-db",
+            "api-reference/Fleet_Services/vehicle-brand/update-an-existing-vehicle-brand",
+            "api-reference/Fleet_Services/vehicle-brand/delete-an-existing-vehicle-brand",
+            "api-reference/Fleet_Services/vehicle-brand/get-vehicle-brand-image",
+            "api-reference/Fleet_Services/vehicle-brand/addupdate-the-vehicle-brand-image",
+            "vehicle-brand/delete-vehicle-brand-image",
+            "api-reference/Fleet_Services/vehicle-brand/get-all-vehicle-brands-from-the-db",
+            "api-reference/Fleet_Services/vehicle-brand/add-new-vehicle-brand"
+          ]
+        },
+        {
+          "group": "Charging curves",
+          "pages": [
+            "api-reference/Fleet_Services/charging-curves/get-the-details-for-the-specified-charging-curve",
+            "api-reference/Fleet_Services/charging-curves/update-an-existing-charging-curve",
+            "api-reference/Fleet_Services/charging-curves/delete-an-existing-charging-curve",
+            "api-reference/Fleet_Services/charging-curves/get-all-charging-curves",
+            "api-reference/Fleet_Services/charging-curves/add-a-new-charging-curve",
+            "api-reference/Fleet_Services/charging-curves/get-all-charging-curves-for-a-specific-vehicle"
+          ]
         }
       ]
     }
