@@ -167,7 +167,7 @@
     },
     {
       "group": "...",
-      "pages": "api-reference/CPO_Services/coming_soon"
+      "pages": ["api-reference/CPO_Services/coming_soon"]
     }
   ],
   "footerSocials": {
