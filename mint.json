@@ -27,9 +27,8 @@
   },
   "tabs": [
     {
-      "name": "API test",
-      "url": "api-reference",
-      "openapi": "/api-reference/Vehicles.json"
+      "name": "Fleet Services",
+      "url": "api-reference/Fleet_Services"
     }
   ],
   "anchors": [
@@ -76,15 +75,12 @@
       ]
     },
     {
-      "group": "CPO Services",
+      "group": "Fleet Services",
       "pages": [
         {
-            "group": "CPO Alert Management",
-            "pages": [
-                "api-reference/endpoint/get",
-                "api-reference/endpoint/create",
-                "api-reference/endpoint/delete"
-            ]
+            "group": "Vehicle Core Services",
+            "openapi": "/api-reference/Fleet_Services/Vehicles.json",
+            "pages": ["endpoint1", "endpoint2"]
         }
         
       ]
