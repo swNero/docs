@@ -80,40 +80,40 @@
         {
           "group": "Vehicles",
           "pages": [
-            "api-reference/Fleet_Services/vehicles/get-the-details-for-the-specified-vehicle-from-the-vehicle-db",
-            "api-reference/Fleet_Services/vehicles/update-an-existing-vehicle",
-            "api-reference/Fleet_Services/vehicles/delete-an-existing-vehicle",
-            "api-reference/Fleet_Services/vehicles/get-vehicle-image",
-            "api-reference/Fleet_Services/vehicles/addupdate-the-vehicle-image",
-            "api-reference/Fleet_Services/vehicles/delete-vehicle-image",
-            "api-reference/Fleet_Services/vehicles/get-all-vehicles-from-the-vehicle-db",
-            "api-reference/Fleet_Services/vehicles/add-a-new-vehicle-to-the-db",
-            "api-reference/Fleet_Services/vehicles/get-vehicle-charging-curve-by-vehicle-uuid",
-            "api-reference/Fleet_Services/vehicles/get-the-details-for-the-specified-vehicle-uuids-from-the-vehicle-db"
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicles/get-the-details-for-the-specified-vehicle-from-the-vehicle-db",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicles/update-an-existing-vehicle",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicles/delete-an-existing-vehicle",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicles/get-vehicle-image",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicles/addupdate-the-vehicle-image",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicles/delete-vehicle-image",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicles/get-all-vehicles-from-the-vehicle-db",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicles/add-a-new-vehicle-to-the-db",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicles/get-vehicle-charging-curve-by-vehicle-uuid",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicles/get-the-details-for-the-specified-vehicle-uuids-from-the-vehicle-db"
           ]
         },
         {
           "group": "Vehicle Brand",
           "pages": [
-            "api-reference/Fleet_Services/vehicle-brand/get-the-details-for-the-specified-vehicle-brand-from-the-db",
-            "api-reference/Fleet_Services/vehicle-brand/update-an-existing-vehicle-brand",
-            "api-reference/Fleet_Services/vehicle-brand/delete-an-existing-vehicle-brand",
-            "api-reference/Fleet_Services/vehicle-brand/get-vehicle-brand-image",
-            "api-reference/Fleet_Services/vehicle-brand/addupdate-the-vehicle-brand-image",
-            "vehicle-brand/delete-vehicle-brand-image",
-            "api-reference/Fleet_Services/vehicle-brand/get-all-vehicle-brands-from-the-db",
-            "api-reference/Fleet_Services/vehicle-brand/add-new-vehicle-brand"
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicle-brand/get-the-details-for-the-specified-vehicle-brand-from-the-db",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicle-brand/update-an-existing-vehicle-brand",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicle-brand/delete-an-existing-vehicle-brand",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicle-brand/get-vehicle-brand-image",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicle-brand/addupdate-the-vehicle-brand-image",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicle-brand/delete-vehicle-brand-image",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicle-brand/get-all-vehicle-brands-from-the-db",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/vehicle-brand/add-new-vehicle-brand"
           ]
         },
         {
           "group": "Charging curves",
           "pages": [
-            "api-reference/Fleet_Services/charging-curves/get-the-details-for-the-specified-charging-curve",
-            "api-reference/Fleet_Services/charging-curves/update-an-existing-charging-curve",
-            "api-reference/Fleet_Services/charging-curves/delete-an-existing-charging-curve",
-            "api-reference/Fleet_Services/charging-curves/get-all-charging-curves",
-            "api-reference/Fleet_Services/charging-curves/add-a-new-charging-curve",
-            "api-reference/Fleet_Services/charging-curves/get-all-charging-curves-for-a-specific-vehicle"
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/charging-curves/get-the-details-for-the-specified-charging-curve",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/charging-curves/update-an-existing-charging-curve",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/charging-curves/delete-an-existing-charging-curve",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/charging-curves/get-all-charging-curves",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/charging-curves/add-a-new-charging-curve",
+            "api-reference/Fleet_Services/Fleet_Vehicle_Core/charging-curves/get-all-charging-curves-for-a-specific-vehicle"
           ]
         }
       ]
