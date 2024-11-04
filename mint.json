@@ -91,6 +91,8 @@
             "api-reference/Fleet_Services/vehicles/get-vehicle-charging-curve-by-vehicle-uuid",
             "api-reference/Fleet_Services/vehicles/get-the-details-for-the-specified-vehicle-uuids-from-the-vehicle-db"
           ]
+        }
+      ]
     }
   ],
   "footerSocials": {
