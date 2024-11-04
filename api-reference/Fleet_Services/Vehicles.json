@@ -1,0 +1,1722 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "vehicle-core-service",
+    "description": "A service used for storing and manipulating with vehicles, vehicle brands and charging curves",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.fleet.energystacks.io/vehicle-core/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/vehicles/{vehicleUuid}": {
+      "get": {
+        "tags": [
+          "Vehicles"
+        ],
+        "summary": "Get the details for the specified vehicle from the Vehicle DB",
+        "operationId": "getVehicleDetails",
+        "parameters": [
+          {
+            "name": "vehicleUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleDetailedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong UUID format"
+          },
+          "403": {
+            "description": "Incorrect tenant"
+          },
+          "404": {
+            "description": "Vehicle not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Vehicles"
+        ],
+        "summary": "Update an existing vehicle",
+        "operationId": "updateVehicle",
+        "parameters": [
+          {
+            "name": "vehicleUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Incorrect tenant"
+          },
+          "404": {
+            "description": "Vehicle not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Vehicles"
+        ],
+        "summary": "Delete an existing vehicle",
+        "operationId": "deleteVehicle",
+        "parameters": [
+          {
+            "name": "vehicleUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong UUID format"
+          },
+          "404": {
+            "description": "Vehicle not found"
+          }
+        }
+      }
+    },
+    "/vehicles/{vehicleUuid}/image": {
+      "get": {
+        "tags": [
+          "Vehicles"
+        ],
+        "summary": "Get vehicle image",
+        "operationId": "getVehicleImage",
+        "parameters": [
+          {
+            "name": "vehicleUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "400": {
+            "description": "Wrong UUID format"
+          },
+          "401": {
+            "description": "Image provider customer key is invalid"
+          },
+          "404": {
+            "description": "Image for requested Vehicle not found"
+          },
+          "500": {
+            "description": "Fetching the Image from the provider fails"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Vehicles"
+        ],
+        "summary": "Add/update the vehicle image",
+        "operationId": "addOrUpdateVehicleImage",
+        "parameters": [
+          {
+            "name": "vehicleUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "vehicleImage"
+                ],
+                "type": "object",
+                "properties": {
+                  "vehicleImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong UUID format"
+          },
+          "404": {
+            "description": "Vehicle not found"
+          },
+          "500": {
+            "description": "Failed to store new image"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Vehicles"
+        ],
+        "summary": "Delete vehicle image",
+        "operationId": "deleteVehicleImage",
+        "parameters": [
+          {
+            "name": "vehicleUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong UUID format"
+          },
+          "500": {
+            "description": "Failed to delete existing image"
+          }
+        }
+      }
+    },
+    "/vehicle-brands/{brandUuid}": {
+      "get": {
+        "tags": [
+          "Vehicle Brand"
+        ],
+        "summary": "Get the details for the specified vehicle brand from the DB",
+        "operationId": "getVehicleBrandDetails",
+        "parameters": [
+          {
+            "name": "brandUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrandResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Incorrect tenant"
+          },
+          "404": {
+            "description": "Vehicle brand not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Vehicle Brand"
+        ],
+        "summary": "Update an existing vehicle brand",
+        "operationId": "updateVehicleBrand",
+        "parameters": [
+          {
+            "name": "brandUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Incorrect tenant"
+          },
+          "404": {
+            "description": "Vehicle brand not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Vehicle Brand"
+        ],
+        "summary": "Delete an existing vehicle brand",
+        "operationId": "deleteVehicleBrand",
+        "parameters": [
+          {
+            "name": "brandUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle brand not found"
+          }
+        }
+      }
+    },
+    "/vehicle-brands/{brandUuid}/image": {
+      "get": {
+        "tags": [
+          "Vehicle Brand"
+        ],
+        "summary": "Get vehicle brand image",
+        "operationId": "getVehicleBrandImage",
+        "parameters": [
+          {
+            "name": "brandUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "400": {
+            "description": "Wrong UUID format"
+          },
+          "404": {
+            "description": "Image not found"
+          },
+          "500": {
+            "description": "Failed to read image"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Vehicle Brand"
+        ],
+        "summary": "Add/update the vehicle brand image",
+        "operationId": "addOrUpdateVehicleBrandImage",
+        "parameters": [
+          {
+            "name": "brandUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "brandImage"
+                ],
+                "type": "object",
+                "properties": {
+                  "brandImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Failed to store new image"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Vehicle Brand"
+        ],
+        "summary": "Delete vehicle brand image",
+        "operationId": "deleteVehicleBrandImage",
+        "parameters": [
+          {
+            "name": "brandUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to delete existing image"
+          }
+        }
+      }
+    },
+    "/charging-curves/{chargingCurveUuid}": {
+      "get": {
+        "tags": [
+          "Charging curves"
+        ],
+        "summary": "Get the details for the specified charging curve",
+        "operationId": "getChargingCurveDetails",
+        "parameters": [
+          {
+            "name": "chargingCurveUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleDetailedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging curve not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Charging curves"
+        ],
+        "summary": "Update an existing charging curve",
+        "operationId": "updateChargingCurve",
+        "parameters": [
+          {
+            "name": "chargingCurveUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChargingCurveShortRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging curve not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Charging curves"
+        ],
+        "summary": "Delete an existing charging curve",
+        "operationId": "deleteChargingCurve",
+        "parameters": [
+          {
+            "name": "chargingCurveUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging curve not found"
+          }
+        }
+      }
+    },
+    "/vehicles": {
+      "get": {
+        "tags": [
+          "Vehicles"
+        ],
+        "summary": "Get all vehicles from the Vehicle DB",
+        "operationId": "getAllVehicles",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Vehicles"
+        ],
+        "summary": "Add a new vehicle to the DB",
+        "operationId": "addNewVehicle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Vehicle and brand tenant ids don't match"
+          }
+        }
+      }
+    },
+    "/vehicle-brands": {
+      "get": {
+        "tags": [
+          "Vehicle Brand"
+        ],
+        "summary": "Get all vehicle brands from the DB",
+        "operationId": "getAllVehicleBrands",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BrandResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Vehicle Brand"
+        ],
+        "summary": "Add new vehicle brand",
+        "operationId": "addVehicleBrand",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/charging-curves": {
+      "get": {
+        "tags": [
+          "Charging curves"
+        ],
+        "summary": "Get all charging curves",
+        "operationId": "getAllChargingCurves",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Charging curves"
+        ],
+        "summary": "Add a new charging curve",
+        "operationId": "addNewChargingCurve",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChargingCurveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle not found"
+          }
+        }
+      }
+    },
+    "/vehicles/{vehicleUuid}/chargingcurve": {
+      "get": {
+        "tags": [
+          "Vehicles"
+        ],
+        "summary": "Get vehicle charging curve by vehicle UUID",
+        "operationId": "getVehicleChargingCurveByVehicleUuid",
+        "parameters": [
+          {
+            "name": "vehicleUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleChargingCurveResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong UUID format"
+          },
+          "404": {
+            "description": "Vehicle not found"
+          }
+        }
+      }
+    },
+    "/vehicles/uuids": {
+      "get": {
+        "tags": [
+          "Vehicles"
+        ],
+        "summary": "Get the details for the specified vehicle UUIDs from the Vehicle DB",
+        "operationId": "getVehicleByUuids",
+        "parameters": [
+          {
+            "name": "vehicleCoreUuids",
+            "in": "query",
+            "description": "List of Vehicle UUIDs to search by",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleDetailedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request contains empty/blank values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/charging-curves/vehicle/{vehicleUuid}": {
+      "get": {
+        "tags": [
+          "Charging curves"
+        ],
+        "summary": "Get all charging curves for a specific vehicle",
+        "operationId": "getAllChargingCurvesForVehicle",
+        "parameters": [
+          {
+            "name": "vehicleUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong UUID format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SuccessMessageDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CombustionEngineVehicleData": {
+        "type": "object",
+        "properties": {
+          "co2Emissions": {
+            "type": "number",
+            "description": "Vehicle co2 emissions in grams.",
+            "format": "double"
+          }
+        },
+        "description": "Defines the information of a vehicle using internal combustion engine."
+      },
+      "ElectricVehicleData": {
+        "type": "object",
+        "properties": {
+          "net_battery_capacity": {
+            "type": "number",
+            "description": "Net battery capacity",
+            "format": "double",
+            "example": 64
+          },
+          "ac_plug_type": {
+            "type": "string",
+            "description": "AC plug type",
+            "example": "IEC_62196_T2",
+            "enum": [
+              "CHADEMO",
+              "DOMESTIC_A",
+              "DOMESTIC_B",
+              "DOMESTIC_C",
+              "DOMESTIC_D",
+              "DOMESTIC_E",
+              "DOMESTIC_F",
+              "DOMESTIC_G",
+              "DOMESTIC_H",
+              "DOMESTIC_I",
+              "DOMESTIC_J",
+              "DOMESTIC_K",
+              "DOMESTIC_L",
+              "IEC_60309_2_single_16",
+              "IEC_60309_2_three_16",
+              "IEC_60309_2_three_32",
+              "IEC_60309_2_three_64",
+              "IEC_62196_T1",
+              "IEC_62196_T1_COMBO",
+              "IEC_62196_T2",
+              "IEC_62196_T2_COMBO",
+              "IEC_62196_T3A",
+              "IEC_62196_T3C",
+              "NEMA_5_20",
+              "NEMA_6_30",
+              "NEMA_6_50",
+              "NEMA_10_30",
+              "NEMA_10_50",
+              "NEMA_14_30",
+              "NEMA_14_50",
+              "PANTOGRAPH_BOTTOM_UP",
+              "PANTOGRAPH_TOP_DOWN",
+              "TESLA_R",
+              "TESLA_S",
+              "TESLA_D",
+              "GBT_AC",
+              "GBT_DC",
+              "UNKNOWN"
+            ]
+          },
+          "fast_charging_plug_type": {
+            "type": "string",
+            "description": "Fast charging plug type",
+            "example": "IEC_62196_T2_COMBO",
+            "enum": [
+              "CHADEMO",
+              "DOMESTIC_A",
+              "DOMESTIC_B",
+              "DOMESTIC_C",
+              "DOMESTIC_D",
+              "DOMESTIC_E",
+              "DOMESTIC_F",
+              "DOMESTIC_G",
+              "DOMESTIC_H",
+              "DOMESTIC_I",
+              "DOMESTIC_J",
+              "DOMESTIC_K",
+              "DOMESTIC_L",
+              "IEC_60309_2_single_16",
+              "IEC_60309_2_three_16",
+              "IEC_60309_2_three_32",
+              "IEC_60309_2_three_64",
+              "IEC_62196_T1",
+              "IEC_62196_T1_COMBO",
+              "IEC_62196_T2",
+              "IEC_62196_T2_COMBO",
+              "IEC_62196_T3A",
+              "IEC_62196_T3C",
+              "NEMA_5_20",
+              "NEMA_6_30",
+              "NEMA_6_50",
+              "NEMA_10_30",
+              "NEMA_10_50",
+              "NEMA_14_30",
+              "NEMA_14_50",
+              "PANTOGRAPH_BOTTOM_UP",
+              "PANTOGRAPH_TOP_DOWN",
+              "TESLA_R",
+              "TESLA_S",
+              "TESLA_D",
+              "GBT_AC",
+              "GBT_DC",
+              "UNKNOWN"
+            ]
+          },
+          "max_charging_power": {
+            "type": "number",
+            "description": "Maximum charging power",
+            "example": 77
+          },
+          "optimal_charging_point": {
+            "type": "integer",
+            "description": "Optimal charging point, in percentage",
+            "format": "int32",
+            "example": 84
+          },
+          "max_voltage": {
+            "type": "number",
+            "description": "Maximum voltage",
+            "example": 400
+          }
+        },
+        "description": "Optional electric vehicle data"
+      },
+      "VehicleRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "Vehicle model",
+            "example": "E-tron"
+          },
+          "variant": {
+            "type": "string",
+            "description": "Vehicle variant",
+            "example": "Turbo"
+          },
+          "vehicle_region": {
+            "type": "string",
+            "description": "Vehicle region",
+            "example": "EU"
+          },
+          "vehicle_class": {
+            "type": "string",
+            "description": "Vehicle class",
+            "example": "PV"
+          },
+          "electric_vehicle_data": {
+            "$ref": "#/components/schemas/ElectricVehicleData"
+          },
+          "combustion_engine_vehicle_data": {
+            "$ref": "#/components/schemas/CombustionEngineVehicleData"
+          },
+          "consumption_city_cold": {
+            "type": "number",
+            "description": "Consumption in city driving conditions in cold weather",
+            "example": 13.03
+          },
+          "consumption_city_mild": {
+            "type": "number",
+            "description": "Consumption in city driving conditions in mild weather",
+            "example": 10.08
+          },
+          "consumption_highway_cold": {
+            "type": "number",
+            "description": "Consumption in highway driving conditions in cold weather",
+            "example": 18.6
+          },
+          "consumption_highway_mild": {
+            "type": "number",
+            "description": "Consumption in highway driving conditions in mild weather",
+            "example": 17.49
+          },
+          "vehicle_weight_empty": {
+            "type": "number",
+            "description": "Weight of an empty vehicle",
+            "format": "double",
+            "example": 1760
+          },
+          "efficiency_factor_uphill": {
+            "type": "number",
+            "description": "Efficiency factor during uphill ascent",
+            "format": "double",
+            "example": 1.1
+          },
+          "efficiency_factor_downhill": {
+            "type": "number",
+            "description": "Efficiency factor during downhill descent",
+            "format": "double",
+            "example": 0.9
+          },
+          "co2_savings": {
+            "type": "number",
+            "description": "CO2 savings in grams per km",
+            "format": "double",
+            "example": 250.2
+          },
+          "height": {
+            "type": "number",
+            "description": "Vehicle height",
+            "format": "double",
+            "example": 2.3
+          },
+          "width": {
+            "type": "number",
+            "description": "Vehicle width",
+            "format": "double",
+            "example": 2.1
+          },
+          "length": {
+            "type": "number",
+            "description": "Vehicle length",
+            "format": "double",
+            "example": 9
+          },
+          "max_gross_weight": {
+            "type": "number",
+            "description": "Vehicle maximum gross weight",
+            "format": "double",
+            "example": 2000
+          },
+          "max_loading_volume": {
+            "type": "number",
+            "description": "Vehicle maximum loading volume",
+            "format": "double",
+            "example": 3.14
+          },
+          "max_loading_height": {
+            "type": "number",
+            "description": "Vehicle maximum loading height",
+            "format": "double",
+            "example": 1.8
+          },
+          "max_loading_width": {
+            "type": "number",
+            "description": "Vehicle maximum loading width",
+            "format": "double",
+            "example": 2.46
+          },
+          "max_loading_length": {
+            "type": "number",
+            "description": "Vehicle maximum loading length",
+            "format": "double",
+            "example": 2.6
+          },
+          "vehicle_brand_uuid": {
+            "type": "string",
+            "description": "Vehicle brand UUID",
+            "example": "67e7dfdf-3757-4479-a905-3bbacb75490a"
+          }
+        }
+      },
+      "BrandRequest": {
+        "required": [
+          "brand_name"
+        ],
+        "type": "object",
+        "properties": {
+          "brand_name": {
+            "type": "string",
+            "description": "Brand name",
+            "example": "Audi"
+          }
+        }
+      },
+      "CreatedDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "UUID of the created entity",
+            "example": "67e7dfdf-3757-4479-a905-3bbacb75490a"
+          }
+        }
+      },
+      "ChargingCurveShortRequest": {
+        "required": [
+          "charging_power"
+        ],
+        "type": "object",
+        "properties": {
+          "state_of_charge": {
+            "type": "integer",
+            "description": "State of charge with values from 1% to 100% in steps of 1%-points",
+            "format": "int32",
+            "example": 53
+          },
+          "charging_power": {
+            "minimum": 1,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Charging power per 1%-point of the state of charge ",
+            "example": 112
+          }
+        }
+      },
+      "ChargingCurveRequest": {
+        "required": [
+          "charging_power",
+          "vehicle_uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "vehicle_uuid": {
+            "type": "string",
+            "description": "Vehicle  uuid",
+            "example": "67e7dfdf-3757-4479-a905-3bbacb75490a"
+          },
+          "state_of_charge": {
+            "type": "integer",
+            "description": "State of charge with values from 1% to 100% in steps of 1%-points",
+            "format": "int32",
+            "example": 53
+          },
+          "charging_power": {
+            "minimum": 1,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Charging power per 1%-point of the state of charge ",
+            "example": 112
+          }
+        }
+      },
+      "VehicleResponse": {
+        "type": "object",
+        "properties": {
+          "vehicle_id": {
+            "type": "string",
+            "description": "The UUID of the vehicle",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "manufacturer": {
+            "type": "string",
+            "description": "The vehicle brand name",
+            "example": "Porsche"
+          },
+          "model": {
+            "type": "string",
+            "description": "The model name",
+            "example": "Taycan"
+          },
+          "vehicle_variant": {
+            "type": "string",
+            "description": "The model variant",
+            "example": "Turbo"
+          }
+        }
+      },
+      "VehicleDetailedResponse": {
+        "required": [
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "Vehicle UUID",
+            "example": "67e7dfdf-3757-4479-a905-3bbacb75490a"
+          },
+          "brand_name": {
+            "type": "string",
+            "description": "Vehicle brand name",
+            "example": "Mercedes"
+          },
+          "brand_uuid": {
+            "type": "string",
+            "description": "Vehicle brand uuid. Used to fetch brand image",
+            "example": "67e7dfdf-3757-4479-a905-3bbacb75490a"
+          },
+          "model": {
+            "type": "string",
+            "description": "Vehicle model",
+            "example": "AMG"
+          },
+          "variant": {
+            "type": "string",
+            "description": "Vehicle variant",
+            "example": "GT"
+          },
+          "vehicle_region": {
+            "type": "string",
+            "description": "Vehicle region",
+            "example": "EU"
+          },
+          "vehicle_class": {
+            "type": "string",
+            "description": "Vehicle class",
+            "example": "PV"
+          },
+          "electric_vehicle_data": {
+            "$ref": "#/components/schemas/ElectricVehicleData"
+          },
+          "combustion_engine_vehicle_data": {
+            "$ref": "#/components/schemas/CombustionEngineVehicleData"
+          },
+          "consumption_city_cold": {
+            "type": "number",
+            "description": "Consumption in city driving conditions in cold weather",
+            "example": 13.03
+          },
+          "consumption_city_mild": {
+            "type": "number",
+            "description": "Consumption in city driving conditions in mild weather",
+            "example": 10.08
+          },
+          "consumption_highway_cold": {
+            "type": "number",
+            "description": "Consumption in highway driving conditions in cold weather",
+            "example": 18.6
+          },
+          "consumption_highway_mild": {
+            "type": "number",
+            "description": "Consumption in highway driving conditions in mild weather",
+            "example": 17.49
+          },
+          "vehicle_weight_empty": {
+            "type": "number",
+            "description": "Weight of an empty vehicle",
+            "format": "double",
+            "example": 1760
+          },
+          "efficiency_factor_uphill": {
+            "type": "number",
+            "description": "Efficiency factor during uphill ascent",
+            "format": "double",
+            "example": 1.1
+          },
+          "efficiency_factor_downhill": {
+            "type": "number",
+            "description": "Efficiency factor during downhill descent",
+            "format": "double",
+            "example": 0.9
+          },
+          "has_variant_image": {
+            "type": "boolean",
+            "description": "Defines if a vehicle has a variant image",
+            "example": true
+          },
+          "co2_savings": {
+            "type": "number",
+            "description": "CO2 savings in grams per km",
+            "format": "double",
+            "example": 250.2
+          },
+          "height": {
+            "type": "number",
+            "description": "Vehicle height",
+            "format": "double",
+            "example": 2.3
+          },
+          "width": {
+            "type": "number",
+            "description": "Vehicle width",
+            "format": "double",
+            "example": 2.1
+          },
+          "length": {
+            "type": "number",
+            "description": "Vehicle length",
+            "format": "double",
+            "example": 9
+          },
+          "max_gross_weight": {
+            "type": "number",
+            "description": "Vehicle maximum gross weight",
+            "format": "double",
+            "example": 2000
+          },
+          "max_loading_volume": {
+            "type": "number",
+            "description": "Vehicle maximum loading volume",
+            "format": "double",
+            "example": 3.14
+          },
+          "max_loading_height": {
+            "type": "number",
+            "description": "Vehicle maximum loading height",
+            "format": "double",
+            "example": 1.8
+          },
+          "max_loading_width": {
+            "type": "number",
+            "description": "Vehicle maximum loading width",
+            "format": "double",
+            "example": 2.46
+          },
+          "max_loading_length": {
+            "type": "number",
+            "description": "Vehicle maximum loading length",
+            "format": "double",
+            "example": 2.6
+          }
+        },
+        "description": "Defines the core information of a vehicle."
+      },
+      "VehicleChargingCurveResponse": {
+        "type": "object",
+        "properties": {
+          "state_of_charge": {
+            "type": "integer",
+            "description": "State of charge with values from 1% to 100% in steps of 1%-points",
+            "format": "int32",
+            "example": 53
+          },
+          "charging_power": {
+            "type": "number",
+            "description": "Charging power per 1%-point of the state of charge ",
+            "format": "double",
+            "example": 112
+          },
+          "charging_time": {
+            "type": "number",
+            "description": "Charging time in seconds",
+            "example": 25.67
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "BrandResponse": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "The UUID of the vehicle brand",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "brand_name": {
+            "type": "string",
+            "description": "The vehicle brand name",
+            "example": "Porsche"
+          },
+          "has_brand_image": {
+            "type": "string",
+            "description": "Vehicle has a brand image",
+            "example": "true"
+          }
+        }
+      },
+      "ErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          }
+        }
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "NOT_A_DIRECTORY": {
+        "value": "{\n  \"message\" : \"Not a directory\",\n  \"errorCode\" : \"NOT_A_DIRECTORY\"\n}"
+      },
+      "VEHICLE_IMAGE_DIR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle image directory not found\",\n  \"errorCode\" : \"VEHICLE_IMAGE_DIR_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_STORE_VEHICLE_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to store vehicle image\",\n  \"errorCode\" : \"FAILED_TO_STORE_VEHICLE_IMAGE\"\n}"
+      },
+      "EMPTY_IMAGE": {
+        "value": "{\n  \"message\" : \"Empty image\",\n  \"errorCode\" : \"EMPTY_IMAGE\"\n}"
+      },
+      "CAN_NOT_PROCESS_IMAGE": {
+        "value": "{\n  \"message\" : \"Can't process image\",\n  \"errorCode\" : \"CAN_NOT_PROCESS_IMAGE\"\n}"
+      },
+      "VEHICLE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The requested vehicle entry was not found\",\n  \"errorCode\" : \"VEHICLE_NOT_FOUND\"\n}"
+      },
+      "ELECTRIC_VEHICLE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The requested vehicle entry was not found or the vehicle is not an electric vehicle\",\n  \"errorCode\" : \"ELECTRIC_VEHICLE_NOT_FOUND\"\n}"
+      },
+      "VEHICLE_BRAND_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle brand not found\",\n  \"errorCode\" : \"VEHICLE_BRAND_NOT_FOUND\"\n}"
+      },
+      "CHARGING_CURVE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Charging curve not found\",\n  \"errorCode\" : \"CHARGING_CURVE_NOT_FOUND\"\n}"
+      },
+      "INCORRECT_TENANT_ID": {
+        "value": "{\n  \"message\" : \"Not allowed to add/update/fetch the resource with the provided tenant id\",\n  \"errorCode\" : \"INCORRECT_TENANT_ID\"\n}"
+      },
+      "BRAND_AND_VEHICLE_TENANTS_MISMATCH": {
+        "value": "{\n  \"message\" : \"Vehicle and brand tenant ids don't match\",\n  \"errorCode\" : \"BRAND_AND_VEHICLE_TENANTS_MISMATCH\"\n}"
+      },
+      "IMAGE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Image not found\",\n  \"errorCode\" : \"IMAGE_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_READ_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to read image\",\n  \"errorCode\" : \"FAILED_TO_READ_IMAGE\"\n}"
+      },
+      "INVALID_IMAGE_FILE_TYPE": {
+        "value": "{\n  \"message\" : \"File has an invalid extension\",\n  \"errorCode\" : \"INVALID_IMAGE_FILE_TYPE\"\n}"
+      },
+      "VEHICLE_VARIANT_IMAGE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle doesn't have a variant image\",\n  \"errorCode\" : \"VEHICLE_VARIANT_IMAGE_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_DELETE_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to delete the image\",\n  \"errorCode\" : \"FAILED_TO_DELETE_IMAGE\"\n}"
+      },
+      "UNSUPPORTED_IMAGE_FORMAT": {
+        "value": "{\n  \"message\" : \"Image format is invalid or unsupported\",\n  \"errorCode\" : \"UNSUPPORTED_IMAGE_FORMAT\"\n}"
+      },
+      "IMAGE_FETCHING_ERROR": {
+        "value": "{\n  \"message\" : \"Error occured during fetching the image\",\n  \"errorCode\" : \"IMAGE_FETCHING_ERROR\"\n}"
+      },
+      "INVALID_CUSTOMER_KEY": {
+        "value": "{\n  \"message\" : \"Invalid customer key\",\n  \"errorCode\" : \"INVALID_CUSTOMER_KEY\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "Fleet Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "Fleet Vehicle Core",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
