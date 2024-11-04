@@ -33,6 +33,18 @@
     {
       "name": "CPO Services",
       "url": "api-reference/CPO_Services"
+    },
+    {
+      "name": "Broker Services",
+      "url": "api-reference/Broker_Services"
+    },
+    {
+      "name": "MSP Services",
+      "url": "api-reference/MSP_Services"
+    },
+    {
+      "name": "Other Services",
+      "url": "api-reference/Other_Services"
     }
   ],
   "anchors": [
@@ -168,6 +180,18 @@
     {
       "group": "...",
       "pages": ["api-reference/CPO_Services/coming_soon"]
+    },
+    {
+      "group": "...",
+      "pages": ["api-reference/Broker_Services/coming_soon"]
+    },
+    {
+      "group": "...",
+      "pages": ["api-reference/MSP_Services/coming_soon"]
+    },
+    {
+      "group": "...",
+      "pages": ["api-reference/Other_Services/coming_soon"]
     }
   ],
   "footerSocials": {
