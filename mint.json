@@ -128,6 +128,65 @@
             ]
         }
       ]
+    },
+    {
+      "group": "Fleet Route",
+      "pages": [
+        {
+    "group": "Fleet Tours",
+    "pages": [
+      "fleet-tours/get-fleet-tour-by-uid",
+      "fleet-tours/update-an-existing-fleet-tour",
+      "fleet-tours/delete-a-fleet-tour",
+      "fleet-tours/patch-an-existing-fleet-tour",
+      "fleet-tours/get-all-fleet-tours",
+      "fleet-tours/create-multiple-fleet-tours",
+      "fleet-tours/get-all-fleet-tour-jobs-based-on-the-provided-tour-uid",
+      "fleet-tours/get-fleet-tours-by-list-of-uids",
+      "fleet-tours/get-fleet-tours-based-on-criteria-filters",
+      "fleet-tours/get-fleet-tours-by-list-of-vehicle-identification-numbers-vins"
+    ]
+  },
+  {
+    "group": "Tour optimization",
+    "pages": [
+      "tour-optimization/optimizes-an-existing-fleet-route",
+      "tour-optimization/optimizes-an-existing-fleet-tour-using-a-specific-job-precedence-sequence",
+      "tour-optimization/creates-optimized-fleet-routes",
+      "tour-optimization/create-a-new-optimized-fleet-tour-using-a-specific-job-precedence-sequence",
+      "tour-optimization/fetch-the-default-process-time-when-the-location-does-not-have-a-process-time"
+    ]
+  },
+  {
+    "group": "Fleet Jobs",
+    "pages": [
+      "fleet-jobs/get-fleet-job-by-uid",
+      "fleet-jobs/update-fleet-job",
+      "fleet-jobs/delete-a-fleet-job",
+      "fleet-jobs/patch-fleet-job",
+      "fleet-jobs/get-all-fleet-jobs",
+      "fleet-jobs/create-fleet-job",
+      "fleet-jobs/get-fleet-jobs-by-list-of-uids",
+      "fleet-jobs/get-fleet-tour-by-fleet-job-uid",
+      "fleet-jobs/get-fleet-jobs-based-on-criteria-filters",
+      "fleet-jobs/get-fleet-jobs-by-origin-and-destination-location-uids"
+    ]
+  },
+  {
+    "group": "Fleet Job Types",
+    "pages": [
+      "fleet-job-types/get-all-fleet-job-types",
+      "fleet-job-types/create-fleet-job-type",
+      "fleet-job-types/delete-a-fleet-job-type"
+    ]
+  },
+  {
+    "group": "Fleet Job Snapshots",
+    "pages": [
+      "fleet-job-snapshots/patch-fleet-job-snapshot"
+    ]
+  }
+      ]
     }
   ],
   "footerSocials": {
