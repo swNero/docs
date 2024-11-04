@@ -124,7 +124,7 @@
         {
           "group": "Weather Forecast",
             "pages": [
-             "weather-forecast/retrieve-weather-data"
+             "api-reference/Fleet_Services/Fleet_Weather/weather-forecast/retrieve-weather-data"
             ]
         }
       ]
