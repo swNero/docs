@@ -77,7 +77,7 @@
     {
     "group": "Vehicles",
     "pages": [
-      "vehicles/get-the-details-for-the-specified-vehicle-from-the-vehicle-db",
+      "Fleet_Services/vehicles/get-the-details-for-the-specified-vehicle-from-the-vehicle-db",
       "vehicles/update-an-existing-vehicle",
       "vehicles/delete-an-existing-vehicle",
       "vehicles/get-vehicle-image",
