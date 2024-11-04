@@ -75,20 +75,44 @@
       ]
     },
     {
-      "group": "Vehicles",
-      "pages": [
-        "api-reference/Fleet_Services/vehicles/get-the-details-for-the-specified-vehicle-from-the-vehicle-db",
-        "api-reference/Fleet_Services/vehicles/update-an-existing-vehicle",
-        "api-reference/Fleet_Services/vehicles/delete-an-existing-vehicle",
-        "api-reference/Fleet_Services/vehicles/get-vehicle-image",
-        "api-reference/Fleet_Services/vehicles/addupdate-the-vehicle-image",
-        "api-reference/Fleet_Services/vehicles/delete-vehicle-image",
-        "api-reference/Fleet_Services/vehicles/get-all-vehicles-from-the-vehicle-db",
-        "api-reference/Fleet_Services/vehicles/add-a-new-vehicle-to-the-db",
-        "api-reference/Fleet_Services/vehicles/get-vehicle-charging-curve-by-vehicle-uuid",
-        "api-reference/Fleet_Services/vehicles/get-the-details-for-the-specified-vehicle-uuids-from-the-vehicle-db"
-      ]
-    }
+    "group": "Vehicles",
+    "pages": [
+      "api-reference/Fleet_Services/vehicles/get-the-details-for-the-specified-vehicle-from-the-vehicle-db",
+      "api-reference/vehicles/update-an-existing-vehicle",
+      "api-reference/vehicles/delete-an-existing-vehicle",
+      "api-reference/vehicles/get-vehicle-image",
+      "api-reference/vehicles/addupdate-the-vehicle-image",
+      "api-reference/vehicles/delete-vehicle-image",
+      "api-reference/vehicles/get-all-vehicles-from-the-vehicle-db",
+      "api-reference/vehicles/add-a-new-vehicle-to-the-db",
+      "api-reference/vehicles/get-vehicle-charging-curve-by-vehicle-uuid",
+      "api-reference/vehicles/get-the-details-for-the-specified-vehicle-uuids-from-the-vehicle-db"
+    ]
+  },
+  {
+    "group": "Vehicle Brand",
+    "pages": [
+      "vehicle-brand/get-the-details-for-the-specified-vehicle-brand-from-the-db",
+      "vehicle-brand/update-an-existing-vehicle-brand",
+      "vehicle-brand/delete-an-existing-vehicle-brand",
+      "vehicle-brand/get-vehicle-brand-image",
+      "vehicle-brand/addupdate-the-vehicle-brand-image",
+      "vehicle-brand/delete-vehicle-brand-image",
+      "vehicle-brand/get-all-vehicle-brands-from-the-db",
+      "vehicle-brand/add-new-vehicle-brand"
+    ]
+  },
+  {
+    "group": "Charging curves",
+    "pages": [
+      "charging-curves/get-the-details-for-the-specified-charging-curve",
+      "charging-curves/update-an-existing-charging-curve",
+      "charging-curves/delete-an-existing-charging-curve",
+      "charging-curves/get-all-charging-curves",
+      "charging-curves/add-a-new-charging-curve",
+      "charging-curves/get-all-charging-curves-for-a-specific-vehicle"
+    ]
+  }
   ],
   "footerSocials": {
     "x": "https://x.com/mintlify",
