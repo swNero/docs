@@ -1,0 +1,500 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "weather-service",
+    "description": "A service utilized for obtaining weather forecast information",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-tst.is.energystacks.io/weather/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/weather": {
+      "get": {
+        "tags": [
+          "Weather Forecast"
+        ],
+        "summary": "Retrieve weather data.",
+        "description": "Retrieve weekly forecast weather data.",
+        "operationId": "getWeatherForecastWithinRadius",
+        "parameters": [
+          {
+            "name": "latitude",
+            "in": "query",
+            "description": "Latitude",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "description": "Longitude",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "radius",
+            "in": "query",
+            "description": "Radius in meters.",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "numberOfDays",
+            "in": "query",
+            "description": "Number of the weather forecast days",
+            "required": true,
+            "schema": {
+              "maximum": 16,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherForecastResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "OpenWeatherMap API does not respond.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "WEATHER_API_NOT_RESPOND": {
+                    "description": "WEATHER_API_NOT_RESPOND",
+                    "$ref": "#/components/examples/WEATHER_API_NOT_RESPOND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "City": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "City id.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "City name."
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/Coordinate"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country code."
+          },
+          "population": {
+            "type": "integer",
+            "description": "City population.",
+            "format": "int32"
+          },
+          "timezone": {
+            "type": "integer",
+            "description": "Timezone.",
+            "format": "int32"
+          }
+        },
+        "description": "A number of days returned in the API response."
+      },
+      "Coordinate": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "description": "Geo location, latitude.",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Geo location, longitude.",
+            "format": "double"
+          }
+        },
+        "description": "Coordinate."
+      },
+      "DailyWeatherResponse": {
+        "type": "object",
+        "properties": {
+          "forecastDay": {
+            "type": "string",
+            "description": "Time of data forecasted.",
+            "format": "date-time"
+          },
+          "sunrise": {
+            "type": "string",
+            "description": "Time of sunrise.",
+            "format": "date-time"
+          },
+          "sunset": {
+            "type": "string",
+            "description": "Time of sunset.",
+            "format": "date-time"
+          },
+          "temperature": {
+            "$ref": "#/components/schemas/Temperature"
+          },
+          "feelsLike": {
+            "$ref": "#/components/schemas/Temperature"
+          },
+          "pressure": {
+            "type": "integer",
+            "description": "Atmospheric pressure on the sea level, hPa.",
+            "format": "int32"
+          },
+          "humidity": {
+            "type": "integer",
+            "description": "Humidity, %.",
+            "format": "int32"
+          },
+          "weatherCondition": {
+            "type": "array",
+            "description": "Weather conditions.",
+            "items": {
+              "$ref": "#/components/schemas/WeatherCondition"
+            }
+          },
+          "speed": {
+            "type": "number",
+            "description": "Maximum wind speed for the day. Metric: meter/sec.",
+            "format": "double"
+          },
+          "windDirection": {
+            "type": "integer",
+            "description": "Wind direction relevant to the maximum wind speed, degrees (meteorological).",
+            "format": "int32"
+          },
+          "windGust": {
+            "type": "number",
+            "description": "Wind gust. Metric: meter/sec.",
+            "format": "double"
+          },
+          "clouds": {
+            "type": "integer",
+            "description": "Cloudiness, %.",
+            "format": "int32"
+          },
+          "rain": {
+            "type": "number",
+            "description": "Precipitation volume, mm. Please note that only mm as units of measurement are available for this parameter",
+            "format": "double"
+          },
+          "snow": {
+            "type": "number",
+            "description": "Snow volume, mm. Please note that only mm as units of measurement are available for this parameter.",
+            "format": "double"
+          },
+          "changeOfRain": {
+            "type": "number",
+            "description": "Probability of precipitation. The values of the parameter vary between 0 and 1, where 0 is equal to 0%, 1 is equal to 100%.",
+            "format": "double"
+          }
+        },
+        "description": "Weather data list."
+      },
+      "Temperature": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "number",
+            "description": "Daily averaged temperature. Temperature at 12:00 local time. Metric: Celsius.",
+            "format": "double"
+          },
+          "min": {
+            "type": "number",
+            "description": "Min daily temperature. Metric: Celsius.",
+            "format": "double"
+          },
+          "max": {
+            "type": "number",
+            "description": "Max daily temperature. Metric: Celsius.",
+            "format": "double"
+          },
+          "night": {
+            "type": "number",
+            "description": "Temperature at 00:00 local time. Metric: Celsius.",
+            "format": "double"
+          },
+          "evening": {
+            "type": "number",
+            "description": "Temperature at 18:00 local time. Metric: Celsius.",
+            "format": "double"
+          },
+          "morning": {
+            "type": "number",
+            "description": "Temperature at 06:00 local time. Metric: Celsius.",
+            "format": "double"
+          }
+        }
+      },
+      "WeatherCondition": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Weather condition id.",
+            "format": "int32"
+          },
+          "main": {
+            "type": "string",
+            "description": "Group of weather parameters (Rain, Snow, etc.)."
+          },
+          "description": {
+            "type": "string",
+            "description": "Weather condition within the group."
+          },
+          "icon": {
+            "type": "string",
+            "description": "Weather icon id."
+          }
+        },
+        "description": "Weather conditions."
+      },
+      "WeatherForecastResponse": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "$ref": "#/components/schemas/City"
+          },
+          "numberOfDays": {
+            "type": "integer",
+            "description": "A number of days returned in the API response.",
+            "format": "int32"
+          },
+          "dailyWeatherList": {
+            "type": "array",
+            "description": "Weather data list.",
+            "items": {
+              "$ref": "#/components/schemas/DailyWeatherResponse"
+            }
+          }
+        }
+      },
+      "ErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "WEATHER_API_NOT_RESPOND": {
+        "value": "{\n  \"message\" : \"[WEATHER] Open Weather Map API does not respond.\",\n  \"errorCode\" : \"WEATHER_API_NOT_RESPOND\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "Fleet Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "Fleet Weather",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
