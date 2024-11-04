@@ -117,6 +117,17 @@
           ]
         }
       ]
+    },
+    {
+      "group": "Fleet Weather",
+      "pages": [
+        {
+          "group": "Weather Forecast",
+            "pages": [
+             "weather-forecast/retrieve-weather-data"
+            ]
+        }
+      ]
     }
   ],
   "footerSocials": {
