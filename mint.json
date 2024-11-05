@@ -74,6 +74,7 @@
       ]
     },
     {
+      "group": "Fleet Services",
       "pages": [
         "api-reference/Fleet_Services/introduction"
       ]
