@@ -75,9 +75,7 @@
     },
     {
       "group": "Fleet Services",
-      "pages": [
-        "api-reference/Fleet_Services/introduction"
-      ]
+      "pages": ["api-reference/Fleet_Services/introduction"]
     },
     {
       "group": "Fleet Vehicle Core",
@@ -193,22 +191,47 @@
         }
       ]
     },
+
+    
     {
-      "group": "...",
+      "group": "CPO Services",
+      "pages": ["api-reference/CPO_Services/introduction"]
+    },
+    {
+      "group": "API Docu",
       "pages": ["api-reference/CPO_Services/coming_soon"]
     },
+
+    
     {
-      "group": "...",
+      "group": "Broker Services",
+      "pages": ["api-reference/Broker_Services/introduction"]
+    },
+    {
+      "group": "API Docu",
       "pages": ["api-reference/Broker_Services/coming_soon"]
     },
+
+    
     {
-      "group": "...",
-      "pages": ["api-reference/MSP_Services/coming_soon"]
+      "group": "MSP Services",
+      "pages": ["api-reference/MSP_Services/introduction"]
     },
     {
-      "group": "...",
+      "group": "API Docu",
+      "pages": ["api-reference/MSP_Services/coming_soon"]
+    },
+
+    
+    {
+      "group": "Other Services",
+      "pages": ["api-reference/Other_Services/introduction"]
+    },
+    {
+      "group": "API Docu",
       "pages": ["api-reference/Other_Services/coming_soon"]
-    }
+    },
+
   ],
   "footerSocials": {
     "linkedin": "https://www.linkedin.com/company/p3/"
