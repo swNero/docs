@@ -74,6 +74,11 @@
       ]
     },
     {
+      "pages": [
+        "api-reference/Fleet_Services/introduction"
+      ]
+    },
+    {
       "group": "Fleet Vehicle Core",
       "pages": [
         {
