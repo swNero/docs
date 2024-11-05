@@ -54,7 +54,12 @@
   ],
   "anchors": [
     {
-      "name": "Old Docu",
+      "name": "EnergyStacks Website",
+      "icon": "globe",
+      "url": "https://developer.energystacks.io/"
+    },
+    {
+      "name": "Old API Portal",
       "icon": "book-open-cover",
       "url": "https://developer.energystacks.io/"
     }
