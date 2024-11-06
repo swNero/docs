@@ -2,17 +2,17 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "EnergyStacks",
   "logo": {
-    "light": "/logo/EnergyStacksLogo.png",
-    "dark": "/logo/EnergyStacksLogo.png"
+    "light": "/logo/ERFD.png",
+    "dark": "/logo/ERFD.png"
   },
-  "favicon": "/logo/favicon.png",
+  "favicon": "/logo/ERFD_favicon.png",
   "colors": {
-    "primary": "#69059c",
-    "light": "#d9a2f5",
-    "dark": "#69059c",
+    "primary": "#0040FF",
+    "light": "#CCE6FF",
+    "dark": "#001A66",
     "anchors": {
-      "from": "#69059c",
-      "to": "#d9a2f5"
+      "from": "#001A66",
+      "to": "#CCE6FF"
     }
   },
   "modeToggle": {
