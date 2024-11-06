@@ -3,7 +3,7 @@
   "name": "EnergyStacks",
   "logo": {
     "light": "/logo/ERFD.png",
-    "dark": "/logo/ERFD.png"
+    "dark": "/logo/ERFD_dark.png"
   },
   "favicon": "/logo/ERFD_favicon.png",
   "colors": {
