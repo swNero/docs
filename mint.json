@@ -27,6 +27,7 @@
       "family": "Overpass"
     }
   },
+  "sidebar":{"items"="card"},
 
   "topbarLinks": [
     {
