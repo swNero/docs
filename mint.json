@@ -11,8 +11,8 @@
     "light": "#CCE6FF",
     "dark": "#001A66",
     "anchors": {
-      "from": "#001A66",
-      "to": "#CCE6FF"
+      "from": "#0040FF",
+      "to": "#0040FF"
     }
   },
   "modeToggle": {
