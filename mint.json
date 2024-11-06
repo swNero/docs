@@ -19,6 +19,14 @@
     "default": "light",
     "isHidden": false
   },
+  "font": {
+    "headings": {
+      "family": "Overpass"
+    },
+    "body": {
+      "family": "Overpass"
+    }
+  },
 
   "topbarLinks": [
     {
