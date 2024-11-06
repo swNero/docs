@@ -13,10 +13,6 @@
     "anchors": {
       "from": "#0040FF",
       "to": "#0040FF"
-    },
-    "background":{
-      "light": "#0040FF",
-      "dark": "#001A66"
     }
   },
   "modeToggle": {
