@@ -28,7 +28,6 @@
     }
   },
   "sidebar":{"items": "container"},
-  "rounded": "sharp",
 
   "topbarLinks": [
     {
@@ -38,7 +37,8 @@
   ],
   "topbarCtaButton": {
     "name": "P3 Group",
-    "url": "https://p3-group.com"
+    "url": "https://p3-group.com",
+    "style": "roundedRectrangle"
   },
   "tabs": [
     {
