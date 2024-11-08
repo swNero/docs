@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://<base-url>/fleet-route/v1",
+      "url": "https://BASEURL/fleet-route/v1",
       "description": "Generated server url"
     }
   ],

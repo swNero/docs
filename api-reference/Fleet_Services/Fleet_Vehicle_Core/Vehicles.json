@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://<base-url>/vehicle-core/v1",
+      "url": "https://BASEURL/vehicle-core/v1",
       "description": "Generated server url"
     }
   ],
