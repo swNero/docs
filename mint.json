@@ -226,17 +226,292 @@
       ]
     },
 
+
+
+
     
     {
       "group": "CPO Services",
       "pages": ["api-reference/CPO_Services/introduction"]
     },
     {
-      "group": "API Docu",
-      "pages": ["api-reference/CPO_Services/coming_soon"]
+      "group": "CPO Charging Station Group",
+      "pages": [
+        {
+          "group": "EVSEs",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/get-evse",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/update-evse",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/delete-evse",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/unassigns-evse-connectors-tariff-ids",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/assigns-evse-connectors-tariff-ids",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/get-all-evses",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/add-evse",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/check-if-evse-exists",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/get-evse-1",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/check-if-evse-exists-for-specific-tariff"
+          ]
+        },
+        {
+          "group": "Locations",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/update-location",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/delete-a-location",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/create-location",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/get-all-locations",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/get-locations",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/get-all-locations-by-provider-id",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/get-location-by-location-id-and-provider-id"
+          ]
+        },
+        {
+          "group": "Charging Stations",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-charging-station-by-charging-station-id",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/update-charging-station",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/delete-charging-station",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-charging-station-by-identity-key",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/update-charging-station-by-identity-key",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/delete-charging-station-by-identity-key",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-all-charging-stations-by-provider-id",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/create-charging-station",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-all-charging-stations",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/checks-if-charging-station-exists-by-identity-key",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-all-charging-stations-by-provider-id-for-the-specific-location",
+            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-charging-station-by-identity-key-1"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "CPO Obelis",
+      "pages": [
+        {
+          "group": "Logs",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis/logs/create-log-and-store-it-to-database"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "CPO Pricing",
+      "pages": [
+        {
+          "group": "Raw Reports - Non-Discriminatory access",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--non-discriminatory-access/edit-a-raw-non-discriminatory-access-report",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--non-discriminatory-access/add-new-raw-non-discriminatory-access-report",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--non-discriminatory-access/get-raw-non-discriminatory-access-report-by-month"
+          ]
+        },
+        {
+          "group": "Raw Reports - Hotline Ratings",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--hotline-ratings/edit-existing-raw-hotline-rating-report",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--hotline-ratings/add-new-raw-hotline-rating-report",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--hotline-ratings/get-raw-hotline-rating-report-by-month"
+          ]
+        },
+        {
+          "group": "Raw Reports - Renewal",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--renewal/update-charging-point-raw-renewal-report",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--renewal/add-new-charging-point-raw-renewal-report",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--renewal/get-not-processed-charging-point-renewal-raw-reports-for-charging-station"
+          ]
+        },
+        {
+          "group": "Raw Reports - Ratings",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/edit-existing-charging-point-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/edit-existing-charging-hub-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/add-new-charging-point-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/add-new-charging-hub-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/get-charging-point-raw-rating-report-by-charging-hub-id-and-month",
+            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/get-charging-hub-raw-rating-report-by-charging-hub-uid-and-month"
+          ]
+        },
+        {
+          "group": "Charging Points - Raw Reports - Defects",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-points--raw-reports--defects/edit-existing-raw-charging-point-defects-report",
+            "api-reference/CPO_Services/CPO_Pricing/charging-points--raw-reports--defects/add-new-raw-charging-point-defects-report",
+            "api-reference/CPO_Services/CPO_Pricing/charging-points--raw-reports--defects/get-raw-charging-point-defects"
+          ]
+        },
+        {
+          "group": "Charging Hub - Raw Reports - Facility Damages",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--facility-damages/edit-existing-raw-facility-damages-report",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--facility-damages/get-raw-facility-damages",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--facility-damages/add-new-raw-facility-damages-report",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--facility-damages/get-raw-facility-damages-1"
+          ]
+        },
+        {
+          "group": "Charging Hub - Raw Reports - Ad Hoc Tariff",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--ad-hoc-tariff/edit-existing-raw-ad-hoc-tariff-report",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--ad-hoc-tariff/add-new-raw-ad-hoc-tariff-report",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--ad-hoc-tariff/get-raw-ad-hoc-tariff-by-charging-hub-uid-and-month"
+          ]
+        },
+        {
+          "group": "Processed Reports - Non-Discriminatory access",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--non-discriminatory-access/get-processed-non-discriminatory-access-report-by-uid",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--non-discriminatory-access/edit-a-processed-non-discriminatory-access-report",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--non-discriminatory-access/add-new-processed-non-discriminatory-access-report"
+          ]
+        },
+        {
+          "group": "Processed Reports - Hotline Ratings",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--hotline-ratings/get-processed-hotline-rating-report-by-uid",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--hotline-ratings/edit-existing-processed-hotline-rating-report",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--hotline-ratings/add-new-processed-hotline-rating-report"
+          ]
+        },
+        {
+          "group": "Processed Reports - Renewal",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--renewal/get-charging-point-processed-renewal-report",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--renewal/edit-charging-point-processed-renewal-report",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--renewal/add-new-charging-point-processed-renewal-report"
+          ]
+        },
+        {
+          "group": "Processed Reports - Rating",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/get-charging-point-processed-rating-report-by-uid",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/edit-existing-charging-point-processed-rating-report",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/get-processed-rating-report-by-charging-hub-id-and-month",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/edit-existing-processed-rating-report",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/add-new-processed-rating-report",
+            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/add-new-processed-rating-report-1"
+          ]
+        },
+        {
+          "group": "Charging stations - Processed Reports - Charging Points Defects",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-stations--processed-reports--charging-points-defects/get-processed-charging-point-defects-by-uid",
+            "api-reference/CPO_Services/CPO_Pricing/charging-stations--processed-reports--charging-points-defects/edit-existing-processed-charging-point-defects-report",
+            "api-reference/CPO_Services/CPO_Pricing/charging-stations--processed-reports--charging-points-defects/add-new-processed-charging-point-defects-report"
+          ]
+        },
+        {
+          "group": "Charging Hub Processed Reports - Facility Damages",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--facility-damages/get-processed-facility-damages-by-uid",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--facility-damages/edit-existing-processed-facility-damages-report",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--facility-damages/add-new-processed-facility-damages-report"
+          ]
+        },
+        {
+          "group": "Charging Hub Processed Reports - Ad Hoc Tariff",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--ad-hoc-tariff/get-processed-ad-hoc-tariff-by-charging-hub-id-and-month",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--ad-hoc-tariff/edit-existing-processed-ad-hoc-tariff-report",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--ad-hoc-tariff/add-new-processed-ad-hoc-tariff-report"
+          ]
+        },
+        {
+          "group": "Charging Station",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-station/get-charging-station",
+            "api-reference/CPO_Services/CPO_Pricing/charging-station/edit-a-charging-station",
+            "api-reference/CPO_Services/CPO_Pricing/charging-station/delete-charging-station",
+            "api-reference/CPO_Services/CPO_Pricing/charging-station/add-new-charging-station",
+            "api-reference/CPO_Services/CPO_Pricing/charging-station/get-charging-stations-paginated-based-on-criteria-filters"
+          ]
+        },
+        {
+          "group": "Charging Point",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-point/edit-a-charging-point",
+            "api-reference/CPO_Services/CPO_Pricing/charging-point/delete-charging-station-charging-point",
+            "api-reference/CPO_Services/CPO_Pricing/charging-point/create-a-charging-point"
+          ]
+        },
+        {
+          "group": "Charging session",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-session/update-existing-charging-session",
+            "api-reference/CPO_Services/CPO_Pricing/charging-session/add-new-charging-session",
+            "api-reference/CPO_Services/CPO_Pricing/charging-session/get-charging-sessions-paginated-based-on-criteria-filters"
+          ]
+        },
+        {
+          "group": "Charging Hub",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub/retrieve-charging-hub-information-by-id",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub/edit-a-charging-hub",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub/delete-a-charging-hub",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub/add-new-charging-hub",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub/get-paginated-charging-stations-associated-to-a-specific-charginghub",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub/get-charging-hubs-paginated-based-on-criteria-filters",
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub/get-charging-hubs-overview"
+          ]
+        },
+        {
+          "group": "Global Processed Reports",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/global-processed-reports/fetch-global-processed-reports-by-month"
+          ]
+        },
+        {
+          "group": "Charging Station Reports",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-station-reports/fetch-processed-reports-by-month"
+          ]
+        },
+        {
+          "group": "Charging Hub Reports",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Pricing/charging-hub-reports/fetch-processed-reports-by-month"
+          ]
+        }
+      ]      
+    },
+    {
+      "group": "CPO Tariff",
+      "pages": [
+        {
+          "group": "Pricing",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Tariff/pricing/get-price",
+            "api-reference/CPO_Services/CPO_Tariff/pricing/get-price-for-tariff-with-element-restrictions"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "CPO Token",
+      "pages": [
+        {
+          "group": "Token",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Token/token/get-a-mobility-token",
+            "api-reference/CPO_Services/CPO_Token/token/update-a-mobility-token",
+            "api-reference/CPO_Services/CPO_Token/token/delete-a-mobility-token",
+            "api-reference/CPO_Services/CPO_Token/token/get-a-mobility-token-1",
+            "api-reference/CPO_Services/CPO_Token/token/update-a-mobility-token-1",
+            "api-reference/CPO_Services/CPO_Token/token/delete-a-mobility-token-1",
+            "api-reference/CPO_Services/CPO_Token/token/get-all-mobility-tokens-known-in-csms",
+            "api-reference/CPO_Services/CPO_Token/token/create-a-mobility-token",
+            "api-reference/CPO_Services/CPO_Token/token/authorize-mobility-token",
+            "api-reference/CPO_Services/CPO_Token/token/get-all-mobility-tokens-known-in-csms-with-filters-and-pagination",
+            "api-reference/CPO_Services/CPO_Token/token/get-all-mobility-tokens"
+          ]
+        }
+      ]
     },
 
     
+
+
+
     {
       "group": "Broker Services",
       "pages": ["api-reference/Broker_Services/introduction"]

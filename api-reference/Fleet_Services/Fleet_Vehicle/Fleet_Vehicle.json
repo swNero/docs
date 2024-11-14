@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.fleet.energystacks.io/fleet-vehicle/v1",
+      "url": "https://baseurl/fleet-vehicle/v1",
       "description": "Generated server url"
     }
   ],

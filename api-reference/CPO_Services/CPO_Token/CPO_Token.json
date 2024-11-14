@@ -1,0 +1,1062 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "token-service",
+    "description": "A service used for storing and manipulating with mobility tokens according to OCPI and OCPP specification",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/token/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Token",
+      "description": "Mobility token provided by the Central System to the Charging Station for the purpose of identifying the initiator of charging activity"
+    }
+  ],
+  "paths": {
+    "/tokens/{uid}": {
+      "get": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Get a mobility token",
+        "description": "Returns a mobility token with the specific uid.",
+        "operationId": "getTokenByUid",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Mobility token not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Update a mobility token",
+        "description": "Update an existing mobility token.",
+        "operationId": "updateToken",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Expiry date exceeded max value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Mobility token not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Delete a mobility token",
+        "description": "Delete an existing mobility token.",
+        "operationId": "deleteToken",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Mobility token not found"
+          },
+          "409": {
+            "description": "Mobility token is softly deleted"
+          }
+        }
+      }
+    },
+    "/tokens/{uid}/{providerId}": {
+      "get": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Get a mobility token",
+        "description": "Returns a mobility token with the specific uid, filtering by Provider Id.",
+        "operationId": "getTokenByUidAndProviderId",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Mobility token not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Update a mobility token",
+        "description": "Update an existing mobility token of a specific Provider",
+        "operationId": "updateToken_1",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Expiry date exceeded max value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Mobility token not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Delete a mobility token",
+        "description": "Delete an existing mobility token of a specific Provider.",
+        "operationId": "deleteToken_1",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Mobility token not found"
+          }
+        }
+      }
+    },
+    "/tokens": {
+      "get": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Get all mobility tokens known in CSMS",
+        "description": "Returns a list of all mobility tokens known in CSMS",
+        "operationId": "getAllTokens",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Create a mobility token",
+        "description": "Create a new mobility token for a specific Provider.",
+        "operationId": "createToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Expiry date exceeded max value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict - Token already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tokens/{uid}/authorize": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Authorize mobility token",
+        "description": "Returns the AuthorizationInfo for the provided mobility token with the specific uid and type",
+        "operationId": "authorize",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Mobility token not found"
+          }
+        }
+      }
+    },
+    "/tokens/paginated": {
+      "get": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Get all mobility tokens known in CSMS with filters and pagination.",
+        "description": "Returns all mobility tokens known in CSMS with filters and pagination.",
+        "operationId": "getAllTokensPaginated",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "countryCode",
+            "in": "query",
+            "description": "ISO-3166 alpha-2 country code of the CPO that 'owns' this Token.",
+            "required": false,
+            "schema": {
+              "maxLength": 2,
+              "minLength": 0,
+              "type": "string",
+              "description": "ISO-3166 alpha-2 country code of the CPO that 'owns' this Token.",
+              "example": "DE"
+            },
+            "example": "DE"
+          },
+          {
+            "name": "partyId",
+            "in": "query",
+            "description": "CPO ID of the CPO that 'owns' this Token (following the ISO-15118 standard).",
+            "required": false,
+            "schema": {
+              "maxLength": 3,
+              "minLength": 0,
+              "type": "string",
+              "description": "CPO ID of the CPO that 'owns' this Token (following the ISO-15118 standard).",
+              "example": "BEC"
+            },
+            "example": "BEC"
+          },
+          {
+            "name": "tokenIds",
+            "in": "query",
+            "description": "List of token ids.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "List of token ids."
+            }
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "description": "The time when token becomes active",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The time when token becomes active",
+              "example": "2024-06-30T23:59:59"
+            },
+            "example": "2024-06-30T23:59:59"
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "description": "The time after which token is no longer valid",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The time after which token is no longer valid",
+              "example": "2024-06-30T23:59:59"
+            },
+            "example": "2024-06-30T23:59:59"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Token"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tokens/by-provider/{providerId}": {
+      "get": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Get all mobility tokens",
+        "description": "Returns a list of all mobility tokens, filtering by Provider Id.",
+        "operationId": "getAllTokensByProviderId",
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EnergyContract": {
+        "required": [
+          "contract_id",
+          "supplier_name"
+        ],
+        "type": "object",
+        "properties": {
+          "supplier_name": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Name of the energy supplier for this token."
+          },
+          "contract_id": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Contract ID at the energy supplier, that belongs to the owner of this token."
+          }
+        },
+        "description": "When the Charge Point supports using your own energy supplier/contract at a\nCharge Point, information about the energy supplier/contract is needed so the\nCPO knows which energy supplier to use.\nNOTE: In a lot of countries it is currently not allowed/possible to use a drivers\nown energy supplier/contract at a Charge Point."
+      },
+      "Token": {
+        "required": [
+          "contract_id",
+          "country_code",
+          "issuer",
+          "last_updated",
+          "party_id",
+          "type",
+          "uid",
+          "valid",
+          "whitelist"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "    The type of token\n    * <p>\n    * NOTE: The eMSP is RECOMMENDED to push Tokens with type: AD_HOC_USER or APP_USER with whitelist set to\n    * NEVER. Whitelists are very useful for RFID type Tokens, but the AD_HOC_USER/APP_USER Tokens are used to\n    * start Sessions from an App etc. so whitelisting them has no advantages.\n    * </p>\n",
+            "example": "RFID",
+            "enum": [
+              "AD_HOC_USER",
+              "APP_USER",
+              "OTHER",
+              "RFID"
+            ]
+          },
+          "issuer": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Issuing company, most of the times the name of the company printed on the token (RFID card), not necessarily the eMSP.",
+            "example": "ACME Inc."
+          },
+          "whitelist": {
+            "type": "string",
+            "description": "Indicates what type of white-listing is allowed.",
+            "example": "ALLOWED",
+            "enum": [
+              "ALWAYS",
+              "ALLOWED",
+              "ALLOWED_OFFLINE",
+              "NEVER"
+            ]
+          },
+          "language": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Language Code ISO 639-1. This optional field indicates the Token owner’s  preferred interface language.\nIf the language is not provided or not supported then the CPO is free to choose its own language.",
+            "example": "DE"
+          },
+          "uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique ID by which this Token can be identified.\nThis is the field used by CPO system (RFID reader on the Charge Point) to identify this token.\nCurrently, in most cases: type=RFID, this is the RFID hidden ID as read by the RFID reader, but that is not a requirement.\nIf this is a APP_USER or AD_HOC_USER Token, it will be a uniquely, by the eMSP, generated ID.\nThis field is named uid instead of id to prevent confusion with: contract_id.",
+            "example": "123456789"
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the MSP that 'owns' this Token.",
+            "example": "DE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the MSP that 'owns' this Token (following the ISO-15118 standard).",
+            "example": "ERG"
+          },
+          "contract_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the EV Driver contract token within the eMSP’s platform (and suboperator platforms). Recommended to follow the specification for eMA ID from \"eMI3 standard version V1.0\" (http://emi3group.com/documents-links/)  \"Part 2: business objects.\"\n",
+            "example": "DE8ACC12E46L89"
+          },
+          "visual_number": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Visual readable number/identification as printed on the Token (RFID card), might be equal to the contract_id.",
+            "example": "DF000-2001-8999-1"
+          },
+          "group_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "This ID groups a couple of tokens. This can be used to make two or more tokens work as one, so that a session can be started with one token and stopped with another, handy when a card and key-fob are given to the EV-driver.\n Beware that OCPP 1.5/1.6 only support group_ids (it is called parentId in OCPP 1.5/1.6) with a maximum length of 20.",
+            "example": "DF000-2001-8999"
+          },
+          "valid": {
+            "type": "boolean",
+            "description": "Is this Token valid"
+          },
+          "default_profile_type": {
+            "type": "string",
+            "description": "The default Charging Preference. When this is provided, and a charging session\nis started on an Charge Point that support Preference base Smart Charging and\nsupport this ProfileType, the Charge Point can start using this ProfileType,\nwithout this having to be set via: Set Charging Preferences.",
+            "enum": [
+              "CHEAP",
+              "FAST",
+              "GREEN",
+              "REGULAR"
+            ]
+          },
+          "energy_contract": {
+            "$ref": "#/components/schemas/EnergyContract"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this Token was last updated (or created).",
+            "format": "date-time"
+          },
+          "expiry_date": {
+            "type": "string",
+            "description": "Timestamp when this Token expires in charging station's local authorization cache.",
+            "format": "date-time"
+          }
+        }
+      },
+      "TokenUpdateRequest": {
+        "required": [
+          "country_code",
+          "issuer",
+          "party_id",
+          "valid",
+          "whitelist"
+        ],
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Issuing company, most of the times the name of the company printed on the token (RFID card), not necessarily the eMSP.",
+            "example": "ACME Inc."
+          },
+          "whitelist": {
+            "type": "string",
+            "description": "Indicates what type of white-listing is allowed.",
+            "example": "ALLOWED",
+            "enum": [
+              "ALWAYS",
+              "ALLOWED",
+              "ALLOWED_OFFLINE",
+              "NEVER"
+            ]
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the MSP that 'owns' this Token.",
+            "example": "DE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the MSP that 'owns' this Token (following the ISO-15118 standard).",
+            "example": "ERG"
+          },
+          "visual_number": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Visual readable number/identification as printed on the Token (RFID card), might be equal to the contract_id.",
+            "example": "DF000-2001-8999-1"
+          },
+          "group_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "This ID groups a couple of tokens. This can be used to make two or more tokens work as one, so that a session can be started with one token and stopped with another, handy when a card and key-fob are given to the EV-driver. Beware that OCPP 1.5/1.6 only support group_ids (it is called parentId in OCPP 1.5/1.6) with a maximum length of 20.",
+            "example": "DF000-2001-8999"
+          },
+          "valid": {
+            "type": "boolean",
+            "description": "Is this Token valid"
+          },
+          "expiry_date": {
+            "type": "string",
+            "description": "Timestamp when Token expires in Charging Station local authorization cache.",
+            "format": "date-time"
+          }
+        }
+      },
+      "TokenCreateRequest": {
+        "required": [
+          "country_code",
+          "issuer",
+          "party_id",
+          "type",
+          "uid",
+          "valid",
+          "whitelist"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "    The type of token\n    * <p>\n    * NOTE: The eMSP is RECOMMENDED to push Tokens with type: AD_HOC_USER or APP_USER with whitelist set to\n    * NEVER. Whitelists are very useful for RFID type Tokens, but the AD_HOC_USER/APP_USER Tokens are used to\n    * start Sessions from an App etc. so whitelisting them has no advantages.\n    * </p>\n",
+            "example": "RFID",
+            "enum": [
+              "AD_HOC_USER",
+              "APP_USER",
+              "OTHER",
+              "RFID"
+            ]
+          },
+          "issuer": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Issuing company, most of the times the name of the company printed on the token (RFID card), not necessarily the eMSP.",
+            "example": "TheNewMotion"
+          },
+          "whitelist": {
+            "type": "string",
+            "description": "Indicates what type of white-listing is allowed.",
+            "example": "ALLOWED",
+            "enum": [
+              "ALWAYS",
+              "ALLOWED",
+              "ALLOWED_OFFLINE",
+              "NEVER"
+            ]
+          },
+          "uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "pattern": "([A-Za-z0-9\\-\\_]+)",
+            "type": "string",
+            "description": "Unique ID by which this Token can be identified. This is the field used by CPO system (RFID reader on the Charge Point) to identify this token. Currently, in most cases: type=RFID, this is the RFID hidden ID as read by the RFID reader, but that is not a requirement. If this is a APP_USER or AD_HOC_USER Token, it will be a uniquely, by the eMSP, generated ID. This field is named uid instead of id to prevent confusion with: contract_id.",
+            "example": "08a8c5d2f13b9100"
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the MSP that 'owns' this Token.",
+            "example": "DE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the MSP that 'owns' this Token (following the ISO-15118 standard).",
+            "example": "ERG"
+          },
+          "visual_number": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Visual readable number/identification as printed on the Token (RFID card), might be equal to the contract_id.",
+            "example": "DF000-2001-8999-1"
+          },
+          "group_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "This ID groups a couple of tokens. This can be used to make two or more tokens work as one, so that a session can be started with one token and stopped with another, handy when a card and key-fob are given to the EV-driver. Beware that OCPP 1.5/1.6 only support group_ids (it is called parentId in OCPP 1.5/1.6) with a maximum length of 20.",
+            "example": "DF000-2001-8999"
+          },
+          "valid": {
+            "type": "boolean",
+            "description": "Is this Token valid"
+          },
+          "expiry_date": {
+            "type": "string",
+            "description": "Timestamp when Token expires in Charging Station local authorization cache.",
+            "format": "date-time"
+          }
+        }
+      },
+      "AuthorizationInfo": {
+        "required": [
+          "allowed",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "allowed": {
+            "type": "string",
+            "description": "Status of the Token, and whether charging is allowed at the optionally given location.",
+            "enum": [
+              "ALLOWED",
+              "BLOCKED",
+              "EXPIRED",
+              "NO_CREDIT",
+              "NOT_ALLOWED"
+            ]
+          },
+          "token": {
+            "$ref": "#/components/schemas/Token"
+          },
+          "location": {
+            "$ref": "#/components/schemas/LocationReferences"
+          },
+          "info": {
+            "$ref": "#/components/schemas/DisplayText"
+          },
+          "authorization_reference": {
+            "type": "string",
+            "description": "Reference to the authorization given by the eMSP, when given, this\nreference will be provided in the relevant Session and/or CDR."
+          }
+        }
+      },
+      "DisplayText": {
+        "required": [
+          "language",
+          "text"
+        ],
+        "type": "object",
+        "properties": {
+          "language": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Language Code ISO 639-1.",
+            "example": "en"
+          },
+          "text": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "description": "Text to be displayed to a end user. No markup, html etc. allowed.",
+            "example": "this is a display text"
+          }
+        },
+        "description": "Optional display text, additional information to the EV driver."
+      },
+      "LocationReferences": {
+        "required": [
+          "location_id"
+        ],
+        "type": "object",
+        "properties": {
+          "location_id": {
+            "maxLength": 36,
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for the location."
+          },
+          "evse_uids": {
+            "type": "array",
+            "description": "Unique identifiers for EVSEs within the CPO’s platform for the EVSE within the given location.",
+            "items": {
+              "type": "string",
+              "description": "Unique identifiers for EVSEs within the CPO’s platform for the EVSE within the given location."
+            }
+          }
+        },
+        "description": "Optional reference to the location if it was included in the request, and if\nthe EV driver is allowed to charge at that location. Only the EVSEs the\nEV driver is allowed to charge at are returned."
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "EXPIRY_DATE_MAX_VALUE": {
+        "value": "{\n  \"message\" : \"[TOKEN] The expiry date must not be greater than 9999.\",\n  \"errorCode\" : \"EXPIRY_DATE_MAX_VALUE\"\n}"
+      },
+      "UID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[TOKEN] Token UID already exists\",\n  \"errorCode\" : \"UID_ALREADY_EXISTS\"\n}"
+      },
+      "TOKEN_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[TOKEN] The token with the provided UID does not exist.\",\n  \"errorCode\" : \"TOKEN_NOT_FOUND\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "VERSION_FOR_TOKEN_A_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] Version for the specific token A is not found.\",\n  \"errorCode\" : \"VERSION_FOR_TOKEN_A_NOT_FOUND\"\n}"
+      },
+      "URL_ALREADY_IN_DATABASE": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] The provided URL already exists.\",\n  \"errorCode\" : \"URL_ALREADY_IN_DATABASE\"\n}"
+      },
+      "URL_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] Customer url info for the specific url in not found.\",\n  \"errorCode\" : \"URL_NOT_FOUND\"\n}"
+      },
+      "URL_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] One of the provided URLs already exists.\",\n  \"errorCode\" : \"URL_ALREADY_EXISTS\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "CPO Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "CPO Token",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

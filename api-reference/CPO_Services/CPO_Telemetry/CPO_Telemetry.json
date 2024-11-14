@@ -1,0 +1,1233 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "tariff-service",
+    "description": "A service for storing and manipulating with tariffs according to OCPP specification",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/tariff/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/tariffs/{id}/{providerId}": {
+      "put": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Update Tariff",
+        "description": "Update a Tariff and save it to database",
+        "operationId": "updateTariffById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^[A-Z]{2}\\*[0-9A-Z]{3}$",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TariffUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tariff"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request's restrictions are not met"
+          },
+          "404": {
+            "description": "Tariff Not Found"
+          },
+          "409": {
+            "description": "Tariff element dates are overlapping Tariff dates"
+          },
+          "400 ": {
+            "description": "End date can not be in the past"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Delete Tariff by tariff id",
+        "description": "Delete a Tariff with the tariff id",
+        "operationId": "deleteTariffById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^[A-Z]{2}\\*[0-9A-Z]{3}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tariff"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tariff Not Found"
+          }
+        }
+      }
+    },
+    "/tariffs": {
+      "get": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Get all Tariffs",
+        "description": "Returns all tariffs with filters and pagination.",
+        "operationId": "getAllTariffsPaginated",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "countryCode",
+            "in": "query",
+            "description": "ISO-3166 alpha-2 country code of the CPO that 'owns' this Tariff.",
+            "required": false,
+            "schema": {
+              "maxLength": 2,
+              "minLength": 0,
+              "type": "string",
+              "description": "ISO-3166 alpha-2 country code of the CPO that 'owns' this Tariff.",
+              "example": "DE"
+            },
+            "example": "DE"
+          },
+          {
+            "name": "partyId",
+            "in": "query",
+            "description": "CPO ID of the CPO that 'owns' this Tariff (following the ISO-15118 standard).",
+            "required": false,
+            "schema": {
+              "maxLength": 3,
+              "minLength": 0,
+              "type": "string",
+              "description": "CPO ID of the CPO that 'owns' this Tariff (following the ISO-15118 standard).",
+              "example": "BEC"
+            },
+            "example": "BEC"
+          },
+          {
+            "name": "tariffIds",
+            "in": "query",
+            "description": "List of tariff ids.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "List of tariff ids."
+            }
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "description": "The time when this tariff becomes active, in UTC, time_zone field of the Location can be used to convert to local time. Typically used for a new tariff that is already given with the location, before it becomes active.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The time when this tariff becomes active, in UTC, time_zone field of the Location can be used to convert to local time. Typically used for a new tariff that is already given with the location, before it becomes active.",
+              "example": "2024-06-30T23:59:59"
+            },
+            "example": "2024-06-30T23:59:59"
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "description": "The time after which this tariff is no longer valid, in UTC, time_zone field if the Location can be used to convert to local time. Typically used when this tariff is going to be replaced with a different tariff in the near future.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The time after which this tariff is no longer valid, in UTC, time_zone field if the Location can be used to convert to local time. Typically used when this tariff is going to be replaced with a different tariff in the near future.",
+              "example": "2024-06-30T23:59:59"
+            },
+            "example": "2024-06-30T23:59:59"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tariff"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Create tariff",
+        "description": "Creates a new tariff",
+        "operationId": "createTariff",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TariffCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tariff"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "Tariff element dates overlap"
+          },
+          "400 ": {
+            "description": "End date can not be in the past"
+          }
+        }
+      }
+    },
+    "/tariffs/migration": {
+      "post": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Create tariff for Hager Bridge migration",
+        "description": "Creates a new tariff only for Hager Bridge migration purposes. This endpoint only differs to past end date validation which is removed. After migration, this endpoint should be removed. ",
+        "operationId": "createTariffMigration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TariffCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tariff"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "Tariff element dates are overlapping Tariff dates"
+          }
+        }
+      }
+    },
+    "/tariffs/{id}": {
+      "get": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Get Tariff by tariff id",
+        "description": "Returns a Tariff that matches with the tariff id",
+        "operationId": "getTariffById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "pattern": "^[A-Z]{2}\\*[0-9A-Z]{3}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tariff"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tariff Not Found"
+          }
+        }
+      }
+    },
+    "/tariffs/by-ids": {
+      "get": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Get Tariffs by tariff ids",
+        "description": "Returns a list of tariffs, based on the provided tariff ID(s).\n#### If there are no tariffs, list is empty.\n#### If an ID has no matches, it is skipped.",
+        "operationId": "getTariffsByIds",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tariff"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tariffs/by-date-to/{providerId}": {
+      "get": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Get Tariffs by tariff ids",
+        "description": "Get Tariffs by a list of tariff ids that are not expired",
+        "operationId": "getTariffEntitiesByTariffIdsAndProviderIdAfterDateTo",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^[A-Z]{2}\\*[0-9A-Z]{3}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tariff"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tariffs Not Found or they are not valid for the current date."
+          }
+        }
+      }
+    },
+    "/tariffs/active-tariff/{providerId}": {
+      "get": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Get Tariff by tariff ids for a specific date range",
+        "description": "Returns a Tariff that is active for the specific date range",
+        "operationId": "getTariffByIdsFromSpecificDate",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^[A-Z]{2}\\*[0-9A-Z]{3}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tariff"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tariff Not Found"
+          },
+          "409": {
+            "description": "More than one tariff is active for a specific date range"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DisplayText": {
+        "required": [
+          "language",
+          "text"
+        ],
+        "type": "object",
+        "properties": {
+          "language": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Language Code ISO 639-1.",
+            "example": "en"
+          },
+          "text": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "description": "Text to be displayed to a end user. No markup, html etc. allowed.",
+            "example": "this is a display text"
+          }
+        },
+        "description": "List of multi-language alternative tariff info texts."
+      },
+      "EnergyMix": {
+        "required": [
+          "is_green_energy"
+        ],
+        "type": "object",
+        "properties": {
+          "is_green_energy": {
+            "type": "boolean",
+            "description": "True if 100% from regenerative sources. (CO2 and nuclear waste is zero)",
+            "example": false
+          },
+          "energy_sources": {
+            "type": "array",
+            "description": "Key-value pairs (enum + percentage) of energy sources of this location’s tariff.",
+            "items": {
+              "$ref": "#/components/schemas/EnergySource"
+            }
+          },
+          "environ_impact": {
+            "type": "array",
+            "description": "Key-value pairs (enum + percentage) of nuclear waste and CO2 exhaust of this location’s tariff.",
+            "items": {
+              "$ref": "#/components/schemas/EnvironmentalImpact"
+            }
+          },
+          "supplier_name": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Name of the energy supplier, delivering the energy for this location or tariff.",
+            "example": "HANDWE EV"
+          },
+          "energy_product_name": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Name of the energy suppliers product/tariff plan used at this location.",
+            "example": "Kleenheat"
+          }
+        },
+        "description": "This type is used to specify the energy mix and environmental impact of the supplied energy at a location or in a tariff."
+      },
+      "EnergySource": {
+        "required": [
+          "percentage",
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Categories of energy sources.",
+            "example": "GAS",
+            "enum": [
+              "NUCLEAR",
+              "GENERAL_FOSSIL",
+              "COAL",
+              "GAS",
+              "GENERAL_GREEN",
+              "SOLAR",
+              "WIND",
+              "WATER"
+            ]
+          },
+          "percentage": {
+            "maximum": 100,
+            "exclusiveMaximum": false,
+            "minimum": 0,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Percentage of this source (0-100) in the mix.",
+            "example": 33.2
+          }
+        },
+        "description": "Key-value pairs (enum + percentage) of energy sources. All given values of all categories should add up to 100 percent."
+      },
+      "EnvironmentalImpact": {
+        "required": [
+          "amount",
+          "category"
+        ],
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Categories of environmental impact values.",
+            "example": "NUCLEAR_WASTE",
+            "enum": [
+              "NUCLEAR_WASTE",
+              "CARBON_DIOXIDE"
+            ]
+          },
+          "amount": {
+            "minimum": 0,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Amount of this portion in g/kWh.",
+            "example": 0.005
+          }
+        },
+        "description": "Amount of waste produced/emitted per kWh."
+      },
+      "Price": {
+        "required": [
+          "excl_vat"
+        ],
+        "type": "object",
+        "properties": {
+          "excl_vat": {
+            "type": "number",
+            "description": "Price/Cost excluding VAT.",
+            "example": 87.31
+          },
+          "incl_vat": {
+            "type": "number",
+            "description": "Price/Cost including VAT.",
+            "example": 101.88
+          }
+        },
+        "description": "When this field is set, a Charging Session with this tariff will NOT cost more than this amount."
+      },
+      "PriceComponent": {
+        "required": [
+          "price",
+          "step_size",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of tariff dimension.",
+            "enum": [
+              "ENERGY",
+              "FLAT",
+              "PARKING_TIME",
+              "TIME"
+            ]
+          },
+          "price": {
+            "type": "number",
+            "description": "Price per unit (excl. VAT) for this tariff dimension.",
+            "example": 2
+          },
+          "vat": {
+            "type": "number",
+            "description": "Applicable VAT percentage for this tariff dimension. If omitted, no VAT is applicable. Not providing a VAT is different from 0% VAT, which would be a value of 0.0 here.",
+            "example": 10
+          },
+          "step_size": {
+            "type": "integer",
+            "description": "Minimum amount to be billed. This unit will be billed in this step_size blocks. Amounts that are less then this step_size are rounded up to the given step_size. For example: if type is TIME and step_size has a value of 300, then time will be billed in blocks of 5 minutes. If 6 minutes were used, 10 minutes (2 blocks of step_size) will be billed.",
+            "format": "int32",
+            "example": 300
+          }
+        },
+        "description": "List of price components that describe the pricing of a tariff."
+      },
+      "Tariff": {
+        "required": [
+          "country_code",
+          "currency",
+          "elements",
+          "id",
+          "last_updated",
+          "party_id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the tariff within the CPO’s platform (and suboperator platforms).",
+            "example": "12"
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO-4217 code of the currency of this tariff.",
+            "example": "EUR"
+          },
+          "type": {
+            "type": "string",
+            "description": "Defines the type of the tariff. This allows for distinction in case of given Charging Preferences. When omitted, this tariff is valid for all sessions.",
+            "example": "REGULAR",
+            "enum": [
+              "AD_HOC_PAYMENT",
+              "PROFILE_CHEAP",
+              "PROFILE_FAST",
+              "PROFILE_GREEN",
+              "REGULAR"
+            ]
+          },
+          "elements": {
+            "type": "array",
+            "description": "List of Tariff Elements.",
+            "items": {
+              "$ref": "#/components/schemas/TariffElement"
+            }
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the CPO that owns this Tariff.",
+            "example": "BE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the CPO that owns this Tariff (following the ISO-15118 standard).",
+            "example": "BEC"
+          },
+          "tariff_alt_text": {
+            "type": "array",
+            "description": "List of multi-language alternative tariff info texts.",
+            "items": {
+              "$ref": "#/components/schemas/DisplayText"
+            }
+          },
+          "tariff_alt_url": {
+            "type": "string",
+            "description": "URL to a web page that contains an explanation of the tariff information in human readable form.",
+            "example": "https://www.example.com/tariff"
+          },
+          "min_price": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "max_price": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "start_date_time": {
+            "type": "string",
+            "description": "The time when this tariff becomes active, in UTC, time_zone field of the Location can be used to convert to local time. Typically used for a new tariff that is already given with the location, before it becomes active.",
+            "format": "date-time",
+            "example": "2021-03-19T14:11:43Z"
+          },
+          "end_date_time": {
+            "type": "string",
+            "description": "The time after which this tariff is no longer valid, in UTC, time_zone field if the Location can be used to convert to local time. Typically used when this tariff is going to be replaced with a different tariff in the near future.",
+            "format": "date-time",
+            "example": "2021-03-19T14:11:43Z"
+          },
+          "energy_mix": {
+            "$ref": "#/components/schemas/EnergyMix"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this Tariff was last updated (or created).",
+            "format": "date-time",
+            "example": "2021-03-19T14:11:43Z"
+          }
+        },
+        "description": "A Tariff object consists of a list of one or more Tariff Elements, which can be used to create complex Tariff structures."
+      },
+      "TariffElement": {
+        "required": [
+          "price_components"
+        ],
+        "type": "object",
+        "properties": {
+          "restrictions": {
+            "$ref": "#/components/schemas/TariffRestrictions"
+          },
+          "price_components": {
+            "type": "array",
+            "description": "List of price components that describe the pricing of a tariff.",
+            "items": {
+              "$ref": "#/components/schemas/PriceComponent"
+            }
+          }
+        },
+        "description": "List of Tariff Elements."
+      },
+      "TariffRestrictions": {
+        "type": "object",
+        "properties": {
+          "reservation": {
+            "type": "string",
+            "description": "When this field is present, the TariffElement describes reservation costs. A reservation starts when the reservation is made, and ends when the driver starts charging on the reserved EVSE/Location, or when the reservation expires. A reservation can only have: FLAT and TIME TariffDimensions, where TIME is for the duration of the reservation.",
+            "enum": [
+              "RESERVATION",
+              "RESERVATION_EXPIRES"
+            ]
+          },
+          "start_time": {
+            "maxLength": 5,
+            "minLength": 0,
+            "type": "string",
+            "description": "Start time of day in local time, the time zone is defined in the time_zone field of the Location, for example 13:30, valid from this time of the day. Must be in 24h format with leading zeros.Hour/Minute separator: \":\" Regex: ([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "example": "13:30"
+          },
+          "end_time": {
+            "maxLength": 5,
+            "minLength": 0,
+            "type": "string",
+            "description": "End time of day in local time, the time zone is defined in the time_zone field of the Location, for example 19:45, valid until this time of the day. Same syntax as start_time. If end_time < start_time then the period wraps around to the next day. To stop at end of the day use: 00:00."
+          },
+          "start_date": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Start date in local time, the time zone is defined in the time_zone field of the Location, for example: 2015-12-24, valid from this day (inclusive).Regex: ([12][0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])",
+            "example": "2023-12-24"
+          },
+          "end_date": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "End date in local time, the time zone is defined in the time_zone field of theLocation, for example: 2015-12-27, valid until this day (exclusive).Same syntax as start_date.",
+            "example": "2023-12-27"
+          },
+          "min_kwh": {
+            "type": "number",
+            "description": "Minimum consumed energy in kWh, for example 20, valid from this amount of energy (inclusive) being used.",
+            "example": 1
+          },
+          "max_kwh": {
+            "type": "number",
+            "description": "Maximum consumed energy in kWh, for example 50, valid until this amount of energy (exclusive) being used.",
+            "example": 1
+          },
+          "min_current": {
+            "type": "number",
+            "description": "Sum of the minimum current (in Amperes) over all phases, for example 5. When the EV is charging with more than, or equal to, the defined amount of current, this TariffElement is/becomes active. If the charging current is or becomes lower, this TariffElement is not or no longer valid and becomes inactive. This describes NOT the minimum current over the entire Charging Session. This restriction can make a TariffElement become active when the charging current is above the defined value, but the TariffElement MUST no longer be active when the charging current drops below the defined value."
+          },
+          "max_current": {
+            "type": "number",
+            "description": "Sum of the maximum current (in Amperes) over all phases, for example 20. When the EV is charging with less than the defined amount of current, this TariffElement becomes/is active. If the charging current is or becomes higher, this TariffElement is not or no longer valid and becomes inactive. This describes NOT the maximum current over the entire Charging Session. This restriction can make a TariffElement become active when the charging current is below this value, but the TariffElement MUST no longer be active when the charging current raises above the defined value."
+          },
+          "min_power": {
+            "type": "number",
+            "description": "Minimum power in kW, for example 5. When the EV is charging with more than, or equal to, the defined amount of power, this TariffElement is/becomes active. If the charging power is or becomes lower, this TariffElement is not or no longer valid and becomes inactive. This describes NOT the minimum power over the entire Charging Session. This restriction can make a TariffElement become active when the charging power is above this value, but the TariffElement MUST no longer be active when the charging power drops below the defined value."
+          },
+          "max_power": {
+            "type": "number",
+            "description": "Maximum power in kW, for example 20. When the EV is charging with less than the defined amount of power, this TariffElement becomes/is active. If the charging power is or becomes higher, this TariffElement is not or no longer valid and becomes inactive. This describes NOT the maximum power over the entire Charging Session. This restriction can make a TariffElement become active when the charging power is below this value, but the TariffElement MUST no longer be active when the charging power raises above the defined value.",
+            "example": 32
+          },
+          "min_duration": {
+            "type": "integer",
+            "description": "Minimum duration in seconds the Charging Session MUST last (inclusive). When the duration of a Charging Session is longer than the defined value, this TariffElement is or becomes active. Before that moment, this TariffElement is not yet active.",
+            "format": "int32"
+          },
+          "max_duration": {
+            "type": "integer",
+            "description": "Maximum duration in seconds the Charging Session MUST last (exclusive). When the duration of a Charging Session is shorter than the defined value, this TariffElement is or becomes active. After that moment, this TariffElement is no longer active.",
+            "format": "int32"
+          },
+          "day_of_week": {
+            "type": "array",
+            "description": "Which day(s) of the week this TariffElement is active.",
+            "items": {
+              "type": "string",
+              "description": "Which day(s) of the week this TariffElement is active.",
+              "enum": [
+                "MONDAY",
+                "TUESDAY",
+                "WEDNESDAY",
+                "THURSDAY",
+                "FRIDAY",
+                "SATURDAY",
+                "SUNDAY"
+              ]
+            }
+          }
+        },
+        "description": "These restrictions are not for the entire Charging Session. They only describe if and when a TariffElement becomes active or inactive during a Charging Session."
+      },
+      "TariffUpdateRequest": {
+        "required": [
+          "country_code",
+          "currency",
+          "elements",
+          "party_id"
+        ],
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string",
+            "description": "ISO-4217 code of the currency of this tariff."
+          },
+          "type": {
+            "type": "string",
+            "description": "Defines the type of the tariff. This allows for distinction in case of given Charging Preferences. When omitted, this tariff is valid for all sessions.",
+            "example": "REGULAR",
+            "enum": [
+              "AD_HOC_PAYMENT",
+              "PROFILE_CHEAP",
+              "PROFILE_FAST",
+              "PROFILE_GREEN",
+              "REGULAR"
+            ]
+          },
+          "elements": {
+            "type": "array",
+            "description": "List of Tariff Elements.",
+            "items": {
+              "$ref": "#/components/schemas/TariffElement"
+            }
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the CPO that owns this Tariff.",
+            "example": "BE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the CPO that owns this Tariff (following the ISO-15118 standard).",
+            "example": "BEC"
+          },
+          "tariff_alt_text": {
+            "type": "array",
+            "description": "List of multi-language alternative tariff info texts.",
+            "items": {
+              "$ref": "#/components/schemas/DisplayText"
+            }
+          },
+          "tariff_alt_url": {
+            "type": "string",
+            "description": "URL to a web page that contains an explanation of the tariff information in human readable form.",
+            "example": "https://www.example.com/tariff"
+          },
+          "min_price": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "max_price": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "start_date_time": {
+            "type": "string",
+            "description": "The time when this tariff becomes active, in UTC, time_zone field of the Location can be used to convert to local time. Typically used for a new tariff that is already given with the location, before it becomes active.",
+            "format": "date-time",
+            "example": "2021-03-19T14:11:43Z"
+          },
+          "end_date_time": {
+            "type": "string",
+            "description": "The time after which this tariff is no longer valid, in UTC, time_zone field if the Location canbe used to convert to local time. Typically used when this tariff is going to be replaced with a different tariff in the near future.",
+            "format": "date-time",
+            "example": "2021-03-19T14:11:43Z"
+          },
+          "energy_mix": {
+            "$ref": "#/components/schemas/EnergyMix"
+          }
+        }
+      },
+      "TariffCreateRequest": {
+        "required": [
+          "country_code",
+          "currency",
+          "elements",
+          "party_id"
+        ],
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string",
+            "description": "ISO-4217 code of the currency of this tariff.",
+            "example": "EUR"
+          },
+          "type": {
+            "type": "string",
+            "description": "Defines the type of the tariff. This allows for distinction in case of given Charging Preferences. When omitted, this tariff is valid for all sessions.",
+            "example": "REGULAR",
+            "enum": [
+              "AD_HOC_PAYMENT",
+              "PROFILE_CHEAP",
+              "PROFILE_FAST",
+              "PROFILE_GREEN",
+              "REGULAR"
+            ]
+          },
+          "elements": {
+            "type": "array",
+            "description": "List of Tariff Elements.",
+            "items": {
+              "$ref": "#/components/schemas/TariffElement"
+            }
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the CPO that owns this Tariff.",
+            "example": "BE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the CPO that owns this Tariff (following the ISO-15118 standard).",
+            "example": "BEC"
+          },
+          "tariff_alt_text": {
+            "type": "array",
+            "description": "List of multi-language alternative tariff info texts.",
+            "items": {
+              "$ref": "#/components/schemas/DisplayText"
+            }
+          },
+          "tariff_alt_url": {
+            "type": "string",
+            "description": "URL to a web page that contains an explanation of the tariff information in human readable form.",
+            "example": "https://www.example.com/tariff"
+          },
+          "min_price": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "max_price": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "start_date_time": {
+            "type": "string",
+            "description": "The time when this tariff becomes active, in UTC, time_zone field of the Location can be used to convert to local time. Typically used for a new tariff that is already given with the location, before it becomes active.",
+            "format": "date-time",
+            "example": "2021-03-19T14:11:43Z"
+          },
+          "end_date_time": {
+            "type": "string",
+            "description": "The time after which this tariff is no longer valid, in UTC, time_zone field if the Location can be used to convert to local time. Typically used when this tariff is going to be replaced with a different tariff in the near future.",
+            "format": "date-time",
+            "example": "2027-03-19T14:11:43Z"
+          },
+          "energy_mix": {
+            "$ref": "#/components/schemas/EnergyMix"
+          }
+        }
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "TARIFF_ID_NOT_EXISTS": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff with the provided tariff id does not exist.\",\n  \"errorCode\" : \"TARIFF_ID_NOT_EXISTS\"\n}"
+      },
+      "MORE_THAN_ONE_TARIFFS_FOUND": {
+        "value": "{\n  \"message\" : \"[TARIFF] More than one tariffs for the specific date range are found.\",\n  \"errorCode\" : \"MORE_THAN_ONE_TARIFFS_FOUND\"\n}"
+      },
+      "TARIFF_IDS_NOT_EXIST": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariffs with the provided tariff ids do not exist or they are not valid for the current date.\",\n  \"errorCode\" : \"TARIFF_IDS_NOT_EXIST\"\n}"
+      },
+      "CANNOT_UPDATE_TARIFF": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff can not be updated because it is assigned on a connector\",\n  \"errorCode\" : \"CANNOT_UPDATE_TARIFF\"\n}"
+      },
+      "TARIFFS_VALIDITY_PERIODS_OVERLAP": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff validity periods overlap.\",\n  \"errorCode\" : \"TARIFFS_VALIDITY_PERIODS_OVERLAP\"\n}"
+      },
+      "TARIFF_ELEMENT_DATES_OVERLAP_TARIFF_DATES": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff element dates are overlapping tariff dates\",\n  \"errorCode\" : \"TARIFF_ELEMENT_DATES_OVERLAP_TARIFF_DATES\"\n}"
+      },
+      "TARIFF_ELEMENT_DATES_OVERLAP": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff element dates overlap\",\n  \"errorCode\" : \"TARIFF_ELEMENT_DATES_OVERLAP\"\n}"
+      },
+      "TARIFF_DATES_OVERLAP": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff dates overlap\",\n  \"errorCode\" : \"TARIFF_DATES_OVERLAP\"\n}"
+      },
+      "WRONG_TARIFF_DATE_FORMAT": {
+        "value": "{\n  \"message\" : \"[TARIFF] Wrong Tariff dates format\",\n  \"errorCode\" : \"WRONG_TARIFF_DATE_FORMAT\"\n}"
+      },
+      "END_DATE_NOT_VALID": {
+        "value": "{\n  \"message\" : \"[TARIFF] End date can not be in the past\",\n  \"errorCode\" : \"END_DATE_NOT_VALID\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "VERSION_FOR_TOKEN_A_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] Version for the specific token A is not found.\",\n  \"errorCode\" : \"VERSION_FOR_TOKEN_A_NOT_FOUND\"\n}"
+      },
+      "URL_ALREADY_IN_DATABASE": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] The provided URL already exists.\",\n  \"errorCode\" : \"URL_ALREADY_IN_DATABASE\"\n}"
+      },
+      "URL_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] Customer url info for the specific url in not found.\",\n  \"errorCode\" : \"URL_NOT_FOUND\"\n}"
+      },
+      "URL_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] One of the provided URLs already exists.\",\n  \"errorCode\" : \"URL_ALREADY_EXISTS\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "CPO Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "CPO Tariff",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
