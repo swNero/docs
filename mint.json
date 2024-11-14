@@ -284,204 +284,204 @@
       ]
     },
     {
-      "group": "CPO Obelis",
+      "group": "CPO Telemetry",
       "pages": [
         {
           "group": "Logs",
           "pages": [
-            "api-reference/CPO_Services/CPO_Obelis/logs/create-log-and-store-it-to-database"
+            "api-reference/CPO_Services/CPO_Telemetry/logs/create-log-and-store-it-to-database"
           ]
         }
       ]
     },
     {
-      "group": "CPO Pricing",
+      "group": "CPO Obelis",
       "pages": [
         {
           "group": "Raw Reports - Non-Discriminatory access",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--non-discriminatory-access/edit-a-raw-non-discriminatory-access-report",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--non-discriminatory-access/add-new-raw-non-discriminatory-access-report",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--non-discriminatory-access/get-raw-non-discriminatory-access-report-by-month"
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--non-discriminatory-access/edit-a-raw-non-discriminatory-access-report",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--non-discriminatory-access/add-new-raw-non-discriminatory-access-report",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--non-discriminatory-access/get-raw-non-discriminatory-access-report-by-month"
           ]
         },
         {
           "group": "Raw Reports - Hotline Ratings",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--hotline-ratings/edit-existing-raw-hotline-rating-report",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--hotline-ratings/add-new-raw-hotline-rating-report",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--hotline-ratings/get-raw-hotline-rating-report-by-month"
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--hotline-ratings/edit-existing-raw-hotline-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--hotline-ratings/add-new-raw-hotline-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--hotline-ratings/get-raw-hotline-rating-report-by-month"
           ]
         },
         {
           "group": "Raw Reports - Renewal",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--renewal/update-charging-point-raw-renewal-report",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--renewal/add-new-charging-point-raw-renewal-report",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--renewal/get-not-processed-charging-point-renewal-raw-reports-for-charging-station"
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--renewal/update-charging-point-raw-renewal-report",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--renewal/add-new-charging-point-raw-renewal-report",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--renewal/get-not-processed-charging-point-renewal-raw-reports-for-charging-station"
           ]
         },
         {
           "group": "Raw Reports - Ratings",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/edit-existing-charging-point-raw-rating-report",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/edit-existing-charging-hub-raw-rating-report",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/add-new-charging-point-raw-rating-report",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/add-new-charging-hub-raw-rating-report",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/get-charging-point-raw-rating-report-by-charging-hub-id-and-month",
-            "api-reference/CPO_Services/CPO_Pricing/raw-reports--ratings/get-charging-hub-raw-rating-report-by-charging-hub-uid-and-month"
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--ratings/edit-existing-charging-point-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--ratings/edit-existing-charging-hub-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--ratings/add-new-charging-point-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--ratings/add-new-charging-hub-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--ratings/get-charging-point-raw-rating-report-by-charging-hub-id-and-month",
+            "api-reference/CPO_Services/CPO_Obelis/raw-reports--ratings/get-charging-hub-raw-rating-report-by-charging-hub-uid-and-month"
           ]
         },
         {
           "group": "Charging Points - Raw Reports - Defects",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-points--raw-reports--defects/edit-existing-raw-charging-point-defects-report",
-            "api-reference/CPO_Services/CPO_Pricing/charging-points--raw-reports--defects/add-new-raw-charging-point-defects-report",
-            "api-reference/CPO_Services/CPO_Pricing/charging-points--raw-reports--defects/get-raw-charging-point-defects"
+            "api-reference/CPO_Services/CPO_Obelis/charging-points--raw-reports--defects/edit-existing-raw-charging-point-defects-report",
+            "api-reference/CPO_Services/CPO_Obelis/charging-points--raw-reports--defects/add-new-raw-charging-point-defects-report",
+            "api-reference/CPO_Services/CPO_Obelis/charging-points--raw-reports--defects/get-raw-charging-point-defects"
           ]
         },
         {
           "group": "Charging Hub - Raw Reports - Facility Damages",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--facility-damages/edit-existing-raw-facility-damages-report",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--facility-damages/get-raw-facility-damages",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--facility-damages/add-new-raw-facility-damages-report",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--facility-damages/get-raw-facility-damages-1"
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub--raw-reports--facility-damages/edit-existing-raw-facility-damages-report",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub--raw-reports--facility-damages/get-raw-facility-damages",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub--raw-reports--facility-damages/add-new-raw-facility-damages-report",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub--raw-reports--facility-damages/get-raw-facility-damages-1"
           ]
         },
         {
           "group": "Charging Hub - Raw Reports - Ad Hoc Tariff",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--ad-hoc-tariff/edit-existing-raw-ad-hoc-tariff-report",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--ad-hoc-tariff/add-new-raw-ad-hoc-tariff-report",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub--raw-reports--ad-hoc-tariff/get-raw-ad-hoc-tariff-by-charging-hub-uid-and-month"
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub--raw-reports--ad-hoc-tariff/edit-existing-raw-ad-hoc-tariff-report",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub--raw-reports--ad-hoc-tariff/add-new-raw-ad-hoc-tariff-report",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub--raw-reports--ad-hoc-tariff/get-raw-ad-hoc-tariff-by-charging-hub-uid-and-month"
           ]
         },
         {
           "group": "Processed Reports - Non-Discriminatory access",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--non-discriminatory-access/get-processed-non-discriminatory-access-report-by-uid",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--non-discriminatory-access/edit-a-processed-non-discriminatory-access-report",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--non-discriminatory-access/add-new-processed-non-discriminatory-access-report"
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--non-discriminatory-access/get-processed-non-discriminatory-access-report-by-uid",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--non-discriminatory-access/edit-a-processed-non-discriminatory-access-report",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--non-discriminatory-access/add-new-processed-non-discriminatory-access-report"
           ]
         },
         {
           "group": "Processed Reports - Hotline Ratings",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--hotline-ratings/get-processed-hotline-rating-report-by-uid",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--hotline-ratings/edit-existing-processed-hotline-rating-report",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--hotline-ratings/add-new-processed-hotline-rating-report"
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--hotline-ratings/get-processed-hotline-rating-report-by-uid",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--hotline-ratings/edit-existing-processed-hotline-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--hotline-ratings/add-new-processed-hotline-rating-report"
           ]
         },
         {
           "group": "Processed Reports - Renewal",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--renewal/get-charging-point-processed-renewal-report",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--renewal/edit-charging-point-processed-renewal-report",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--renewal/add-new-charging-point-processed-renewal-report"
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--renewal/get-charging-point-processed-renewal-report",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--renewal/edit-charging-point-processed-renewal-report",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--renewal/add-new-charging-point-processed-renewal-report"
           ]
         },
         {
           "group": "Processed Reports - Rating",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/get-charging-point-processed-rating-report-by-uid",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/edit-existing-charging-point-processed-rating-report",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/get-processed-rating-report-by-charging-hub-id-and-month",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/edit-existing-processed-rating-report",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/add-new-processed-rating-report",
-            "api-reference/CPO_Services/CPO_Pricing/processed-reports--rating/add-new-processed-rating-report-1"
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--rating/get-charging-point-processed-rating-report-by-uid",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--rating/edit-existing-charging-point-processed-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--rating/get-processed-rating-report-by-charging-hub-id-and-month",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--rating/edit-existing-processed-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--rating/add-new-processed-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis/processed-reports--rating/add-new-processed-rating-report-1"
           ]
         },
         {
           "group": "Charging stations - Processed Reports - Charging Points Defects",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-stations--processed-reports--charging-points-defects/get-processed-charging-point-defects-by-uid",
-            "api-reference/CPO_Services/CPO_Pricing/charging-stations--processed-reports--charging-points-defects/edit-existing-processed-charging-point-defects-report",
-            "api-reference/CPO_Services/CPO_Pricing/charging-stations--processed-reports--charging-points-defects/add-new-processed-charging-point-defects-report"
+            "api-reference/CPO_Services/CPO_Obelis/charging-stations--processed-reports--charging-points-defects/get-processed-charging-point-defects-by-uid",
+            "api-reference/CPO_Services/CPO_Obelis/charging-stations--processed-reports--charging-points-defects/edit-existing-processed-charging-point-defects-report",
+            "api-reference/CPO_Services/CPO_Obelis/charging-stations--processed-reports--charging-points-defects/add-new-processed-charging-point-defects-report"
           ]
         },
         {
           "group": "Charging Hub Processed Reports - Facility Damages",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--facility-damages/get-processed-facility-damages-by-uid",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--facility-damages/edit-existing-processed-facility-damages-report",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--facility-damages/add-new-processed-facility-damages-report"
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub-processed-reports--facility-damages/get-processed-facility-damages-by-uid",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub-processed-reports--facility-damages/edit-existing-processed-facility-damages-report",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub-processed-reports--facility-damages/add-new-processed-facility-damages-report"
           ]
         },
         {
           "group": "Charging Hub Processed Reports - Ad Hoc Tariff",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--ad-hoc-tariff/get-processed-ad-hoc-tariff-by-charging-hub-id-and-month",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--ad-hoc-tariff/edit-existing-processed-ad-hoc-tariff-report",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub-processed-reports--ad-hoc-tariff/add-new-processed-ad-hoc-tariff-report"
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub-processed-reports--ad-hoc-tariff/get-processed-ad-hoc-tariff-by-charging-hub-id-and-month",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub-processed-reports--ad-hoc-tariff/edit-existing-processed-ad-hoc-tariff-report",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub-processed-reports--ad-hoc-tariff/add-new-processed-ad-hoc-tariff-report"
           ]
         },
         {
           "group": "Charging Station",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-station/get-charging-station",
-            "api-reference/CPO_Services/CPO_Pricing/charging-station/edit-a-charging-station",
-            "api-reference/CPO_Services/CPO_Pricing/charging-station/delete-charging-station",
-            "api-reference/CPO_Services/CPO_Pricing/charging-station/add-new-charging-station",
-            "api-reference/CPO_Services/CPO_Pricing/charging-station/get-charging-stations-paginated-based-on-criteria-filters"
+            "api-reference/CPO_Services/CPO_Obelis/charging-station/get-charging-station",
+            "api-reference/CPO_Services/CPO_Obelis/charging-station/edit-a-charging-station",
+            "api-reference/CPO_Services/CPO_Obelis/charging-station/delete-charging-station",
+            "api-reference/CPO_Services/CPO_Obelis/charging-station/add-new-charging-station",
+            "api-reference/CPO_Services/CPO_Obelis/charging-station/get-charging-stations-paginated-based-on-criteria-filters"
           ]
         },
         {
           "group": "Charging Point",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-point/edit-a-charging-point",
-            "api-reference/CPO_Services/CPO_Pricing/charging-point/delete-charging-station-charging-point",
-            "api-reference/CPO_Services/CPO_Pricing/charging-point/create-a-charging-point"
+            "api-reference/CPO_Services/CPO_Obelis/charging-point/edit-a-charging-point",
+            "api-reference/CPO_Services/CPO_Obelis/charging-point/delete-charging-station-charging-point",
+            "api-reference/CPO_Services/CPO_Obelis/charging-point/create-a-charging-point"
           ]
         },
         {
           "group": "Charging session",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-session/update-existing-charging-session",
-            "api-reference/CPO_Services/CPO_Pricing/charging-session/add-new-charging-session",
-            "api-reference/CPO_Services/CPO_Pricing/charging-session/get-charging-sessions-paginated-based-on-criteria-filters"
+            "api-reference/CPO_Services/CPO_Obelis/charging-session/update-existing-charging-session",
+            "api-reference/CPO_Services/CPO_Obelis/charging-session/add-new-charging-session",
+            "api-reference/CPO_Services/CPO_Obelis/charging-session/get-charging-sessions-paginated-based-on-criteria-filters"
           ]
         },
         {
           "group": "Charging Hub",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub/retrieve-charging-hub-information-by-id",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub/edit-a-charging-hub",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub/delete-a-charging-hub",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub/add-new-charging-hub",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub/get-paginated-charging-stations-associated-to-a-specific-charginghub",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub/get-charging-hubs-paginated-based-on-criteria-filters",
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub/get-charging-hubs-overview"
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub/retrieve-charging-hub-information-by-id",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub/edit-a-charging-hub",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub/delete-a-charging-hub",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub/add-new-charging-hub",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub/get-paginated-charging-stations-associated-to-a-specific-charginghub",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub/get-charging-hubs-paginated-based-on-criteria-filters",
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub/get-charging-hubs-overview"
           ]
         },
         {
           "group": "Global Processed Reports",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/global-processed-reports/fetch-global-processed-reports-by-month"
+            "api-reference/CPO_Services/CPO_Obelis/global-processed-reports/fetch-global-processed-reports-by-month"
           ]
         },
         {
           "group": "Charging Station Reports",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-station-reports/fetch-processed-reports-by-month"
+            "api-reference/CPO_Services/CPO_Obelis/charging-station-reports/fetch-processed-reports-by-month"
           ]
         },
         {
           "group": "Charging Hub Reports",
           "pages": [
-            "api-reference/CPO_Services/CPO_Pricing/charging-hub-reports/fetch-processed-reports-by-month"
+            "api-reference/CPO_Services/CPO_Obelis/charging-hub-reports/fetch-processed-reports-by-month"
           ]
         }
       ]      
     },
     {
-      "group": "CPO Tariff",
+      "group": "CPO Pricing",
       "pages": [
         {
           "group": "Pricing",
           "pages": [
-            "api-reference/CPO_Services/CPO_Tariff/pricing/get-price",
-            "api-reference/CPO_Services/CPO_Tariff/pricing/get-price-for-tariff-with-element-restrictions"
+            "api-reference/CPO_Services/CPO_Pricing/pricing/get-price",
+            "api-reference/CPO_Services/CPO_Pricing/pricing/get-price-for-tariff-with-element-restrictions"
           ]
         }
       ]
