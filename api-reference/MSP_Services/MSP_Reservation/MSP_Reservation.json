@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-tst.is.energystacks.io/charging-reservation/v1",
+      "url": "https://baseurl/charging-reservation/v1",
       "description": "Generated server url"
     }
   ],

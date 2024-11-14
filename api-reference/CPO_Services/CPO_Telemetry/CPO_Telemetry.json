@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/cpo-telemetry/v1",
+      "url": "https://baseurl/cpo-telemetry/v1",
       "description": "Generated server url"
     }
   ],

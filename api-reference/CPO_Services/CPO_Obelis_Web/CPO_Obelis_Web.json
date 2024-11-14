@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.obelis.energystacks.io/obelis-web/v1",
+      "url": "https://baseurl/obelis-web/v1",
       "description": "Generated server url"
     }
   ],

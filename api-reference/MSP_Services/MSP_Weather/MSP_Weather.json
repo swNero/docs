@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/msp-weather/v1",
+      "url": "https://baseurl/msp-weather/v1",
       "description": "Generated server url"
     }
   ],

@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/direct-payment/v1",
+      "url": "https://baseurl/direct-payment/v1",
       "description": "Generated server url"
     }
   ],

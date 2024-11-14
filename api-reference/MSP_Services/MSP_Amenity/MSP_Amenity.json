@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/msp-amenity/v1",
+      "url": "https://baseurl/msp-amenity/v1",
       "description": "Generated server url"
     }
   ],

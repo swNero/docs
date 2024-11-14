@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/ocpp-server/v1",
+      "url": "https://baseurl/ocpp-server/v1",
       "description": "Generated server url"
     }
   ],

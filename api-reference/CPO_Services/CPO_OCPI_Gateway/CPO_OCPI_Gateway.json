@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/gateway-ocpi/v1",
+      "url": "https://baseurl/gateway-ocpi/v1",
       "description": "Generated server url"
     }
   ],

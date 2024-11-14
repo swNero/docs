@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/ocpp-broker-web/v1",
+      "url": "https://baseurl/ocpp-broker-web/v1",
       "description": "Generated server url"
     }
   ],

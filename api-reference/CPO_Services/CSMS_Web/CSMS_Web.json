@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/cpo-csms-web/v1",
+      "url": "https://baseurl/cpo-csms-web/v1",
       "description": "Generated server url"
     }
   ],
