@@ -1,0 +1,2135 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "direct-payment-service",
+    "description": "The direct payment service is used for the client to pay the CPO directly.",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/direct-payment/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/settings/session-data": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Get session data",
+        "description": "Returns the session data for the direct payment",
+        "operationId": "getSessionData",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectPaymentSessionData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "SESSION_DATA_NOT_FOUND": {
+                    "description": "SESSION_DATA_NOT_FOUND",
+                    "$ref": "#/components/examples/SESSION_DATA_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Update session data",
+        "description": "Save or update session data for the direct payment",
+        "operationId": "setSessionData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DirectPaymentSessionData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tariffs/price-components/active": {
+      "post": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Return active price component by tariff id",
+        "description": "Return the current active price component by tariff id",
+        "operationId": "retrieveActivePriceComponents",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DirectPaymentActivePriceComponentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectPaymentActivePriceComponentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tariff with the provided tariff id does not exist."
+          }
+        }
+      }
+    },
+    "/sessions/{sessionId}/stop": {
+      "post": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Stop a charging session.",
+        "description": "Stops a charging session on a specific EVSE.",
+        "operationId": "stopSession",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "SESSION_DATA_NOT_FOUND": {
+                    "description": "SESSION_DATA_NOT_FOUND",
+                    "$ref": "#/components/examples/SESSION_DATA_NOT_FOUND"
+                  },
+                  "SESSION_NOT_FOUND": {
+                    "description": "SESSION_NOT_FOUND",
+                    "$ref": "#/components/examples/SESSION_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          },
+          "424": {
+            "description": "Failed Dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "INVALID_TRANSACTION_ID": {
+                    "description": "INVALID_TRANSACTION_ID",
+                    "$ref": "#/components/examples/INVALID_TRANSACTION_ID"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FAILED_TO_STOP_REMOTE_TRANSACTION": {
+                    "description": "FAILED_TO_STOP_REMOTE_TRANSACTION",
+                    "$ref": "#/components/examples/FAILED_TO_STOP_REMOTE_TRANSACTION"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions/start": {
+      "post": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Start a charging session.",
+        "description": "Starts a charging session on a specific EVSE.",
+        "operationId": "startSession",
+        "parameters": [
+          {
+            "name": "evseId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectPaymentSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND": {
+                    "description": "CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND",
+                    "$ref": "#/components/examples/CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND"
+                  },
+                  "CHARGING_STATION_NOT_FOUND": {
+                    "description": "CHARGING_STATION_NOT_FOUND",
+                    "$ref": "#/components/examples/CHARGING_STATION_NOT_FOUND"
+                  },
+                  "LOCATION_NOT_FOUND": {
+                    "description": "LOCATION_NOT_FOUND",
+                    "$ref": "#/components/examples/LOCATION_NOT_FOUND"
+                  },
+                  "TARIFF_ID_NOT_EXISTS": {
+                    "description": "TARIFF_ID_NOT_EXISTS",
+                    "$ref": "#/components/examples/TARIFF_ID_NOT_EXISTS"
+                  },
+                  "SESSION_DATA_NOT_FOUND": {
+                    "description": "SESSION_DATA_NOT_FOUND",
+                    "$ref": "#/components/examples/SESSION_DATA_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          },
+          "424": {
+            "description": "Failed Dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CONNECTOR_STANDARD_IS_NULL": {
+                    "description": "CONNECTOR_STANDARD_IS_NULL",
+                    "$ref": "#/components/examples/CONNECTOR_STANDARD_IS_NULL"
+                  },
+                  "CONNECTOR_FORMAT_IS_NULL": {
+                    "description": "CONNECTOR_FORMAT_IS_NULL",
+                    "$ref": "#/components/examples/CONNECTOR_FORMAT_IS_NULL"
+                  },
+                  "CONNECTOR_POWER_TYPE_IS_NULL": {
+                    "description": "CONNECTOR_POWER_TYPE_IS_NULL",
+                    "$ref": "#/components/examples/CONNECTOR_POWER_TYPE_IS_NULL"
+                  },
+                  "TARIFF_NOT_ASSIGNED_TO_CONNECTOR": {
+                    "description": "TARIFF_NOT_ASSIGNED_TO_CONNECTOR",
+                    "$ref": "#/components/examples/TARIFF_NOT_ASSIGNED_TO_CONNECTOR"
+                  },
+                  "LOCATION_IS_NULL": {
+                    "description": "LOCATION_IS_NULL",
+                    "$ref": "#/components/examples/LOCATION_IS_NULL"
+                  },
+                  "LOCATION_COORDINATES_ARE_NULL": {
+                    "description": "LOCATION_COORDINATES_ARE_NULL",
+                    "$ref": "#/components/examples/LOCATION_COORDINATES_ARE_NULL"
+                  },
+                  "LOCATION_ADDRESS_IS_NULL": {
+                    "description": "LOCATION_ADDRESS_IS_NULL",
+                    "$ref": "#/components/examples/LOCATION_ADDRESS_IS_NULL"
+                  },
+                  "LOCATION_CITY_IS_NULL": {
+                    "description": "LOCATION_CITY_IS_NULL",
+                    "$ref": "#/components/examples/LOCATION_CITY_IS_NULL"
+                  },
+                  "LOCATION_COUNTRY_IS_NULL": {
+                    "description": "LOCATION_COUNTRY_IS_NULL",
+                    "$ref": "#/components/examples/LOCATION_COUNTRY_IS_NULL"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CONNECTOR_NOT_AVAILABLE": {
+                    "description": "CONNECTOR_NOT_AVAILABLE",
+                    "$ref": "#/components/examples/CONNECTOR_NOT_AVAILABLE"
+                  },
+                  "CHARGING_STATION_IS_OFFLINE": {
+                    "description": "CHARGING_STATION_IS_OFFLINE",
+                    "$ref": "#/components/examples/CHARGING_STATION_IS_OFFLINE"
+                  },
+                  "FAILED_TO_START_REMOTE_TRANSACTION": {
+                    "description": "FAILED_TO_START_REMOTE_TRANSACTION",
+                    "$ref": "#/components/examples/FAILED_TO_START_REMOTE_TRANSACTION"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions/{sessionId}": {
+      "get": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Get current info for a specific Session",
+        "description": "Get Session's current info and Stripe payment intent ID.",
+        "operationId": "getSessionInfo",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectPaymentSessionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "SESSION_NOT_FOUND": {
+                    "description": "SESSION_NOT_FOUND",
+                    "$ref": "#/components/examples/SESSION_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions/notifications": {
+      "get": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Subscribe to Server-Sent Events for requested ongoing Session.",
+        "description": "Creates a Server-Sent Events (SSE) emitter for the client, allowing the client to subscribe and receive continuous updates of an **ongoing** Session, and CDR creation. \n **Event Types:** \n - SESSION_NOTIFICATION \n - CDR_CREATION_NOTIFICATION",
+        "operationId": "subscribeToSessionNotifications",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/SseEmitter"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "SESSION_NOT_FOUND_WITH_SPECIFIED_STATUS": {
+                    "description": "SESSION_NOT_FOUND_WITH_SPECIFIED_STATUS",
+                    "$ref": "#/components/examples/SESSION_NOT_FOUND_WITH_SPECIFIED_STATUS"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connectors/notifications": {
+      "get": {
+        "tags": [
+          "Connector"
+        ],
+        "summary": "Subscribe to status Server-Sent Events for the requested connector.",
+        "description": "Creates a Server-Sent Events (SSE) emitter for the client, allowing the client to subscribe and receive continuous updates for connector status changes. \n **Event Types:** \n - CONNECTOR_STATUS_NOTIFICATION",
+        "operationId": "subscribeToConnectorStatusNotifications",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/SseEmitter"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CHARGING_STATION_NOT_FOUND": {
+                    "description": "CHARGING_STATION_NOT_FOUND",
+                    "$ref": "#/components/examples/CHARGING_STATION_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chargingstations/{identityKey}": {
+      "get": {
+        "tags": [
+          "Charging Station"
+        ],
+        "summary": "Get Charging Station",
+        "description": "Returns Charging Station with the specific Charging Station Identity Key",
+        "operationId": "getChargingStation",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectPaymentChargingStation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CHARGING_STATION_NOT_FOUND": {
+                    "description": "CHARGING_STATION_NOT_FOUND",
+                    "$ref": "#/components/examples/CHARGING_STATION_NOT_FOUND"
+                  },
+                  "LOCATION_NOT_FOUND": {
+                    "description": "LOCATION_NOT_FOUND",
+                    "$ref": "#/components/examples/LOCATION_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          },
+          "424": {
+            "description": "Failed Dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "LOCATION_IS_NULL": {
+                    "description": "LOCATION_IS_NULL",
+                    "$ref": "#/components/examples/LOCATION_IS_NULL"
+                  },
+                  "LOCATION_COORDINATES_ARE_NULL": {
+                    "description": "LOCATION_COORDINATES_ARE_NULL",
+                    "$ref": "#/components/examples/LOCATION_COORDINATES_ARE_NULL"
+                  },
+                  "LOCATION_ADDRESS_IS_NULL": {
+                    "description": "LOCATION_ADDRESS_IS_NULL",
+                    "$ref": "#/components/examples/LOCATION_ADDRESS_IS_NULL"
+                  },
+                  "LOCATION_CITY_IS_NULL": {
+                    "description": "LOCATION_CITY_IS_NULL",
+                    "$ref": "#/components/examples/LOCATION_CITY_IS_NULL"
+                  },
+                  "LOCATION_COUNTRY_IS_NULL": {
+                    "description": "LOCATION_COUNTRY_IS_NULL",
+                    "$ref": "#/components/examples/LOCATION_COUNTRY_IS_NULL"
+                  },
+                  "CONNECTOR_STANDARD_IS_NULL": {
+                    "description": "CONNECTOR_STANDARD_IS_NULL",
+                    "$ref": "#/components/examples/CONNECTOR_STANDARD_IS_NULL"
+                  },
+                  "CONNECTOR_FORMAT_IS_NULL": {
+                    "description": "CONNECTOR_FORMAT_IS_NULL",
+                    "$ref": "#/components/examples/CONNECTOR_FORMAT_IS_NULL"
+                  },
+                  "CONNECTOR_POWER_TYPE_IS_NULL": {
+                    "description": "CONNECTOR_POWER_TYPE_IS_NULL",
+                    "$ref": "#/components/examples/CONNECTOR_POWER_TYPE_IS_NULL"
+                  },
+                  "TARIFF_NOT_ASSIGNED_TO_CONNECTOR": {
+                    "description": "TARIFF_NOT_ASSIGNED_TO_CONNECTOR",
+                    "$ref": "#/components/examples/TARIFF_NOT_ASSIGNED_TO_CONNECTOR"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Tariff instance is offline",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "TARIFF_SERVICE_IS_OFFLINE": {
+                    "description": "TARIFF_SERVICE_IS_OFFLINE",
+                    "$ref": "#/components/examples/TARIFF_SERVICE_IS_OFFLINE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cdrs/by-session-id/{sessionId}": {
+      "get": {
+        "tags": [
+          "CDRs"
+        ],
+        "summary": "Get CDR by session id",
+        "description": "Returns charge detail record for the specified session id.",
+        "operationId": "getCdrBySessionId",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectPaymentCdrResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CDR_FOR_SESSION_ID_DOESNT_EXIST": {
+                    "description": "CDR_FOR_SESSION_ID_DOESNT_EXIST",
+                    "$ref": "#/components/examples/CDR_FOR_SESSION_ID_DOESNT_EXIST"
+                  },
+                  "SESSION_DATA_NOT_FOUND": {
+                    "description": "SESSION_DATA_NOT_FOUND",
+                    "$ref": "#/components/examples/SESSION_DATA_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "DirectPaymentSessionData": {
+        "required": [
+          "contractId",
+          "countryCode",
+          "idTag",
+          "partyId"
+        ],
+        "type": "object",
+        "properties": {
+          "idTag": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "The identifier that Charge Point must use to start a transaction. Case-insensitive, max length 20. idTag of vehicle owner"
+          },
+          "partyId": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the CPO that 'owns' this Session (following the ISO-15118 standard).",
+            "example": "STK"
+          },
+          "countryCode": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the CPO that 'owns' this Session.",
+            "example": "NL"
+          },
+          "contractId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "The EV contract ID (EVCO)",
+            "example": "DE*DEF*E123ABC"
+          }
+        }
+      },
+      "DirectPaymentActivePriceComponentResponse": {
+        "type": "object",
+        "properties": {
+          "tariffId": {
+            "type": "string",
+            "description": "Unique identifier for the tariff.",
+            "example": "tariff123"
+          },
+          "priceComponentChanged": {
+            "type": "boolean",
+            "description": "Indicates whether there has been a change in the price component."
+          },
+          "priceComponents": {
+            "type": "array",
+            "description": "List of active price components that describe the pricing of a tariff id.",
+            "items": {
+              "$ref": "#/components/schemas/PriceComponent"
+            }
+          }
+        }
+      },
+      "PriceComponent": {
+        "required": [
+          "price",
+          "step_size",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of tariff dimension.",
+            "enum": [
+              "ENERGY",
+              "FLAT",
+              "PARKING_TIME",
+              "TIME"
+            ]
+          },
+          "price": {
+            "type": "number",
+            "description": "Price per unit (excl. VAT) for this tariff dimension.",
+            "example": 2
+          },
+          "vat": {
+            "type": "number",
+            "description": "Applicable VAT percentage for this tariff dimension. If omitted, no VAT is applicable. Not providing a VAT is different from 0% VAT, which would be a value of 0.0 here.",
+            "example": 10
+          },
+          "step_size": {
+            "type": "integer",
+            "description": "Minimum amount to be billed. This unit will be billed in this step_size blocks. Amounts that are less then this step_size are rounded up to the given step_size. For example: if type is TIME and step_size has a value of 300, then time will be billed in blocks of 5 minutes. If 6 minutes were used, 10 minutes (2 blocks of step_size) will be billed.",
+            "format": "int32",
+            "example": 300
+          }
+        },
+        "description": "List of price components that describe the pricing of a tariff."
+      },
+      "DirectPaymentActivePriceComponentRequest": {
+        "required": [
+          "tariffId"
+        ],
+        "type": "object",
+        "properties": {
+          "tariffId": {
+            "type": "string",
+            "description": "Unique identifier for the tariff.",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "priceComponents": {
+            "type": "array",
+            "description": "List of previously active price component(s) that describe the pricing of a tariff.",
+            "items": {
+              "$ref": "#/components/schemas/PriceComponent"
+            }
+          }
+        },
+        "description": "Represents a request to define or update the active price components associated with a specific tariff in a direct payment scenario."
+      },
+      "ErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          }
+        }
+      },
+      "DirectPaymentSessionResponse": {
+        "required": [
+          "currency",
+          "evseUid",
+          "identityKey",
+          "kwh",
+          "lastUpdated",
+          "location",
+          "sessionId",
+          "startDateTime",
+          "status",
+          "tariff"
+        ],
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "description": "Unique identifier of session.",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the session.",
+            "example": "PENDING",
+            "enum": [
+              "ACTIVE",
+              "COMPLETED",
+              "INVALID",
+              "PENDING",
+              "RESERVATION"
+            ]
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "The date and time that session was started or reservation made.",
+            "format": "date-time",
+            "example": "2024-03-19T14:11:43Z"
+          },
+          "endDateTime": {
+            "type": "string",
+            "description": "The date and time that session was completed / finished.",
+            "format": "date-time",
+            "example": "2024-03-19T14:11:43Z"
+          },
+          "identityKey": {
+            "maxLength": 32,
+            "type": "string",
+            "description": "The Identity Key of the Charging Station",
+            "example": "ACE1234"
+          },
+          "evseUid": {
+            "maxLength": 36,
+            "type": "string",
+            "description": "EVSE.uid of the EVSE of this Location on which the charging session is/was happening.",
+            "example": "3256"
+          },
+          "tariff": {
+            "$ref": "#/components/schemas/DirectPaymentTariffResponse"
+          },
+          "kwh": {
+            "type": "number",
+            "description": "How many kWh were charged.",
+            "example": 154
+          },
+          "totalCost": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO 4217 code of the currency used for this session.",
+            "example": "EUR"
+          },
+          "location": {
+            "$ref": "#/components/schemas/DirectPaymentStationLocation"
+          },
+          "stripePaymentIntentId": {
+            "type": "string",
+            "description": "ID of the stripe payment intent."
+          },
+          "lastUpdated": {
+            "type": "string",
+            "description": "Timestamp when this Session was last updated (or created).",
+            "format": "date-time",
+            "example": "2024-03-19T14:11:43Z"
+          }
+        }
+      },
+      "DirectPaymentStationLocation": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location name"
+          },
+          "address": {
+            "maxLength": 45,
+            "type": "string",
+            "description": "Location address"
+          },
+          "city": {
+            "maxLength": 45,
+            "type": "string",
+            "description": "Location city"
+          },
+          "postalCode": {
+            "maxLength": 10,
+            "type": "string",
+            "description": "Location postal code"
+          }
+        },
+        "description": "Charging station location information."
+      },
+      "DirectPaymentTariffResponse": {
+        "required": [
+          "currency",
+          "element"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the tariff.",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO-4217 code of the currency of this tariff.",
+            "example": "EUR"
+          },
+          "element": {
+            "$ref": "#/components/schemas/TariffElement"
+          }
+        },
+        "description": "List of relevant Tariffs"
+      },
+      "Price": {
+        "required": [
+          "excl_vat"
+        ],
+        "type": "object",
+        "properties": {
+          "excl_vat": {
+            "type": "number",
+            "description": "Price/Cost excluding VAT.",
+            "example": 87.31
+          },
+          "incl_vat": {
+            "type": "number",
+            "description": "Price/Cost including VAT.",
+            "example": 101.88
+          }
+        },
+        "description": "Total sum of all the cost related to a reservation of a Charge Point, including fixed price components, in the specified currency."
+      },
+      "TariffElement": {
+        "required": [
+          "price_components"
+        ],
+        "type": "object",
+        "properties": {
+          "restrictions": {
+            "$ref": "#/components/schemas/TariffRestrictions"
+          },
+          "price_components": {
+            "type": "array",
+            "description": "List of price components that describe the pricing of a tariff.",
+            "items": {
+              "$ref": "#/components/schemas/PriceComponent"
+            }
+          }
+        },
+        "description": "List of Tariff Elements."
+      },
+      "TariffRestrictions": {
+        "type": "object",
+        "properties": {
+          "reservation": {
+            "type": "string",
+            "description": "When this field is present, the TariffElement describes reservation costs. A reservation starts when the reservation is made, and ends when the driver starts charging on the reserved EVSE/Location, or when the reservation expires. A reservation can only have: FLAT and TIME TariffDimensions, where TIME is for the duration of the reservation.",
+            "enum": [
+              "RESERVATION",
+              "RESERVATION_EXPIRES"
+            ]
+          },
+          "start_time": {
+            "maxLength": 5,
+            "minLength": 0,
+            "type": "string",
+            "description": "Start time of day in local time, the time zone is defined in the time_zone field of the Location, for example 13:30, valid from this time of the day. Must be in 24h format with leading zeros.Hour/Minute separator: \":\" Regex: ([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "example": "13:30"
+          },
+          "end_time": {
+            "maxLength": 5,
+            "minLength": 0,
+            "type": "string",
+            "description": "End time of day in local time, the time zone is defined in the time_zone field of the Location, for example 19:45, valid until this time of the day. Same syntax as start_time. If end_time < start_time then the period wraps around to the next day. To stop at end of the day use: 00:00."
+          },
+          "start_date": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Start date in local time, the time zone is defined in the time_zone field of the Location, for example: 2015-12-24, valid from this day (inclusive).Regex: ([12][0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])",
+            "example": "2023-12-24"
+          },
+          "end_date": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "End date in local time, the time zone is defined in the time_zone field of theLocation, for example: 2015-12-27, valid until this day (exclusive).Same syntax as start_date.",
+            "example": "2023-12-27"
+          },
+          "min_kwh": {
+            "type": "number",
+            "description": "Minimum consumed energy in kWh, for example 20, valid from this amount of energy (inclusive) being used.",
+            "example": 1
+          },
+          "max_kwh": {
+            "type": "number",
+            "description": "Maximum consumed energy in kWh, for example 50, valid until this amount of energy (exclusive) being used.",
+            "example": 1
+          },
+          "min_current": {
+            "type": "number",
+            "description": "Sum of the minimum current (in Amperes) over all phases, for example 5. When the EV is charging with more than, or equal to, the defined amount of current, this TariffElement is/becomes active. If the charging current is or becomes lower, this TariffElement is not or no longer valid and becomes inactive. This describes NOT the minimum current over the entire Charging Session. This restriction can make a TariffElement become active when the charging current is above the defined value, but the TariffElement MUST no longer be active when the charging current drops below the defined value."
+          },
+          "max_current": {
+            "type": "number",
+            "description": "Sum of the maximum current (in Amperes) over all phases, for example 20. When the EV is charging with less than the defined amount of current, this TariffElement becomes/is active. If the charging current is or becomes higher, this TariffElement is not or no longer valid and becomes inactive. This describes NOT the maximum current over the entire Charging Session. This restriction can make a TariffElement become active when the charging current is below this value, but the TariffElement MUST no longer be active when the charging current raises above the defined value."
+          },
+          "min_power": {
+            "type": "number",
+            "description": "Minimum power in kW, for example 5. When the EV is charging with more than, or equal to, the defined amount of power, this TariffElement is/becomes active. If the charging power is or becomes lower, this TariffElement is not or no longer valid and becomes inactive. This describes NOT the minimum power over the entire Charging Session. This restriction can make a TariffElement become active when the charging power is above this value, but the TariffElement MUST no longer be active when the charging power drops below the defined value."
+          },
+          "max_power": {
+            "type": "number",
+            "description": "Maximum power in kW, for example 20. When the EV is charging with less than the defined amount of power, this TariffElement becomes/is active. If the charging power is or becomes higher, this TariffElement is not or no longer valid and becomes inactive. This describes NOT the maximum power over the entire Charging Session. This restriction can make a TariffElement become active when the charging power is below this value, but the TariffElement MUST no longer be active when the charging power raises above the defined value.",
+            "example": 32
+          },
+          "min_duration": {
+            "type": "integer",
+            "description": "Minimum duration in seconds the Charging Session MUST last (inclusive). When the duration of a Charging Session is longer than the defined value, this TariffElement is or becomes active. Before that moment, this TariffElement is not yet active.",
+            "format": "int32"
+          },
+          "max_duration": {
+            "type": "integer",
+            "description": "Maximum duration in seconds the Charging Session MUST last (exclusive). When the duration of a Charging Session is shorter than the defined value, this TariffElement is or becomes active. After that moment, this TariffElement is no longer active.",
+            "format": "int32"
+          },
+          "day_of_week": {
+            "type": "array",
+            "description": "Which day(s) of the week this TariffElement is active.",
+            "items": {
+              "type": "string",
+              "description": "Which day(s) of the week this TariffElement is active.",
+              "enum": [
+                "MONDAY",
+                "TUESDAY",
+                "WEDNESDAY",
+                "THURSDAY",
+                "FRIDAY",
+                "SATURDAY",
+                "SUNDAY"
+              ]
+            }
+          }
+        },
+        "description": "These restrictions are not for the entire Charging Session. They only describe if and when a TariffElement becomes active or inactive during a Charging Session."
+      },
+      "SseEmitter": {
+        "type": "object",
+        "properties": {
+          "timeout": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "DirectPaymentBrokerConnectorShadow": {
+        "type": "object",
+        "properties": {
+          "connectorId": {
+            "type": "integer",
+            "description": "The ID of the connector",
+            "format": "int32",
+            "example": 1
+          },
+          "evseId": {
+            "type": "string",
+            "description": "The EVSE ID of the connector",
+            "example": "DE*ERG*E10001*1"
+          },
+          "connectorStatus": {
+            "type": "string",
+            "description": "The last known status of the connector",
+            "example": "Available",
+            "enum": [
+              "Undefined",
+              "Available",
+              "Preparing",
+              "Charging",
+              "Occupied",
+              "SuspendedEVSE",
+              "SuspendedEV",
+              "Finishing",
+              "Reserved",
+              "Unavailable",
+              "Faulted"
+            ]
+          },
+          "standard": {
+            "type": "string",
+            "description": "The standard of the installed connector.",
+            "enum": [
+              "CHADEMO",
+              "CHAOJI",
+              "DOMESTIC_A",
+              "DOMESTIC_B",
+              "DOMESTIC_C",
+              "DOMESTIC_D",
+              "DOMESTIC_E",
+              "DOMESTIC_F",
+              "DOMESTIC_G",
+              "DOMESTIC_H",
+              "DOMESTIC_I",
+              "DOMESTIC_J",
+              "DOMESTIC_K",
+              "DOMESTIC_L",
+              "DOMESTIC_M",
+              "DOMESTIC_N",
+              "DOMESTIC_O",
+              "GBT_AC",
+              "GBT_DC",
+              "IEC_60309_2_single_16",
+              "IEC_60309_2_three_16",
+              "IEC_60309_2_three_32",
+              "IEC_60309_2_three_64",
+              "IEC_62196_T1",
+              "IEC_62196_T1_COMBO",
+              "IEC_62196_T2",
+              "IEC_62196_T2_COMBO",
+              "IEC_62196_T3A",
+              "IEC_62196_T3C",
+              "NEMA_5_20",
+              "NEMA_6_30",
+              "NEMA_6_50",
+              "NEMA_10_30",
+              "NEMA_10_50",
+              "NEMA_14_30",
+              "NEMA_14_50",
+              "PANTOGRAPH_BOTTOM_UP",
+              "PANTOGRAPH_TOP_DOWN",
+              "TESLA_R",
+              "TESLA_S",
+              "UNKNOWN"
+            ]
+          },
+          "tariff": {
+            "$ref": "#/components/schemas/DirectPaymentTariffResponse"
+          }
+        },
+        "description": "The connector shadows of the charging station"
+      },
+      "DirectPaymentChargingStation": {
+        "required": [
+          "connectors",
+          "identityKey",
+          "location"
+        ],
+        "type": "object",
+        "properties": {
+          "identityKey": {
+            "maxLength": 32,
+            "minLength": 0,
+            "type": "string",
+            "description": "The Identity Key of the Charging Station",
+            "example": "ACE1234"
+          },
+          "chargingStationName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "This contains the name of the Charging Station, if no name given: “<Model Name> + <Charger ID>",
+            "example": "WallBox NG Pro 21107439"
+          },
+          "online": {
+            "type": "boolean",
+            "description": "Indicates if the Charging Station is online."
+          },
+          "location": {
+            "$ref": "#/components/schemas/DirectPaymentStationLocation"
+          },
+          "connectors": {
+            "type": "array",
+            "description": "The connector shadows of the charging station",
+            "items": {
+              "$ref": "#/components/schemas/DirectPaymentBrokerConnectorShadow"
+            }
+          }
+        }
+      },
+      "CdrDimension": {
+        "required": [
+          "type",
+          "volume"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of CDR dimension.",
+            "example": "RESERVATION_TIME",
+            "enum": [
+              "CURRENT",
+              "ENERGY",
+              "ENERGY_EXPORT",
+              "ENERGY_IMPORT",
+              "MAX_CURRENT",
+              "MIN_CURRENT",
+              "MAX_POWER",
+              "MIN_POWER",
+              "PARKING_TIME",
+              "POWER",
+              "RESERVATION_TIME",
+              "STATE_OF_CHARGE",
+              "TIME"
+            ]
+          },
+          "volume": {
+            "type": "number",
+            "description": "Volume of the dimension consumed, measured according to the dimension type.",
+            "example": 79.65
+          }
+        },
+        "description": "List of relevant values for this charging period."
+      },
+      "CdrLocation": {
+        "required": [
+          "address",
+          "city",
+          "connector_format",
+          "connector_id",
+          "connector_power_type",
+          "connector_standard",
+          "coordinates",
+          "country",
+          "evse_id",
+          "evse_uid",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maxLength": 39,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the location within the CPO’s platform (and suboperator platforms). This field can never be changed, modified or renamed.",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Display name of the location.",
+            "example": "Gent Zuid"
+          },
+          "address": {
+            "maxLength": 45,
+            "minLength": 0,
+            "type": "string",
+            "description": "Street/block name and house number if available.",
+            "example": "F.Rooseveltlaan 3A"
+          },
+          "city": {
+            "maxLength": 45,
+            "minLength": 0,
+            "type": "string",
+            "description": "City or town.",
+            "example": "Gent"
+          },
+          "state": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "State only to be used when relevant."
+          },
+          "country": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO 3166-1 alpha-3 code for the country of this location.",
+            "example": "BEL"
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "postal_code": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Postal code of the location.",
+            "example": "9000"
+          },
+          "evse_uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the EVSE within the CPO’s platform (and suboperator platforms). For example a database unique ID or the actual EVSE ID. This field  can never be changed, modified or renamed. This is the technical identification of the EVSE, not to be used as human readable identification, use the field: evse_id for that.",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "evse_id": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "description": "Compliant with the following specification for EVSE ID from eMI3 standard version V1.0 (http://emi3group.com/documents-links/) Part 2: business objects.",
+            "example": "DE*ERG*E10001*1"
+          },
+          "connector_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Identifier of the connector within the EVSE.",
+            "example": "BE*BEC*E041503003"
+          },
+          "connector_standard": {
+            "type": "string",
+            "description": "The standard of the installed connector.",
+            "example": "TESLA_R",
+            "enum": [
+              "CHADEMO",
+              "CHAOJI",
+              "DOMESTIC_A",
+              "DOMESTIC_B",
+              "DOMESTIC_C",
+              "DOMESTIC_D",
+              "DOMESTIC_E",
+              "DOMESTIC_F",
+              "DOMESTIC_G",
+              "DOMESTIC_H",
+              "DOMESTIC_I",
+              "DOMESTIC_J",
+              "DOMESTIC_K",
+              "DOMESTIC_L",
+              "DOMESTIC_M",
+              "DOMESTIC_N",
+              "DOMESTIC_O",
+              "GBT_AC",
+              "GBT_DC",
+              "IEC_60309_2_single_16",
+              "IEC_60309_2_three_16",
+              "IEC_60309_2_three_32",
+              "IEC_60309_2_three_64",
+              "IEC_62196_T1",
+              "IEC_62196_T1_COMBO",
+              "IEC_62196_T2",
+              "IEC_62196_T2_COMBO",
+              "IEC_62196_T3A",
+              "IEC_62196_T3C",
+              "NEMA_5_20",
+              "NEMA_6_30",
+              "NEMA_6_50",
+              "NEMA_10_30",
+              "NEMA_10_50",
+              "NEMA_14_30",
+              "NEMA_14_50",
+              "PANTOGRAPH_BOTTOM_UP",
+              "PANTOGRAPH_TOP_DOWN",
+              "TESLA_R",
+              "TESLA_S",
+              "UNKNOWN"
+            ]
+          },
+          "connector_format": {
+            "type": "string",
+            "description": "The format (socket/cable) of the installed connector.",
+            "example": "CABLE",
+            "enum": [
+              "SOCKET",
+              "CABLE"
+            ]
+          },
+          "connector_power_type": {
+            "type": "string",
+            "description": "Connector power type",
+            "example": "AC_2_PHASE_SPLIT",
+            "enum": [
+              "AC_1_PHASE",
+              "AC_2_PHASE",
+              "AC_2_PHASE_SPLIT",
+              "AC_3_PHASE",
+              "DC"
+            ]
+          }
+        },
+        "description": "The CdrLocation class contains only the relevant information from the Location object that is needed in a CDR."
+      },
+      "CdrToken": {
+        "required": [
+          "contract_id",
+          "country_code",
+          "party_id",
+          "type",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique ID by which this Token can be identified. This is the field used by the CPO’s system (RFID reader on the Charge Point) to identify this token. Currently, in most cases: type=RFID, this is the RFID hidden ID as read by the RFID reader, but that is not a requirement. If this is a <b>type=APP_USER</b> Token, it will be a unique, by the eMSP, generated ID.",
+            "example": "LKnPKAYKvf"
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Country code of the MSP that 'owns' this Token.",
+            "example": "DE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "ID of the eMSP that 'owns' this Token.",
+            "example": "ERG"
+          },
+          "type": {
+            "type": "string",
+            "description": "    The type of token\n    * <p>\n    * NOTE: The eMSP is RECOMMENDED to push Tokens with type: AD_HOC_USER or APP_USER with whitelist set to\n    * NEVER. Whitelists are very useful for RFID type Tokens, but the AD_HOC_USER/APP_USER Tokens are used to\n    * start Sessions from an App etc. so whitelisting them has no advantages.\n    * </p>\n",
+            "example": "RFID",
+            "enum": [
+              "AD_HOC_USER",
+              "APP_USER",
+              "OTHER",
+              "RFID"
+            ]
+          },
+          "contract_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the EV driver contract token within the eMSP’s platform (and suboperator platforms). Recommended to follow the specification for eMA ID from eMI3 standard version V1.0 (http://emi3group.com/documents-links/) Part 2: business objects.",
+            "example": "DE8ACC12E46L89"
+          }
+        },
+        "description": "Token used to start this charging session, includes all the relevant information to identify the unique token."
+      },
+      "ChargingPeriod": {
+        "required": [
+          "dimensions",
+          "start_date_time"
+        ],
+        "type": "object",
+        "properties": {
+          "dimensions": {
+            "type": "array",
+            "description": "List of relevant values for this charging period.",
+            "items": {
+              "$ref": "#/components/schemas/CdrDimension"
+            }
+          },
+          "start_date_time": {
+            "type": "string",
+            "description": "Start timestamp of the charging period. A period ends when the next period starts. The last period ends when the session ends.",
+            "format": "date-time"
+          },
+          "tariff_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique identifier of the Tariff that is relevant for this Charging Period. If not provided, no Tariff is relevant during this period.",
+            "example": "901c4ba9-e275-4b2a-b0ed-3a1ac710b25c"
+          }
+        },
+        "description": "A Charging Period consists of a start timestamp and a list of possible values that influence this period, for example: amount of energy charged this period, maximum current during this period etc."
+      },
+      "DirectPaymentCdrResponse": {
+        "required": [
+          "auth_method",
+          "cdr_location",
+          "cdr_token",
+          "charging_periods",
+          "country_code",
+          "currency",
+          "end_date_time",
+          "id",
+          "last_updated",
+          "party_id",
+          "start_date_time",
+          "total_cost",
+          "total_energy",
+          "total_time"
+        ],
+        "type": "object",
+        "properties": {
+          "currency": {
+            "maxLength": 3,
+            "type": "string",
+            "description": "Currency of the CDR in ISO 4217 Code.",
+            "example": "EUR"
+          },
+          "tariffs": {
+            "type": "array",
+            "description": "List of relevant Tariffs",
+            "items": {
+              "$ref": "#/components/schemas/DirectPaymentTariffResponse"
+            }
+          },
+          "remark": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "    Optional remark, can be used to provide additional human readable information to the CDR, for example: reason why a transaction was stopped.\n    The cost of the electricity required to charge an EV is less than the cost to use petrol for a similar sized vehicle driving the same distance.\n    The cost will be lower if you charge your EV from your solar PV system or at free charging stations.\n"
+          },
+          "credit": {
+            "type": "boolean",
+            "description": "When set to true, this is a Credit CDR, and the field credit_reference_id needs to be set as well."
+          },
+          "country_code": {
+            "maxLength": 2,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the CPO that 'owns' this CDR.",
+            "example": "DE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "type": "string",
+            "description": "CPO ID of the CPO that 'owns' this CDR (following the ISO-15118 standard).",
+            "example": "ERG"
+          },
+          "id": {
+            "maxLength": 39,
+            "type": "string",
+            "description": "    Uniquely identifies the CDR within the CPO’s platform (and suboperator platforms). This field is longer than the usual 36 characters\n    to allow for credit CDRs to have something appended to the original ID. Normal (non-credit) CDRs SHALL only have an ID with a maximum length of 36.\n",
+            "example": "12345"
+          },
+          "start_date_time": {
+            "type": "string",
+            "description": "    Start timestamp of the charging session, or in-case of a reservation\n    (before the start of a session) the start of the reservation.\n",
+            "format": "date-time",
+            "example": "2015-06-29T21:39:09Z"
+          },
+          "end_date_time": {
+            "type": "string",
+            "description": "    The timestamp when the session was completed/finished, charging might have finished before the session ends,\n    for example: EV is full, but parking cost also has to be paid.\n",
+            "format": "date-time",
+            "example": "2015-06-29T23:37:32Z"
+          },
+          "session_id": {
+            "maxLength": 36,
+            "type": "string",
+            "description": "    Unique ID of the Session for which this CDR is sent. Is only allowed to be omitted when the CPO\n    has not implemented the Sessions module or this CDR is the result of a reservation\n    that never became a charging session, thus no OCPI Session.\n",
+            "example": "59bff33b-595f-407a-ad42-6ea665ef2d74"
+          },
+          "cdr_token": {
+            "$ref": "#/components/schemas/CdrToken"
+          },
+          "auth_method": {
+            "type": "string",
+            "description": "Method used for authentication.",
+            "example": "WHITELIST",
+            "enum": [
+              "AUTH_REQUEST",
+              "COMMAND",
+              "WHITELIST"
+            ]
+          },
+          "authorization_reference": {
+            "maxLength": 36,
+            "type": "string",
+            "description": "    Reference to the authorization given by the eMSP. When the eMSP provided an authorization_reference in either: real-time authorization or StartSession,\n    this field SHALL contain the same value. When different authorization_reference values have been given by the eMSP that are relevant to this Session,\n    the last given value SHALL be used here.\n",
+            "example": "40dbc1a6-3324-4424-a798-3a6e70e83bba"
+          },
+          "cdr_location": {
+            "$ref": "#/components/schemas/CdrLocation"
+          },
+          "meter_id": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Identification of the Meter inside the Charge Point.",
+            "example": "demo meter id"
+          },
+          "charging_periods": {
+            "type": "array",
+            "description": "    List of Charging Periods that make up this charging session. A session consists of 1 or more periods,\n    where each period has a different relevant Tariff.\n",
+            "items": {
+              "$ref": "#/components/schemas/ChargingPeriod"
+            }
+          },
+          "signed_data": {
+            "$ref": "#/components/schemas/SignedData"
+          },
+          "total_cost": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "total_fixed_cost": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "total_energy": {
+            "type": "number",
+            "description": "Total energy charged, in kWh."
+          },
+          "total_energy_cost": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "total_time": {
+            "type": "number",
+            "description": "Total duration of the charging session (including the duration of charging and not charging), in hours."
+          },
+          "total_time_cost": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "total_parking_time": {
+            "type": "number",
+            "description": "Total duration of the charging session where the EV was not charging (no energy was transferred between EVSE and EV), in hours."
+          },
+          "total_parking_cost": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "total_reservation_cost": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "invoice_reference_id": {
+            "maxLength": 39,
+            "type": "string",
+            "description": "    This field can be used to reference an invoice, that will later be send for this CDR.\n    Making it easier to link a CDR to a given invoice. Maybe even group CDRs that will be on the same invoice.\n"
+          },
+          "credit_reference_id": {
+            "maxLength": 39,
+            "type": "string",
+            "description": "Is required to be set for a Credit CDR. This SHALL contain the id of the CDR for which this is a Credit CDR.",
+            "example": "11ctt8q0y5tq0li8671wz3a5p8oe436bcmefr55"
+          },
+          "home_charging_compensation": {
+            "type": "boolean",
+            "description": "    When set to true, this CDR is for a charging session using the home charger of the EV Driver\n    for which the energy cost needs to be financially compensated to the EV Driver.\n"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this CDR was last updated (or created).",
+            "format": "date-time",
+            "example": "2021-03-19T14:11:43Z"
+          }
+        },
+        "description": "    The CDR object describes the charging session and its costs, how these costs are composed, etc.\n    <br>\n    The CDR object is different from the Session object. The Session object is dynamic as it reflects the current state of the charging\n    session. The information is meant to be viewed by the driver while the charging session is ongoing.\n    <br>\n"
+      },
+      "GeoLocation": {
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "string",
+            "description": "Latitude of the point in decimal degree. Decimal separator: '.', Regex: -?[0-9]{1,2}\\.[0-9]{5,7}",
+            "example": "50.770774"
+          },
+          "longitude": {
+            "type": "string",
+            "description": "Longitude of the point in decimal degree. Decimal separator: '.' Regex: -?[0-9]{1,3}\\.[0-9]{5,7}",
+            "example": "-126.104965"
+          }
+        },
+        "description": "This class defines the geo location of the Charge Point. The geodetic system to be used is WGS 84."
+      },
+      "SignedData": {
+        "required": [
+          "encoding_method",
+          "signed_values"
+        ],
+        "type": "object",
+        "properties": {
+          "url": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "description": "URL that can be shown to an EV driver. This URL gives the EV driver the possibility to check the signed data from a charging session.",
+            "example": "https://www.example.com/advertisement"
+          },
+          "encoding_method": {
+            "type": "string",
+            "description": "The name of the encoding used in the SignedData field. This is the name given to the encoding by a company or group of companies.",
+            "example": "UTF-8"
+          },
+          "encoding_method_version": {
+            "type": "integer",
+            "description": "Version of the EncodingMethod (when applicable)",
+            "format": "int32"
+          },
+          "public_key": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "description": "Public key used to sign the data, base64 encoded.",
+            "example": "-----BEGIN RSA PUBLIC KEY-----\nMEgCQQCo9+BpMRYQ/dL3DS2CyJxRF+j6ctbT3/Qp84+KeFhnii7NT7fELilKUSnx\nS30WAvQCCo2yU1orfgqr41mM70MBAgMBAAE=\n-----END RSA PUBLIC KEY-----"
+          },
+          "signed_values": {
+            "type": "array",
+            "description": "One or more signed values.",
+            "items": {
+              "$ref": "#/components/schemas/SignedValue"
+            }
+          }
+        },
+        "description": "This class contains all the information of the signed data. Which encoding method is used, if needed, the public key and a list of signed values."
+      },
+      "SignedValue": {
+        "required": [
+          "plain_data",
+          "signed_data"
+        ],
+        "type": "object",
+        "properties": {
+          "nature": {
+            "type": "string",
+            "description": "Nature of the value, in other words, the event this value belongs to.\nPossible values at moment of writing: \n- Start (value at the start of the Session)\n- End (signed value at the end of the Session)\n- Intermediate (signed values take during the Session, after Start, before End)\nOthers might be added later."
+          },
+          "plain_data": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "description": "The unencoded string of data. The format of the content depends on the EncodingMethod field.",
+            "example": "iu9daxlgjc1fn7l5qj8777t9qxduy1a93366psubpp3j9aeogh6p0quc8myofqaoqc7tibug9ivxza754qtzguq61tt8ugygqoxv3rzi7tfmms13jx50455h7z3c9tj11s2hh316ecrreqo9e6farf716vnhcs6wnoz7rn0umcktx2c2y8ggem1zkqa1tqlgtx7hd29qkyzu5izjlpyjyvj0a22lyerpljc9k32bexp1hfhpofnon3by09xnohrfxy9trraev0yihdelc53slaw4opz8jfi3pxqhksz3bkh2lcsvz7lon9hbuh4fty260qmo6f53vqfwco1ptwjqqby5gmzgqpq29knbfwg8qxkpmqwglyhu6zrtm5ghyn4ft4hqwhy444zhr2wjerg71ue8qa5tl2ur6k7hidp0wssta2d1coyl2nhfik3j75m2pho3yurirttasr2m977kcfr5h0vsxjlj0r02lxucu6hk9yfipwti4xeddymxni1p"
+          },
+          "signed_data": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "description": "Blob of signed data, base64 encoded. The format of the content depends on the EncodingMethod field.",
+            "example": "}/x/j*}g9k^1axjfv{+91#w’dhuds’>”^`%{4>xw1!b7~!8w]awi:_0jv:`=^pf_q_7.f`<^9f^o$w.#qzmb(8$|!.mo^>_ixgea4{c{gfb:bu^f\\w}haj5(^djnbvy>z=!5o|m.\\”x0>|9p7*h~.1&;hl=z65)#o]q(x’/l^’/ne-vt<:a&#4y08]b.f@%te+85iw9dkvy@6ah$9[[;’ut:\\:y7p&;70l$s?[u)\\c9”]>k1{w~`ih*a;-1dv(=[?g!6!a/ma%”!*630_=^g’mf6e;<hy;k;^kny=#31c;>}’sh”’<^3!/’’$vw`u8{?4”akms+{egz<x>79{.7y%k.(x4@.*@t?|7e5kvt94/][p=qxl|_:z^]6&h$]m0dlx!^{>\\@@x@u.~ca?8^d{=vxr1#7gdt0`!qv0fwl9^::\\)]jv(n#?””z}$8_4#*fv!ld|n_r%u?>]=v(|i”e*blz//%h`\b!@d/0$+=izqi:$f(.dll.]ji@%2gq$1ds?"
+          }
+        },
+        "description": "This class contains the signed and the plain/unsigned data. By decoding the data, the receiver can check if the content has not been altered."
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "RABBITMQ_LISTENER_ERROR": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] An error occurred in RabbitMQ listener\",\n  \"errorCode\" : \"RABBITMQ_LISTENER_ERROR\"\n}"
+      },
+      "INVALID_RABBITMQ_RPC_RESPONSE": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] Invalid RabbitMQ RPC response\",\n  \"errorCode\" : \"INVALID_RABBITMQ_RPC_RESPONSE\"\n}"
+      },
+      "TARIFF_NOT_ASSIGNED_TO_CONNECTOR": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Tariff not assigned to connector.\",\n  \"errorCode\" : \"TARIFF_NOT_ASSIGNED_TO_CONNECTOR\"\n}"
+      },
+      "TARIFF_DOES_NOT_EXIST": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Tariff assigned to a connector does not exist.\",\n  \"errorCode\" : \"TARIFF_DOES_NOT_EXIST\"\n}"
+      },
+      "SESSION_DATA_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Session data which is mandatory for starting transactions is not set.\",\n  \"errorCode\" : \"SESSION_DATA_NOT_FOUND\"\n}"
+      },
+      "SESSION_FOR_EVSE_ID_DOESNT_EXIST": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Session doesn't exist for the provided EVSE ID.\",\n  \"errorCode\" : \"SESSION_FOR_EVSE_ID_DOESNT_EXIST\"\n}"
+      },
+      "SESSION_FOR_TRANSACTION_ID_DOESNT_EXIST": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Session doesn't exist for the provided transaction id.\",\n  \"errorCode\" : \"SESSION_FOR_TRANSACTION_ID_DOESNT_EXIST\"\n}"
+      },
+      "SESSION_NOT_IN_THE_DATABASE": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Session does not exist in the direct payment database.\",\n  \"errorCode\" : \"SESSION_NOT_IN_THE_DATABASE\"\n}"
+      },
+      "CDR_FOR_SESSION_ID_DOESNT_EXIST": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] CDR with the provided sessionId does not exist.\",\n  \"errorCode\" : \"CDR_FOR_SESSION_ID_DOESNT_EXIST\"\n}"
+      },
+      "CONNECTOR_POWER_TYPE_IS_NULL": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Connector power type must not be null.\",\n  \"errorCode\" : \"CONNECTOR_POWER_TYPE_IS_NULL\"\n}"
+      },
+      "CONNECTOR_FORMAT_IS_NULL": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Connector format must not be null.\",\n  \"errorCode\" : \"CONNECTOR_FORMAT_IS_NULL\"\n}"
+      },
+      "CONNECTOR_STANDARD_IS_NULL": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Connector standard must not be null.\",\n  \"errorCode\" : \"CONNECTOR_STANDARD_IS_NULL\"\n}"
+      },
+      "CONNECTOR_NOT_AVAILABLE": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Connector status must be AVAILABLE or PREPARING.\",\n  \"errorCode\" : \"CONNECTOR_NOT_AVAILABLE\"\n}"
+      },
+      "LOCATION_COORDINATES_ARE_NULL": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Charging Station Location coordinates must not be null.\",\n  \"errorCode\" : \"LOCATION_COORDINATES_ARE_NULL\"\n}"
+      },
+      "LOCATION_ADDRESS_IS_NULL": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Charging Station Location address must not be null or empty.\",\n  \"errorCode\" : \"LOCATION_ADDRESS_IS_NULL\"\n}"
+      },
+      "LOCATION_CITY_IS_NULL": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Charging Station Location city must not be null or empty.\",\n  \"errorCode\" : \"LOCATION_CITY_IS_NULL\"\n}"
+      },
+      "LOCATION_COUNTRY_IS_NULL": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Charging Station Location country must not be null or empty.\",\n  \"errorCode\" : \"LOCATION_COUNTRY_IS_NULL\"\n}"
+      },
+      "LOCATION_IS_NULL": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Charging Station Location must not be null.\",\n  \"errorCode\" : \"LOCATION_IS_NULL\"\n}"
+      },
+      "CHARGING_STATION_IS_OFFLINE": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Charging Station must be online.\",\n  \"errorCode\" : \"CHARGING_STATION_IS_OFFLINE\"\n}"
+      },
+      "TARIFF_SERVICE_IS_OFFLINE": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Tariff instance is offline.\",\n  \"errorCode\" : \"TARIFF_SERVICE_IS_OFFLINE\"\n}"
+      },
+      "FAILED_TO_START_REMOTE_TRANSACTION": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Failed to start a new remote transaction\",\n  \"errorCode\" : \"FAILED_TO_START_REMOTE_TRANSACTION\"\n}"
+      },
+      "FAILED_TO_STOP_REMOTE_TRANSACTION": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Failed to stop remote transaction\",\n  \"errorCode\" : \"FAILED_TO_STOP_REMOTE_TRANSACTION\"\n}"
+      },
+      "INVALID_TRANSACTION_ID": {
+        "value": "{\n  \"message\" : \"[DIRECT-PAYMENT] Session contains invalid transaction id\",\n  \"errorCode\" : \"INVALID_TRANSACTION_ID\"\n}"
+      },
+      "SESSION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Session is not found.\",\n  \"errorCode\" : \"SESSION_NOT_FOUND\"\n}"
+      },
+      "SESSION_ID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A session with the same ID already exists.\",\n  \"errorCode\" : \"SESSION_ID_ALREADY_EXISTS\"\n}"
+      },
+      "SESSION_NOT_FOUND_WITH_SPECIFIED_STATUS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Session with the specified status(es) not found.\",\n  \"errorCode\" : \"SESSION_NOT_FOUND_WITH_SPECIFIED_STATUS\"\n}"
+      },
+      "CDR_ID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A CDR with the same ID already exists.\",\n  \"errorCode\" : \"CDR_ID_ALREADY_EXISTS\"\n}"
+      },
+      "CDR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A CDR with the specified ID is not found.\",\n  \"errorCode\" : \"CDR_NOT_FOUND\"\n}"
+      },
+      "PARTY_IDS_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Party IDs are provided.\",\n  \"errorCode\" : \"PARTY_IDS_DO_NOT_MATCH\"\n}"
+      },
+      "COUNTRY_CODES_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Country Codes are provided.\",\n  \"errorCode\" : \"COUNTRY_CODES_DO_NOT_MATCH\"\n}"
+      },
+      "SESSION_IDS_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Session IDs are provided.\",\n  \"errorCode\" : \"SESSION_IDS_DO_NOT_MATCH\"\n}"
+      },
+      "AUTHORIZATION_REFERENCES_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Authorization References are provided.\",\n  \"errorCode\" : \"AUTHORIZATION_REFERENCES_DO_NOT_MATCH\"\n}"
+      },
+      "CDR_LOCATION_ID_EXISTS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A CDR Location with the same id already exists.\",\n  \"errorCode\" : \"CDR_LOCATION_ID_EXISTS\"\n}"
+      },
+      "UNABLE_TO_FETCH_TEMPLATE": {
+        "value": "{\n  \"message\" : \"Unable to fetch email template.\",\n  \"errorCode\" : \"UNABLE_TO_FETCH_TEMPLATE\"\n}"
+      },
+      "UNABLE_TO_SEND_EMAIL": {
+        "value": "{\n  \"message\" : \"Unable to send email.\",\n  \"errorCode\" : \"UNABLE_TO_SEND_EMAIL\"\n}"
+      },
+      "EMAIL_SENDER_NOT_CONFIGURED": {
+        "value": "{\n  \"message\" : \"Mailing environment properties not properly configured.\",\n  \"errorCode\" : \"EMAIL_SENDER_NOT_CONFIGURED\"\n}"
+      },
+      "USERNAME_OR_PASSWORD_IS_INCORRECT": {
+        "value": "{\n  \"message\" : \"Username or password is incorrect\",\n  \"errorCode\" : \"USERNAME_OR_PASSWORD_IS_INCORRECT\"\n}"
+      },
+      "ALERT_ALREADY_CREATED": {
+        "value": "{\n  \"message\" : \"Alert already exists\",\n  \"errorCode\" : \"ALERT_ALREADY_CREATED\"\n}"
+      },
+      "ALERT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Alert not found\",\n  \"errorCode\" : \"ALERT_NOT_FOUND\"\n}"
+      },
+      "ALERT_DOESNT_EXIST": {
+        "value": "{\n  \"message\" : \"Alert with this connectorId and identityKey doesn't exist\",\n  \"errorCode\" : \"ALERT_DOESNT_EXIST\"\n}"
+      },
+      "END_DATETIME_NOT_AFTER_START_DATETIME": {
+        "value": "{\n  \"message\" : \"timeTo cannot be before or equal to timeFrom.\",\n  \"errorCode\" : \"END_DATETIME_NOT_AFTER_START_DATETIME\"\n}"
+      },
+      "TARIFF_ID_NOT_EXISTS": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff with the provided tariff id does not exist.\",\n  \"errorCode\" : \"TARIFF_ID_NOT_EXISTS\"\n}"
+      },
+      "MORE_THAN_ONE_TARIFFS_FOUND": {
+        "value": "{\n  \"message\" : \"[TARIFF] More than one tariffs for the specific date range are found.\",\n  \"errorCode\" : \"MORE_THAN_ONE_TARIFFS_FOUND\"\n}"
+      },
+      "TARIFF_IDS_NOT_EXIST": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariffs with the provided tariff ids do not exist or they are not valid for the current date.\",\n  \"errorCode\" : \"TARIFF_IDS_NOT_EXIST\"\n}"
+      },
+      "CANNOT_UPDATE_TARIFF": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff can not be updated because it is assigned on a connector\",\n  \"errorCode\" : \"CANNOT_UPDATE_TARIFF\"\n}"
+      },
+      "TARIFFS_VALIDITY_PERIODS_OVERLAP": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff validity periods overlap.\",\n  \"errorCode\" : \"TARIFFS_VALIDITY_PERIODS_OVERLAP\"\n}"
+      },
+      "TARIFF_ELEMENT_DATES_OVERLAP_TARIFF_DATES": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff element dates are overlapping tariff dates\",\n  \"errorCode\" : \"TARIFF_ELEMENT_DATES_OVERLAP_TARIFF_DATES\"\n}"
+      },
+      "TARIFF_ELEMENT_DATES_OVERLAP": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff element dates overlap\",\n  \"errorCode\" : \"TARIFF_ELEMENT_DATES_OVERLAP\"\n}"
+      },
+      "TARIFF_DATES_OVERLAP": {
+        "value": "{\n  \"message\" : \"[TARIFF] Tariff dates overlap\",\n  \"errorCode\" : \"TARIFF_DATES_OVERLAP\"\n}"
+      },
+      "WRONG_TARIFF_DATE_FORMAT": {
+        "value": "{\n  \"message\" : \"[TARIFF] Wrong Tariff dates format\",\n  \"errorCode\" : \"WRONG_TARIFF_DATE_FORMAT\"\n}"
+      },
+      "END_DATE_NOT_VALID": {
+        "value": "{\n  \"message\" : \"[TARIFF] End date can not be in the past\",\n  \"errorCode\" : \"END_DATE_NOT_VALID\"\n}"
+      },
+      "RPC_TIMEOUT": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The RPC call to the charging station did not respond in time.\",\n  \"errorCode\" : \"RPC_TIMEOUT\"\n}"
+      },
+      "RPC_ERROR": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] An error occured during the remote procedure call\",\n  \"errorCode\" : \"RPC_ERROR\"\n}"
+      },
+      "UNABLE_TO_DELETE_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot delete CSMS with connected charging stations to it.\",\n  \"errorCode\" : \"UNABLE_TO_DELETE_CSMS\"\n}"
+      },
+      "NOT_UNIQUE_NAME": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided name is not unique.\",\n  \"errorCode\" : \"NOT_UNIQUE_NAME\"\n}"
+      },
+      "DEFAULT_CSMS_CANNOT_CHANGE_TO_NOT_DEFAULT": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Default CSMS cannot change to not-default.\",\n  \"errorCode\" : \"DEFAULT_CSMS_CANNOT_CHANGE_TO_NOT_DEFAULT\"\n}"
+      },
+      "CANNOT_DELETE_DEFAULT_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot delete Default CSMS, unless it is the only one and with no connected charging stations to it.\",\n  \"errorCode\" : \"CANNOT_DELETE_DEFAULT_CSMS\"\n}"
+      },
+      "CSMS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested CSMS not found.\",\n  \"errorCode\" : \"CSMS_NOT_FOUND\"\n}"
+      },
+      "CSMS_URL_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided CSMS url is not unique.\",\n  \"errorCode\" : \"CSMS_URL_ALREADY_EXISTS\"\n}"
+      },
+      "CHARGING_STATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested Charging Station not found.\",\n  \"errorCode\" : \"CHARGING_STATION_NOT_FOUND\"\n}"
+      },
+      "UNABLE_TO_CONNECT_TO_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot connect to CSMS, endpoint is not reachable\",\n  \"errorCode\" : \"UNABLE_TO_CONNECT_TO_CSMS\"\n}"
+      },
+      "CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] A Charging Station with the same Identity key already exists.\",\n  \"errorCode\" : \"CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS\"\n}"
+      },
+      "BIG_QUERY_CONNECTION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] BigQuery connection error\",\n  \"errorCode\" : \"BIG_QUERY_CONNECTION\"\n}"
+      },
+      "WRONG_OCPP_VERSION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The negotiated OCPP protocol version is not supporting this request\",\n  \"errorCode\" : \"WRONG_OCPP_VERSION\"\n}"
+      },
+      "CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested Charging Station Shadow Connector not found.\",\n  \"errorCode\" : \"CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND\"\n}"
+      },
+      "LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Location with the specified UUID not found\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
+      },
+      "INVALID_IDENTITY_KEY": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] One or more specified charging station identity keys are not valid\",\n  \"errorCode\" : \"INVALID_IDENTITY_KEY\"\n}"
+      },
+      "FAILED_TO_DELETE_LOCATION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Failed to delete Location which has charging station/s bound to it\",\n  \"errorCode\" : \"FAILED_TO_DELETE_LOCATION\"\n}"
+      },
+      "INVALID_LOCATION_RELATION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] One or more charging stations are not assigned to the specified location\",\n  \"errorCode\" : \"INVALID_LOCATION_RELATION\"\n}"
+      },
+      "WRONG_PASSWORD": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The given password does not match with the confirmation password\",\n  \"errorCode\" : \"WRONG_PASSWORD\"\n}"
+      },
+      "UNABLE_TO_UPDATE_CSMS_CREDENTIALS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] No changes were requested.\",\n  \"errorCode\" : \"UNABLE_TO_UPDATE_CSMS_CREDENTIALS\"\n}"
+      },
+      "DUPLICATE_CONNECTOR_ID": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Connectors with the same id in the request.\",\n  \"errorCode\" : \"DUPLICATE_CONNECTOR_ID\"\n}"
+      },
+      "PAGE_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Max number of the results per page is 100.\",\n  \"errorCode\" : \"PAGE_SIZE_EXCEEDED\"\n}"
+      },
+      "TARIFF_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Tariff with the specified UUID not found\",\n  \"errorCode\" : \"TARIFF_NOT_FOUND\"\n}"
+      },
+      "EVSE_ID_NOT_UNIQUE": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided EVSE ID already exists.\",\n  \"errorCode\" : \"EVSE_ID_NOT_UNIQUE\"\n}"
+      },
+      "EVSE_ID_DUPLICATES": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Two or more EVSE ID's are identical. All EVSE ID's must be unique.\",\n  \"errorCode\" : \"EVSE_ID_DUPLICATES\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "MSP Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "MSP Direct Payment",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

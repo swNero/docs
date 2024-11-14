@@ -1,0 +1,3404 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "msp-chargingstation-service",
+    "description": "",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/msp-chargingstation/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Charging Stations",
+      "description": "Charging Stations information stored in memory"
+    },
+    {
+      "name": "Location controller",
+      "description": "Provides routes to manipulate locations. Follows OCPI protocol."
+    }
+  ],
+  "paths": {
+    "/payment-services": {
+      "get": {
+        "tags": [
+          "Payment Services"
+        ],
+        "summary": "Get all payment services from the database",
+        "operationId": "getAllPaymentServices",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentService"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Payment Services"
+        ],
+        "summary": "Update payment service info",
+        "operationId": "updatePaymentService",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentService"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment service not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Payment Services"
+        ],
+        "summary": "Add a new payment service",
+        "operationId": "addPaymentService",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentServiceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Payment service already exists",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{countryCode}/{partyId}/{locationId}": {
+      "put": {
+        "tags": [
+          "Location controller"
+        ],
+        "summary": "Push new/updated Location",
+        "description": "Push new/updated Location to the eMSP",
+        "operationId": "putLocation",
+        "parameters": [
+          {
+            "name": "countryCode",
+            "in": "path",
+            "description": "Country code of the CPO requesting data from the eMSP system.",
+            "required": true,
+            "schema": {
+              "maxLength": 2,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "partyId",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO requesting data from the eMSP system.",
+            "required": true,
+            "schema": {
+              "maxLength": 3,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "Location.id of the Location object to retrieve.",
+            "required": true,
+            "schema": {
+              "maxLength": 36,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Location controller"
+        ],
+        "summary": "Patch update of the location",
+        "description": "Affects just changed fields of the Location",
+        "operationId": "patchLocation",
+        "parameters": [
+          {
+            "name": "countryCode",
+            "in": "path",
+            "description": "Country code of the CPO requesting data from the eMSP system.",
+            "required": true,
+            "schema": {
+              "maxLength": 2,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "partyId",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO requesting data from the eMSP system.",
+            "required": true,
+            "schema": {
+              "maxLength": 3,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "Location.id of the Location object to retrieve.",
+            "required": true,
+            "schema": {
+              "maxLength": 36,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cpo-group": {
+      "get": {
+        "tags": [
+          "CPO Group"
+        ],
+        "summary": "Get all CPO groups from the database",
+        "operationId": "getAllCpoGroups",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CpoGroupDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "CPO Group"
+        ],
+        "summary": "Update CPO group info",
+        "operationId": "updateCpoGroup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CpoGroupDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CPO group not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "CPO Group"
+        ],
+        "summary": "Add a new CPO group",
+        "operationId": "addNewCpoGroup",
+        "parameters": [
+          {
+            "name": "countryCode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cpoId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CPO group already exists",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/images/{locationId}/{userId}/{imageCategory}": {
+      "post": {
+        "tags": [
+          "Charging Station Location Images"
+        ],
+        "summary": "Upload approved image for the location",
+        "description": "Upload approved image for the specified charging station location and image category",
+        "operationId": "submitApprovedLocationImage",
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "The id of the location",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The id of the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "imageCategory",
+            "in": "path",
+            "description": "Category of the image",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CHARGER",
+                "ENTRANCE",
+                "LOCATION",
+                "NETWORK",
+                "OPERATOR",
+                "OTHER",
+                "OWNER"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "fileHighRes",
+                  "fileThumbnail"
+                ],
+                "type": "object",
+                "properties": {
+                  "fileHighRes": {
+                    "type": "string",
+                    "description": "High Res image of the location",
+                    "format": "binary"
+                  },
+                  "fileThumbnail": {
+                    "type": "string",
+                    "description": "Thumbnail image of the location",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "409": {
+            "description": "The image was already uploaded"
+          },
+          "500": {
+            "description": "The image can not be processed"
+          }
+        }
+      }
+    },
+    "/locations/file": {
+      "post": {
+        "tags": [
+          "Location controller"
+        ],
+        "summary": "Upload file containing OCPI compliant locations in the JSON format",
+        "description": "Upload file containing OCPI compliant locations in the JSON format and asynchronously persist them into the database",
+        "operationId": "uploadLocationsFromFile",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cpo-payment-services": {
+      "get": {
+        "tags": [
+          "CPO Payment Services"
+        ],
+        "summary": "Get the payment services for the specified CPO ID - Country Code combination from the DB.If no parameters are specified payment services which are common for all CPOs are returned",
+        "operationId": "getPaymentServices",
+        "parameters": [
+          {
+            "name": "countryCode",
+            "in": "query",
+            "description": "Optional country code",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cpoId",
+            "in": "query",
+            "description": "Optional CPO ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentService"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "CPO Payment Services"
+        ],
+        "summary": "Add or update CPO payment services. If no parameters are specified every CPO will be updated with the specified payment services",
+        "operationId": "addOrUpdateCpoPaymentServices",
+        "parameters": [
+          {
+            "name": "countryCode",
+            "in": "query",
+            "description": "Optional country code",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cpoId",
+            "in": "query",
+            "description": "Optional CPO ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "uniqueItems": true,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment service/s not found"
+          }
+        }
+      }
+    },
+    "/charging-stations": {
+      "get": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Get charging stations by IDs",
+        "description": "Returns the list of charging stations by the list of IDs",
+        "operationId": "getLocationsByIds",
+        "parameters": [
+          {
+            "name": "publishTokenUid",
+            "in": "query",
+            "description": "The optional publish token UID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "The list of IDs",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "404": {
+            "description": "Charging station could not be found"
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Get charging stations clustered by zoom level",
+        "description": "Returns the clustered list of all charging stations in the specified bounds",
+        "operationId": "getLocations",
+        "parameters": [
+          {
+            "name": "publishTokenUid",
+            "in": "query",
+            "description": "The optional publish token UID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        }
+      }
+    },
+    "/charging-stations/autocomplete": {
+      "post": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Get autocomplete results for the charging station name query, optional power level filter and optional geo_location parameter",
+        "description": "Performs a search for charging stations based on the name query and optional power level filter (at least one station connector needs to have power level in the specified range). If the geo_location parameter is present, returns stations sorted by distance from the geo location",
+        "operationId": "autocomplete",
+        "parameters": [
+          {
+            "name": "publishTokenUid",
+            "in": "query",
+            "description": "The optional publish token UID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutocompleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AutocompleteResponse"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "404": {
+            "description": "Dataset associated with the api key not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        }
+      }
+    },
+    "/charging-stations/around": {
+      "post": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Get all charging stations around geo location",
+        "description": "Returns the list of charging stations and air distances from the geo coordinate",
+        "operationId": "getLocationsAroundGeoLocation",
+        "parameters": [
+          {
+            "name": "publishTokenUid",
+            "in": "query",
+            "description": "The optional publish token UID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AroundGeoLocationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AroundGeoLocationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        }
+      }
+    },
+    "/payment-services/{uuid}": {
+      "get": {
+        "tags": [
+          "Payment Services"
+        ],
+        "summary": "Get payment service by uuid",
+        "operationId": "getPaymentServiceByUuid",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentService"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment service not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentService"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Payment Services"
+        ],
+        "summary": "Delete payment service from the database. Payment service is deleted from all CPOs",
+        "operationId": "deletePaymentService",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment service not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations": {
+      "get": {
+        "tags": [
+          "Location controller"
+        ],
+        "summary": "Returns the list of paginated charging stations",
+        "description": "Returns the list of paginated charging stations for input parameters page number and size - number of elements per page. It also returns the total number of pages for given size and total number of elements.If page and size are not specified default result will be first page with 20 elements.",
+        "operationId": "getAllLocations",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Requested page - can not be less then 0, 0 is first page",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Number of results per page - must be between 1 and 100",
+            "required": true,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/locations/{locationId}": {
+      "get": {
+        "tags": [
+          "Location controller"
+        ],
+        "summary": "Get the location for the specified Location id",
+        "description": "Get the location for the specified Location id",
+        "operationId": "findByLocationId",
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "The id of the location",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cpo-group/{uuid}": {
+      "get": {
+        "tags": [
+          "CPO Group"
+        ],
+        "summary": "Get CPO group by uuid",
+        "operationId": "getCpoGroupByUuid",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CpoGroupDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CPO group not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CpoGroupDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "CPO Group"
+        ],
+        "summary": "Delete CPO group from the database.",
+        "operationId": "deleteCpoGroup",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "CPO group not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/charging-stations/search": {
+      "get": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Search charging stations",
+        "description": "Performs a search for charging station locations by an EVSE ID OR charging station name",
+        "operationId": "search",
+        "parameters": [
+          {
+            "name": "publishTokenUid",
+            "in": "query",
+            "description": "The optional publish token UID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse",
+            "in": "query",
+            "description": "The EVSE ID",
+            "required": false,
+            "schema": {
+              "maxLength": 2147483647,
+              "minLength": 3,
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The charging station name",
+            "required": false,
+            "schema": {
+              "maxLength": 2147483647,
+              "minLength": 3,
+              "type": "string"
+            }
+          },
+          {
+            "name": "operatorUuid",
+            "in": "query",
+            "description": "The optional filter for the operator UUID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Both search query terms were defined"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "404": {
+            "description": "Charging station could not be found"
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        }
+      }
+    },
+    "/charging-stations/availability-prediction/location/{locationId}": {
+      "get": {
+        "tags": [
+          "Charging Station Availability Prediction"
+        ],
+        "summary": "Get availability prediction per Location ID",
+        "description": "Returns a prediction list of timestamp and status for a given Location ID",
+        "operationId": "getAvailabilityPredictionByLocationId",
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timeframe",
+            "in": "query",
+            "description": "Value is in minutes in 15 minutes intervals starting from 0",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationAvailabilityPredictionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Invalid or missing Credentials"
+          }
+        }
+      }
+    },
+    "/charging-stations/availability-prediction/evseId/{evseId}": {
+      "get": {
+        "tags": [
+          "Charging Station Availability Prediction"
+        ],
+        "summary": "Get availability prediction per Evse ID",
+        "description": "Returns a prediction list of timestamp and status for a given Evse ID",
+        "operationId": "getAvailabilityPredictionByEvseId",
+        "parameters": [
+          {
+            "name": "evseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timeframe",
+            "in": "query",
+            "description": "Value is in minutes in 15 minutes intervals starting from 0",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvseAvailabilityPredictionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Invalid or missing Credentials"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SuccessMessageDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PaymentService": {
+        "required": [
+          "name",
+          "provider",
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "The UUID of the payment service.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "provider": {
+            "type": "string",
+            "description": "The name of the payment service provider",
+            "example": "Acme Corporation"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the payment service.",
+            "example": "Acme Charging Service"
+          }
+        },
+        "description": "The supported payment services at the charging station."
+      },
+      "AdditionalGeoLocation": {
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "maxLength": 10,
+            "minLength": 0,
+            "pattern": "-?[0-9]{1,2}\\.[0-9]{5,7}",
+            "type": "string",
+            "description": "Latitude of the point in decimal degree. Example: 50.770774. Decimal separator: \".\" Regex: -?[0-9]{1,2}\\.[0-9]{5,7}"
+          },
+          "longitude": {
+            "maxLength": 11,
+            "minLength": 0,
+            "type": "string",
+            "description": "Longitude of the point in decimal degree. Example: -126.104965. Decimal separator: \".\" Regex: -?[0-9]{1,3}\\.[0-9]{5,7}"
+          },
+          "name": {
+            "$ref": "#/components/schemas/DisplayText"
+          }
+        },
+        "description": "This class defines an additional geo location that is relevant for the Charge Point. The geodetic system to be used is WGS 84."
+      },
+      "Amenity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the amenity"
+          },
+          "category": {
+            "type": "string",
+            "description": "The category of the amenity",
+            "enum": [
+              "FAST_FOOD",
+              "RESTAURANT",
+              "CAFE",
+              "SHOPPING",
+              "GROCERY_SHOPPING",
+              "SIGHTSEEING",
+              "LEISURE",
+              "DRINKS",
+              "TOILETS",
+              "HOTEL",
+              "MALL",
+              "SUPERMARKET",
+              "SPORT",
+              "RECREATION_AREA",
+              "NATURE",
+              "MUSEUM",
+              "BIKE_SHARING",
+              "BUS_STOP",
+              "TAXI_STAND",
+              "TRAM_STOP",
+              "METRO_STATION",
+              "TRAIN_STATION",
+              "AIRPORT",
+              "PARKING_LOT",
+              "CARPOOL_PARKING",
+              "FUEL_STATION",
+              "WIFI"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the amenity."
+          },
+          "website": {
+            "type": "string",
+            "description": "Link to the amenity website."
+          },
+          "phone": {
+            "type": "string",
+            "description": "The telephone number of the amenity."
+          },
+          "address": {
+            "maxLength": 45,
+            "minLength": 0,
+            "type": "string",
+            "description": "Street/block name and house number if available."
+          },
+          "city": {
+            "maxLength": 45,
+            "minLength": 0,
+            "type": "string",
+            "description": "City or town."
+          },
+          "state": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "State or province of the amenity, only to be used when relevant."
+          },
+          "country": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO 3166-1 alpha-3 code for the country of this amenity."
+          },
+          "hasWifi": {
+            "type": "boolean",
+            "description": "The amenity offers an Internet hotspot over a wireless local area network."
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "distance": {
+            "type": "integer",
+            "description": "The walking distance in meters from the charging station",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "The walking duration in seconds from the charging station",
+            "format": "int32"
+          },
+          "polyline": {
+            "type": "string",
+            "description": "The overview polyline of the walking path"
+          },
+          "opening_times": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "postal_code": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Postal code of the amenity, may only be omitted when the amenity has no postal code."
+          }
+        },
+        "description": "Amenities at the charging station."
+      },
+      "BusinessDetails": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Name of the operator."
+          },
+          "website": {
+            "type": "string",
+            "description": "Link to the operator’s website.",
+            "example": "https://www.domain.com"
+          },
+          "logo": {
+            "$ref": "#/components/schemas/Image"
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "The phone number. Custom extension."
+          }
+        },
+        "description": "Information of the owner if available."
+      },
+      "ChargingPointOperator": {
+        "required": [
+          "name",
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "The UUID of the charging point operator.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the charging point operator.",
+            "example": "Acme Cooperation"
+          }
+        },
+        "description": "The charging point operator of the charging station."
+      },
+      "Connector": {
+        "required": [
+          "format",
+          "id",
+          "last_updated",
+          "max_amperage",
+          "max_voltage",
+          "power_type",
+          "standard"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Identifier of the Connector within the EVSE. Two Connectors may have the same id as long as they do not belong to the same EVSE object."
+          },
+          "standard": {
+            "type": "string",
+            "description": "The standard of the installed connector.",
+            "enum": [
+              "CHADEMO",
+              "DOMESTIC_A",
+              "DOMESTIC_B",
+              "DOMESTIC_C",
+              "DOMESTIC_D",
+              "DOMESTIC_E",
+              "DOMESTIC_F",
+              "DOMESTIC_G",
+              "DOMESTIC_H",
+              "DOMESTIC_I",
+              "DOMESTIC_J",
+              "DOMESTIC_K",
+              "DOMESTIC_L",
+              "IEC_60309_2_single_16",
+              "IEC_60309_2_three_16",
+              "IEC_60309_2_three_32",
+              "IEC_60309_2_three_64",
+              "IEC_62196_T1",
+              "IEC_62196_T1_COMBO",
+              "IEC_62196_T2",
+              "IEC_62196_T2_COMBO",
+              "IEC_62196_T3A",
+              "IEC_62196_T3C",
+              "NEMA_5_20",
+              "NEMA_6_30",
+              "NEMA_6_50",
+              "NEMA_10_30",
+              "NEMA_10_50",
+              "NEMA_14_30",
+              "NEMA_14_50",
+              "PANTOGRAPH_BOTTOM_UP",
+              "PANTOGRAPH_TOP_DOWN",
+              "TESLA_R",
+              "TESLA_S",
+              "TESLA_D",
+              "GBT_AC",
+              "GBT_DC",
+              "UNKNOWN"
+            ]
+          },
+          "format": {
+            "type": "string",
+            "description": "The format (socket/cable) of the installed connector.",
+            "enum": [
+              "SOCKET",
+              "CABLE"
+            ]
+          },
+          "power_type": {
+            "type": "string",
+            "enum": [
+              "AC_1_PHASE",
+              "AC_3_PHASE",
+              "DC"
+            ]
+          },
+          "max_voltage": {
+            "type": "integer",
+            "description": "Maximum voltage of the connector (line to neutral for AC_3_PHASE), in volt [V]. For example: DC Chargers might vary the voltage during charging when battery almost full.",
+            "format": "int32"
+          },
+          "max_amperage": {
+            "type": "integer",
+            "description": "Maximum amperage of the connector, in ampere [A].",
+            "format": "int32"
+          },
+          "max_electric_power": {
+            "type": "integer",
+            "description": "Maximum electric power that can be delivered by this connector, in Watts (W). When the maximum electric power is lower than the calculated value from voltage and amperage, this value should be set.\n    For example: A DC Charge Point which can delivers up to 920V and up to 400A can be limited to a maximum of 150kW (max_electric_power = 150000). Depending on the car, it may supply max voltage or current, but not both at the same time.\nFor AC Charge Points, the amount of phases used can also have influence on the maximum power.",
+            "format": "int32"
+          },
+          "tariff_ids": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Identifiers of the currently valid charging tariffs. Multiple tariffs are possible, but only one of each Tariff.type can be active at the same time. Tariffs with the same type are only allowed if they are not active at the same time: start_date_time and end_date_time period not overlapping.\n    When preference-based smart charging is supported, one tariff for every possible ProfileType should be provided. These tell the user about the options they have at this Connector, and what the tariff is for every option.\nFor a \"free of charge\" tariff, this field should be set and point to a defined \"free of charge\" tariff."
+          },
+          "terms_and_conditions": {
+            "type": "string",
+            "description": "URL to the operator’s terms and conditions.",
+            "example": "https://www.domain.com"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this Connector was last updated (or created).",
+            "format": "date-time"
+          }
+        },
+        "description": "A Connector is the socket or cable and plug available for the EV to use. A single EVSE may provide multiple Connectors but only one of them can be in use at the same time. A Connector always belongs to an EVSE object."
+      },
+      "DisplayText": {
+        "required": [
+          "language",
+          "text"
+        ],
+        "type": "object",
+        "properties": {
+          "language": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Language Code ISO 639-1.",
+            "example": "en"
+          },
+          "text": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "description": "Text to be displayed to a end user. No markup, html etc. allowed.",
+            "example": "this is a display text"
+          }
+        },
+        "description": "Multi-language human-readable directions when more detailed information on how to reach the EVSE from the Location is required."
+      },
+      "EnergyMix": {
+        "required": [
+          "is_green_energy"
+        ],
+        "type": "object",
+        "properties": {
+          "is_green_energy": {
+            "type": "boolean",
+            "description": "True if 100% from regenerative sources. (CO2 and nuclear waste is zero)"
+          },
+          "energy_sources": {
+            "type": "array",
+            "description": "Key-value pairs (enum + percentage) of energy sources of this location’s tariff.",
+            "items": {
+              "$ref": "#/components/schemas/EnergySource"
+            }
+          },
+          "environ_impact": {
+            "type": "array",
+            "description": "Key-value pairs (enum + percentage) of nuclear waste and CO2 exhaust of this location’s tariff.",
+            "items": {
+              "$ref": "#/components/schemas/EnvironmentalImpact"
+            }
+          },
+          "supplier_name": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Name of the energy supplier, delivering the energy for this location or tariff.*"
+          },
+          "energy_product_name": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Name of the energy suppliers product/tariff plan used at this location.*"
+          }
+        },
+        "description": "This type is used to specify the energy mix and environmental impact of the supplied energy at a location or in a tariff."
+      },
+      "EnergySource": {
+        "required": [
+          "percentage",
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Categories of energy sources.",
+            "enum": [
+              "NUCLEAR",
+              "GENERAL_FOSSIL",
+              "COAL",
+              "GAS",
+              "GENERAL_GREEN",
+              "SOLAR",
+              "WIND",
+              "WATER"
+            ]
+          },
+          "percentage": {
+            "type": "integer",
+            "description": "Percentage of this source (0-100) in the mix.",
+            "format": "int32"
+          }
+        },
+        "description": "Key-value pairs (enum + percentage) of energy sources. All given values of all categories should add up to 100 percent."
+      },
+      "EnvironmentalImpact": {
+        "required": [
+          "amount",
+          "category"
+        ],
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Categories of environmental impact values.",
+            "enum": [
+              "NUCLEAR_WASTE",
+              "CARBON_DIOXIDE"
+            ]
+          },
+          "amount": {
+            "type": "integer",
+            "description": "Amount of this portion in g/kWh.",
+            "format": "int32"
+          }
+        },
+        "description": "Amount of waste produced/emitted per kWh."
+      },
+      "Evse": {
+        "required": [
+          "connectors",
+          "last_updated",
+          "status",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the EVSE within the CPOs platform (and suboperator platforms). For example a database ID or the actual \"EVSE ID\". This field can never be changed, modified or renamed. This is the 'technical' identification of the EVSE, not to be used as 'human readable' identification, use the field evse_id for that.This field is named uid instead of id, because id could be confused with evse_id which is an eMI3 defined field."
+          },
+          "status": {
+            "type": "string",
+            "description": "Indicates the current status of the EVSE.",
+            "enum": [
+              "AVAILABLE",
+              "BLOCKED",
+              "CHARGING",
+              "INOPERATIVE",
+              "OUTOFORDER",
+              "PLANNED",
+              "REMOVED",
+              "RESERVED",
+              "UNKNOWN"
+            ]
+          },
+          "capabilities": {
+            "type": "array",
+            "description": "List of functionalities that the EVSE is capable of.",
+            "items": {
+              "type": "string",
+              "description": "List of functionalities that the EVSE is capable of.",
+              "enum": [
+                "CHARGING_PROFILE_CAPABLE",
+                "CHARGING_PREFERENCES_CAPABLE",
+                "CHIP_CARD_SUPPORT",
+                "CONTACTLESS_CARD_SUPPORT",
+                "CREDIT_CARD_PAYABLE",
+                "DEBIT_CARD_PAYABLE",
+                "PED_TERMINAL",
+                "REMOTE_START_STOP_CAPABLE",
+                "RESERVABLE",
+                "RFID_READER",
+                "TOKEN_GROUP_CAPABLE",
+                "UNLOCK_CAPABLE",
+                "CIT_SMS",
+                "CIT_REFER_TO_COUNTER"
+              ]
+            }
+          },
+          "connectors": {
+            "type": "array",
+            "description": "List of available connectors on the EVSE.",
+            "items": {
+              "$ref": "#/components/schemas/Connector"
+            }
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "directions": {
+            "type": "array",
+            "description": "Multi-language human-readable directions when more detailed information on how to reach the EVSE from the Location is required.",
+            "items": {
+              "$ref": "#/components/schemas/DisplayText"
+            }
+          },
+          "images": {
+            "type": "array",
+            "description": "Links to images related to the EVSE such as photos or logos.",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          },
+          "evse_id": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "description": "Compliant with the following specification for EVSE ID from \"eMI3 standard version V1.0\" (http://emi3group.com/documents-links/) \"Part 2: business objects.\" Optional because: if an evse_id is to be re-used in the real world, the evse_id can be removed from an EVSE object if the status is set to REMOVED."
+          },
+          "status_schedule": {
+            "type": "array",
+            "description": "Indicates a planned status update of the EVSE.",
+            "items": {
+              "$ref": "#/components/schemas/StatusSchedule"
+            }
+          },
+          "floor_level": {
+            "maxLength": 4,
+            "minLength": 0,
+            "type": "string",
+            "description": "Level on which the Charge Point is located (in garage buildings) in the locally displayed numbering scheme."
+          },
+          "physical_reference": {
+            "maxLength": 16,
+            "minLength": 0,
+            "type": "string",
+            "description": "A number/string printed on the outside of the EVSE for visual identification."
+          },
+          "parking_restrictions": {
+            "type": "array",
+            "description": "The restrictions that apply to the parking spot.",
+            "items": {
+              "type": "string",
+              "description": "The restrictions that apply to the parking spot.",
+              "enum": [
+                "EV_ONLY",
+                "PLUGGED",
+                "DISABLED",
+                "CUSTOMERS",
+                "MOTORCYCLES"
+              ]
+            }
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this EVSE or one of its Connectors was last updated (or created).",
+            "format": "date-time"
+          }
+        },
+        "description": "The EVSE object describes the part that controls the power supply to a single EV in a single session. It always belongs to a Location object. The object only contains directions to get from the location itself to the EVSE (i.e. floor, physical_reference or directions)."
+      },
+      "ExceptionalPeriod": {
+        "required": [
+          "period_begin",
+          "period_end"
+        ],
+        "type": "object",
+        "properties": {
+          "period_begin": {
+            "type": "string",
+            "description": "Begin of the exception. SecurityScheme.In UTC, time_zone field can be used to convert to local time.",
+            "format": "date-time",
+            "example": "2022-06-24T00:00:00Z"
+          },
+          "period_end": {
+            "type": "string",
+            "description": "End of the exception. In UTC, time_zone field can be used to convert to local time.",
+            "format": "date-time",
+            "example": "2022-06-25T00:00:00Z"
+          }
+        },
+        "description": "Specifies one exceptional period for opening or access hours."
+      },
+      "GeoLocation": {
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "maximum": 90,
+            "exclusiveMaximum": false,
+            "minimum": -90,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Latitude of the point in decimal degree. Example: 50.770774. Decimal separator: \".\" Regex: -?[0-9]{1,2}\\.[0-9]{5,7}"
+          },
+          "longitude": {
+            "maximum": 180,
+            "exclusiveMaximum": false,
+            "minimum": -180,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Longitude of the point in decimal degree. Example: -126.104965. Decimal separator: \".\" Regex: -?[0-9]{1,3}\\.[0-9]{5,7}"
+          }
+        },
+        "description": "This class defines the geo location of the Charge Point. The geodetic system to be used is WGS 84."
+      },
+      "Hours": {
+        "required": [
+          "twentyfourseven"
+        ],
+        "type": "object",
+        "properties": {
+          "twentyfourseven": {
+            "type": "boolean",
+            "description": "True to represent 24 hours a day and 7 days a week, except the given exceptions.",
+            "example": false
+          },
+          "regular_hours": {
+            "type": "array",
+            "description": "Regular hours, weekday-based. Only to be used if twentyfourseven=false, then this field needs to contain at least one RegularHours object.",
+            "items": {
+              "$ref": "#/components/schemas/RegularHours"
+            }
+          },
+          "exceptional_openings": {
+            "type": "array",
+            "description": "Exceptions for specified calendar dates, time-range based. Periods the station is operating/accessible. Additional to regular_hours. May overlap regular rules.",
+            "items": {
+              "$ref": "#/components/schemas/ExceptionalPeriod"
+            }
+          },
+          "exceptional_closings": {
+            "type": "array",
+            "description": "Exceptions for specified calendar dates, time-range based. Periods the station is not operating/accessible. Overwriting regular_hours and exceptional_openings. Should not overlap exceptional_openings.",
+            "items": {
+              "$ref": "#/components/schemas/ExceptionalPeriod"
+            }
+          }
+        },
+        "description": "Opening and access hours of the location."
+      },
+      "Image": {
+        "required": [
+          "category",
+          "type",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "url": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "URL from where the image data can be fetched through a web browser."
+          },
+          "thumbnail": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "URL from where a thumbnail of the image can be fetched through a web browser."
+          },
+          "category": {
+            "type": "string",
+            "description": "Describes what the image is used for.",
+            "example": "CHARGER",
+            "enum": [
+              "CHARGER",
+              "ENTRANCE",
+              "LOCATION",
+              "NETWORK",
+              "OPERATOR",
+              "OTHER",
+              "OWNER"
+            ]
+          },
+          "type": {
+            "maxLength": 4,
+            "minLength": 0,
+            "type": "string",
+            "description": "Image type",
+            "example": "gif,jpeg,png,svg"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Width of the full scale image.",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "description": "Height of the full scale image.",
+            "format": "int32"
+          }
+        },
+        "description": "Links to images related to the EVSE such as photos or logos."
+      },
+      "LocationReviewOptionWithCountDto": {
+        "type": "object",
+        "properties": {
+          "option": {
+            "type": "string",
+            "description": "Selected option",
+            "enum": [
+              "CLEAN",
+              "NOT_CLEAN",
+              "EASY",
+              "NOT_EASY",
+              "NO_FUNCTIONALITY",
+              "RECOMMENDED",
+              "NOT_RECOMMENDED",
+              "GOOD",
+              "NOT_GOOD",
+              "NO_CARD",
+              "AMENITIES",
+              "NO_AMENITIES",
+              "CABLE",
+              "NO_CABLE",
+              "PRIVATE",
+              "SEMI_PRIVATE",
+              "PUBLIC"
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of reviews for the selected option",
+            "format": "int64"
+          }
+        },
+        "description": "The list of ratings with count"
+      },
+      "LocationReviewOptionWithDateDto": {
+        "type": "object",
+        "properties": {
+          "option": {
+            "type": "string",
+            "description": "The option value",
+            "enum": [
+              "CLEAN",
+              "NOT_CLEAN",
+              "EASY",
+              "NOT_EASY",
+              "NO_FUNCTIONALITY",
+              "RECOMMENDED",
+              "NOT_RECOMMENDED",
+              "GOOD",
+              "NOT_GOOD",
+              "NO_CARD",
+              "AMENITIES",
+              "NO_AMENITIES",
+              "CABLE",
+              "NO_CABLE",
+              "PRIVATE",
+              "SEMI_PRIVATE",
+              "PUBLIC"
+            ]
+          },
+          "date_submitted": {
+            "type": "string",
+            "description": "The date when the option is submitted",
+            "format": "date-time"
+          }
+        },
+        "description": "Latest 5 reviews"
+      },
+      "LocationUpdateDto": {
+        "required": [
+          "address",
+          "city",
+          "coordinates",
+          "country",
+          "country_code",
+          "id",
+          "last_updated",
+          "party_id",
+          "publish",
+          "time_zone"
+        ],
+        "type": "object",
+        "properties": {
+          "publish": {
+            "type": "boolean",
+            "description": "Defines if a Location may be published on an website or app etc.\nWhen this is set to false, only tokens identified in the field: publish_allowed_to are allowed to be shown this Location.\nWhen the same location has EVSEs that may be published and may not be published, two 'Locations' should be created."
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Display name of the location."
+          },
+          "address": {
+            "maxLength": 45,
+            "minLength": 1,
+            "type": "string",
+            "description": "Street/block name and house number if available."
+          },
+          "city": {
+            "maxLength": 45,
+            "minLength": 1,
+            "type": "string",
+            "description": "City or town."
+          },
+          "state": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "State or province of the location, only to be used when relevant."
+          },
+          "country": {
+            "maxLength": 3,
+            "minLength": 1,
+            "type": "string",
+            "description": "ISO 3166-1 alpha-3 code for the country of this location."
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "relatedLocations": {
+            "type": "array",
+            "description": "Geographical location of related points relevant to the user.",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalGeoLocation"
+            }
+          },
+          "parkingType": {
+            "type": "string",
+            "description": "The general type of parking at the charge point location.",
+            "enum": [
+              "ALONG_MOTORWAY",
+              "PARKING_GARAGE",
+              "PARKING_LOT",
+              "ON_DRIVEWAY",
+              "ON_STREET",
+              "UNDERGROUND_GARAGE"
+            ]
+          },
+          "directions": {
+            "type": "array",
+            "description": "Human-readable directions on how to reach the location.",
+            "items": {
+              "$ref": "#/components/schemas/DisplayText"
+            }
+          },
+          "operator": {
+            "$ref": "#/components/schemas/BusinessDetails"
+          },
+          "suboperator": {
+            "$ref": "#/components/schemas/BusinessDetails"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/BusinessDetails"
+          },
+          "facilities": {
+            "type": "array",
+            "description": "Optional list of facilities this charging location directly belongs to.",
+            "items": {
+              "type": "string",
+              "description": "Optional list of facilities this charging location directly belongs to.",
+              "enum": [
+                "HOTEL",
+                "RESTAURANT",
+                "CAFE",
+                "MALL",
+                "SUPERMARKET",
+                "SPORT",
+                "RECREATION_AREA",
+                "NATURE",
+                "MUSEUM",
+                "BIKE_SHARING",
+                "BUS_STOP",
+                "TAXI_STAND",
+                "TRAM_STOP",
+                "METRO_STATION",
+                "TRAIN_STATION",
+                "AIRPORT",
+                "PARKING_LOT",
+                "CARPOOL_PARKING",
+                "FUEL_STATION",
+                "WIFI"
+              ]
+            }
+          },
+          "images": {
+            "type": "array",
+            "description": "Links to images related to the location such as photos or logos.",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          },
+          "amenities": {
+            "type": "array",
+            "description": "Amenities at the charging station.",
+            "items": {
+              "$ref": "#/components/schemas/Amenity"
+            }
+          },
+          "rating": {
+            "$ref": "#/components/schemas/RatingDto"
+          },
+          "provider": {
+            "type": "string",
+            "description": "Specifies which provider is used.",
+            "example": "VIRTA"
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 1,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the CPO that 'owns' this Location.",
+            "example": "DE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 1,
+            "type": "string",
+            "description": "CPO ID of the CPO that 'owns' this Location (following the ISO-15118 standard)."
+          },
+          "id": {
+            "maxLength": 36,
+            "minLength": 1,
+            "type": "string",
+            "description": "Uniquely identifies the location within the CPOs platform (and suboperator platforms). This field can never be changed, modified or renamed."
+          },
+          "publish_allowed_to": {
+            "type": "array",
+            "description": "This field may only be used when the publish field is set to false\nOnly owners of Tokens that match all the set fields of one PublishToken in the list are allowed to be shown this location.",
+            "items": {
+              "$ref": "#/components/schemas/PublishTokenType"
+            }
+          },
+          "postal_code": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Postal code of the location, may only be omitted when the location has no postal code: in some countries charging locations at highways don’t have postal codes."
+          },
+          "evses": {
+            "type": "array",
+            "description": "List of EVSEs that belong to this Location.",
+            "items": {
+              "$ref": "#/components/schemas/Evse"
+            }
+          },
+          "time_zone": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string",
+            "description": "One of IANA tzdata’s TZ-values representing the time zone of the location.",
+            "example": "\"Europe/Oslo\", \"Europe/Zurich\". (http://www.iana.org/time-zones)"
+          },
+          "opening_times": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "charging_when_closed": {
+            "type": "boolean",
+            "description": "Indicates if the EVSEs are still charging outside the opening hours of the location. E.g. when the parking garage closes its barriers over night, is it allowed to charge till the next morning? Default: true"
+          },
+          "energy_mix": {
+            "$ref": "#/components/schemas/EnergyMix"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this Location or one of its EVSEs or Connectors were last updated (or created).",
+            "format": "date-time"
+          },
+          "charging_point_operator": {
+            "$ref": "#/components/schemas/ChargingPointOperator"
+          }
+        }
+      },
+      "PublishTokenType": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique ID by which this Token can be identified.",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the token.",
+            "nullable": true,
+            "example": "RFID",
+            "enum": [
+              "AD_HOC_USER",
+              "APP_USER",
+              "OTHER",
+              "RFID"
+            ]
+          },
+          "issuer": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Issuing company, most of the times the name of the company printed on thetoken (RFID card), not necessarily the eMSP.",
+            "nullable": true
+          },
+          "visual_number": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Visual readable number/identification as printed on the Token (RFID card).",
+            "nullable": true
+          },
+          "group_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "This ID groups a couple of tokens. This can be used to make two or more tokens work as one.",
+            "nullable": true
+          }
+        },
+        "description": "Defines the set of values that identify a token to which a Location might be published.At least one of the following fields SHALL be set: uid, visual_number, or group_id.When uid is set, type SHALL also be set.When visual_number is set, issuer SHALL also be set."
+      },
+      "RatingDto": {
+        "type": "object",
+        "properties": {
+          "stars": {
+            "type": "integer",
+            "description": "The average number of stars for the charging station",
+            "format": "int32",
+            "example": 3
+          },
+          "charging_station_id": {
+            "type": "string",
+            "description": "The ID of the charging station"
+          },
+          "review_statistics": {
+            "type": "array",
+            "description": "The list of ratings with count",
+            "items": {
+              "$ref": "#/components/schemas/LocationReviewOptionWithCountDto"
+            }
+          },
+          "number_of_reviews": {
+            "type": "integer",
+            "description": "The number of reviews for the charging station",
+            "format": "int32",
+            "example": 127
+          },
+          "problem_reported": {
+            "type": "boolean",
+            "description": "Indicates if the problem is reported within 72 hours"
+          },
+          "date_problem_reported": {
+            "type": "string",
+            "description": "Date when the problem is reported withing 72 hours, otherwise null",
+            "format": "date-time"
+          },
+          "latest_reviews": {
+            "type": "array",
+            "description": "Latest 5 reviews",
+            "items": {
+              "$ref": "#/components/schemas/LocationReviewOptionWithDateDto"
+            }
+          }
+        },
+        "description": "Rating information for location."
+      },
+      "RegularHours": {
+        "required": [
+          "period_begin",
+          "period_end",
+          "weekday"
+        ],
+        "type": "object",
+        "properties": {
+          "weekday": {
+            "type": "integer",
+            "description": "Number of day in the week, from Monday (1) till Sunday (7)",
+            "format": "int32",
+            "example": 1
+          },
+          "period_begin": {
+            "maxLength": 5,
+            "minLength": 0,
+            "pattern": "([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "type": "string",
+            "description": "Begin of the regular period, in local time, given in hours and minutes. Must be in 24h format with leading zeros. Example: \"18:15\". Hour/Minute separator: \":\" Regex: ([0-1][0-9]|2[0-3]):[0-5][0-9].",
+            "example": "07:00"
+          },
+          "period_end": {
+            "maxLength": 5,
+            "minLength": 0,
+            "pattern": "([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "type": "string",
+            "description": "End of the regular period, in local time, syntax as for period_begin. Must be later than period_begin.",
+            "example": "18:00"
+          }
+        },
+        "description": "Regular recurring operation or access hours."
+      },
+      "StatusSchedule": {
+        "required": [
+          "period_begin",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status value during the scheduled period.",
+            "enum": [
+              "AVAILABLE",
+              "BLOCKED",
+              "CHARGING",
+              "INOPERATIVE",
+              "OUTOFORDER",
+              "PLANNED",
+              "REMOVED",
+              "RESERVED",
+              "UNKNOWN"
+            ]
+          },
+          "period_begin": {
+            "type": "string",
+            "description": "Begin of the scheduled period.",
+            "format": "date-time"
+          },
+          "period_end": {
+            "type": "string",
+            "description": "End of the scheduled period, if known.",
+            "format": "date-time"
+          }
+        },
+        "description": "This type is used to schedule status periods in the future. The eMSP can provide this information to the EV user for trip planning purposes. A period MAY have no end. Example: \"This station will be running as of tomorrow. Today it is still planned and under construction.\""
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "CpoGroupDto": {
+        "required": [
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string"
+          },
+          "countryCode": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string"
+          },
+          "cpoId": {
+            "maxLength": 25,
+            "minLength": 0,
+            "type": "string"
+          }
+        }
+      },
+      "CreatedDto": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "UUID of the created entity",
+            "example": "67e7dfdf-3757-4479-a905-3bbacb75490a"
+          }
+        }
+      },
+      "PaymentServiceRequest": {
+        "required": [
+          "name",
+          "provider"
+        ],
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "description": "The name of the payment service provider",
+            "example": "Acme Corporation"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the payment service.",
+            "example": "Acme Charging Service"
+          }
+        }
+      },
+      "Cluster": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "number",
+            "description": "Latitude of the point in decimal degree.",
+            "format": "double",
+            "example": 52.770774
+          },
+          "lng": {
+            "type": "number",
+            "description": "Longitude of the point in decimal degree.",
+            "format": "double",
+            "example": 26.104965
+          },
+          "number": {
+            "type": "integer",
+            "description": "Number of charging stations in the cluster",
+            "format": "int32",
+            "example": 25
+          },
+          "fastestChargerSpeed": {
+            "type": "integer",
+            "description": "Cluster fastest charger speed in watts",
+            "format": "int32",
+            "example": 150000
+          }
+        },
+        "description": "The list of charging station clusters"
+      },
+      "LocationInfo": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "number",
+            "description": "Latitude of the point in decimal degree.",
+            "format": "double",
+            "example": 50.770774
+          },
+          "lng": {
+            "type": "number",
+            "description": "Longitude of the point in decimal degree",
+            "format": "double",
+            "example": -126.104965
+          },
+          "totalNumberOfEvses": {
+            "type": "integer",
+            "description": "Total number of evses (filtered)",
+            "format": "int32",
+            "example": 2
+          },
+          "availableEvses": {
+            "type": "integer",
+            "description": "Number of evses which are currently available",
+            "format": "int32",
+            "example": 1
+          },
+          "totalNumberOfInoperativeEvses": {
+            "type": "integer",
+            "description": "Number of evses which are currently inoperative",
+            "format": "int32",
+            "example": 2
+          },
+          "fastestChargerSpeed": {
+            "type": "integer",
+            "description": "Location fastest charger speed in watts",
+            "format": "int32",
+            "example": 150000
+          },
+          "id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the location within the CPOs platform (and suboperator platforms). This field can never be changed, modified or renamed."
+          }
+        },
+        "description": "The list of charging stations which are not in a cluster"
+      },
+      "LocationResponse": {
+        "type": "object",
+        "properties": {
+          "clusters": {
+            "type": "array",
+            "description": "The list of charging station clusters",
+            "items": {
+              "$ref": "#/components/schemas/Cluster"
+            }
+          },
+          "locations": {
+            "type": "array",
+            "description": "The list of charging stations which are not in a cluster",
+            "items": {
+              "$ref": "#/components/schemas/LocationInfo"
+            }
+          }
+        }
+      },
+      "FilterPowerLevel": {
+        "type": "object",
+        "properties": {
+          "power_level_max": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Optional filter which specifies maximum available level of power in watts.",
+            "format": "int32"
+          },
+          "power_level_min": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Optional filter which specifies minimum available level of power in watts.",
+            "format": "int32"
+          }
+        },
+        "description": "Optional power level filter"
+      },
+      "LocationRequest": {
+        "required": [
+          "northeast",
+          "southwest",
+          "zoom"
+        ],
+        "type": "object",
+        "properties": {
+          "southwest": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "northeast": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "zoom": {
+            "type": "integer",
+            "description": "The map zoom level",
+            "format": "int32",
+            "example": 8
+          },
+          "filter_payment_services": {
+            "type": "array",
+            "description": "Optional list of payment service UUIDs which are available for the user. Default: all payment services will be used.",
+            "example": [
+              "0aeea664-4b90-487e-88e8-bcbdbee1d00a"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Optional list of payment service UUIDs which are available for the user. Default: all payment services will be used.",
+              "example": "[\"0aeea664-4b90-487e-88e8-bcbdbee1d00a\"]"
+            }
+          },
+          "filter_charging_point_operators": {
+            "type": "array",
+            "description": "Optional list of charging point operator UUIDs which will be used during the routing. Default: all charging point operators will be used.",
+            "example": [
+              "0aeea664-4b90-487e-88e8-bcbdbee1d00a"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Optional list of charging point operator UUIDs which will be used during the routing. Default: all charging point operators will be used.",
+              "example": "[\"0aeea664-4b90-487e-88e8-bcbdbee1d00a\"]"
+            }
+          },
+          "filter_power_level": {
+            "$ref": "#/components/schemas/FilterPowerLevel"
+          }
+        },
+        "description": "The location request"
+      },
+      "AutocompleteResponse": {
+        "required": [
+          "address",
+          "city",
+          "coordinates",
+          "id",
+          "name",
+          "postalCode"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Charging station id"
+          },
+          "name": {
+            "type": "string",
+            "description": "Charging station name"
+          },
+          "address": {
+            "type": "string",
+            "description": "Charging station street/block name and house number if available."
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Charging station postal code."
+          },
+          "city": {
+            "type": "string",
+            "description": "City or a town."
+          },
+          "distance": {
+            "type": "number",
+            "description": "Distance to the geo location",
+            "format": "double"
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          }
+        }
+      },
+      "AutocompleteRequest": {
+        "required": [
+          "nameQuery"
+        ],
+        "type": "object",
+        "properties": {
+          "nameQuery": {
+            "maxLength": 2147483647,
+            "minLength": 3,
+            "type": "string",
+            "description": "Charging station name query"
+          },
+          "geo_location": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "filter_power_level": {
+            "$ref": "#/components/schemas/FilterPowerLevel"
+          }
+        },
+        "description": "Support for autocomplete functionality on search use cases"
+      },
+      "AroundGeoLocationResponse": {
+        "type": "object",
+        "properties": {
+          "locations": {
+            "type": "array",
+            "description": "The list of locations around the geo coordinate and the air distance in meters.",
+            "items": {
+              "$ref": "#/components/schemas/LocationDistance"
+            }
+          }
+        }
+      },
+      "Location": {
+        "required": [
+          "address",
+          "city",
+          "coordinates",
+          "country",
+          "country_code",
+          "id",
+          "last_updated",
+          "party_id",
+          "publish",
+          "time_zone"
+        ],
+        "type": "object",
+        "properties": {
+          "publish": {
+            "type": "boolean",
+            "description": "Defines if a Location may be published on an website or app etc.\nWhen this is set to false, only tokens identified in the field: publish_allowed_to are allowed to be shown this Location.\nWhen the same location has EVSEs that may be published and may not be published, two 'Locations' should be created."
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Display name of the location."
+          },
+          "address": {
+            "maxLength": 45,
+            "minLength": 0,
+            "type": "string",
+            "description": "Street/block name and house number if available."
+          },
+          "city": {
+            "maxLength": 45,
+            "minLength": 0,
+            "type": "string",
+            "description": "City or town."
+          },
+          "state": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "State or province of the location, only to be used when relevant."
+          },
+          "country": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO 3166-1 alpha-3 code for the country of this location."
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "relatedLocations": {
+            "type": "array",
+            "description": "Geographical location of related points relevant to the user.",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalGeoLocation"
+            }
+          },
+          "parkingType": {
+            "type": "string",
+            "description": "The general type of parking at the charge point location.",
+            "enum": [
+              "ALONG_MOTORWAY",
+              "PARKING_GARAGE",
+              "PARKING_LOT",
+              "ON_DRIVEWAY",
+              "ON_STREET",
+              "UNDERGROUND_GARAGE"
+            ]
+          },
+          "directions": {
+            "type": "array",
+            "description": "Human-readable directions on how to reach the location.",
+            "items": {
+              "$ref": "#/components/schemas/DisplayText"
+            }
+          },
+          "operator": {
+            "$ref": "#/components/schemas/BusinessDetails"
+          },
+          "suboperator": {
+            "$ref": "#/components/schemas/BusinessDetails"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/BusinessDetails"
+          },
+          "facilities": {
+            "type": "array",
+            "description": "Optional list of facilities this charging location directly belongs to.",
+            "items": {
+              "type": "string",
+              "description": "Optional list of facilities this charging location directly belongs to.",
+              "enum": [
+                "HOTEL",
+                "RESTAURANT",
+                "CAFE",
+                "MALL",
+                "SUPERMARKET",
+                "SPORT",
+                "RECREATION_AREA",
+                "NATURE",
+                "MUSEUM",
+                "BIKE_SHARING",
+                "BUS_STOP",
+                "TAXI_STAND",
+                "TRAM_STOP",
+                "METRO_STATION",
+                "TRAIN_STATION",
+                "AIRPORT",
+                "PARKING_LOT",
+                "CARPOOL_PARKING",
+                "FUEL_STATION",
+                "WIFI"
+              ]
+            }
+          },
+          "images": {
+            "type": "array",
+            "description": "Links to images related to the location such as photos or logos.",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          },
+          "amenities": {
+            "type": "array",
+            "description": "Amenities at the charging station.",
+            "items": {
+              "$ref": "#/components/schemas/Amenity"
+            }
+          },
+          "rating": {
+            "$ref": "#/components/schemas/RatingDto"
+          },
+          "provider": {
+            "type": "string",
+            "description": "Specifies which provider is used.",
+            "example": "VIRTA"
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the CPO that 'owns' this Location.",
+            "example": "DE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the CPO that 'owns' this Location (following the ISO-15118 standard)."
+          },
+          "id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the location within the CPOs platform (and suboperator platforms). This field can never be changed, modified or renamed."
+          },
+          "publish_allowed_to": {
+            "type": "array",
+            "description": "This field may only be used when the publish field is set to false\nOnly owners of Tokens that match all the set fields of one PublishToken in the list are allowed to be shown this location.",
+            "items": {
+              "$ref": "#/components/schemas/PublishTokenType"
+            }
+          },
+          "postal_code": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Postal code of the location, may only be omitted when the location has no postal code: in some countries charging locations at highways don’t have postal codes."
+          },
+          "evses": {
+            "type": "array",
+            "description": "List of EVSEs that belong to this Location.",
+            "items": {
+              "$ref": "#/components/schemas/Evse"
+            }
+          },
+          "time_zone": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "One of IANA tzdata’s TZ-values representing the time zone of the location.",
+            "example": "\"Europe/Oslo\", \"Europe/Zurich\". (http://www.iana.org/time-zones)"
+          },
+          "opening_times": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "charging_when_closed": {
+            "type": "boolean",
+            "description": "Indicates if the EVSEs are still charging outside the opening hours of the location. E.g. when the parking garage closes its barriers over night, is it allowed to charge till the next morning? Default: true"
+          },
+          "energy_mix": {
+            "$ref": "#/components/schemas/EnergyMix"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this Location or one of its EVSEs or Connectors were last updated (or created).",
+            "format": "date-time"
+          },
+          "payment_services": {
+            "type": "array",
+            "description": "The supported payment services at the charging station.",
+            "items": {
+              "$ref": "#/components/schemas/PaymentService"
+            }
+          },
+          "charging_point_operator": {
+            "$ref": "#/components/schemas/ChargingPointOperator"
+          }
+        },
+        "description": "The Location object describes the location and its properties where a group of EVSEs that belong together are installed. Typically, the Location object is the exact location of the group of EVSEs, but it can also be the entrance of a parking garage which contains these EVSEs. The exact way to reach each EVSE can be further specified by its own properties."
+      },
+      "LocationDistance": {
+        "type": "object",
+        "properties": {
+          "distance": {
+            "type": "number",
+            "description": "The distance in meters",
+            "format": "double",
+            "example": 3644.95
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          }
+        },
+        "description": "The list of locations around the geo coordinate and the air distance in meters."
+      },
+      "AroundGeoLocationRequest": {
+        "required": [
+          "geo_location"
+        ],
+        "type": "object",
+        "properties": {
+          "geo_location": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "filter_connector_types": {
+            "type": "array",
+            "description": "Optional filter for connector types",
+            "items": {
+              "type": "string",
+              "description": "Optional filter for connector types",
+              "enum": [
+                "CHADEMO",
+                "DOMESTIC_A",
+                "DOMESTIC_B",
+                "DOMESTIC_C",
+                "DOMESTIC_D",
+                "DOMESTIC_E",
+                "DOMESTIC_F",
+                "DOMESTIC_G",
+                "DOMESTIC_H",
+                "DOMESTIC_I",
+                "DOMESTIC_J",
+                "DOMESTIC_K",
+                "DOMESTIC_L",
+                "IEC_60309_2_single_16",
+                "IEC_60309_2_three_16",
+                "IEC_60309_2_three_32",
+                "IEC_60309_2_three_64",
+                "IEC_62196_T1",
+                "IEC_62196_T1_COMBO",
+                "IEC_62196_T2",
+                "IEC_62196_T2_COMBO",
+                "IEC_62196_T3A",
+                "IEC_62196_T3C",
+                "NEMA_5_20",
+                "NEMA_6_30",
+                "NEMA_6_50",
+                "NEMA_10_30",
+                "NEMA_10_50",
+                "NEMA_14_30",
+                "NEMA_14_50",
+                "PANTOGRAPH_BOTTOM_UP",
+                "PANTOGRAPH_TOP_DOWN",
+                "TESLA_R",
+                "TESLA_S",
+                "TESLA_D",
+                "GBT_AC",
+                "GBT_DC",
+                "UNKNOWN"
+              ]
+            }
+          },
+          "filter_amenities": {
+            "type": "array",
+            "description": "Optional filter for amenities",
+            "items": {
+              "type": "string",
+              "description": "Optional filter for amenities",
+              "enum": [
+                "FAST_FOOD",
+                "RESTAURANT",
+                "CAFE",
+                "SHOPPING",
+                "GROCERY_SHOPPING",
+                "SIGHTSEEING",
+                "LEISURE",
+                "DRINKS",
+                "TOILETS",
+                "HOTEL",
+                "MALL",
+                "SUPERMARKET",
+                "SPORT",
+                "RECREATION_AREA",
+                "NATURE",
+                "MUSEUM",
+                "BIKE_SHARING",
+                "BUS_STOP",
+                "TAXI_STAND",
+                "TRAM_STOP",
+                "METRO_STATION",
+                "TRAIN_STATION",
+                "AIRPORT",
+                "PARKING_LOT",
+                "CARPOOL_PARKING",
+                "FUEL_STATION",
+                "WIFI"
+              ]
+            }
+          },
+          "filter_fast_charger": {
+            "type": "boolean",
+            "description": "Optional filter for fast chargers (50kW+). The connector type(s) need(s) to be specified."
+          },
+          "max_results": {
+            "maximum": 50,
+            "minimum": 1,
+            "type": "integer",
+            "description": "The maximum number of results",
+            "format": "int32",
+            "example": 5,
+            "default": 10
+          }
+        },
+        "description": "The around geo location request"
+      },
+      "LocationEvseInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Display name of the location."
+          },
+          "id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the location within the CPOs platform (and suboperator platforms). This field can never be changed, modified or renamed."
+          },
+          "operator_uuid": {
+            "type": "string",
+            "description": "The UUID of the operator"
+          },
+          "evse_ids": {
+            "type": "array",
+            "description": "The list of EVSE IDs",
+            "items": {
+              "type": "string",
+              "description": "The list of EVSE IDs"
+            }
+          }
+        },
+        "description": "The list of search results"
+      },
+      "SearchResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "The list of search results",
+            "items": {
+              "$ref": "#/components/schemas/LocationEvseInfo"
+            }
+          }
+        }
+      },
+      "LocationAvailabilityPredictionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The location id",
+            "example": "DE-ALL-EGO002513"
+          },
+          "predictions": {
+            "type": "array",
+            "description": "The predictions for a location id",
+            "items": {
+              "$ref": "#/components/schemas/Predictions"
+            }
+          }
+        }
+      },
+      "Predictions": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "description": "The prediction with the earliest timestamp of the returned prediction",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "description": "The predictions availability status",
+            "example": "AVAILABLE",
+            "enum": [
+              "AVAILABLE",
+              "UNAVAILABLE"
+            ]
+          }
+        },
+        "description": "The predictions for a evse id"
+      },
+      "EvseAvailabilityPredictionResponse": {
+        "type": "object",
+        "properties": {
+          "evseId": {
+            "type": "string",
+            "description": "The evse id",
+            "example": "DEALLEGO0025132"
+          },
+          "locationId": {
+            "type": "string",
+            "description": "The location id",
+            "example": "DE-ALL-EGO002513"
+          },
+          "predictions": {
+            "type": "array",
+            "description": "The predictions for a evse id",
+            "items": {
+              "$ref": "#/components/schemas/Predictions"
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Location with given parameters could not be found\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
+      },
+      "EVSE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Specified location does not contain the EVSE with given id\",\n  \"errorCode\" : \"EVSE_NOT_FOUND\"\n}"
+      },
+      "CONNECTOR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Specified location and EVSE do not contain the connector with given id\",\n  \"errorCode\" : \"CONNECTOR_NOT_FOUND\"\n}"
+      },
+      "IDS_MUST_MATCH": {
+        "value": "{\n  \"message\" : \"ID of object in the body and the ID passed through path variable must match\",\n  \"errorCode\" : \"IDS_MUST_MATCH\"\n}"
+      },
+      "ERROR_LOADING_OCPI": {
+        "value": "{\n  \"message\" : \"Error while loading OCPI data\",\n  \"errorCode\" : \"ERROR_LOADING_OCPI\"\n}"
+      },
+      "ERROR_STORING_LOCATIONS": {
+        "value": "{\n  \"message\" : \"An error occurred while storing locations data from GZIP file\",\n  \"errorCode\" : \"ERROR_STORING_LOCATIONS\"\n}"
+      },
+      "INVALID_FILE_TYPE": {
+        "value": "{\n  \"message\" : \"Provided file does not match the expected file type\",\n  \"errorCode\" : \"INVALID_FILE_TYPE\"\n}"
+      },
+      "CONNECTOR_TYPE_NEEDS_TO_BE_DEFINED": {
+        "value": "{\n  \"message\" : \"The connector type(s) needs to be defined\",\n  \"errorCode\" : \"CONNECTOR_TYPE_NEEDS_TO_BE_DEFINED\"\n}"
+      },
+      "CHARGING_STATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Charging station with the specified EVSE ID not found.\",\n  \"errorCode\" : \"CHARGING_STATION_NOT_FOUND\"\n}"
+      },
+      "INVALID_REQUEST_PARAMETERS": {
+        "value": "{\n  \"message\" : \"The request must contain only one of the following parameters: name, EVSE ID\",\n  \"errorCode\" : \"INVALID_REQUEST_PARAMETERS\"\n}"
+      },
+      "CHARGING_STATION_REQUEST_RETURNED_EMPTY_RESULT": {
+        "value": "{\n  \"message\" : \"Charging station request didn't return any data.\",\n  \"errorCode\" : \"CHARGING_STATION_REQUEST_RETURNED_EMPTY_RESULT\"\n}"
+      },
+      "DATASET_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Dataset associated with the API key not found.\",\n  \"errorCode\" : \"DATASET_NOT_FOUND\"\n}"
+      },
+      "CAN_NOT_READ_IMAGE": {
+        "value": "{\n  \"message\" : \"The image can't not be read\",\n  \"errorCode\" : \"CAN_NOT_READ_IMAGE\"\n}"
+      },
+      "CAN_NOT_STORE_IMAGE": {
+        "value": "{\n  \"message\" : \"Image can't be stored\",\n  \"errorCode\" : \"CAN_NOT_STORE_IMAGE\"\n}"
+      },
+      "CAN_NOT_INITIALIZE_FOLDER": {
+        "value": "{\n  \"message\" : \"The directory for location review service images can't be initialized\",\n  \"errorCode\" : \"CAN_NOT_INITIALIZE_FOLDER\"\n}"
+      },
+      "PAYMENT_SERVICE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"One or more payment services not found\",\n  \"errorCode\" : \"PAYMENT_SERVICE_NOT_FOUND\"\n}"
+      },
+      "PAYMENT_SERVICE_REQUEST_RETURNED_EMPTY_RESULT": {
+        "value": "{\n  \"message\" : \"Payment services request didn't return any data.\",\n  \"errorCode\" : \"PAYMENT_SERVICE_REQUEST_RETURNED_EMPTY_RESULT\"\n}"
+      },
+      "CPO_GROUP_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"CPO group with the cpo id and country code combination not found\",\n  \"errorCode\" : \"CPO_GROUP_NOT_FOUND\"\n}"
+      },
+      "CPO_GROUP_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"CPO group with the specified cpo id - country code combination already exists\",\n  \"errorCode\" : \"CPO_GROUP_ALREADY_EXISTS\"\n}"
+      },
+      "PAYMENT_SERVICE_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Payment service with the specified name - provider combination already exists\",\n  \"errorCode\" : \"PAYMENT_SERVICE_ALREADY_EXISTS\"\n}"
+      },
+      "FAILED_TO_EXPORT_LOCATIONS": {
+        "value": "{\n  \"message\" : \"Failed to export locations to a gzip file\",\n  \"errorCode\" : \"FAILED_TO_EXPORT_LOCATIONS\"\n}"
+      },
+      "COUNTRY_CODES_MUST_MATCH": {
+        "value": "{\n  \"message\" : \"Country code of the object in the body and the country code passed through path variable must match\",\n  \"errorCode\" : \"COUNTRY_CODES_MUST_MATCH\"\n}"
+      },
+      "PARTY_IDS_MUST_MATCH": {
+        "value": "{\n  \"message\" : \"Party id of the object in the body and the party id passed through path variable must match\",\n  \"errorCode\" : \"PARTY_IDS_MUST_MATCH\"\n}"
+      },
+      "CAN_NOT_EXTRACT_LOCATIONS": {
+        "value": "{\n  \"message\" : \"Failed to extract locations\",\n  \"errorCode\" : \"CAN_NOT_EXTRACT_LOCATIONS\"\n}"
+      },
+      "INVALID_POWER_LEVEL_RANGE": {
+        "value": "{\n  \"message\" : \"Value representing the minimum power level value has to be greater than the maximum one\",\n  \"errorCode\" : \"INVALID_POWER_LEVEL_RANGE\"\n}"
+      },
+      "ERROR_CREATING_LOCATION_TEMP_FILE": {
+        "value": "{\n  \"message\" : \"An error occurred while trying to create location temp file\",\n  \"errorCode\" : \"ERROR_CREATING_LOCATION_TEMP_FILE\"\n}"
+      },
+      "INVALID_LOCATION_PUBLISH_VALUE": {
+        "value": "{\n  \"message\" : \"publish_allowed_to field not allowed to be set when publish field value is set to true\",\n  \"errorCode\" : \"INVALID_LOCATION_PUBLISH_VALUE\"\n}"
+      },
+      "LOCATION_FILE_CONTAINS_INVALID_ENTRIES": {
+        "value": "{\n  \"message\" : \"Location file contains invalid entries\",\n  \"errorCode\" : \"LOCATION_FILE_CONTAINS_INVALID_ENTRIES\"\n}"
+      },
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "WRONG_TIME_FRAME_FORMAT": {
+        "value": "{\n  \"message\" : \"The provided timeframe has wrong format, value should be in 15 minutes intervals starting from 0\",\n  \"errorCode\" : \"WRONG_TIME_FRAME_FORMAT\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "RABBITMQ_LISTENER_ERROR": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] An error occurred in RabbitMQ listener\",\n  \"errorCode\" : \"RABBITMQ_LISTENER_ERROR\"\n}"
+      },
+      "INVALID_RABBITMQ_RPC_RESPONSE": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] Invalid RabbitMQ RPC response\",\n  \"errorCode\" : \"INVALID_RABBITMQ_RPC_RESPONSE\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "ERROR_CREATING_AMENITY_TEMP_FILE": {
+        "value": "{\n  \"message\" : \"An error occurred while trying to create amenity temp file\",\n  \"errorCode\" : \"ERROR_CREATING_AMENITY_TEMP_FILE\"\n}"
+      },
+      "VERSION_FOR_TOKEN_A_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] Version for the specific token A is not found.\",\n  \"errorCode\" : \"VERSION_FOR_TOKEN_A_NOT_FOUND\"\n}"
+      },
+      "URL_ALREADY_IN_DATABASE": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] The provided URL already exists.\",\n  \"errorCode\" : \"URL_ALREADY_IN_DATABASE\"\n}"
+      },
+      "URL_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] Customer url info for the specific url in not found.\",\n  \"errorCode\" : \"URL_NOT_FOUND\"\n}"
+      },
+      "URL_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPI-GATEWAY] One of the provided URLs already exists.\",\n  \"errorCode\" : \"URL_ALREADY_EXISTS\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "MSP Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "MSP Charging Station",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

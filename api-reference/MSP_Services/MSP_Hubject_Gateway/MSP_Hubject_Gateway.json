@@ -1,0 +1,1398 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "msp-gateway-hubject-service",
+    "description": "",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/msp-gateway-hubject/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/remote-stop": {
+      "post": {
+        "tags": [
+          "Hubject Internal Controller"
+        ],
+        "operationId": "remoteStop",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StopChargingSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "403": {
+            "description": "The API key was not found or is not valid."
+          }
+        }
+      }
+    },
+    "/remote-start": {
+      "post": {
+        "tags": [
+          "Hubject Internal Controller"
+        ],
+        "operationId": "remoteStart",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartChargingSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "403": {
+            "description": "The API key was not found or is not valid."
+          }
+        }
+      }
+    },
+    "/api/oicp/notificationmgmt/v11/charging-notifications": {
+      "post": {
+        "tags": [
+          "Hubject Controller"
+        ],
+        "summary": "Charge Notification",
+        "description": "Charge Notification",
+        "operationId": "chargeNotification",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ERoamingChargingNotifications"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          }
+        }
+      }
+    },
+    "/api/oicp/charging/v21/operators/{operatorID}/authorize/stop": {
+      "post": {
+        "tags": [
+          "Hubject Controller"
+        ],
+        "summary": "Authorize stop",
+        "description": "Authorize stop",
+        "operationId": "authorizeStop",
+        "parameters": [
+          {
+            "name": "operatorID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ERoamingAuthorizeStop"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          }
+        }
+      }
+    },
+    "/api/oicp/charging/v21/operators/{operatorID}/authorize/start": {
+      "post": {
+        "tags": [
+          "Hubject Controller"
+        ],
+        "summary": "Authorize start",
+        "description": "Authorize start",
+        "operationId": "authorizeStart",
+        "parameters": [
+          {
+            "name": "operatorID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ERoamingAuthorizeStart"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          }
+        }
+      }
+    },
+    "/api/oicp/cdrmgmt/v22/operators/{operatorID}/charge-detail-record": {
+      "post": {
+        "tags": [
+          "Hubject Controller"
+        ],
+        "summary": "Charge Detail Record",
+        "description": "CDR save to ",
+        "operationId": "chargeDetailRecord",
+        "parameters": [
+          {
+            "name": "operatorID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ERoamingChargeDetailRecord"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          }
+        }
+      }
+    },
+    "/update-evse-status": {
+      "get": {
+        "tags": [
+          "Hubject Internal Controller"
+        ],
+        "summary": "Update EVSE status",
+        "operationId": "updateEvseStatuses",
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          }
+        }
+      }
+    },
+    "/update-evse-data": {
+      "get": {
+        "tags": [
+          "Hubject Internal Controller"
+        ],
+        "summary": "Update EVSE data",
+        "operationId": "synchronouslyUpdateEvseData",
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          }
+        }
+      }
+    },
+    "/update-evse-data/async": {
+      "get": {
+        "tags": [
+          "Hubject Internal Controller"
+        ],
+        "summary": "Asynchronously update EVSE data",
+        "operationId": "asynchronouslyUpdateEvseData",
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          }
+        }
+      }
+    },
+    "/locations": {
+      "get": {
+        "tags": [
+          "Hubject Internal Controller"
+        ],
+        "summary": "Get all OCPI locations",
+        "operationId": "getAllLocations",
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "404": {
+            "description": "EVSE locations not found"
+          }
+        }
+      }
+    },
+    "/location-status": {
+      "get": {
+        "tags": [
+          "Hubject Internal Controller"
+        ],
+        "summary": "Get EVSE status list",
+        "operationId": "getLocationStatuses",
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "404": {
+            "description": "EVSE status list not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StopChargingSessionRequest": {
+        "required": [
+          "response_url",
+          "session_id"
+        ],
+        "type": "object",
+        "properties": {
+          "response_url": {
+            "type": "string"
+          },
+          "session_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string"
+          }
+        }
+      },
+      "EnergyContract": {
+        "required": [
+          "contract_id",
+          "supplier_name"
+        ],
+        "type": "object",
+        "properties": {
+          "supplier_name": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Name of the energy supplier for this token."
+          },
+          "contract_id": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Contract ID at the energy supplier, that belongs to the owner of this token."
+          }
+        },
+        "description": "When the Charge Point supports using your own energy supplier/contract at a\nCharge Point, information about the energy supplier/contract is needed so the\nCPO knows which energy supplier to use.\nNOTE: In a lot of countries it is currently not allowed/possible to use a drivers\nown energy supplier/contract at a Charge Point."
+      },
+      "StartChargingSessionRequest": {
+        "required": [
+          "location_id",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "$ref": "#/components/schemas/Token"
+          },
+          "response_url": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "location_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": " Location.id of the Location on which a session is to be started.",
+            "example": "cfe1dcb9-2870-4a11-94dd-f26ade620a8c"
+          },
+          "evse_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional EVSE.uid of the EVSE of this Location.",
+            "example": "cfe1dcb9-2870-4a11-94dd-f26ade620a8c"
+          },
+          "connector_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional Connector.id of the Connector of the EVSE on which a session is to be started.",
+            "example": "cfe1dcb9-2870-4a11-94dd-f26ade620a8c"
+          },
+          "authorization_reference": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Reference to the authorization given by the eMSP,.",
+            "example": "cfe1dcb9-2870-4a11-94dd-f26ade620a8c"
+          }
+        }
+      },
+      "Token": {
+        "required": [
+          "contract_id",
+          "country_code",
+          "issuer",
+          "last_updated",
+          "party_id",
+          "type",
+          "uid",
+          "valid",
+          "whitelist"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "    The type of token\n    * <p>\n    * NOTE: The eMSP is RECOMMENDED to push Tokens with type: AD_HOC_USER or APP_USER with whitelist set to\n    * NEVER. Whitelists are very useful for RFID type Tokens, but the AD_HOC_USER/APP_USER Tokens are used to\n    * start Sessions from an App etc. so whitelisting them has no advantages.\n    * </p>\n",
+            "example": "RFID",
+            "enum": [
+              "AD_HOC_USER",
+              "APP_USER",
+              "OTHER",
+              "RFID"
+            ]
+          },
+          "issuer": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Issuing company, most of the times the name of the company printed on the token (RFID card), not necessarily the eMSP.",
+            "example": "ACME Inc."
+          },
+          "whitelist": {
+            "type": "string",
+            "description": "Indicates what type of white-listing is allowed.",
+            "example": "ALLOWED",
+            "enum": [
+              "ALWAYS",
+              "ALLOWED",
+              "ALLOWED_OFFLINE",
+              "NEVER"
+            ]
+          },
+          "language": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Language Code ISO 639-1. This optional field indicates the Token owner’s  preferred interface language.\nIf the language is not provided or not supported then the CPO is free to choose its own language.",
+            "example": "DE"
+          },
+          "uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique ID by which this Token can be identified.\nThis is the field used by CPO system (RFID reader on the Charge Point) to identify this token.\nCurrently, in most cases: type=RFID, this is the RFID hidden ID as read by the RFID reader, but that is not a requirement.\nIf this is a APP_USER or AD_HOC_USER Token, it will be a uniquely, by the eMSP, generated ID.\nThis field is named uid instead of id to prevent confusion with: contract_id.",
+            "example": "123456789"
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the MSP that 'owns' this Token.",
+            "example": "DE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the MSP that 'owns' this Token (following the ISO-15118 standard).",
+            "example": "ERG"
+          },
+          "contract_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the EV Driver contract token within the eMSP’s platform (and suboperator platforms). Recommended to follow the specification for eMA ID from \"eMI3 standard version V1.0\" (http://emi3group.com/documents-links/)  \"Part 2: business objects.\"\n",
+            "example": "DE8ACC12E46L89"
+          },
+          "visual_number": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Visual readable number/identification as printed on the Token (RFID card), might be equal to the contract_id.",
+            "example": "DF000-2001-8999-1"
+          },
+          "group_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "This ID groups a couple of tokens. This can be used to make two or more tokens work as one, so that a session can be started with one token and stopped with another, handy when a card and key-fob are given to the EV-driver.\n Beware that OCPP 1.5/1.6 only support group_ids (it is called parentId in OCPP 1.5/1.6) with a maximum length of 20.",
+            "example": "DF000-2001-8999"
+          },
+          "valid": {
+            "type": "boolean",
+            "description": "Is this Token valid"
+          },
+          "default_profile_type": {
+            "type": "string",
+            "description": "The default Charging Preference. When this is provided, and a charging session\nis started on an Charge Point that support Preference base Smart Charging and\nsupport this ProfileType, the Charge Point can start using this ProfileType,\nwithout this having to be set via: Set Charging Preferences.",
+            "enum": [
+              "CHEAP",
+              "FAST",
+              "GREEN",
+              "REGULAR"
+            ]
+          },
+          "energy_contract": {
+            "$ref": "#/components/schemas/EnergyContract"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this Token was last updated (or created).",
+            "format": "date-time"
+          },
+          "expiry_date": {
+            "type": "string",
+            "description": "Timestamp when this Token expires in charging station's local authorization cache.",
+            "format": "date-time"
+          }
+        }
+      },
+      "ERoamingChargingNotifications": {
+        "required": [
+          "ChargingEnd",
+          "ChargingStart",
+          "EventOccurred",
+          "SessionID",
+          "Type",
+          "evse_id"
+        ],
+        "type": "object",
+        "properties": {
+          "Type": {
+            "type": "string",
+            "description": "The type of ChargingNotification. For this case only the notification type “Start” can be chosen.",
+            "enum": [
+              "Start",
+              "Progress",
+              "End",
+              "Error"
+            ]
+          },
+          "SessionID": {
+            "type": "string",
+            "example": "f98efba4-02d8-4fa0-b810-9a9d50d2c527",
+            "default": "The Hubject SessionID that identifies the process"
+          },
+          "CPOPartnerSessionID": {
+            "maxLength": 250,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional field containing the session ID assigned by the CPO to the related operation. Partner systems can use this field to link their own session handling to HBS processes."
+          },
+          "EMPPartnerSessionID": {
+            "maxLength": 250,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional field containing the session ID assigned by an EMP to the related operation.Partner systems can use this field to link their own session handling to HBS processes."
+          },
+          "Identification": {
+            "$ref": "#/components/schemas/Identification"
+          },
+          "evse_id": {
+            "type": "string",
+            "description": "The ID that identifies the charging spot.",
+            "example": "DE*XYZ*ETEST1"
+          },
+          "ChargingStart": {
+            "type": "string",
+            "description": "The LocalDateTime and time at which the charging process started.",
+            "format": "date-time"
+          },
+          "SessionStart": {
+            "type": "string",
+            "description": "The LocalDateTime and time at which the session started.",
+            "format": "date-time"
+          },
+          "MeterValueStart": {
+            "type": "number",
+            "description": "The starting meter value in kWh."
+          },
+          "OperatorID": {
+            "type": "string",
+            "description": "The OperatorID is used to identify the CPO."
+          },
+          "PartnerProductID": {
+            "type": "string",
+            "description": "A pricing product name (for identifying a tariff) that must be unique."
+          },
+          "EventOccurred": {
+            "type": "string",
+            "description": "The LocalDateTime and time at which the charging progress parameters are captured.",
+            "format": "date-time"
+          },
+          "ChargingDuration": {
+            "type": "integer",
+            "description": "Charging Duration = EventOccurred - Charging Duration. It is a time in millisecond.Either ChargingDuration or ConsumedEnergyProgress should be provided. Both can also be provided with each progress notification.",
+            "format": "int32"
+          },
+          "ConsumedEnergyProgress": {
+            "type": "number",
+            "description": "This is consumed energy when from Start of charging process till the charging progress notification generated (EventOccurred) .Either ChargingDuration or ConsumedEnergyProgress should be provided. Both can also be provided with each progress notification."
+          },
+          "MeterValueInBetween": {
+            "$ref": "#/components/schemas/MeterValueInBetween"
+          },
+          "ChargingEnd": {
+            "type": "string",
+            "description": "The LocalDateTime and time at which the charging process stopped.",
+            "format": "date-time"
+          },
+          "SessionEnd": {
+            "type": "string",
+            "description": "The LocalDateTime and time at which the session ended, e.g. swipe of RFID or cable disconnected.",
+            "format": "date-time"
+          },
+          "MeterValueEnd": {
+            "type": "number",
+            "description": "The ending meter value in kWh."
+          },
+          "PenaltyTimeStart": {
+            "type": "string",
+            "description": "The LocalDateTime and time at which the penalty time start after the grace period.",
+            "format": "date-time"
+          }
+        }
+      },
+      "HashedPIN": {
+        "required": [
+          "Function",
+          "Value"
+        ],
+        "type": "object",
+        "properties": {
+          "Value": {
+            "type": "string",
+            "description": "Hash value created by partner",
+            "example": "string"
+          },
+          "Function": {
+            "type": "string",
+            "description": "Function that was used to generate the hash value",
+            "enum": [
+              "Bcrypt"
+            ]
+          },
+          "LegacyHashData": {
+            "$ref": "#/components/schemas/LegacyHashData"
+          }
+        },
+        "description": "The hashed pin information. This field can be provided only when uploading Authentication data. In Authorization requests this field must be null"
+      },
+      "Identification": {
+        "type": "object",
+        "properties": {
+          "RFIDMifareFamilyIdentification": {
+            "$ref": "#/components/schemas/RFIDMifareFamilyIdentification"
+          },
+          "RFIDIdentification": {
+            "$ref": "#/components/schemas/RFIDIdentification"
+          },
+          "QRCodeIdentification": {
+            "$ref": "#/components/schemas/QRCodeIdentification"
+          },
+          "PlugAndChargeIdentification": {
+            "$ref": "#/components/schemas/PlugAndChargeIdentification"
+          },
+          "RemoteIdentification": {
+            "$ref": "#/components/schemas/RemoteIdentification"
+          }
+        },
+        "description": "Authentication data"
+      },
+      "LegacyHashData": {
+        "required": [
+          "Function"
+        ],
+        "type": "object",
+        "properties": {
+          "Function": {
+            "type": "string",
+            "description": "Function used for hashing of the PIN at the partner.",
+            "enum": [
+              "MD5",
+              "SHA-1"
+            ]
+          },
+          "Salt": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "The salt value used by the partner for hashing the PIN.",
+            "example": "saltExampleString"
+          },
+          "Value": {
+            "type": "string",
+            "description": "PIN hash at the partner.",
+            "example": "string"
+          }
+        },
+        "description": "Field for hashing data related to OICP v2.1. It is unused in later versions."
+      },
+      "MeterValueInBetween": {
+        "type": "object",
+        "properties": {
+          "meterValues": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "description": "List of meter values that may have been taken in between (kWh)."
+      },
+      "PlugAndChargeIdentification": {
+        "required": [
+          "EvcoID"
+        ],
+        "type": "object",
+        "properties": {
+          "EvcoID": {
+            "type": "string",
+            "description": "Contract identifier",
+            "example": "DE-DCB-C12345678-X"
+          }
+        },
+        "description": "Authentication required for Plug&Charge (EMAID/EVCOID)."
+      },
+      "QRCodeIdentification": {
+        "required": [
+          "EvcoID",
+          "HashedPIN"
+        ],
+        "type": "object",
+        "properties": {
+          "EvcoID": {
+            "type": "string",
+            "description": "Contract identifier Hubject will automatically convert all characters from lower case to upper case",
+            "example": "DE-DCB-C12345678-X"
+          },
+          "HashedPIN": {
+            "$ref": "#/components/schemas/HashedPIN"
+          },
+          "PIN": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "The pin number, this field is required in Authorization requests."
+          }
+        },
+        "description": "Authentication data details. The data structure differs depending on the authentication technology."
+      },
+      "RFIDIdentification": {
+        "required": [
+          "EvcoID",
+          "RFID",
+          "UID"
+        ],
+        "type": "object",
+        "properties": {
+          "UID": {
+            "type": "string",
+            "description": "The UID from the RFID-Card. It SHOULD be read´from left to right using big-endian format.Hubject will automatically convert all characters from lower case to upper case",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "EvcoID": {
+            "type": "string",
+            "description": "Contract identifier",
+            "example": "DE-DCB-C12345678-X"
+          },
+          "RFID": {
+            "type": "string",
+            "description": "The Type of the used RFID card like mifareclassic, desfire",
+            "enum": [
+              "mifareCls",
+              "mifareDes",
+              "calypso",
+              "nfc",
+              "mifareFamily"
+            ]
+          },
+          "PrintedNumber": {
+            "maxLength": 150,
+            "minLength": 0,
+            "type": "string",
+            "description": "A number printed on a customer’s card for manual authorization (e.q. via a call center)",
+            "example": "9876655"
+          },
+          "ExpiryDate": {
+            "type": "string",
+            "description": "Until when this card is valid. Should not be set if card does not have an expiration yet.",
+            "format": "date-time",
+            "example": "2021-01-23T14:21:23.744Z"
+          }
+        },
+        "description": "Authentication data details. The data structure differs depending on the authentication technology."
+      },
+      "RFIDMifareFamilyIdentification": {
+        "required": [
+          "UID"
+        ],
+        "type": "object",
+        "properties": {
+          "UID": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "The UID from the RFID-Card. It SHOULD be read from left to right using big-endian format. Hubject will automatically convert all characters from lower case to upper case",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          }
+        },
+        "description": "Authentication data details. The data structure differs depending on the authentication technology."
+      },
+      "RemoteIdentification": {
+        "required": [
+          "EvcoID"
+        ],
+        "type": "object",
+        "properties": {
+          "EvcoID": {
+            "type": "string",
+            "description": "The EVCO ID of the contract",
+            "example": "DE-DCB-C12345678-X"
+          }
+        },
+        "description": "Authentication data details. The data structure differs depending on the authentication technology."
+      },
+      "ERoamingAuthorizeStop": {
+        "required": [
+          "OperatorID",
+          "SessionID"
+        ],
+        "type": "object",
+        "properties": {
+          "SessionID": {
+            "type": "string",
+            "example": "f98efba4-02d8-4fa0-b810-9a9d50d2c527",
+            "default": "The Hubject SessionID that identifies the process"
+          },
+          "CPOPartnerSessionID": {
+            "maxLength": 250,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional field containing the session id assigned by the CPO to the related operation. Partner systems can use this field to link their own session handling to HBS processes.",
+            "example": "1234XYZ"
+          },
+          "EMPPartnerSessionID": {
+            "maxLength": 250,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional field containing the session id assigned by an EMP to the related operation.Partner systems can use this field to link their own session handling to HBS processes.",
+            "example": "f98efba4-02d8-4fa0-b810-9a9d50d2c527"
+          },
+          "OperatorID": {
+            "type": "string",
+            "description": "The OperatorID is defined by Hubject and is used to identify the CPO."
+          },
+          "EvseID": {
+            "type": "string",
+            "description": "The ID that identifies the charging spot."
+          },
+          "Identification": {
+            "$ref": "#/components/schemas/Identification"
+          }
+        }
+      },
+      "ERoamingAuthorizeStart": {
+        "required": [
+          "OperatorID"
+        ],
+        "type": "object",
+        "properties": {
+          "SessionID": {
+            "type": "string",
+            "description": "The unique id that identifies the charging session in the CPO platform.",
+            "example": "f98efba4-02d8-4fa0-b810-9a9d50d2c527"
+          },
+          "CPOPartnerSessionID": {
+            "maxLength": 250,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional field containing the session id assigned by the CPO to the related operation.",
+            "example": "1234XYZ"
+          },
+          "EMPPartnerSessionID": {
+            "maxLength": 250,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional field containing the session id assigned by the EMP to the related operation.",
+            "example": "f98efba4-02d8-4fa0-b810-9a9d50d2c527"
+          },
+          "OperatorID": {
+            "type": "string",
+            "description": "The OperatorID is defined by Hubject and is used to identify the CPO.",
+            "example": "E3D"
+          },
+          "EvseID": {
+            "type": "string",
+            "description": "The ID that identifies the charging spot."
+          },
+          "Identification": {
+            "$ref": "#/components/schemas/Identification"
+          },
+          "PartnerProductID": {
+            "type": "string",
+            "description": "A pricing product name (for identifying a tariff) that must be unique."
+          }
+        }
+      },
+      "CalibrationLawVerificationInfo": {
+        "type": "object",
+        "properties": {
+          "CalibrationLawCertificateID": {
+            "type": "string"
+          },
+          "PublicKey": {
+            "type": "string"
+          },
+          "MeteringSignatureUrl": {
+            "type": "string"
+          },
+          "MeteringSignatureEncodingFormat": {
+            "type": "string"
+          },
+          "SignedMeteringValuesVerificationInstruction": {
+            "type": "string"
+          }
+        },
+        "description": "This field provides additional information which could help directly or indirectly to verify the signed metering value by using respective Transparency Software."
+      },
+      "ERoamingChargeDetailRecord": {
+        "required": [
+          "ChargingEnd",
+          "ChargingStart",
+          "ConsumedEnergy",
+          "EvseID",
+          "SessionEnd",
+          "SessionID",
+          "SessionStart"
+        ],
+        "type": "object",
+        "properties": {
+          "SessionID": {
+            "type": "string",
+            "example": "f98efba4-02d8-4fa0-b810-9a9d50d2c527",
+            "default": "The Hubject SessionID that identifies the process"
+          },
+          "CPOPartnerSessionID": {
+            "maxLength": 250,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional field containing the session ID assigned by the CPO to the related operation. Partner systems can use this field to link their own session handling to HBS processes."
+          },
+          "EMPPartnerSessionID": {
+            "maxLength": 250,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional field containing the session ID assigned by an EMP to the related operation.Partner systems can use this field to link their own session handling to HBS processes."
+          },
+          "PartnerProductID": {
+            "type": "string",
+            "description": "A pricing product name (for identifying a tariff) that must be unique."
+          },
+          "EvseID": {
+            "type": "string",
+            "description": "The ID that identifies the charging spot.",
+            "example": "DE*XYZ*ETEST1"
+          },
+          "Identification": {
+            "$ref": "#/components/schemas/Identification"
+          },
+          "ChargingStart": {
+            "type": "string",
+            "description": "The date and time at which the charging process started.",
+            "format": "date-time",
+            "example": "2023-01-01T13:58:38.059Z"
+          },
+          "ChargingEnd": {
+            "type": "string",
+            "description": "The date and time at which the charging process stopped.",
+            "format": "date-time",
+            "example": "2023-01-01T14:22:38.059Z"
+          },
+          "SessionStart": {
+            "type": "string",
+            "description": "The date and time at which the session started, e.g. swipe of RFID or cable connected.",
+            "format": "date-time",
+            "example": "2023-01-01T13:55:38.059Z"
+          },
+          "SessionEnd": {
+            "type": "string",
+            "description": "The date and time at which the session ended. E. g. Swipe of RFID or Cable disconnected.",
+            "format": "date-time",
+            "example": "2023-01-01T14:24:38.059Z"
+          },
+          "MeterValueStart": {
+            "type": "number",
+            "description": "The starting meter value in kWh. Optional."
+          },
+          "MeterValueEnd": {
+            "type": "number",
+            "description": "The ending meter value in kWh."
+          },
+          "MeterValueInBetween": {
+            "$ref": "#/components/schemas/MeterValueInBetween"
+          },
+          "ConsumedEnergy": {
+            "type": "number",
+            "description": "The difference between MeterValueEnd and MeterValueStart in kWh.",
+            "example": 15.6
+          },
+          "SignedMeteringValues": {
+            "type": "array",
+            "description": "Metering Signature basically contains all metering signature values (these values should be in Transparency software format)for different status of charging session for eg start, end or progress. In total you can provide maximum 10 metering signature values.",
+            "items": {
+              "$ref": "#/components/schemas/SignedMeteringValue"
+            }
+          },
+          "CalibrationLawVerificationInfo": {
+            "$ref": "#/components/schemas/CalibrationLawVerificationInfo"
+          },
+          "HubOperatorID": {
+            "type": "string",
+            "description": "Hub operator."
+          },
+          "HubProviderID": {
+            "type": "string",
+            "description": "Hub provider."
+          }
+        }
+      },
+      "SignedMeteringValue": {
+        "type": "object",
+        "properties": {
+          "SignedMeteringValue": {
+            "type": "string"
+          },
+          "MeteringStatus": {
+            "type": "string",
+            "enum": [
+              "Start",
+              "Progress",
+              "End"
+            ]
+          }
+        },
+        "description": "Metering Signature basically contains all metering signature values (these values should be in Transparency software format)for different status of charging session for eg start, end or progress. In total you can provide maximum 10 metering signature values."
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "WRONG_TIME_FRAME_FORMAT": {
+        "value": "{\n  \"message\" : \"The provided timeframe has wrong format, value should be in 15 minutes intervals starting from 0\",\n  \"errorCode\" : \"WRONG_TIME_FRAME_FORMAT\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "RABBITMQ_LISTENER_ERROR": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] An error occurred in RabbitMQ listener\",\n  \"errorCode\" : \"RABBITMQ_LISTENER_ERROR\"\n}"
+      },
+      "INVALID_RABBITMQ_RPC_RESPONSE": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] Invalid RabbitMQ RPC response\",\n  \"errorCode\" : \"INVALID_RABBITMQ_RPC_RESPONSE\"\n}"
+      },
+      "START_CHARGING_SESSION_FAILED": {
+        "value": "{\n  \"message\" : \"Failed to start a charging session.\",\n  \"errorCode\" : \"START_CHARGING_SESSION_FAILED\"\n}"
+      },
+      "INVALID_COMMAND": {
+        "value": "{\n  \"message\" : \"The requested command doesn't exist.\",\n  \"errorCode\" : \"INVALID_COMMAND\"\n}"
+      },
+      "GATEWAY_ALREADY_ADDED": {
+        "value": "{\n  \"message\" : \"Gateway with the specified name already added\",\n  \"errorCode\" : \"GATEWAY_ALREADY_ADDED\"\n}"
+      },
+      "GATEWAY_NOT_AVAILABLE": {
+        "value": "{\n  \"message\" : \"Gateway with the specified name is not available in the Consul service catalog\",\n  \"errorCode\" : \"GATEWAY_NOT_AVAILABLE\"\n}"
+      },
+      "GATEWAY_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Gateway with the specified UUID not found\",\n  \"errorCode\" : \"GATEWAY_NOT_FOUND\"\n}"
+      },
+      "EMPTY_GATEWAY_LIST": {
+        "value": "{\n  \"message\" : \"Gateway order list empty\",\n  \"errorCode\" : \"EMPTY_GATEWAY_LIST\"\n}"
+      },
+      "FAILED_TO_START_CHARGING_SESSION": {
+        "value": "{\n  \"message\" : \"Failed to start a charging session using known gateways\",\n  \"errorCode\" : \"FAILED_TO_START_CHARGING_SESSION\"\n}"
+      },
+      "FAILED_TO_STOP_CHARGING_SESSION": {
+        "value": "{\n  \"message\" : \"Failed to stop a charging session\",\n  \"errorCode\" : \"FAILED_TO_STOP_CHARGING_SESSION\"\n}"
+      },
+      "CONSUL_METADATA_ENTRY_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Failed to add the specified gateway due to missing Consul party-id metadata entry\",\n  \"errorCode\" : \"CONSUL_METADATA_ENTRY_NOT_FOUND\"\n}"
+      },
+      "GATEWAY_WITH_PARTY_ID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Gateway with the Consul party-id metadata entry already exists\",\n  \"errorCode\" : \"GATEWAY_WITH_PARTY_ID_ALREADY_EXISTS\"\n}"
+      },
+      "EVSE_UID_IS_REQUIRED": {
+        "value": "{\n  \"message\" : \"Evse UID is required when connector id is set\",\n  \"errorCode\" : \"EVSE_UID_IS_REQUIRED\"\n}"
+      },
+      "GATEWAY_WITH_PARTY_ID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Gateway with the specified party id not found\",\n  \"errorCode\" : \"GATEWAY_WITH_PARTY_ID_NOT_FOUND\"\n}"
+      },
+      "ERROR_STORING_LOCATIONS": {
+        "value": "{\n  \"message\" : \"An error occurred while storing locations data from GZIP file\",\n  \"errorCode\" : \"ERROR_STORING_LOCATIONS\"\n}"
+      },
+      "INVALID_FILE_TYPE": {
+        "value": "{\n  \"message\" : \"Provided file does not match the expected file type\",\n  \"errorCode\" : \"INVALID_FILE_TYPE\"\n}"
+      },
+      "ERROR_CREATING_AMENITY_TEMP_FILE": {
+        "value": "{\n  \"message\" : \"An error occurred while trying to create amenity temp file\",\n  \"errorCode\" : \"ERROR_CREATING_AMENITY_TEMP_FILE\"\n}"
+      },
+      "SESSION_ID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A session with the same ID already exists.\",\n  \"errorCode\" : \"SESSION_ID_ALREADY_EXISTS\"\n}"
+      },
+      "SESSION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Session is not found.\",\n  \"errorCode\" : \"SESSION_NOT_FOUND\"\n}"
+      },
+      "SESSION_NOT_FOUND_WITH_SPECIFIED_STATUS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Session with the specified status(es) not found.\",\n  \"errorCode\" : \"SESSION_NOT_FOUND_WITH_SPECIFIED_STATUS\"\n}"
+      },
+      "CDR_ID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A CDR with the same ID already exists.\",\n  \"errorCode\" : \"CDR_ID_ALREADY_EXISTS\"\n}"
+      },
+      "CDR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A CDR with the specified ID is not found.\",\n  \"errorCode\" : \"CDR_NOT_FOUND\"\n}"
+      },
+      "PARTY_IDS_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Party IDs are provided.\",\n  \"errorCode\" : \"PARTY_IDS_DO_NOT_MATCH\"\n}"
+      },
+      "COUNTRY_CODES_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Country Codes are provided.\",\n  \"errorCode\" : \"COUNTRY_CODES_DO_NOT_MATCH\"\n}"
+      },
+      "SESSION_IDS_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Session IDs are provided.\",\n  \"errorCode\" : \"SESSION_IDS_DO_NOT_MATCH\"\n}"
+      },
+      "AUTHORIZATION_REFERENCES_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Authorization References are provided.\",\n  \"errorCode\" : \"AUTHORIZATION_REFERENCES_DO_NOT_MATCH\"\n}"
+      },
+      "CDR_LOCATION_ID_EXISTS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A CDR Location with the same id already exists.\",\n  \"errorCode\" : \"CDR_LOCATION_ID_EXISTS\"\n}"
+      },
+      "LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Location with given parameters could not be found\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
+      },
+      "EVSE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Specified location does not contain the EVSE with given id\",\n  \"errorCode\" : \"EVSE_NOT_FOUND\"\n}"
+      },
+      "CONNECTOR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Specified location and EVSE do not contain the connector with given id\",\n  \"errorCode\" : \"CONNECTOR_NOT_FOUND\"\n}"
+      },
+      "IDS_MUST_MATCH": {
+        "value": "{\n  \"message\" : \"ID of object in the body and the ID passed through path variable must match\",\n  \"errorCode\" : \"IDS_MUST_MATCH\"\n}"
+      },
+      "ERROR_LOADING_OCPI": {
+        "value": "{\n  \"message\" : \"Error while loading OCPI data\",\n  \"errorCode\" : \"ERROR_LOADING_OCPI\"\n}"
+      },
+      "CONNECTOR_TYPE_NEEDS_TO_BE_DEFINED": {
+        "value": "{\n  \"message\" : \"The connector type(s) needs to be defined\",\n  \"errorCode\" : \"CONNECTOR_TYPE_NEEDS_TO_BE_DEFINED\"\n}"
+      },
+      "CHARGING_STATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Charging station with the specified EVSE ID not found.\",\n  \"errorCode\" : \"CHARGING_STATION_NOT_FOUND\"\n}"
+      },
+      "INVALID_REQUEST_PARAMETERS": {
+        "value": "{\n  \"message\" : \"The request must contain only one of the following parameters: name, EVSE ID\",\n  \"errorCode\" : \"INVALID_REQUEST_PARAMETERS\"\n}"
+      },
+      "CHARGING_STATION_REQUEST_RETURNED_EMPTY_RESULT": {
+        "value": "{\n  \"message\" : \"Charging station request didn't return any data.\",\n  \"errorCode\" : \"CHARGING_STATION_REQUEST_RETURNED_EMPTY_RESULT\"\n}"
+      },
+      "DATASET_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Dataset associated with the API key not found.\",\n  \"errorCode\" : \"DATASET_NOT_FOUND\"\n}"
+      },
+      "CAN_NOT_READ_IMAGE": {
+        "value": "{\n  \"message\" : \"The image can't not be read\",\n  \"errorCode\" : \"CAN_NOT_READ_IMAGE\"\n}"
+      },
+      "CAN_NOT_STORE_IMAGE": {
+        "value": "{\n  \"message\" : \"Image can't be stored\",\n  \"errorCode\" : \"CAN_NOT_STORE_IMAGE\"\n}"
+      },
+      "CAN_NOT_INITIALIZE_FOLDER": {
+        "value": "{\n  \"message\" : \"The directory for location review service images can't be initialized\",\n  \"errorCode\" : \"CAN_NOT_INITIALIZE_FOLDER\"\n}"
+      },
+      "PAYMENT_SERVICE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"One or more payment services not found\",\n  \"errorCode\" : \"PAYMENT_SERVICE_NOT_FOUND\"\n}"
+      },
+      "PAYMENT_SERVICE_REQUEST_RETURNED_EMPTY_RESULT": {
+        "value": "{\n  \"message\" : \"Payment services request didn't return any data.\",\n  \"errorCode\" : \"PAYMENT_SERVICE_REQUEST_RETURNED_EMPTY_RESULT\"\n}"
+      },
+      "CPO_GROUP_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"CPO group with the cpo id and country code combination not found\",\n  \"errorCode\" : \"CPO_GROUP_NOT_FOUND\"\n}"
+      },
+      "CPO_GROUP_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"CPO group with the specified cpo id - country code combination already exists\",\n  \"errorCode\" : \"CPO_GROUP_ALREADY_EXISTS\"\n}"
+      },
+      "PAYMENT_SERVICE_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Payment service with the specified name - provider combination already exists\",\n  \"errorCode\" : \"PAYMENT_SERVICE_ALREADY_EXISTS\"\n}"
+      },
+      "FAILED_TO_EXPORT_LOCATIONS": {
+        "value": "{\n  \"message\" : \"Failed to export locations to a gzip file\",\n  \"errorCode\" : \"FAILED_TO_EXPORT_LOCATIONS\"\n}"
+      },
+      "COUNTRY_CODES_MUST_MATCH": {
+        "value": "{\n  \"message\" : \"Country code of the object in the body and the country code passed through path variable must match\",\n  \"errorCode\" : \"COUNTRY_CODES_MUST_MATCH\"\n}"
+      },
+      "PARTY_IDS_MUST_MATCH": {
+        "value": "{\n  \"message\" : \"Party id of the object in the body and the party id passed through path variable must match\",\n  \"errorCode\" : \"PARTY_IDS_MUST_MATCH\"\n}"
+      },
+      "CAN_NOT_EXTRACT_LOCATIONS": {
+        "value": "{\n  \"message\" : \"Failed to extract locations\",\n  \"errorCode\" : \"CAN_NOT_EXTRACT_LOCATIONS\"\n}"
+      },
+      "INVALID_POWER_LEVEL_RANGE": {
+        "value": "{\n  \"message\" : \"Value representing the minimum power level value has to be greater than the maximum one\",\n  \"errorCode\" : \"INVALID_POWER_LEVEL_RANGE\"\n}"
+      },
+      "ERROR_CREATING_LOCATION_TEMP_FILE": {
+        "value": "{\n  \"message\" : \"An error occurred while trying to create location temp file\",\n  \"errorCode\" : \"ERROR_CREATING_LOCATION_TEMP_FILE\"\n}"
+      },
+      "INVALID_LOCATION_PUBLISH_VALUE": {
+        "value": "{\n  \"message\" : \"publish_allowed_to field not allowed to be set when publish field value is set to true\",\n  \"errorCode\" : \"INVALID_LOCATION_PUBLISH_VALUE\"\n}"
+      },
+      "LOCATION_FILE_CONTAINS_INVALID_ENTRIES": {
+        "value": "{\n  \"message\" : \"Location file contains invalid entries\",\n  \"errorCode\" : \"LOCATION_FILE_CONTAINS_INVALID_ENTRIES\"\n}"
+      },
+      "ERROR_STARTING_CHARGING_SESSION": {
+        "value": "{\n  \"message\" : \"Hubject gateway error while starting the charging session\",\n  \"errorCode\" : \"ERROR_STARTING_CHARGING_SESSION\"\n}"
+      },
+      "EVSE_STATUSES_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"EVSE status list was not found\",\n  \"errorCode\" : \"EVSE_STATUSES_NOT_FOUND\"\n}"
+      },
+      "ERROR_STOPPING_CHARGING_SESSION": {
+        "value": "{\n  \"message\" : \"Hubject gateway error while stopping the charging session\",\n  \"errorCode\" : \"ERROR_STOPPING_CHARGING_SESSION\"\n}"
+      },
+      "EVSE_LOCATIONS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"EVSE locations not found\",\n  \"errorCode\" : \"EVSE_LOCATIONS_NOT_FOUND\"\n}"
+      },
+      "EXPIRY_DATE_MAX_VALUE": {
+        "value": "{\n  \"message\" : \"[TOKEN] The expiry date must not be greater than 9999.\",\n  \"errorCode\" : \"EXPIRY_DATE_MAX_VALUE\"\n}"
+      },
+      "UID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[TOKEN] Token UID already exists\",\n  \"errorCode\" : \"UID_ALREADY_EXISTS\"\n}"
+      },
+      "TOKEN_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[TOKEN] The token with the provided UID does not exist.\",\n  \"errorCode\" : \"TOKEN_NOT_FOUND\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "NOT_A_DIRECTORY": {
+        "value": "{\n  \"message\" : \"Not a directory\",\n  \"errorCode\" : \"NOT_A_DIRECTORY\"\n}"
+      },
+      "VEHICLE_IMAGE_DIR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle image directory not found\",\n  \"errorCode\" : \"VEHICLE_IMAGE_DIR_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_STORE_VEHICLE_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to store vehicle image\",\n  \"errorCode\" : \"FAILED_TO_STORE_VEHICLE_IMAGE\"\n}"
+      },
+      "EMPTY_IMAGE": {
+        "value": "{\n  \"message\" : \"Empty image\",\n  \"errorCode\" : \"EMPTY_IMAGE\"\n}"
+      },
+      "CAN_NOT_PROCESS_IMAGE": {
+        "value": "{\n  \"message\" : \"Can't process image\",\n  \"errorCode\" : \"CAN_NOT_PROCESS_IMAGE\"\n}"
+      },
+      "VEHICLE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The requested vehicle entry was not found\",\n  \"errorCode\" : \"VEHICLE_NOT_FOUND\"\n}"
+      },
+      "ELECTRIC_VEHICLE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The requested vehicle entry was not found or the vehicle is not an electric vehicle\",\n  \"errorCode\" : \"ELECTRIC_VEHICLE_NOT_FOUND\"\n}"
+      },
+      "VEHICLE_BRAND_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle brand not found\",\n  \"errorCode\" : \"VEHICLE_BRAND_NOT_FOUND\"\n}"
+      },
+      "CHARGING_CURVE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Charging curve not found\",\n  \"errorCode\" : \"CHARGING_CURVE_NOT_FOUND\"\n}"
+      },
+      "INCORRECT_TENANT_ID": {
+        "value": "{\n  \"message\" : \"Not allowed to add/update/fetch the resource with the provided tenant id\",\n  \"errorCode\" : \"INCORRECT_TENANT_ID\"\n}"
+      },
+      "BRAND_AND_VEHICLE_TENANTS_MISMATCH": {
+        "value": "{\n  \"message\" : \"Vehicle and brand tenant ids don't match\",\n  \"errorCode\" : \"BRAND_AND_VEHICLE_TENANTS_MISMATCH\"\n}"
+      },
+      "IMAGE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Image not found\",\n  \"errorCode\" : \"IMAGE_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_READ_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to read image\",\n  \"errorCode\" : \"FAILED_TO_READ_IMAGE\"\n}"
+      },
+      "INVALID_IMAGE_FILE_TYPE": {
+        "value": "{\n  \"message\" : \"File has an invalid extension\",\n  \"errorCode\" : \"INVALID_IMAGE_FILE_TYPE\"\n}"
+      },
+      "VEHICLE_VARIANT_IMAGE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle doesn't have a variant image\",\n  \"errorCode\" : \"VEHICLE_VARIANT_IMAGE_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_DELETE_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to delete the image\",\n  \"errorCode\" : \"FAILED_TO_DELETE_IMAGE\"\n}"
+      },
+      "UNSUPPORTED_IMAGE_FORMAT": {
+        "value": "{\n  \"message\" : \"Image format is invalid or unsupported\",\n  \"errorCode\" : \"UNSUPPORTED_IMAGE_FORMAT\"\n}"
+      },
+      "IMAGE_FETCHING_ERROR": {
+        "value": "{\n  \"message\" : \"Error occured during fetching the image\",\n  \"errorCode\" : \"IMAGE_FETCHING_ERROR\"\n}"
+      },
+      "INVALID_CUSTOMER_KEY": {
+        "value": "{\n  \"message\" : \"Invalid customer key\",\n  \"errorCode\" : \"INVALID_CUSTOMER_KEY\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "MSP Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "MSP Hubject Gateway",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1134 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "msp-user-settings-service",
+    "description": "A service used for user customization settings like favourites and home stations",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/msp-user-settings/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/user/home-stations": {
+      "get": {
+        "tags": [
+          "User's Home Stations"
+        ],
+        "summary": "Get Users with their home stations paginated",
+        "description": "Returns pages of Users, with their home stations.",
+        "operationId": "getAllUserHomeStations",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserHomeStations"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User's Home Stations"
+        ],
+        "summary": "Update or add User(s) and home stations",
+        "description": "Updates the home stations of existing  User(s), or add them if User(s) do not exist.",
+        "operationId": "createOrUpdateUserHomeStations",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UserHomeStationRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User's Home Stations"
+        ],
+        "summary": "Deletes users with their home stations",
+        "description": "Deletes users and their home stations, based on the provided user IDs.",
+        "operationId": "deleteUserHomeStationsByUserIds",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "uniqueItems": true,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/settings": {
+      "get": {
+        "tags": [
+          "User settings"
+        ],
+        "summary": "Get user's settings",
+        "description": "Get user's settings",
+        "operationId": "getSettings",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSettings"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User Settings not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User settings"
+        ],
+        "summary": "Save user's settings in the cloud",
+        "description": "Save user's settings in the cloud",
+        "operationId": "saveSettings",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserSettings"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "User Setting for the same User ID already exists"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User settings"
+        ],
+        "summary": "Delete user's settings",
+        "description": "Delete the user's settings",
+        "operationId": "deleteSettings",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User Settings not found"
+          }
+        }
+      }
+    },
+    "/user/favorites/chargingstations/{chargingStationId}": {
+      "post": {
+        "tags": [
+          "Charging station favorites"
+        ],
+        "summary": "Add charging station favorite",
+        "description": "Adds a charging station by ID to the favorite list of the user",
+        "operationId": "saveFavouriteChargingStation",
+        "parameters": [
+          {
+            "name": "chargingStationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "User's charging station already exists"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Charging station favorites"
+        ],
+        "summary": "Remove charging station favorite",
+        "description": "Removes the charging stations by ID from the favorite list of the user",
+        "operationId": "deleteFavouriteChargingStation",
+        "parameters": [
+          {
+            "name": "chargingStationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "User's harging station was not found"
+          }
+        }
+      }
+    },
+    "/user/favorites/address": {
+      "get": {
+        "tags": [
+          "Address favorites"
+        ],
+        "summary": "Get favourite addresses",
+        "description": "Returns the list of favorite addresses of the user",
+        "operationId": "getFavouriteAddresses",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FavoriteAddresses"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Favourite addresses were not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Address favorites"
+        ],
+        "summary": "Add address favorite",
+        "description": "Adds an address to the favorite list of the user",
+        "operationId": "saveFavouriteAddress",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveAddressRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "Favorite address for the same user already exists."
+          }
+        }
+      }
+    },
+    "/user/home-stations/{userId}": {
+      "get": {
+        "tags": [
+          "User's Home Stations"
+        ],
+        "summary": "Get User's home stations",
+        "description": "Returns a list of home station IDs, for the User who triggered the action.",
+        "operationId": "getUserHomeStationsByUserId",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/favorites/chargingstations": {
+      "get": {
+        "tags": [
+          "Charging station favorites"
+        ],
+        "summary": "Get favourite charging stations",
+        "description": "Returns the list of IDs of the favorite charging stations of the user",
+        "operationId": "getFavouriteChargingStations",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FavoriteChargingStations"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User's charging station was not found"
+          }
+        }
+      }
+    },
+    "/user/favorites/address/{addressUuid}": {
+      "delete": {
+        "tags": [
+          "Address favorites"
+        ],
+        "summary": "Remove address favorite",
+        "description": "Removes the charging stations by ID from the favorite list of the user",
+        "operationId": "deleteFavouriteAddress",
+        "parameters": [
+          {
+            "name": "addressUuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Favourite addresses were not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SuccessMessageDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UserHomeStationRequest": {
+        "required": [
+          "homeStationIds",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "User ID"
+          },
+          "homeStationIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "List of home station IDs, for this User",
+            "items": {
+              "type": "integer",
+              "description": "List of home station IDs, for this User",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "CarConfiguration": {
+        "required": [
+          "manufacturer",
+          "model",
+          "vehicle_id",
+          "vehicle_variant"
+        ],
+        "type": "object",
+        "properties": {
+          "vehicle_id": {
+            "type": "string",
+            "description": "The UUID of the vehicle",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "manufacturer": {
+            "type": "string",
+            "description": "The vehicle manufacturer",
+            "example": "Porsche"
+          },
+          "model": {
+            "type": "string",
+            "description": "The model name",
+            "example": "Taycan"
+          },
+          "vehicle_variant": {
+            "type": "string",
+            "description": "The model variant",
+            "example": "Turbo"
+          }
+        },
+        "description": "Car configuration"
+      },
+      "ChargeDetailsConfiguration": {
+        "required": [
+          "charge_max",
+          "charge_min",
+          "charge_penalty"
+        ],
+        "type": "object",
+        "properties": {
+          "charge_min": {
+            "maximum": 80,
+            "minimum": 5,
+            "type": "integer",
+            "description": "The minimum SoC in percent before a charging station will be targeted",
+            "format": "int32",
+            "example": 20
+          },
+          "charge_max": {
+            "maximum": 100,
+            "minimum": 20,
+            "type": "integer",
+            "description": "The maximum SoC in percent which will be charged",
+            "format": "int32",
+            "example": 80
+          },
+          "charge_penalty": {
+            "maximum": 3600,
+            "minimum": 0,
+            "type": "integer",
+            "description": "The charging penalty in seconds",
+            "format": "int32",
+            "example": 120
+          },
+          "charge_port": {
+            "type": "string",
+            "enum": [
+              "CHADEMO",
+              "DOMESTIC_A",
+              "DOMESTIC_B",
+              "DOMESTIC_C",
+              "DOMESTIC_D",
+              "DOMESTIC_E",
+              "DOMESTIC_F",
+              "DOMESTIC_G",
+              "DOMESTIC_H",
+              "DOMESTIC_I",
+              "DOMESTIC_J",
+              "DOMESTIC_K",
+              "DOMESTIC_L",
+              "IEC_60309_2_single_16",
+              "IEC_60309_2_three_16",
+              "IEC_60309_2_three_32",
+              "IEC_60309_2_three_64",
+              "IEC_62196_T1",
+              "IEC_62196_T1_COMBO",
+              "IEC_62196_T2",
+              "IEC_62196_T2_COMBO",
+              "IEC_62196_T3A",
+              "IEC_62196_T3C",
+              "NEMA_5_20",
+              "NEMA_6_30",
+              "NEMA_6_50",
+              "NEMA_10_30",
+              "NEMA_10_50",
+              "NEMA_14_30",
+              "NEMA_14_50",
+              "PANTOGRAPH_BOTTOM_UP",
+              "PANTOGRAPH_TOP_DOWN",
+              "TESLA_R",
+              "TESLA_S",
+              "TESLA_D",
+              "GBT_AC",
+              "GBT_DC",
+              "UNKNOWN"
+            ]
+          },
+          "fast_charge_port": {
+            "type": "string",
+            "enum": [
+              "CHADEMO",
+              "DOMESTIC_A",
+              "DOMESTIC_B",
+              "DOMESTIC_C",
+              "DOMESTIC_D",
+              "DOMESTIC_E",
+              "DOMESTIC_F",
+              "DOMESTIC_G",
+              "DOMESTIC_H",
+              "DOMESTIC_I",
+              "DOMESTIC_J",
+              "DOMESTIC_K",
+              "DOMESTIC_L",
+              "IEC_60309_2_single_16",
+              "IEC_60309_2_three_16",
+              "IEC_60309_2_three_32",
+              "IEC_60309_2_three_64",
+              "IEC_62196_T1",
+              "IEC_62196_T1_COMBO",
+              "IEC_62196_T2",
+              "IEC_62196_T2_COMBO",
+              "IEC_62196_T3A",
+              "IEC_62196_T3C",
+              "NEMA_5_20",
+              "NEMA_6_30",
+              "NEMA_6_50",
+              "NEMA_10_30",
+              "NEMA_10_50",
+              "NEMA_14_30",
+              "NEMA_14_50",
+              "PANTOGRAPH_BOTTOM_UP",
+              "PANTOGRAPH_TOP_DOWN",
+              "TESLA_R",
+              "TESLA_S",
+              "TESLA_D",
+              "GBT_AC",
+              "GBT_DC",
+              "UNKNOWN"
+            ]
+          }
+        },
+        "description": "Charge details configuration"
+      },
+      "FilterPowerType": {
+        "type": "object",
+        "properties": {
+          "power_type_ac": {
+            "type": "boolean",
+            "description": "The planner will include AC connectors",
+            "default": true
+          },
+          "power_type_dc": {
+            "type": "boolean",
+            "description": "The planner will include DC connectors",
+            "default": true
+          },
+          "power_type_hpc": {
+            "type": "boolean",
+            "description": "The planner will include HPC connectors",
+            "default": true
+          }
+        },
+        "description": "Optional power type filter"
+      },
+      "NavigationConfiguration": {
+        "required": [
+          "alert_when_over_limit",
+          "show_speed_limit",
+          "speed_limit_threshold"
+        ],
+        "type": "object",
+        "properties": {
+          "show_speed_limit": {
+            "type": "boolean",
+            "description": "Indicated if the speed limit should be shown",
+            "example": true
+          },
+          "alert_when_over_limit": {
+            "type": "boolean",
+            "description": "Indicated if the user should be alerted when he is over the speed limit",
+            "example": true
+          },
+          "speed_limit_threshold": {
+            "type": "integer",
+            "description": "The speed limit threshold before alerting",
+            "format": "int32",
+            "example": 20
+          },
+          "navigation_voice_configuration": {
+            "$ref": "#/components/schemas/NavigationVoiceConfiguration"
+          }
+        },
+        "description": "Navigation configuration"
+      },
+      "NavigationVoiceConfiguration": {
+        "required": [
+          "is_selected",
+          "language_id",
+          "language_name"
+        ],
+        "type": "object",
+        "properties": {
+          "language_id": {
+            "type": "integer",
+            "description": "The ID of the language",
+            "format": "int64",
+            "example": 12
+          },
+          "language_name": {
+            "type": "string",
+            "description": "The name of the language",
+            "example": "German"
+          },
+          "is_selected": {
+            "type": "boolean",
+            "description": "Indicates if the voice instructions are enabled",
+            "example": true
+          }
+        },
+        "description": "The navigation voice configuration"
+      },
+      "UserSettings": {
+        "required": [
+          "app_language"
+        ],
+        "type": "object",
+        "properties": {
+          "car_configuration": {
+            "$ref": "#/components/schemas/CarConfiguration"
+          },
+          "filter_power_type": {
+            "$ref": "#/components/schemas/FilterPowerType"
+          },
+          "charge_details_configuration": {
+            "$ref": "#/components/schemas/ChargeDetailsConfiguration"
+          },
+          "navigation_configuration": {
+            "$ref": "#/components/schemas/NavigationConfiguration"
+          },
+          "payment_providers": {
+            "type": "array",
+            "description": "The list of payment providers",
+            "items": {
+              "type": "string",
+              "description": "The list of payment providers"
+            }
+          },
+          "charging_networks": {
+            "type": "array",
+            "description": "The list of charging networks",
+            "items": {
+              "type": "string",
+              "description": "The list of charging networks"
+            }
+          },
+          "app_language": {
+            "type": "string",
+            "description": "The selected app language",
+            "example": "en"
+          }
+        }
+      },
+      "GeoLocation": {
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "maximum": 90,
+            "exclusiveMaximum": false,
+            "minimum": -90,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Latitude of the point in decimal degree. Example: 50.770774. Decimal separator: \".\" Regex: -?[0-9]{1,2}\\.[0-9]{5,7}"
+          },
+          "longitude": {
+            "maximum": 180,
+            "exclusiveMaximum": false,
+            "minimum": -180,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "Longitude of the point in decimal degree. Example: -126.104965. Decimal separator: \".\" Regex: -?[0-9]{1,3}\\.[0-9]{5,7}"
+          }
+        },
+        "description": "This class defines the geo location of the Charge Point. The geodetic system to be used is WGS 84."
+      },
+      "SaveAddressRequest": {
+        "required": [
+          "address_type",
+          "coordinates",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 300,
+            "minLength": 1,
+            "type": "string",
+            "description": "The name of address",
+            "example": "ACME Corp"
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "address_type": {
+            "type": "string",
+            "description": "The type of address",
+            "example": "HOME",
+            "enum": [
+              "HOME",
+              "WORK",
+              "ADDRESS"
+            ]
+          }
+        }
+      },
+      "UserHomeStations": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User ID"
+          },
+          "homeStationIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "List of home station IDs, for this User",
+            "items": {
+              "type": "integer",
+              "description": "List of home station IDs, for this User",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FavoriteChargingStations": {
+        "type": "object",
+        "properties": {
+          "charging_station_ids": {
+            "type": "array",
+            "description": "The list of charging station IDs",
+            "items": {
+              "type": "string",
+              "description": "The list of charging station IDs"
+            }
+          }
+        }
+      },
+      "Address": {
+        "required": [
+          "address_type",
+          "coordinates",
+          "name",
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "maxLength": 36,
+            "minLength": 1,
+            "type": "string",
+            "description": "The UUID of the address",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "name": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string",
+            "description": "The name of address",
+            "example": "ACME Corp"
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "address_type": {
+            "type": "string",
+            "description": "The type of address",
+            "example": "HOME",
+            "enum": [
+              "HOME",
+              "WORK",
+              "ADDRESS"
+            ]
+          }
+        },
+        "description": "The list of favorite addresses"
+      },
+      "FavoriteAddresses": {
+        "type": "object",
+        "properties": {
+          "addresses": {
+            "type": "array",
+            "description": "The list of favorite addresses",
+            "items": {
+              "$ref": "#/components/schemas/Address"
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "USER_FAVORITE_ADDRESS_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Users favorite address for the provided user already exists\",\n  \"errorCode\" : \"USER_FAVORITE_ADDRESS_ALREADY_EXISTS\"\n}"
+      },
+      "USER_FAVORITE_ADDRESS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Users favorite address not found\",\n  \"errorCode\" : \"USER_FAVORITE_ADDRESS_NOT_FOUND\"\n}"
+      },
+      "USER_FAVORITE_ADDRESSES_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Users Favorite addresses not found\",\n  \"errorCode\" : \"USER_FAVORITE_ADDRESSES_NOT_FOUND\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"User Settings not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "USER_HOME_STATIONS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"User's home station(s) not found\",\n  \"errorCode\" : \"USER_HOME_STATIONS_NOT_FOUND\"\n}"
+      },
+      "RABBITMQ_LISTENER_ERROR": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] An error occurred in RabbitMQ listener\",\n  \"errorCode\" : \"RABBITMQ_LISTENER_ERROR\"\n}"
+      },
+      "INVALID_RABBITMQ_RPC_RESPONSE": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] Invalid RabbitMQ RPC response\",\n  \"errorCode\" : \"INVALID_RABBITMQ_RPC_RESPONSE\"\n}"
+      },
+      "USER_FAVORITE_CHARGING_STATION_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Users favorite charging station already exists\",\n  \"errorCode\" : \"USER_FAVORITE_CHARGING_STATION_ALREADY_EXISTS\"\n}"
+      },
+      "USER_FAVORITE_CHARGING_STATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Users favorite charging station not found\",\n  \"errorCode\" : \"USER_FAVORITE_CHARGING_STATION_NOT_FOUND\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "USER_SETTINS_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"The User Settings for the provided user id already exists\",\n  \"errorCode\" : \"USER_SETTINS_ALREADY_EXISTS\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "MSP Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "MSP User Settings",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

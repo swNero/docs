@@ -1,0 +1,405 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "msp-billing-service",
+    "description": "A service used for storing and retrieval of user billing info",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/msp-billing/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/billing/info": {
+      "get": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Retrieve the user billing info",
+        "description": "Returns the billing info of a user",
+        "operationId": "getUserBillingInformation",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingInfoResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "404": {
+            "description": "The billing information was not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Creates the user billing info",
+        "description": "Creates the billing info for a user",
+        "operationId": "createBillingInformation",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillingCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "409": {
+            "description": "Conflict if Billing Information for the same User Id already exists."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SuccessMessageDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BillingAddress": {
+        "required": [
+          "address",
+          "city",
+          "country",
+          "postalCode"
+        ],
+        "type": "object",
+        "properties": {
+          "city": {
+            "maxLength": 45,
+            "minLength": 0,
+            "type": "string",
+            "description": "City or Town.",
+            "example": "Athens"
+          },
+          "address": {
+            "maxLength": 45,
+            "minLength": 0,
+            "type": "string",
+            "description": "Street/Block name and House Number if available.",
+            "example": "F.Rooseveltlan 23"
+          },
+          "postalCode": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Postal code of the location.",
+            "example": "9000"
+          },
+          "country": {
+            "maxLength": 3,
+            "minLength": 1,
+            "type": "string",
+            "description": "ISO 3166-1 alpha-3 code for the country of this location.",
+            "example": "GER"
+          }
+        },
+        "description": "Holds the billing Address details of a user"
+      },
+      "BillingCreateRequest": {
+        "required": [
+          "billingAddress",
+          "companyName",
+          "firstName",
+          "lastName",
+          "paymentCapabilities"
+        ],
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "description": "The name of the company",
+            "example": "EnergyStacks GmbH"
+          },
+          "firstName": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string",
+            "description": "The first name of the user",
+            "example": "John"
+          },
+          "lastName": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string",
+            "description": "The last name of the user",
+            "example": "Doe"
+          },
+          "billingAddress": {
+            "$ref": "#/components/schemas/BillingAddress"
+          },
+          "paymentCapabilities": {
+            "type": "array",
+            "description": "The payment capabilities of a user",
+            "items": {
+              "type": "string",
+              "description": "The payment capabilities of a user",
+              "enum": [
+                "CHARGING_PROFILE_CAPABLE",
+                "CHARGING_PREFERENCES_CAPABLE",
+                "CHIP_CARD_SUPPORT",
+                "CONTACTLESS_CARD_SUPPORT",
+                "CREDIT_CARD_PAYABLE",
+                "DEBIT_CARD_PAYABLE",
+                "PED_TERMINAL",
+                "REMOTE_START_STOP_CAPABLE",
+                "RESERVABLE",
+                "RFID_READER",
+                "START_SESSION_CONNECTOR_REQUIRED",
+                "TOKEN_GROUP_CAPABLE",
+                "UNLOCK_CAPABLE"
+              ]
+            }
+          }
+        }
+      },
+      "BillingInfoResponse": {
+        "required": [
+          "billingAddress",
+          "companyName",
+          "firstName",
+          "lastName",
+          "paymentCapabilities",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "maxLength": 36,
+            "minLength": 1,
+            "type": "string",
+            "description": "The ID of the user",
+            "example": "ZOsNHVu2TgI6PrWRb9"
+          },
+          "companyName": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "description": "The name of the company",
+            "example": "EnergyStacks GmbH"
+          },
+          "firstName": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string",
+            "description": "The first name of the user",
+            "example": "John"
+          },
+          "lastName": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string",
+            "description": "The last name of the user",
+            "example": "Doe"
+          },
+          "billingAddress": {
+            "$ref": "#/components/schemas/BillingAddress"
+          },
+          "paymentCapabilities": {
+            "type": "array",
+            "description": "The payment capabilities of a user",
+            "items": {
+              "type": "string",
+              "description": "The payment capabilities of a user",
+              "enum": [
+                "CHARGING_PROFILE_CAPABLE",
+                "CHARGING_PREFERENCES_CAPABLE",
+                "CHIP_CARD_SUPPORT",
+                "CONTACTLESS_CARD_SUPPORT",
+                "CREDIT_CARD_PAYABLE",
+                "DEBIT_CARD_PAYABLE",
+                "PED_TERMINAL",
+                "REMOTE_START_STOP_CAPABLE",
+                "RESERVABLE",
+                "RFID_READER",
+                "START_SESSION_CONNECTOR_REQUIRED",
+                "TOKEN_GROUP_CAPABLE",
+                "UNLOCK_CAPABLE"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "USER_BILLING_INFORMATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The user billing information was not found\",\n  \"errorCode\" : \"USER_BILLING_INFORMATION_NOT_FOUND\"\n}"
+      },
+      "USER_BILLING_INFORMATION_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"A Billing Information for the same User Id already exists.\",\n  \"errorCode\" : \"USER_BILLING_INFORMATION_ALREADY_EXISTS\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "MSP Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "MSP Billing",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

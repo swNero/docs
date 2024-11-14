@@ -1,0 +1,935 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "charging-reservation-service",
+    "description": "",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-tst.is.energystacks.io/charging-reservation/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Connectors",
+      "description": "Support for Connector operations."
+    },
+    {
+      "name": "Charging Reservations",
+      "description": "Support for Charging Reservation operations (CRUDs)"
+    },
+    {
+      "name": "Charging Stations",
+      "description": "Support for Charging Station operations."
+    }
+  ],
+  "paths": {
+    "/charging-reservations": {
+      "post": {
+        "tags": [
+          "Charging Reservations"
+        ],
+        "summary": "Create charging reservation",
+        "description": "Creates a new charging reservation, for the requested charging station connector if there are not overlaps with existing ones.",
+        "operationId": "createChargingReservation",
+        "parameters": [
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChargingReservationCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "END_DATETIME_NOT_AFTER_START_DATETIME": {
+                    "description": "END_DATETIME_NOT_AFTER_START_DATETIME",
+                    "$ref": "#/components/examples/END_DATETIME_NOT_AFTER_START_DATETIME"
+                  },
+                  "RESERVATION_TIMESTAMP_IN_THE_PAST": {
+                    "description": "RESERVATION_TIMESTAMP_IN_THE_PAST",
+                    "$ref": "#/components/examples/RESERVATION_TIMESTAMP_IN_THE_PAST"
+                  },
+                  "INVALID_START_END_SOC": {
+                    "description": "INVALID_START_END_SOC",
+                    "$ref": "#/components/examples/INVALID_START_END_SOC"
+                  },
+                  "INVALID_START_SOC_VALUE": {
+                    "description": "INVALID_START_SOC_VALUE",
+                    "$ref": "#/components/examples/INVALID_START_SOC_VALUE"
+                  },
+                  "INVALID_END_SOC_VALUE": {
+                    "description": "INVALID_END_SOC_VALUE",
+                    "$ref": "#/components/examples/INVALID_END_SOC_VALUE"
+                  },
+                  "INVALID_PLANNED_SOC_USAGE_VALUE": {
+                    "description": "INVALID_PLANNED_SOC_USAGE_VALUE",
+                    "$ref": "#/components/examples/INVALID_PLANNED_SOC_USAGE_VALUE"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CONNECTOR_NOT_FOUND": {
+                    "description": "CONNECTOR_NOT_FOUND",
+                    "$ref": "#/components/examples/CONNECTOR_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "CONNECTOR_RESERVED": {
+                    "description": "CONNECTOR_RESERVED",
+                    "$ref": "#/components/examples/CONNECTOR_RESERVED"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connectors/by-utilization-status": {
+      "get": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Get all charging station connectors by connector utilization status.",
+        "description": "Returns a list of all connectors by utilization status. If none exists, list is empty.",
+        "operationId": "getConnectorsByUtilizationStatus",
+        "parameters": [
+          {
+            "name": "utilizationStatus",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "AVAILABLE",
+                "REMOVED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConnectorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/charging-stations": {
+      "get": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Get all charging stations",
+        "description": "Returns a list of all charging stations. If none exists, list is empty.",
+        "operationId": "getAllChargingStations",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingStationResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/charging-reservations/search": {
+      "get": {
+        "tags": [
+          "Charging Reservations"
+        ],
+        "summary": "Get charging reservations based on criteria filters.",
+        "description": "Searches for charging reservations based on provided criteria.\n#### If a criteria filter is not provided, it will not be used in the search.\n#### If multiple criteria filters are provided, the search will only return results that match all the provided criteria.\n#### If applied criteria had no match, list is empty.\n#### Date range overlap scenarios:\n1. A reservation starts before and ends during the requested timeframe.\n2. A reservation starts during and ends after the requested timeframe.\n3. A reservation completely encompasses the requested timeframe.\n4. The requested timeframe completely encompasses a reservation.\n",
+        "operationId": "getChargingReservationsByCriteriaFilter",
+        "parameters": [
+          {
+            "name": "dateTimeFrom",
+            "in": "query",
+            "description": "Optional date filter which fetches reservations that overlap with this timestamp. If provided, then also dateTimeTo should be provided.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "dateTimeTo",
+            "in": "query",
+            "description": "Optional date filter which fetches reservations that overlap with this timestamp. If provided, then also dateTimeFrom should be provided.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "identityKey",
+            "in": "query",
+            "description": "Optional filter which fetches reservation for a specific charging station. If provided, then also connectorId should be provided.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "connectorId",
+            "in": "query",
+            "description": "Optional filter which fetches reservation for a specific charging station connector. If provided, then also identityKey should be provided.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "vehicleIdentificationNumber",
+            "in": "query",
+            "description": "Optional VIN filter which fetches charging reservations that are related to this vehicle.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingReservationResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "INVALID_CHARGING_STATION_CONNECTOR_SEARCH": {
+                    "description": "INVALID_CHARGING_STATION_CONNECTOR_SEARCH",
+                    "$ref": "#/components/examples/INVALID_CHARGING_STATION_CONNECTOR_SEARCH"
+                  },
+                  "END_DATETIME_NOT_AFTER_START_DATETIME": {
+                    "description": "END_DATETIME_NOT_AFTER_START_DATETIME",
+                    "$ref": "#/components/examples/END_DATETIME_NOT_AFTER_START_DATETIME"
+                  },
+                  "INVALID_RESERVATION_TIMEFRAME_SEARCH": {
+                    "description": "INVALID_RESERVATION_TIMEFRAME_SEARCH",
+                    "$ref": "#/components/examples/INVALID_RESERVATION_TIMEFRAME_SEARCH"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ChargingReservationCreateRequest": {
+        "required": [
+          "chargedKwh",
+          "chargingPrice",
+          "chargingStationConnectorId",
+          "endDate",
+          "socEnd",
+          "socStart",
+          "startDate",
+          "vehicleIdentificationNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Start datetime of this reservation.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End datetime of this reservation.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "socStart": {
+            "type": "number",
+            "description": "The SoC of the battery at the start of the charging process (in %). Range: [0, 99].",
+            "format": "double",
+            "example": 10
+          },
+          "socEnd": {
+            "type": "number",
+            "description": "The SoC of the battery at the end of the charging process (in %). Range: [1, 100].",
+            "format": "double",
+            "example": 80
+          },
+          "chargedKwh": {
+            "type": "number",
+            "description": "Estimated total charged Kwh for the reservation."
+          },
+          "chargingPrice": {
+            "type": "number",
+            "description": "Estimated total charging price for the reservation."
+          },
+          "vehicleIdentificationNumber": {
+            "maxLength": 30,
+            "minLength": 0,
+            "type": "string",
+            "description": "The identification number (VIN) of the vehicle which will charge.",
+            "example": "4Y1SL65848Z411444"
+          },
+          "plannedSocUsage": {
+            "type": "number",
+            "description": "Planned SoC usage after the vehicle gets charged (in %). Range: [0, 100].",
+            "format": "double",
+            "example": 65
+          },
+          "chargingStationConnectorId": {
+            "$ref": "#/components/schemas/ChargingStationConnectorIdRequest"
+          }
+        },
+        "description": "Defines the create request of a charging reservation"
+      },
+      "ChargingStationConnectorIdRequest": {
+        "required": [
+          "connectorId",
+          "identityKey"
+        ],
+        "type": "object",
+        "properties": {
+          "identityKey": {
+            "maxLength": 32,
+            "minLength": 0,
+            "pattern": "([A-Za-z0-9\\-\\_\\.\\~\\:\\?\\#\\@\\!\\$\\&\\'\\(\\)\\*\\,\\+\\= ]+)",
+            "type": "string",
+            "description": "Globally unique identifier of the Charging Station.",
+            "example": "ACE324452"
+          },
+          "connectorId": {
+            "type": "integer",
+            "description": "Unique Identifier of the Connector within the Charging Station.",
+            "format": "int32",
+            "example": 1
+          }
+        },
+        "description": "Contains the identifiers of a Charging Station, and one of its connectors"
+      },
+      "ConnectorResponse": {
+        "required": [
+          "connectorId",
+          "evseId",
+          "identityKey"
+        ],
+        "type": "object",
+        "properties": {
+          "identityKey": {
+            "maxLength": 32,
+            "type": "string",
+            "description": "Globally unique identifier of Connector's Charging Station.",
+            "example": "ACE324452"
+          },
+          "connectorId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "Unique Identifier of the Connector within the Charging Station.",
+            "format": "int32",
+            "example": 1
+          },
+          "evseId": {
+            "maxLength": 48,
+            "type": "string",
+            "description": "The EVSE ID of the connector"
+          },
+          "standard": {
+            "type": "string",
+            "description": "The connector-type standard of the installed connector.",
+            "enum": [
+              "CHADEMO",
+              "CHAOJI",
+              "DOMESTIC_A",
+              "DOMESTIC_B",
+              "DOMESTIC_C",
+              "DOMESTIC_D",
+              "DOMESTIC_E",
+              "DOMESTIC_F",
+              "DOMESTIC_G",
+              "DOMESTIC_H",
+              "DOMESTIC_I",
+              "DOMESTIC_J",
+              "DOMESTIC_K",
+              "DOMESTIC_L",
+              "DOMESTIC_M",
+              "DOMESTIC_N",
+              "DOMESTIC_O",
+              "GBT_AC",
+              "GBT_DC",
+              "IEC_60309_2_single_16",
+              "IEC_60309_2_three_16",
+              "IEC_60309_2_three_32",
+              "IEC_60309_2_three_64",
+              "IEC_62196_T1",
+              "IEC_62196_T1_COMBO",
+              "IEC_62196_T2",
+              "IEC_62196_T2_COMBO",
+              "IEC_62196_T3A",
+              "IEC_62196_T3C",
+              "NEMA_5_20",
+              "NEMA_6_30",
+              "NEMA_6_50",
+              "NEMA_10_30",
+              "NEMA_10_50",
+              "NEMA_14_30",
+              "NEMA_14_50",
+              "PANTOGRAPH_BOTTOM_UP",
+              "PANTOGRAPH_TOP_DOWN",
+              "TESLA_R",
+              "TESLA_S",
+              "UNKNOWN"
+            ]
+          },
+          "format": {
+            "type": "string",
+            "description": "The format (socket/cable) of the installed connector.",
+            "enum": [
+              "SOCKET",
+              "CABLE"
+            ]
+          },
+          "powerType": {
+            "type": "string",
+            "description": "The power type (socket/cable) of the installed connector.",
+            "enum": [
+              "AC_1_PHASE",
+              "AC_2_PHASE",
+              "AC_2_PHASE_SPLIT",
+              "AC_3_PHASE",
+              "DC"
+            ]
+          },
+          "maxVoltage": {
+            "type": "integer",
+            "description": "Maximum voltage of the connector (line to neutral for AC_3_PHASE), in volt [V]. For example: DC Chargers might vary the voltage during charging when battery almost full.",
+            "format": "int32"
+          },
+          "maxAmperage": {
+            "type": "integer",
+            "description": "Maximum amperage of the connector, in ampere [A].",
+            "format": "int32"
+          },
+          "maxElectricPower": {
+            "type": "integer",
+            "description": "Maximum electric power that can be delivered by this connector, in Watts (W). When the maximum electric power is lower than the calculated value from voltage and amperage, this value should be set. \n For example: A DC Charge Point which can delivers up to 920V and up to 400A can be limited to a maximum of 150kW (max_electric_power = 150000). Depending on the car, it may supply max voltage or current, but not both at the same time.\nFor AC Charge Points, the amount of phases used can also have influence on the maximum power.",
+            "format": "int32"
+          },
+          "tariffId": {
+            "maxLength": 36,
+            "type": "string",
+            "description": "The tariff id of the connector",
+            "example": "aa0224e8-6ae3-47e8-bd31-2688d4eb9b5e"
+          }
+        },
+        "description": "Defines the connector response details, of a specific charging station."
+      },
+      "ChargingStationResponse": {
+        "required": [
+          "chargingStationName",
+          "identityKey"
+        ],
+        "type": "object",
+        "properties": {
+          "identityKey": {
+            "maxLength": 32,
+            "type": "string",
+            "description": "Globally unique identifier of Connector's Charging Station.",
+            "example": "ACE324452"
+          },
+          "chargingStationName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Charging Station name",
+            "example": "WallBox NG Pro 21107439"
+          }
+        },
+        "description": "Defines the charging stations details"
+      },
+      "ChargingReservationConnectorResponse": {
+        "required": [
+          "connectorId",
+          "identityKey"
+        ],
+        "type": "object",
+        "properties": {
+          "identityKey": {
+            "maxLength": 32,
+            "type": "string",
+            "description": "Globally unique identifier of Connector's Charging Station.",
+            "example": "ACE324452"
+          },
+          "connectorId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "Unique Identifier of the Connector within the Charging Station.",
+            "format": "int32",
+            "example": 1
+          }
+        },
+        "description": "Defines charging station's connector details for the charging reservation"
+      },
+      "ChargingReservationResponse": {
+        "required": [
+          "chargedKwh",
+          "chargingPrice",
+          "chargingStationConnector",
+          "endDate",
+          "socEnd",
+          "socStart",
+          "startDate",
+          "vehicleIdentificationNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Start datetime of this reservation.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End datetime of this reservation.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "socStart": {
+            "maximum": 99,
+            "minimum": 0,
+            "type": "number",
+            "description": "The SoC of the battery at the start of the charging process (in %).",
+            "example": 10
+          },
+          "socEnd": {
+            "maximum": 100,
+            "minimum": 1,
+            "type": "number",
+            "description": "The SoC of the battery at the end of the charging process (in %).",
+            "example": 80
+          },
+          "chargedKwh": {
+            "minimum": 0,
+            "type": "number",
+            "description": "Estimated total charged Kwh for the reservation.",
+            "example": 100.5
+          },
+          "chargingPrice": {
+            "minimum": 0,
+            "type": "number",
+            "description": "Estimated total charging price for the reservation.",
+            "example": 0.28
+          },
+          "vehicleIdentificationNumber": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Identifies the identification number (VIN) of the vehicle.",
+            "example": "4Y1SL65848Z411444"
+          },
+          "plannedSocUsage": {
+            "type": "number",
+            "description": "Planned SoC usage after the vehicle gets charged (in %). Range: [0, 100].",
+            "format": "double",
+            "example": 65
+          },
+          "chargingStationConnector": {
+            "$ref": "#/components/schemas/ChargingReservationConnectorResponse"
+          }
+        },
+        "description": "Defines the response object of a charging reservation, along with relevant details."
+      }
+    },
+    "examples": {
+      "CONNECTOR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] Connector with requested ID does not exist.\",\n  \"errorCode\" : \"CONNECTOR_NOT_FOUND\"\n}"
+      },
+      "END_DATETIME_NOT_AFTER_START_DATETIME": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] End-datetime cannot be before or equal to start-datetime.\",\n  \"errorCode\" : \"END_DATETIME_NOT_AFTER_START_DATETIME\"\n}"
+      },
+      "INVALID_START_END_SOC": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] SOC end must be bigger than SOC start.\",\n  \"errorCode\" : \"INVALID_START_END_SOC\"\n}"
+      },
+      "INVALID_START_SOC_VALUE": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] SOC start must be between [0, 99]\",\n  \"errorCode\" : \"INVALID_START_SOC_VALUE\"\n}"
+      },
+      "INVALID_PLANNED_SOC_USAGE_VALUE": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] Planned SOC usage value must be between [0, 100]\",\n  \"errorCode\" : \"INVALID_PLANNED_SOC_USAGE_VALUE\"\n}"
+      },
+      "INVALID_END_SOC_VALUE": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] SOC end must be between [1, 100].\",\n  \"errorCode\" : \"INVALID_END_SOC_VALUE\"\n}"
+      },
+      "INVALID_CHARGING_STATION_CONNECTOR_SEARCH": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] Both identityKey and connectorId must be provided, or both must be null.\",\n  \"errorCode\" : \"INVALID_CHARGING_STATION_CONNECTOR_SEARCH\"\n}"
+      },
+      "INVALID_RESERVATION_TIMEFRAME_SEARCH": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] Both dateTimeFrom and dateTimeTo must be provided, or both must be null.\",\n  \"errorCode\" : \"INVALID_RESERVATION_TIMEFRAME_SEARCH\"\n}"
+      },
+      "CONNECTOR_RESERVED": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] Connector reserved for the requested timestamp.\",\n  \"errorCode\" : \"CONNECTOR_RESERVED\"\n}"
+      },
+      "RESERVATION_TIMESTAMP_IN_THE_PAST": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] Reservation start and end time cannot be in the past.\",\n  \"errorCode\" : \"RESERVATION_TIMESTAMP_IN_THE_PAST\"\n}"
+      },
+      "CHARGING_STATION_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[CHARGING-RESERVATION] Charging Station with provided identityKey already exists.\",\n  \"errorCode\" : \"CHARGING_STATION_ALREADY_EXISTS\"\n}"
+      },
+      "CHARGING_STATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested Charging Station not found.\",\n  \"errorCode\" : \"CHARGING_STATION_NOT_FOUND\"\n}"
+      },
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "ALERT_ALREADY_CREATED": {
+        "value": "{\n  \"message\" : \"Alert already exists\",\n  \"errorCode\" : \"ALERT_ALREADY_CREATED\"\n}"
+      },
+      "ALERT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Alert not found\",\n  \"errorCode\" : \"ALERT_NOT_FOUND\"\n}"
+      },
+      "ALERT_DOESNT_EXIST": {
+        "value": "{\n  \"message\" : \"Alert with this connectorId and identityKey doesn't exist\",\n  \"errorCode\" : \"ALERT_DOESNT_EXIST\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "RPC_TIMEOUT": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The RPC call to the charging station did not respond in time.\",\n  \"errorCode\" : \"RPC_TIMEOUT\"\n}"
+      },
+      "RPC_ERROR": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] An error occured during the remote procedure call\",\n  \"errorCode\" : \"RPC_ERROR\"\n}"
+      },
+      "UNABLE_TO_DELETE_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot delete CSMS with connected charging stations to it.\",\n  \"errorCode\" : \"UNABLE_TO_DELETE_CSMS\"\n}"
+      },
+      "NOT_UNIQUE_NAME": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided name is not unique.\",\n  \"errorCode\" : \"NOT_UNIQUE_NAME\"\n}"
+      },
+      "DEFAULT_CSMS_CANNOT_CHANGE_TO_NOT_DEFAULT": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Default CSMS cannot change to not-default.\",\n  \"errorCode\" : \"DEFAULT_CSMS_CANNOT_CHANGE_TO_NOT_DEFAULT\"\n}"
+      },
+      "CANNOT_DELETE_DEFAULT_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot delete Default CSMS, unless it is the only one and with no connected charging stations to it.\",\n  \"errorCode\" : \"CANNOT_DELETE_DEFAULT_CSMS\"\n}"
+      },
+      "CSMS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested CSMS not found.\",\n  \"errorCode\" : \"CSMS_NOT_FOUND\"\n}"
+      },
+      "CSMS_URL_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided CSMS url is not unique.\",\n  \"errorCode\" : \"CSMS_URL_ALREADY_EXISTS\"\n}"
+      },
+      "UNABLE_TO_CONNECT_TO_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot connect to CSMS, endpoint is not reachable\",\n  \"errorCode\" : \"UNABLE_TO_CONNECT_TO_CSMS\"\n}"
+      },
+      "CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] A Charging Station with the same Identity key already exists.\",\n  \"errorCode\" : \"CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS\"\n}"
+      },
+      "BIG_QUERY_CONNECTION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] BigQuery connection error\",\n  \"errorCode\" : \"BIG_QUERY_CONNECTION\"\n}"
+      },
+      "WRONG_OCPP_VERSION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The negotiated OCPP protocol version is not supporting this request\",\n  \"errorCode\" : \"WRONG_OCPP_VERSION\"\n}"
+      },
+      "CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested Charging Station Shadow Connector not found.\",\n  \"errorCode\" : \"CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND\"\n}"
+      },
+      "LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Location with the specified UUID not found\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
+      },
+      "INVALID_IDENTITY_KEY": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] One or more specified charging station identity keys are not valid\",\n  \"errorCode\" : \"INVALID_IDENTITY_KEY\"\n}"
+      },
+      "FAILED_TO_DELETE_LOCATION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Failed to delete Location which has charging station/s bound to it\",\n  \"errorCode\" : \"FAILED_TO_DELETE_LOCATION\"\n}"
+      },
+      "INVALID_LOCATION_RELATION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] One or more charging stations are not assigned to the specified location\",\n  \"errorCode\" : \"INVALID_LOCATION_RELATION\"\n}"
+      },
+      "WRONG_PASSWORD": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The given password does not match with the confirmation password\",\n  \"errorCode\" : \"WRONG_PASSWORD\"\n}"
+      },
+      "UNABLE_TO_UPDATE_CSMS_CREDENTIALS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] No changes were requested.\",\n  \"errorCode\" : \"UNABLE_TO_UPDATE_CSMS_CREDENTIALS\"\n}"
+      },
+      "DUPLICATE_CONNECTOR_ID": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Connectors with the same id in the request.\",\n  \"errorCode\" : \"DUPLICATE_CONNECTOR_ID\"\n}"
+      },
+      "PAGE_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Max number of the results per page is 100.\",\n  \"errorCode\" : \"PAGE_SIZE_EXCEEDED\"\n}"
+      },
+      "TARIFF_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Tariff with the specified UUID not found\",\n  \"errorCode\" : \"TARIFF_NOT_FOUND\"\n}"
+      },
+      "EVSE_ID_NOT_UNIQUE": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided EVSE ID already exists.\",\n  \"errorCode\" : \"EVSE_ID_NOT_UNIQUE\"\n}"
+      },
+      "EVSE_ID_DUPLICATES": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Two or more EVSE ID's are identical. All EVSE ID's must be unique.\",\n  \"errorCode\" : \"EVSE_ID_DUPLICATES\"\n}"
+      },
+      "RABBITMQ_LISTENER_ERROR": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] An error occurred in RabbitMQ listener\",\n  \"errorCode\" : \"RABBITMQ_LISTENER_ERROR\"\n}"
+      },
+      "INVALID_RABBITMQ_RPC_RESPONSE": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] Invalid RabbitMQ RPC response\",\n  \"errorCode\" : \"INVALID_RABBITMQ_RPC_RESPONSE\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "INVALID_BEGIN_END_TIME": {
+        "value": "{\n  \"message\" : \"period_end cannot be equal to period_begin, or before this.\",\n  \"errorCode\" : \"INVALID_BEGIN_END_TIME\"\n}"
+      },
+      "INVALID_HOURS": {
+        "value": "{\n  \"message\" : \"regularHours field must not be empty when twentyFourSeven=false (and vice versa).\",\n  \"errorCode\" : \"INVALID_HOURS\"\n}"
+      },
+      "DUPLICATE_WEEKDAYS": {
+        "value": "{\n  \"message\" : \"list of regular hours cannot contain duplicate weekdays.\",\n  \"errorCode\" : \"DUPLICATE_WEEKDAYS\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "MSP Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "MSP Reservation",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

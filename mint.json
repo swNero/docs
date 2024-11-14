@@ -623,9 +623,322 @@
       "pages": ["api-reference/MSP_Services/introduction"]
     },
     {
-      "group": "API Docu",
-      "pages": ["api-reference/MSP_Services/coming_soon"]
+      "group": "MSP Amenity",
+      "pages": [
+        {
+          "group": "Amenity",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Amenity/amenity/get-amenities-around-the-given-geolocation"
+          ]
+        }
+      ]
     },
+    {
+      "group": "MSP Billing",
+      "pages": [
+        {
+          "group": "Billing",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Billing/billing/retrieve-the-user-billing-info",
+            "api-reference/MSP_Services/MSP_Billing/billing/creates-the-user-billing-info"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "MSP Charging Simulator",
+      "pages": [
+        {
+          "group": "Commands",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging_Simulator/commands/stop-charging",
+            "api-reference/MSP_Services/MSP_Charging_Simulator/commands/start-charging"
+          ]
+        },
+        {
+          "group": "Sessions",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging_Simulator/sessions/get-charging-sessions"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "MSP Charging Station",
+      "pages": [
+        {
+          "group": "Payment Services",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging_Station/payment-services/get-all-payment-services-from-the-database",
+            "api-reference/MSP_Services/MSP_Charging_Station/payment-services/update-payment-service-info",
+            "api-reference/MSP_Services/MSP_Charging_Station/payment-services/add-a-new-payment-service",
+            "api-reference/MSP_Services/MSP_Charging_Station/payment-services/get-payment-service-by-uuid",
+            "api-reference/MSP_Services/MSP_Charging_Station/payment-services/delete-payment-service-from-the-database-payment-service-is-deleted-from-all-cpos"
+          ]
+        },
+        {
+          "group": "Location controller",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging_Station/location-controller/push-newupdated-location",
+            "api-reference/MSP_Services/MSP_Charging_Station/location-controller/patch-update-of-the-location",
+            "api-reference/MSP_Services/MSP_Charging_Station/location-controller/upload-file-containing-ocpi-compliant-locations-in-the-json-format",
+            "api-reference/MSP_Services/MSP_Charging_Station/location-controller/returns-the-list-of-paginated-charging-stations",
+            "api-reference/MSP_Services/MSP_Charging_Station/location-controller/get-the-location-for-the-specified-location-id"
+          ]
+        },
+        {
+          "group": "CPO Group",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging_Station/cpo-group/get-all-cpo-groups-from-the-database",
+            "api-reference/MSP_Services/MSP_Charging_Station/cpo-group/update-cpo-group-info",
+            "api-reference/MSP_Services/MSP_Charging_Station/cpo-group/add-a-new-cpo-group",
+            "api-reference/MSP_Services/MSP_Charging_Station/cpo-group/get-cpo-group-by-uuid",
+            "api-reference/MSP_Services/MSP_Charging_Station/cpo-group/delete-cpo-group-from-the-database"
+          ]
+        },
+        {
+          "group": "Charging Station Location Images",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging_Station/charging-station-location-images/upload-approved-image-for-the-location"
+          ]
+        },
+        {
+          "group": "CPO Payment Services",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging_Station/cpo-payment-services/get-the-payment-services-for-the-specified-cpo-id--country-code-combination-from-the-dbif-no-parameters-are-specified-payment-services-which-are-common-for-all-cpos-are-returned",
+            "api-reference/MSP_Services/MSP_Charging_Station/cpo-payment-services/add-or-update-cpo-payment-services-if-no-parameters-are-specified-every-cpo-will-be-updated-with-the-specified-payment-services"
+          ]
+        },
+        {
+          "group": "Charging Stations",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging_Station/charging-stations/get-charging-stations-by-ids",
+            "api-reference/MSP_Services/MSP_Charging_Station/charging-stations/get-charging-stations-clustered-by-zoom-level",
+            "api-reference/MSP_Services/MSP_Charging_Station/charging-stations/get-autocomplete-results-for-the-charging-station-name-query-optional-power-level-filter-and-optional-geo_location-parameter",
+            "api-reference/MSP_Services/MSP_Charging_Station/charging-stations/get-all-charging-stations-around-geo-location",
+            "api-reference/MSP_Services/MSP_Charging_Station/charging-stations/search-charging-stations"
+          ]
+        },
+        {
+          "group": "Charging Station Availability Prediction",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging_Station/charging-station-availability-prediction/get-availability-prediction-per-location-id",
+            "api-reference/MSP_Services/MSP_Charging_Station/charging-station-availability-prediction/get-availability-prediction-per-evse-id"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "MSP Direct Payment",
+      "pages": [
+        {
+          "group": "Settings",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Direct_Payment/settings/get-session-data",
+            "api-reference/MSP_Services/MSP_Direct_Payment/settings/update-session-data"
+          ]
+        },
+        {
+          "group": "Tariff",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Direct_Payment/tariff/return-active-price-component-by-tariff-id"
+          ]
+        },
+        {
+          "group": "Sessions",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Direct_Payment/sessions/stop-a-charging-session",
+            "api-reference/MSP_Services/MSP_Direct_Payment/sessions/start-a-charging-session",
+            "api-reference/MSP_Services/MSP_Direct_Payment/sessions/get-current-info-for-a-specific-session",
+            "api-reference/MSP_Services/MSP_Direct_Payment/sessions/subscribe-to-server-sent-events-for-requested-ongoing-session"
+          ]
+        },
+        {
+          "group": "Connector",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Direct_Payment/connector/subscribe-to-status-server-sent-events-for-the-requested-connector"
+          ]
+        },
+        {
+          "group": "Charging Station",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Direct_Payment/charging-station/get-charging-station"
+          ]
+        },
+        {
+          "group": "CDRs",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Direct_Payment/cdrs/get-cdr-by-session-id"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "MSP Hubject Gateway",
+      "pages": [
+        {
+          "group": "Hubject Internal Controller",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-internal-controller/post-remote-stop",
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-internal-controller/post-remote-start",
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-internal-controller/update-evse-status",
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-internal-controller/update-evse-data",
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-internal-controller/asynchronously-update-evse-data",
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-internal-controller/get-all-ocpi-locations",
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-internal-controller/get-evse-status-list"
+          ]
+        },
+        {
+          "group": "Hubject Controller",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-controller/charge-notification",
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-controller/authorize-stop",
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-controller/authorize-start",
+            "api-reference/MSP_Services/MSP_Hubject_Gateway/hubject-controller/charge-detail-record"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "MSP Location Review",
+      "pages": [
+        {
+          "group": "Location Images",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Location_Review/location-images/review-location-image",
+            "api-reference/MSP_Services/MSP_Location_Review/location-images/submit-an-image-for-the-location",
+            "api-reference/MSP_Services/MSP_Location_Review/location-images/get-location-images-for-review",
+            "api-reference/MSP_Services/MSP_Location_Review/location-images/get-approved-image-by-resolution"
+          ]
+        },
+        {
+          "group": "Location Review",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Location_Review/location-review/submits-a-review-of-the-location-for-a-user",
+            "api-reference/MSP_Services/MSP_Location_Review/location-review/get-the-active-review-of-the-location-of-the-current-user"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "MSP Reservation",
+      "pages": [
+        {
+          "group": "Charging Reservations",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Reservation/charging-reservations/create-charging-reservation",
+            "api-reference/MSP_Services/MSP_Reservation/charging-reservations/get-charging-reservations-based-on-criteria-filters"
+          ]
+        },
+        {
+          "group": "Connectors",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Reservation/connectors/get-all-charging-station-connectors-by-connector-utilization-status"
+          ]
+        },
+        {
+          "group": "Charging Stations",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Reservation/charging-stations/get-all-charging-stations"
+          ]
+        }
+      ]      
+    },
+    {
+      "group": "MSP Transaction",
+      "pages": [
+        {
+          "group": "Sessions",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Transaction/sessions/get-all-active-sessions",
+            "api-reference/MSP_Services/MSP_Transaction/sessions/create-or-update-multiple-sessions-for-an-authorization-reference",
+            "api-reference/MSP_Services/MSP_Transaction/sessions/get-session",
+            "api-reference/MSP_Services/MSP_Transaction/sessions/create-or-update-a-session",
+            "api-reference/MSP_Services/MSP_Transaction/sessions/delete-a-session",
+            "api-reference/MSP_Services/MSP_Transaction/sessions/update-a-session",
+            "api-reference/MSP_Services/MSP_Transaction/sessions/get-session-by-statuses",
+            "api-reference/MSP_Services/MSP_Transaction/sessions/get-all-sessions-by-sessionid",
+            "api-reference/MSP_Services/MSP_Transaction/sessions/search-for-sessions",
+            "api-reference/MSP_Services/MSP_Transaction/sessions/get-latest-pending-session",
+            "api-reference/MSP_Services/MSP_Transaction/sessions/get-filtered-sessions-by-sessionids-paginated"
+          ]
+        },
+        {
+          "group": "CDRs",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Transaction/cdrs/get-cdrs-with-filters",
+            "api-reference/MSP_Services/MSP_Transaction/cdrs/create-a-cdr",
+            "api-reference/MSP_Services/MSP_Transaction/cdrs/get-cdr-by-country-code-party-id-and-session-id",
+            "api-reference/MSP_Services/MSP_Transaction/cdrs/get-cdr-by-cdr-id",
+            "api-reference/MSP_Services/MSP_Transaction/cdrs/get-cdrs-by-cdrids"
+          ]
+        },
+        {
+          "group": "Export CDRs",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Transaction/export-cdrs/cdrs-pdf-export",
+            "api-reference/MSP_Services/MSP_Transaction/export-cdrs/cdrs-csv-export",
+            "api-reference/MSP_Services/MSP_Transaction/export-cdrs/cdrs-pdf-export-for-cdr-id-list-given",
+            "api-reference/MSP_Services/MSP_Transaction/export-cdrs/cdrs-csv-export-for-specific-cdr-id-list-given"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "MSP ",
+      "pages": [
+        {
+          "group": "User's Home Stations",
+          "pages": [
+            "api-reference/MSP_Services/MSP_User_Settings/users-home-stations/get-users-with-their-home-stations-paginated",
+            "api-reference/MSP_Services/MSP_User_Settings/users-home-stations/update-or-add-users-and-home-stations",
+            "api-reference/MSP_Services/MSP_User_Settings/users-home-stations/deletes-users-with-their-home-stations",
+            "api-reference/MSP_Services/MSP_User_Settings/users-home-stations/get-users-home-stations"
+          ]
+        },
+        {
+          "group": "User settings",
+          "pages": [
+            "api-reference/MSP_Services/MSP_User_Settings/user-settings/get-users-settings",
+            "api-reference/MSP_Services/MSP_User_Settings/user-settings/save-users-settings-in-the-cloud",
+            "api-reference/MSP_Services/MSP_User_Settings/user-settings/delete-users-settings"
+          ]
+        },
+        {
+          "group": "Charging station favorites",
+          "pages": [
+            "api-reference/MSP_Services/MSP_User_Settings/charging-station-favorites/add-charging-station-favorite",
+            "api-reference/MSP_Services/MSP_User_Settings/charging-station-favorites/remove-charging-station-favorite",
+            "api-reference/MSP_Services/MSP_User_Settings/charging-station-favorites/get-favourite-charging-stations"
+          ]
+        },
+        {
+          "group": "Address favorites",
+          "pages": [
+            "api-reference/MSP_Services/MSP_User_Settings/address-favorites/get-favourite-addresses",
+            "api-reference/MSP_Services/MSP_User_Settings/address-favorites/add-address-favorite",
+            "api-reference/MSP_Services/MSP_User_Settings/address-favorites/remove-address-favorite"
+          ]
+        }
+      ]      
+    },
+    {
+      "group": "MSP Weather",
+      "pages": [
+        {
+          "group": "Weather Controller",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Weather/weather-controller/get-weather-data-at-given-datetime-for-given-location"
+          ]
+        }
+      ]
+    },
+
+
+
+
+
+
 
     
     {

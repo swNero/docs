@@ -1,0 +1,876 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "msp-gateway-charging-simulator",
+    "description": "A service used simulating charging sessions to test",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/msp-gateway-charging-simulator/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/commands/stop_session": {
+      "post": {
+        "tags": [
+          "Commands"
+        ],
+        "summary": "Stop charging",
+        "description": "Stops an active charging session at the specified EVSE",
+        "operationId": "stopSession",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StopChargingSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/commands/start_session": {
+      "post": {
+        "tags": [
+          "Commands"
+        ],
+        "summary": "Start charging",
+        "description": "Starts a charging session at the specified EVSE. Use these prefixes for evseId value in order to choose specific flows:HAPPY_FLOW(\"cfe1dcb9-\"),\n    START_FAILED(\"19d63193-\"),\n    SYSTEM_ABORT(\"a59d7272-\"),\n    AUTO_STOP(\"2942ec65-\");",
+        "operationId": "startSession",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartChargingSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "get": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Get charging sessions",
+        "description": "Get charging sessions for a specified period",
+        "operationId": "getSessions",
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "description": "Date from",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2022-01-01T13:00"
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "description": "Date to",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The offset of the first object returned. Default is 0 (the first object)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of objects to GET. The server might decide to return fewer objects, either\nbecause there are no more objects, or the server limits the maximum number of objects to\nreturn. This is to prevent, for example, overloading the system",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CommandResponse": {
+        "required": [
+          "result",
+          "timeout"
+        ],
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "enum": [
+              "NOT_SUPPORTED",
+              "REJECTED",
+              "ACCEPTED",
+              "UNKNOWN_SESSION"
+            ]
+          },
+          "timeout": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "$ref": "#/components/schemas/DisplayText"
+          }
+        }
+      },
+      "DisplayText": {
+        "required": [
+          "language",
+          "text"
+        ],
+        "type": "object",
+        "properties": {
+          "language": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Language Code ISO 639-1.",
+            "example": "en"
+          },
+          "text": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "description": "Text to be displayed to a end user. No markup, html etc. allowed.",
+            "example": "this is a display text"
+          }
+        }
+      },
+      "StopChargingSessionRequest": {
+        "required": [
+          "response_url",
+          "session_id"
+        ],
+        "type": "object",
+        "properties": {
+          "response_url": {
+            "type": "string"
+          },
+          "session_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "description": "Depending on the command parameter the body SHALL contain the applicable object for that command"
+      },
+      "EnergyContract": {
+        "required": [
+          "contract_id",
+          "supplier_name"
+        ],
+        "type": "object",
+        "properties": {
+          "supplier_name": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Name of the energy supplier for this token."
+          },
+          "contract_id": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Contract ID at the energy supplier, that belongs to the owner of this token."
+          }
+        },
+        "description": "When the Charge Point supports using your own energy supplier/contract at a\nCharge Point, information about the energy supplier/contract is needed so the\nCPO knows which energy supplier to use.\nNOTE: In a lot of countries it is currently not allowed/possible to use a drivers\nown energy supplier/contract at a Charge Point."
+      },
+      "StartChargingSessionRequest": {
+        "required": [
+          "location_id",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "$ref": "#/components/schemas/Token"
+          },
+          "response_url": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "location_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": " Location.id of the Location on which a session is to be started.",
+            "example": "cfe1dcb9-2870-4a11-94dd-f26ade620a8c"
+          },
+          "evse_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional EVSE.uid of the EVSE of this Location.",
+            "example": "cfe1dcb9-2870-4a11-94dd-f26ade620a8c"
+          },
+          "connector_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional Connector.id of the Connector of the EVSE on which a session is to be started.",
+            "example": "cfe1dcb9-2870-4a11-94dd-f26ade620a8c"
+          },
+          "authorization_reference": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Reference to the authorization given by the eMSP,.",
+            "example": "cfe1dcb9-2870-4a11-94dd-f26ade620a8c"
+          }
+        },
+        "description": "Depending on the command parameter the body SHALL contain the applicable object for that command"
+      },
+      "Token": {
+        "required": [
+          "contract_id",
+          "country_code",
+          "issuer",
+          "last_updated",
+          "party_id",
+          "type",
+          "uid",
+          "valid",
+          "whitelist"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "    The type of token\n    * <p>\n    * NOTE: The eMSP is RECOMMENDED to push Tokens with type: AD_HOC_USER or APP_USER with whitelist set to\n    * NEVER. Whitelists are very useful for RFID type Tokens, but the AD_HOC_USER/APP_USER Tokens are used to\n    * start Sessions from an App etc. so whitelisting them has no advantages.\n    * </p>\n",
+            "example": "RFID",
+            "enum": [
+              "AD_HOC_USER",
+              "APP_USER",
+              "OTHER",
+              "RFID"
+            ]
+          },
+          "issuer": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Issuing company, most of the times the name of the company printed on the token (RFID card), not necessarily the eMSP.",
+            "example": "ACME Inc."
+          },
+          "whitelist": {
+            "type": "string",
+            "description": "Indicates what type of white-listing is allowed.",
+            "example": "ALLOWED",
+            "enum": [
+              "ALWAYS",
+              "ALLOWED",
+              "ALLOWED_OFFLINE",
+              "NEVER"
+            ]
+          },
+          "language": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Language Code ISO 639-1. This optional field indicates the Token owner’s  preferred interface language.\nIf the language is not provided or not supported then the CPO is free to choose its own language.",
+            "example": "DE"
+          },
+          "uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique ID by which this Token can be identified.\nThis is the field used by CPO system (RFID reader on the Charge Point) to identify this token.\nCurrently, in most cases: type=RFID, this is the RFID hidden ID as read by the RFID reader, but that is not a requirement.\nIf this is a APP_USER or AD_HOC_USER Token, it will be a uniquely, by the eMSP, generated ID.\nThis field is named uid instead of id to prevent confusion with: contract_id.",
+            "example": "123456789"
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the MSP that 'owns' this Token.",
+            "example": "DE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the MSP that 'owns' this Token (following the ISO-15118 standard).",
+            "example": "ERG"
+          },
+          "contract_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the EV Driver contract token within the eMSP’s platform (and suboperator platforms). Recommended to follow the specification for eMA ID from \"eMI3 standard version V1.0\" (http://emi3group.com/documents-links/)  \"Part 2: business objects.\"\n",
+            "example": "DE8ACC12E46L89"
+          },
+          "visual_number": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "description": "Visual readable number/identification as printed on the Token (RFID card), might be equal to the contract_id.",
+            "example": "DF000-2001-8999-1"
+          },
+          "group_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "This ID groups a couple of tokens. This can be used to make two or more tokens work as one, so that a session can be started with one token and stopped with another, handy when a card and key-fob are given to the EV-driver.\n Beware that OCPP 1.5/1.6 only support group_ids (it is called parentId in OCPP 1.5/1.6) with a maximum length of 20.",
+            "example": "DF000-2001-8999"
+          },
+          "valid": {
+            "type": "boolean",
+            "description": "Is this Token valid"
+          },
+          "default_profile_type": {
+            "type": "string",
+            "description": "The default Charging Preference. When this is provided, and a charging session\nis started on an Charge Point that support Preference base Smart Charging and\nsupport this ProfileType, the Charge Point can start using this ProfileType,\nwithout this having to be set via: Set Charging Preferences.",
+            "enum": [
+              "CHEAP",
+              "FAST",
+              "GREEN",
+              "REGULAR"
+            ]
+          },
+          "energy_contract": {
+            "$ref": "#/components/schemas/EnergyContract"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this Token was last updated (or created).",
+            "format": "date-time"
+          },
+          "expiry_date": {
+            "type": "string",
+            "description": "Timestamp when this Token expires in charging station's local authorization cache.",
+            "format": "date-time"
+          }
+        }
+      },
+      "CdrDimension": {
+        "required": [
+          "type",
+          "volume"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of CDR dimension.",
+            "example": "RESERVATION_TIME",
+            "enum": [
+              "CURRENT",
+              "ENERGY",
+              "ENERGY_EXPORT",
+              "ENERGY_IMPORT",
+              "MAX_CURRENT",
+              "MIN_CURRENT",
+              "MAX_POWER",
+              "MIN_POWER",
+              "PARKING_TIME",
+              "POWER",
+              "RESERVATION_TIME",
+              "STATE_OF_CHARGE",
+              "TIME"
+            ]
+          },
+          "volume": {
+            "type": "number",
+            "description": "Volume of the dimension consumed, measured according to the dimension type.",
+            "example": 79.65
+          }
+        },
+        "description": "List of relevant values for this charging period."
+      },
+      "CdrToken": {
+        "required": [
+          "contract_id",
+          "country_code",
+          "party_id",
+          "type",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique ID by which this Token can be identified. This is the field used by the CPO’s system (RFID reader on the Charge Point) to identify this token. Currently, in most cases: type=RFID, this is the RFID hidden ID as read by the RFID reader, but that is not a requirement. If this is a <b>type=APP_USER</b> Token, it will be a unique, by the eMSP, generated ID.",
+            "example": "LKnPKAYKvf"
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Country code of the MSP that 'owns' this Token.",
+            "example": "DE"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "ID of the eMSP that 'owns' this Token.",
+            "example": "ERG"
+          },
+          "type": {
+            "type": "string",
+            "description": "    The type of token\n    * <p>\n    * NOTE: The eMSP is RECOMMENDED to push Tokens with type: AD_HOC_USER or APP_USER with whitelist set to\n    * NEVER. Whitelists are very useful for RFID type Tokens, but the AD_HOC_USER/APP_USER Tokens are used to\n    * start Sessions from an App etc. so whitelisting them has no advantages.\n    * </p>\n",
+            "example": "RFID",
+            "enum": [
+              "AD_HOC_USER",
+              "APP_USER",
+              "OTHER",
+              "RFID"
+            ]
+          },
+          "contract_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Uniquely identifies the EV driver contract token within the eMSP’s platform (and suboperator platforms). Recommended to follow the specification for eMA ID from eMI3 standard version V1.0 (http://emi3group.com/documents-links/) Part 2: business objects.",
+            "example": "DE8ACC12E46L89"
+          }
+        },
+        "description": "Token used to start this charging session, including all the relevant information to identify the unique token."
+      },
+      "ChargingPeriod": {
+        "required": [
+          "dimensions",
+          "start_date_time"
+        ],
+        "type": "object",
+        "properties": {
+          "dimensions": {
+            "type": "array",
+            "description": "List of relevant values for this charging period.",
+            "items": {
+              "$ref": "#/components/schemas/CdrDimension"
+            }
+          },
+          "start_date_time": {
+            "type": "string",
+            "description": "Start timestamp of the charging period. A period ends when the next period starts. The last period ends when the session ends.",
+            "format": "date-time"
+          },
+          "tariff_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique identifier of the Tariff that is relevant for this Charging Period. If not provided, no Tariff is relevant during this period.",
+            "example": "901c4ba9-e275-4b2a-b0ed-3a1ac710b25c"
+          }
+        },
+        "description": "A Charging Period consists of a start timestamp and a list of possible values that influence this period, for example: amount of energy charged this period, maximum current during this period etc."
+      },
+      "Price": {
+        "required": [
+          "excl_vat"
+        ],
+        "type": "object",
+        "properties": {
+          "excl_vat": {
+            "type": "number",
+            "description": "Price/Cost excluding VAT.",
+            "example": 87.31
+          },
+          "incl_vat": {
+            "type": "number",
+            "description": "Price/Cost including VAT.",
+            "example": 101.88
+          }
+        },
+        "description": "The total cost of the session in the specified currency. This is the price that the eMSP will have to pay to the CPO. A total_cost of 0.00 means free of charge. When omitted, i.e. no price information is given in the Session object, it does not imply the session is/was free of charge."
+      },
+      "Session": {
+        "required": [
+          "auth_method",
+          "cdr_token",
+          "connector_id",
+          "country_code",
+          "currency",
+          "evse_uid",
+          "id",
+          "kwh",
+          "last_updated",
+          "location_id",
+          "party_id",
+          "start_date_time",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "kwh": {
+            "type": "number",
+            "description": "How many kWh were charged.",
+            "example": 154
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the session.",
+            "example": "PENDING",
+            "enum": [
+              "ACTIVE",
+              "COMPLETED",
+              "INVALID",
+              "PENDING",
+              "RESERVATION"
+            ]
+          },
+          "country_code": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the CPO that 'owns' this Session.",
+            "example": "NL"
+          },
+          "party_id": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "CPO ID of the CPO that 'owns' this Session (following the ISO-15118 standard).",
+            "example": "STK"
+          },
+          "id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "The unique id that identifies the charging session in the CPO platform.",
+            "example": "101"
+          },
+          "start_date_time": {
+            "type": "string",
+            "description": "The timestamp when the session became ACTIVE in the Charge Point.",
+            "format": "date-time"
+          },
+          "end_date_time": {
+            "type": "string",
+            "description": "The timestamp when the session was completed/finished, charging might have finished before the session ends, for example: EV is full, but parking cost also has to be paid.",
+            "format": "date-time"
+          },
+          "cdr_token": {
+            "$ref": "#/components/schemas/CdrToken"
+          },
+          "auth_method": {
+            "type": "string",
+            "description": "Method used for authentication.",
+            "example": "WHITELIST",
+            "enum": [
+              "AUTH_REQUEST",
+              "COMMAND",
+              "WHITELIST"
+            ]
+          },
+          "authorization_reference": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Reference to the authorization given by the eMSP."
+          },
+          "location_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Location.id of the Location object of this CPO, on which the charging session is/was happening.",
+            "example": "LOC1"
+          },
+          "evse_uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "EVSE.uid of the EVSE of this Location on which the charging session is/was happening.",
+            "example": "3256"
+          },
+          "connector_id": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Connector.id of the Connector of this Location the charging session is/was happening.",
+            "example": "1"
+          },
+          "meter_id": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional identification of the kWh meter."
+          },
+          "currency": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "ISO 4217 code of the currency used for this session.",
+            "example": "EUR"
+          },
+          "charging_periods": {
+            "type": "array",
+            "description": "An optional list of Charging Periods that can be used to calculate and verify the total cost.",
+            "items": {
+              "$ref": "#/components/schemas/ChargingPeriod"
+            }
+          },
+          "total_cost": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this Session was last updated (or created).",
+            "format": "date-time",
+            "example": "2021-03-19T14:11:43Z"
+          }
+        },
+        "description": "The Session object describes one charging session. That doesn’t mean it is required that energy has been transferred between EV and the Charge Point. It is possible that the EV never took energy from the Charge Point because it was instructed not to take energy by the driver. But as the EV was connected to the Charge Point, some form of start tariff, park tariff or reservation cost might be relevant."
+      }
+    },
+    "examples": {
+      "SESSION_ID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A session with the same ID already exists.\",\n  \"errorCode\" : \"SESSION_ID_ALREADY_EXISTS\"\n}"
+      },
+      "SESSION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Session is not found.\",\n  \"errorCode\" : \"SESSION_NOT_FOUND\"\n}"
+      },
+      "SESSION_NOT_FOUND_WITH_SPECIFIED_STATUS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Session with the specified status(es) not found.\",\n  \"errorCode\" : \"SESSION_NOT_FOUND_WITH_SPECIFIED_STATUS\"\n}"
+      },
+      "CDR_ID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A CDR with the same ID already exists.\",\n  \"errorCode\" : \"CDR_ID_ALREADY_EXISTS\"\n}"
+      },
+      "CDR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A CDR with the specified ID is not found.\",\n  \"errorCode\" : \"CDR_NOT_FOUND\"\n}"
+      },
+      "PARTY_IDS_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Party IDs are provided.\",\n  \"errorCode\" : \"PARTY_IDS_DO_NOT_MATCH\"\n}"
+      },
+      "COUNTRY_CODES_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Country Codes are provided.\",\n  \"errorCode\" : \"COUNTRY_CODES_DO_NOT_MATCH\"\n}"
+      },
+      "SESSION_IDS_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Session IDs are provided.\",\n  \"errorCode\" : \"SESSION_IDS_DO_NOT_MATCH\"\n}"
+      },
+      "AUTHORIZATION_REFERENCES_DO_NOT_MATCH": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] Inconsistent Authorization References are provided.\",\n  \"errorCode\" : \"AUTHORIZATION_REFERENCES_DO_NOT_MATCH\"\n}"
+      },
+      "CDR_LOCATION_ID_EXISTS": {
+        "value": "{\n  \"message\" : \"[TRANSACTION] A CDR Location with the same id already exists.\",\n  \"errorCode\" : \"CDR_LOCATION_ID_EXISTS\"\n}"
+      },
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "START_CHARGING_SESSION_FAILED": {
+        "value": "{\n  \"message\" : \"Failed to start a charging session.\",\n  \"errorCode\" : \"START_CHARGING_SESSION_FAILED\"\n}"
+      },
+      "INVALID_COMMAND": {
+        "value": "{\n  \"message\" : \"The requested command doesn't exist.\",\n  \"errorCode\" : \"INVALID_COMMAND\"\n}"
+      },
+      "GATEWAY_ALREADY_ADDED": {
+        "value": "{\n  \"message\" : \"Gateway with the specified name already added\",\n  \"errorCode\" : \"GATEWAY_ALREADY_ADDED\"\n}"
+      },
+      "GATEWAY_NOT_AVAILABLE": {
+        "value": "{\n  \"message\" : \"Gateway with the specified name is not available in the Consul service catalog\",\n  \"errorCode\" : \"GATEWAY_NOT_AVAILABLE\"\n}"
+      },
+      "GATEWAY_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Gateway with the specified UUID not found\",\n  \"errorCode\" : \"GATEWAY_NOT_FOUND\"\n}"
+      },
+      "EMPTY_GATEWAY_LIST": {
+        "value": "{\n  \"message\" : \"Gateway order list empty\",\n  \"errorCode\" : \"EMPTY_GATEWAY_LIST\"\n}"
+      },
+      "FAILED_TO_START_CHARGING_SESSION": {
+        "value": "{\n  \"message\" : \"Failed to start a charging session using known gateways\",\n  \"errorCode\" : \"FAILED_TO_START_CHARGING_SESSION\"\n}"
+      },
+      "FAILED_TO_STOP_CHARGING_SESSION": {
+        "value": "{\n  \"message\" : \"Failed to stop a charging session\",\n  \"errorCode\" : \"FAILED_TO_STOP_CHARGING_SESSION\"\n}"
+      },
+      "CONSUL_METADATA_ENTRY_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Failed to add the specified gateway due to missing Consul party-id metadata entry\",\n  \"errorCode\" : \"CONSUL_METADATA_ENTRY_NOT_FOUND\"\n}"
+      },
+      "GATEWAY_WITH_PARTY_ID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Gateway with the Consul party-id metadata entry already exists\",\n  \"errorCode\" : \"GATEWAY_WITH_PARTY_ID_ALREADY_EXISTS\"\n}"
+      },
+      "EVSE_UID_IS_REQUIRED": {
+        "value": "{\n  \"message\" : \"Evse UID is required when connector id is set\",\n  \"errorCode\" : \"EVSE_UID_IS_REQUIRED\"\n}"
+      },
+      "GATEWAY_WITH_PARTY_ID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Gateway with the specified party id not found\",\n  \"errorCode\" : \"GATEWAY_WITH_PARTY_ID_NOT_FOUND\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "MSP Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "MSP Charging Simulator",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
