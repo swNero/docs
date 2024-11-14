@@ -885,7 +885,7 @@
       ]
     },
     {
-      "group": "MSP ",
+      "group": "MSP User Settings",
       "pages": [
         {
           "group": "User's Home Stations",
@@ -935,20 +935,31 @@
     },
 
 
-
-
-
-
-
     
     {
       "group": "Other Services",
       "pages": ["api-reference/Other_Services/introduction"]
     },
     {
-      "group": "API Docu",
-      "pages": ["api-reference/Other_Services/coming_soon"]
+      "group": "Export Service",
+      "pages": [
+        {
+          "group": "Image controller",
+          "pages": [
+            "api-reference/Other_Services/Export_Service/image-controller/upload-logo"
+          ]
+        },
+        {
+          "group": "Export",
+          "pages": [
+            "api-reference/Other_Services/Export_Service/export/charging-sessions-pdf-export",
+            "api-reference/Other_Services/Export_Service/export/charging-sessions-csv-export"
+          ]
+        }
+      ]
     }
+    
+
 
   ],
   "footerSocials": {

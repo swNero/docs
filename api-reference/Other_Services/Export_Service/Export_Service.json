@@ -1,0 +1,532 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "export-service",
+    "description": "A service used for exporting provided CDRs via pdf or csv",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/export/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Image controller",
+      "description": "Controller for manipulating with images"
+    }
+  ],
+  "paths": {
+    "/images/logo": {
+      "post": {
+        "tags": [
+          "Image controller"
+        ],
+        "summary": "Upload logo",
+        "description": "Save or update image",
+        "operationId": "saveLogo",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "description": "Image file",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to start a upload image."
+          }
+        }
+      }
+    },
+    "/export/pdf": {
+      "post": {
+        "tags": [
+          "Export"
+        ],
+        "summary": "Charging sessions PDF export",
+        "description": "Exports charging sessions info to a PDF",
+        "operationId": "generatePdf",
+        "requestBody": {
+          "description": "Byte array representing the serialized PdfExportRequest object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdfExportRequest"
+              },
+              "examples": {
+                "PdfExportRequest object byte array": {
+                  "description": "PdfExportRequest object byte array",
+                  "value": [
+                    91,
+                    45,
+                    -78
+                  ]
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/export/csv": {
+      "post": {
+        "tags": [
+          "Export"
+        ],
+        "summary": "Charging sessions CSV export",
+        "description": "Exports charging sessions info to a CSV",
+        "operationId": "generateCSV",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/csv": {}
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SuccessMessageDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "CdrExport": {
+        "required": [
+          "cdrLocation",
+          "endDateTime",
+          "startDateTime",
+          "totalCost",
+          "totalEnergy"
+        ],
+        "type": "object",
+        "properties": {
+          "totalEnergy": {
+            "type": "number",
+            "description": "Total energy charged, in kWh."
+          },
+          "totalCost": {
+            "$ref": "#/components/schemas/PriceExport"
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "Start timestamp of the charging session, or in-case of a reservation (before the start of a session) the start of the reservation.",
+            "format": "date-time",
+            "example": "2015-06-29T21:39:09Z"
+          },
+          "endDateTime": {
+            "type": "string",
+            "description": "The timestamp when the session was completed/finished, charging might have finished before the session ends, for example: EV is full, but parking cost also has to be paid.",
+            "format": "date-time",
+            "example": "2015-06-29T23:37:32Z"
+          },
+          "cdrLocation": {
+            "$ref": "#/components/schemas/CdrLocationExport"
+          },
+          "tariffs": {
+            "type": "array",
+            "description": "List of relevant Tariff Elements, see: Tariff. When relevant, a Free of Charge tariff should also be in this list, and point to a defined Free of Charge Tariff.",
+            "items": {
+              "$ref": "#/components/schemas/TariffExport"
+            }
+          }
+        },
+        "description": "List of CDRs for exporting."
+      },
+      "CdrLocationExport": {
+        "required": [
+          "evse_id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Display name of the location.",
+            "example": "Gent Zuid"
+          },
+          "evse_id": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "description": "Compliant with the following specification for EVSE ID from eMI3 standard version V1.0 (http://emi3group.com/documents-links/) Part 2: business objects.",
+            "example": "DE*ERG*E10001*1"
+          }
+        },
+        "description": "Location where the charging session took place, including only the relevant EVSE and Connector."
+      },
+      "PdfExportRequest": {
+        "required": [
+          "cdrs",
+          "endDateTime",
+          "freeText",
+          "imprint",
+          "recipient",
+          "startDateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "startDateTime": {
+            "type": "string",
+            "description": "Start timestamp of the report",
+            "format": "date-time"
+          },
+          "endDateTime": {
+            "type": "string",
+            "description": "End timestamp of the report",
+            "format": "date-time"
+          },
+          "recipient": {
+            "$ref": "#/components/schemas/ReportRecipient"
+          },
+          "imprint": {
+            "type": "string",
+            "description": "Footer info for the report",
+            "example": "P3 group GmbH - Heilbronner Str. 86 70191 Stuttgart, GermanyTel: +49 711 252 749-0, e-mail: mail@p3-group.com"
+          },
+          "freeText": {
+            "type": "string",
+            "description": "Header free text",
+            "example": "Karten ID: 2363, RFID: 111111"
+          },
+          "cdrs": {
+            "type": "array",
+            "description": "List of CDRs for exporting.",
+            "items": {
+              "$ref": "#/components/schemas/CdrExport"
+            }
+          }
+        },
+        "description": "Request for exporting CDRs as PDF"
+      },
+      "PriceComponentExport": {
+        "required": [
+          "price",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of tariff dimension.",
+            "enum": [
+              "ENERGY",
+              "FLAT",
+              "PARKING_TIME",
+              "TIME"
+            ]
+          },
+          "price": {
+            "type": "number",
+            "description": "Price per unit (excl. VAT) for this tariff dimension.",
+            "example": 2
+          }
+        },
+        "description": "List of price components that describe the pricing of a tariff."
+      },
+      "PriceExport": {
+        "required": [
+          "excl_vat"
+        ],
+        "type": "object",
+        "properties": {
+          "excl_vat": {
+            "type": "number",
+            "description": "Price/Cost excluding VAT.",
+            "example": 87.31
+          }
+        },
+        "description": "Total sum of all the costs of this transaction in the specified currency."
+      },
+      "ReportRecipient": {
+        "required": [
+          "address",
+          "city",
+          "name",
+          "zip"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full name of the recipient",
+            "example": "John Doe"
+          },
+          "address": {
+            "type": "string",
+            "description": "Recipient address",
+            "example": "Heilbronnerstr. 86"
+          },
+          "zip": {
+            "type": "string",
+            "description": "Recipient zip code",
+            "example": "70191"
+          },
+          "city": {
+            "type": "string",
+            "description": "Recipient city",
+            "example": "Stuttgart"
+          }
+        },
+        "description": "Recipient of the PDF report"
+      },
+      "TariffElementExport": {
+        "required": [
+          "price_components"
+        ],
+        "type": "object",
+        "properties": {
+          "price_components": {
+            "type": "array",
+            "description": "List of price components that describe the pricing of a tariff.",
+            "items": {
+              "$ref": "#/components/schemas/PriceComponentExport"
+            }
+          }
+        },
+        "description": "List of Tariff Elements."
+      },
+      "TariffExport": {
+        "required": [
+          "elements"
+        ],
+        "type": "object",
+        "properties": {
+          "elements": {
+            "type": "array",
+            "description": "List of Tariff Elements.",
+            "items": {
+              "$ref": "#/components/schemas/TariffElementExport"
+            }
+          }
+        },
+        "description": "List of relevant Tariff Elements, see: Tariff. When relevant, a Free of Charge tariff should also be in this list, and point to a defined Free of Charge Tariff."
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "LOGO_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The logo not found\",\n  \"errorCode\" : \"LOGO_NOT_FOUND\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      },
+      "FILE_NAME_MISSING": {
+        "value": "{\n  \"message\" : \"The logo file name is missing\",\n  \"errorCode\" : \"FILE_NAME_MISSING\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "Other",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "Export Service",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
