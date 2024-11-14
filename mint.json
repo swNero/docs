@@ -235,50 +235,50 @@
       "pages": ["api-reference/CPO_Services/introduction"]
     },
     {
-      "group": "CPO Charging Station Group",
+      "group": "CPO Charging Station",
       "pages": [
         {
           "group": "EVSEs",
           "pages": [
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/get-evse",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/update-evse",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/delete-evse",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/unassigns-evse-connectors-tariff-ids",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/assigns-evse-connectors-tariff-ids",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/get-all-evses",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/add-evse",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/check-if-evse-exists",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/get-evse-1",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/evses/check-if-evse-exists-for-specific-tariff"
+            "api-reference/CPO_Services/CPO_Charging_Station/evses/get-evse",
+            "api-reference/CPO_Services/CPO_Charging_Station/evses/update-evse",
+            "api-reference/CPO_Services/CPO_Charging_Station/evses/delete-evse",
+            "api-reference/CPO_Services/CPO_Charging_Station/evses/unassigns-evse-connectors-tariff-ids",
+            "api-reference/CPO_Services/CPO_Charging_Station/evses/assigns-evse-connectors-tariff-ids",
+            "api-reference/CPO_Services/CPO_Charging_Station/evses/get-all-evses",
+            "api-reference/CPO_Services/CPO_Charging_Station/evses/add-evse",
+            "api-reference/CPO_Services/CPO_Charging_Station/evses/check-if-evse-exists",
+            "api-reference/CPO_Services/CPO_Charging_Station/evses/get-evse-1",
+            "api-reference/CPO_Services/CPO_Charging_Station/evses/check-if-evse-exists-for-specific-tariff"
           ]
         },
         {
           "group": "Locations",
           "pages": [
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/update-location",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/delete-a-location",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/create-location",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/get-all-locations",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/get-locations",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/get-all-locations-by-provider-id",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/locations/get-location-by-location-id-and-provider-id"
+            "api-reference/CPO_Services/CPO_Charging_Station/locations/update-location",
+            "api-reference/CPO_Services/CPO_Charging_Station/locations/delete-a-location",
+            "api-reference/CPO_Services/CPO_Charging_Station/locations/create-location",
+            "api-reference/CPO_Services/CPO_Charging_Station/locations/get-all-locations",
+            "api-reference/CPO_Services/CPO_Charging_Station/locations/get-locations",
+            "api-reference/CPO_Services/CPO_Charging_Station/locations/get-all-locations-by-provider-id",
+            "api-reference/CPO_Services/CPO_Charging_Station/locations/get-location-by-location-id-and-provider-id"
           ]
         },
         {
           "group": "Charging Stations",
           "pages": [
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-charging-station-by-charging-station-id",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/update-charging-station",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/delete-charging-station",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-charging-station-by-identity-key",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/update-charging-station-by-identity-key",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/delete-charging-station-by-identity-key",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-all-charging-stations-by-provider-id",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/create-charging-station",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-all-charging-stations",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/checks-if-charging-station-exists-by-identity-key",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-all-charging-stations-by-provider-id-for-the-specific-location",
-            "api-reference/CPO_Services/CPO_Charging_Station_Group/charging-stations/get-charging-station-by-identity-key-1"
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/get-charging-station-by-charging-station-id",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/update-charging-station",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/delete-charging-station",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/get-charging-station-by-identity-key",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/update-charging-station-by-identity-key",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/delete-charging-station-by-identity-key",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/get-all-charging-stations-by-provider-id",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/create-charging-station",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/get-all-charging-stations",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/checks-if-charging-station-exists-by-identity-key",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/get-all-charging-stations-by-provider-id-for-the-specific-location",
+            "api-reference/CPO_Services/CPO_Charging_Station/charging-stations/get-charging-station-by-identity-key-1"
           ]
         }
       ]
