@@ -517,9 +517,105 @@
       "pages": ["api-reference/Broker_Services/introduction"]
     },
     {
-      "group": "API Docu",
-      "pages": ["api-reference/Broker_Services/coming_soon"]
+      "group": "OCPP Broker API Gateway",
+      "pages": [
+        {
+          "group": "Api Key Controller",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_API_Gateway/api-key-controller/get-all-api-keys",
+            "api-reference/Broker_Services/OCPP_Broker_API_Gateway/api-key-controller/create-api-key",
+            "api-reference/Broker_Services/OCPP_Broker_API_Gateway/api-key-controller/revoke-api-key"
+          ]
+        }
+      ]
     },
+    {
+      "group": "OCPP Server",
+      "pages": [
+        {
+          "group": "Charging Stations",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Server/charging-stations/get-charging-station",
+            "api-reference/Broker_Services/OCPP_Server/charging-stations/update-charging-station",
+            "api-reference/Broker_Services/OCPP_Server/charging-stations/delete-charging-station",
+            "api-reference/Broker_Services/OCPP_Server/charging-stations/get-all-charging-stations",
+            "api-reference/Broker_Services/OCPP_Server/charging-stations/create-charging-station"
+          ]
+        },
+        {
+          "group": "Firmware Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Server/firmware-management/update-firmware",
+            "api-reference/Broker_Services/OCPP_Server/firmware-management/diagnostics-request-to-the-charging-station"
+          ]
+        },
+        {
+          "group": "Core Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Server/core-management/unlock-connector",
+            "api-reference/Broker_Services/OCPP_Server/core-management/reset",
+            "api-reference/Broker_Services/OCPP_Server/core-management/remote-stop-transaction",
+            "api-reference/Broker_Services/OCPP_Server/core-management/remote-start-transaction",
+            "api-reference/Broker_Services/OCPP_Server/core-management/get-configuration",
+            "api-reference/Broker_Services/OCPP_Server/core-management/change-configuration",
+            "api-reference/Broker_Services/OCPP_Server/core-management/change-availability"
+          ]
+        },
+        {
+          "group": "Smart Charging",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Server/smart-charging/set-charging-profile",
+            "api-reference/Broker_Services/OCPP_Server/smart-charging/get-composite-schedule",
+            "api-reference/Broker_Services/OCPP_Server/smart-charging/clear-charging-profile"
+          ]
+        },
+        {
+          "group": "Reservation",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Server/reservation/reserve-now",
+            "api-reference/Broker_Services/OCPP_Server/reservation/cancel-reservation"
+          ]
+        },
+        {
+          "group": "Data Transfer",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Server/data-transfer/data-transfer"
+          ]
+        },
+        {
+          "group": "EVSE Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Server/evse-management/unlock-connector",
+            "api-reference/Broker_Services/OCPP_Server/evse-management/remote-start-transaction",
+            "api-reference/Broker_Services/OCPP_Server/evse-management/remote-stop-transaction"
+          ]
+        },
+        {
+          "group": "OCPP Raw Message",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Server/ocpp-raw-message/raw-message"
+          ]
+        },
+        {
+          "group": "Transactions",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Server/transactions/get-all-transactions",
+            "api-reference/Broker_Services/OCPP_Server/transactions/get-all-transactions-for-identity",
+            "api-reference/Broker_Services/OCPP_Server/transactions/get-transactions-for-identity-by-transaction-id",
+            "api-reference/Broker_Services/OCPP_Server/transactions/get-all-meter-values-of-a-transaction"
+          ]
+        },
+        {
+          "group": "Local Auth List Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Server/local-auth-list-management/get-configuration"
+          ]
+        }
+      ]      
+    },
+
+
+
 
     
     {

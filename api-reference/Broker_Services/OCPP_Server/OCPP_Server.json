@@ -1,0 +1,2910 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ocpp-server-service",
+    "description": "A service used for integration of charging station management features according to OCPP",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/ocpp-server/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Smart Charging",
+      "description": "Support for basic Smart Charging, for instance using control pilot."
+    },
+    {
+      "name": "Firmware Management",
+      "description": "Support for firmware update management and diagnostic log file download."
+    },
+    {
+      "name": "Reservation",
+      "description": "Support for reservation of a Charge Point."
+    },
+    {
+      "name": "Data Transfer",
+      "description": "Vendor specific data transfer"
+    },
+    {
+      "name": "Core Management",
+      "description": "Basic Charging Station functionality"
+    },
+    {
+      "name": "Local Auth List Management",
+      "description": "Features to manage the local authorization list in Charge Points."
+    },
+    {
+      "name": "OCPP Raw Message",
+      "description": "Vendor specific OCPP messages"
+    }
+  ],
+  "paths": {
+    "/chargingstations/{identityKey}": {
+      "get": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Get Charging Station",
+        "description": "Returns a Charging Station that matches the provided Identity Key, with its EVSEs",
+        "operationId": "getChargingStation",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OcppChargingStation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging Station not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Update charging station",
+        "description": "Updates Charging Stations name and model",
+        "operationId": "updateChargingStation",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OcppChargingStationUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OcppChargingStation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Charging Station not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Delete Charging Station",
+        "description": "Deletes the Charging Station that matches the provided Identity Key, with its EVSEs",
+        "operationId": "deleteChargingStation",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging Station not found"
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/updateFirmware": {
+      "post": {
+        "tags": [
+          "Firmware Management"
+        ],
+        "summary": "Update Firmware",
+        "operationId": "updateFirmware",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFirmwareReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateFirmwareConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/unlockConnector": {
+      "post": {
+        "tags": [
+          "Core Management"
+        ],
+        "summary": "Unlock Connector",
+        "description": "Sends an unlock connector request to the charging station",
+        "operationId": "unlockConnector",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnlockConnectorReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnlockConnectorConfirmation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging station not found"
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/setChargingProfile": {
+      "post": {
+        "tags": [
+          "Smart Charging"
+        ],
+        "summary": "Set Charging Profile",
+        "description": "Sends a set charging prfoile request to the charging station",
+        "operationId": "setChargingProfile",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetChargingProfileReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetChargingProfileConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/reset": {
+      "post": {
+        "tags": [
+          "Core Management"
+        ],
+        "summary": "Reset",
+        "description": "Sends a reset request to the charging station",
+        "operationId": "reset",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetConfirmation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging station not found"
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/reserveNow": {
+      "post": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "Reserve now",
+        "operationId": "reserveNow",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReserveNowReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReserveNowConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/remoteStopTransaction": {
+      "post": {
+        "tags": [
+          "Core Management"
+        ],
+        "summary": "Remote Stop Transaction",
+        "description": "Sends a remote stop request to the charging station",
+        "operationId": "remoteStopTransaction",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoteStopTransactionReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoteStopTransactionConfirmation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging station not found"
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/remoteStartTransaction": {
+      "post": {
+        "tags": [
+          "Core Management"
+        ],
+        "summary": "Remote Start Transaction",
+        "description": "Sends a remote start request to the charging station",
+        "operationId": "remoteStartTransaction",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoteStartTransactionReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoteStartTransactionConfirmation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging station not found"
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/getDiagnostics": {
+      "post": {
+        "tags": [
+          "Firmware Management"
+        ],
+        "summary": "Diagnostics request to the charging station",
+        "operationId": "getDiagnostics",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetDiagnosticsReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDiagnosticsConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/getCompositeSchedule": {
+      "post": {
+        "tags": [
+          "Smart Charging"
+        ],
+        "summary": "Get Composite Schedule",
+        "description": "Sends a get composite schedule request to the charging station",
+        "operationId": "getCompositeSchedule",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCompositeScheduleReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCompositeScheduleConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/dataTransfer": {
+      "post": {
+        "tags": [
+          "Data Transfer"
+        ],
+        "summary": "Data transfer",
+        "description": "Sends vendor specific data transfers to the charging station",
+        "operationId": "dataTransfer",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataTransferReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataTransferConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/configuration": {
+      "get": {
+        "tags": [
+          "Core Management"
+        ],
+        "summary": "Get configuration",
+        "description": "Request the configuration settings from the charging station",
+        "operationId": "getConfiguration",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetConfigurationConfirmation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging station not found"
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Core Management"
+        ],
+        "summary": "Change configuration",
+        "description": "Sends a change configuration request to the charging station",
+        "operationId": "changeConfiguration",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeConfigurationReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeConfigurationConfirmation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging station not found"
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/clearChargingProfile": {
+      "post": {
+        "tags": [
+          "Smart Charging"
+        ],
+        "summary": "Clear Charging Profile",
+        "description": "Sends a clear charging profile request to the charging station",
+        "operationId": "clearChargingProfile",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClearChargingProfileReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClearChargingProfileConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/changeAvailability": {
+      "post": {
+        "tags": [
+          "Core Management"
+        ],
+        "summary": "Change availability",
+        "description": "Changes the availability of the charging station or a single EVSE",
+        "operationId": "changeAvailability",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeAvailabilityReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeAvailabilityConfirmation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging station not found"
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/cancelReservation": {
+      "post": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "Cancel reservation",
+        "description": "Cancels a reservation at the specified charge point",
+        "operationId": "cancelReservation",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelReservationReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelReservationConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/evses/{evseId}/unlockConnector": {
+      "post": {
+        "tags": [
+          "EVSE Management"
+        ],
+        "summary": "Unlock Connector",
+        "operationId": "unlockConnector_1",
+        "parameters": [
+          {
+            "name": "evseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnlockConnectorConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/evses/{evseId}/remoteStartTransaction": {
+      "post": {
+        "tags": [
+          "EVSE Management"
+        ],
+        "summary": "Remote Start Transaction",
+        "operationId": "remoteStartTransaction_1",
+        "parameters": [
+          {
+            "name": "evseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idTag",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoteStartTransactionConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/chargingstations/{identityKey}/rawMessage": {
+      "post": {
+        "tags": [
+          "OCPP Raw Message"
+        ],
+        "summary": "Raw message",
+        "description": "Sends a raw OCPP message to the charging station",
+        "operationId": "rawMessage",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OcppMessageCall"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OcppMessageCallResult"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/chargingstations": {
+      "get": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Get all Charging Stations",
+        "description": "Returns a list with all existing Charging Stations, with its EVSEs",
+        "operationId": "getAllChargingStations",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OcppChargingStation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Charging Stations"
+        ],
+        "summary": "Create charging station",
+        "description": "Creates a new charging station, together with its EVSEs",
+        "operationId": "createChargingStation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OcppChargingStationCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OcppChargingStation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": " When Username is provided but Password is not, and vice versa."
+          },
+          "409": {
+            "description": "Evse with the same EVSE ID already exists."
+          }
+        }
+      }
+    },
+    "/transactions": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Get all transactions",
+        "description": "Returns a list of all OCPP transactions",
+        "operationId": "getAllTransactions",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OcppTransaction"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{identityKey}": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Get all transactions for identity",
+        "description": "Returns a list of all OCPP transactions for the specified charging station",
+        "operationId": "getAllTransactionsForIdentity",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OcppTransaction"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{identityKey}/{transactionId}": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Get transactions for identity by transaction ID",
+        "description": "Returns a a transactions for the specified charging station and transaction",
+        "operationId": "getTransactionByIdentityAndTransactionId",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OcppTransaction"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          }
+        }
+      }
+    },
+    "/transactions/{identityKey}/{transactionId}/metervalues": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Get all meter values of a transaction",
+        "description": "Returns a list of all meter values for the specified transaction",
+        "operationId": "getAllMeterValuesForIdentityAndTransactionId",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OcppMeterValue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/management/v16/chargingstations/{identityKey}/getLocalListVersion": {
+      "get": {
+        "tags": [
+          "Local Auth List Management"
+        ],
+        "summary": "Get configuration",
+        "description": "Request the configuration settings from the charging station",
+        "operationId": "getLocalListVersion",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetConfigurationConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    },
+    "/management/evses/{evseId}/remoteStopTransaction": {
+      "delete": {
+        "tags": [
+          "EVSE Management"
+        ],
+        "summary": "Remote Stop Transaction",
+        "operationId": "remoteStopTransaction_1",
+        "parameters": [
+          {
+            "name": "evseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "transactionId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoteStopTransactionConfirmation"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "RPC Timeout. The charging station did not respond in time."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OcppChargingStation": {
+        "required": [
+          "chargingStationName",
+          "chargingStationSerialNumber",
+          "dateCreated",
+          "evses",
+          "identityKey"
+        ],
+        "type": "object",
+        "properties": {
+          "identityKey": {
+            "maxLength": 32,
+            "minLength": 0,
+            "type": "string",
+            "description": "The Unique Identifier of a Charging Station",
+            "example": "1550"
+          },
+          "chargingStationSerialNumber": {
+            "maxLength": 32,
+            "minLength": 0,
+            "type": "string",
+            "description": "Serial number of a charging station (number provided on hardware).It is provided in BootNotification message.",
+            "example": "SN152251"
+          },
+          "chargingStationName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "If not provided then default value: <charging_station_model> + <identity_key>.If 'charging_station_model' is null, then 'charging_station_name' = 'identity_key'",
+            "example": "WallBox NG Pro 1550"
+          },
+          "chargingStationVendor": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string"
+          },
+          "chargingStationModel": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "The Charging Station model.",
+            "example": "WallBox NG Pro"
+          },
+          "userName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The basic auth user name",
+            "example": "acc-21107439"
+          },
+          "password": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The basic auth password",
+            "example": "myS3cR3tPass|||0Rd"
+          },
+          "ocppProtocolVersion": {
+            "type": "string",
+            "description": "The OCPP protocol version which should be negotiated during the handshake.",
+            "example": "V_16",
+            "enum": [
+              "V_15",
+              "V_16",
+              "V_20",
+              "V_201"
+            ]
+          },
+          "firmwareVersion": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "iccid": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "This contains the ICCID of the modem’s SIM card."
+          },
+          "imsi": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "This contains the IMSI of the modem’s SIM card."
+          },
+          "meterSerialNumber": {
+            "maxLength": 25,
+            "minLength": 0,
+            "type": "string",
+            "description": "This contains the serial number of the main power meter of the Charging Station."
+          },
+          "meterType": {
+            "maxLength": 25,
+            "minLength": 0,
+            "type": "string",
+            "description": "This contains the type of the main power meter of the Charging Station."
+          },
+          "online": {
+            "type": "boolean"
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateLastHeartBeat": {
+            "type": "string",
+            "description": "The date and time of the last received heartbeat",
+            "format": "date-time"
+          },
+          "dateLastBoot": {
+            "type": "string",
+            "description": "The date and time of the last boot event",
+            "format": "date-time"
+          },
+          "evses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OcppChargingStationEvse"
+            }
+          }
+        }
+      },
+      "OcppChargingStationEvse": {
+        "required": [
+          "connectorId",
+          "evseId"
+        ],
+        "type": "object",
+        "properties": {
+          "evseId": {
+            "maxLength": 48,
+            "minLength": 0,
+            "type": "string",
+            "description": "The EVSE ID",
+            "example": "DE*ERG*E10001*1"
+          },
+          "connectorId": {
+            "type": "integer",
+            "description": "The connector ID",
+            "format": "int32",
+            "example": 1
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "Error code reported in StatusNotification request.",
+            "example": "NoError",
+            "enum": [
+              "ConnectorLockFailure",
+              "EVCommunicationError",
+              "GroundFailure",
+              "HighTemperature",
+              "InternalError",
+              "LocalListConflict",
+              "NoError",
+              "OtherError",
+              "OverCurrentFailure",
+              "OverVoltage",
+              "PowerMeterFailure",
+              "PowerSwitchFailure",
+              "ReaderFailure",
+              "ResetFailure",
+              "UnderVoltage",
+              "WeakSignal"
+            ]
+          },
+          "errorInfo": {
+            "type": "string",
+            "description": "Additional free format information related to the error."
+          },
+          "status": {
+            "type": "string",
+            "description": "Status reported in StatusNotification request.",
+            "example": "Available",
+            "enum": [
+              "Available",
+              "Preparing",
+              "Charging",
+              "SuspendedEVSE",
+              "SuspendedEV",
+              "Finishing",
+              "Reserved",
+              "Unavailable",
+              "Faulted"
+            ]
+          },
+          "statusTimestamp": {
+            "type": "string",
+            "description": "The time for which the status is reported.",
+            "format": "date-time",
+            "example": "2024-03-19T14:11:43Z"
+          },
+          "vendorId": {
+            "type": "string",
+            "description": "This identifies the vendor-specific implementation."
+          },
+          "vendorErrorCode": {
+            "type": "string",
+            "description": "This contains the vendor-specific error code."
+          }
+        }
+      },
+      "OcppChargingStationUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "chargingStationName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "pattern": "^[^@#`/%:;,=?^$()#|+~&%{}.!<>'\"\\[\\]\\\\]+?$",
+            "type": "string",
+            "description": "If not provided then default value: <charging_station_model> + <identity_key>.If 'charging_station_model' is null, then 'charging_station_name' = 'identity_key'",
+            "example": "WallBox NG Pro Ultra 1550"
+          },
+          "chargingStationModel": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "The Charging Station model.",
+            "example": "WallBox NG Pro Ultra"
+          }
+        }
+      },
+      "UpdateFirmwareConfirmation": {
+        "type": "object"
+      },
+      "UpdateFirmwareReq": {
+        "required": [
+          "location",
+          "retrieveDate"
+        ],
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "This contains a string containing a URI pointing to a location from which to retrieve the firmware."
+          },
+          "retries": {
+            "type": "integer",
+            "description": "This specifies how many times Charge Point must try to download the firmware before giving up. If this field is not present, it is left to Charge Point to decide how many times it wants to retry.",
+            "format": "int32"
+          },
+          "retrieveDate": {
+            "type": "string",
+            "description": "This contains the date and time after which the Charge Point is allowed to retrieve the (new) firmware.",
+            "format": "date-time"
+          },
+          "retryInterval": {
+            "type": "integer",
+            "description": "The interval in seconds after which a retry may be attempted. If this field is not present, it is left to Charge Point to decide how long to wait between attempts.",
+            "format": "int32"
+          }
+        }
+      },
+      "UnlockConnectorConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "This indicates whether the Charge Point has unlocked the connector.",
+            "enum": [
+              "Unlocked",
+              "UnlockFailed",
+              "NotSupported"
+            ]
+          }
+        }
+      },
+      "UnlockConnectorReq": {
+        "required": [
+          "connectorId"
+        ],
+        "type": "object",
+        "properties": {
+          "connectorId": {
+            "type": "integer",
+            "description": "This contains the identifier of the connector to be unlocked.",
+            "format": "int32"
+          }
+        }
+      },
+      "SetChargingProfileConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Returns whether the Charge Point has been able to process the message successfully. This does not guarantee the schedule will be followed to the letter. There might be other constraints the Charge Point may need to take into account.",
+            "enum": [
+              "Accepted",
+              "Rejected",
+              "NotSupported"
+            ]
+          }
+        }
+      },
+      "OcppChargingProfile": {
+        "required": [
+          "chargingProfileId",
+          "chargingProfileKind",
+          "chargingProfilePurpose",
+          "chargingSchedule",
+          "stackLevel"
+        ],
+        "type": "object",
+        "properties": {
+          "chargingProfileId": {
+            "type": "integer",
+            "description": "Unique identifier for this profile.",
+            "format": "int32"
+          },
+          "transactionId": {
+            "type": "integer",
+            "description": "Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction.",
+            "format": "int32"
+          },
+          "stackLevel": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Value determining level in hierarchy stack of profiles. Higher values have precedence over lower values. Lowest level is 0.",
+            "format": "int32"
+          },
+          "chargingProfilePurpose": {
+            "type": "string",
+            "enum": [
+              "ChargePointMaxProfile",
+              "TxDefaultProfile",
+              "TxProfile"
+            ]
+          },
+          "chargingProfileKind": {
+            "type": "string",
+            "description": "Indicates the kind of schedule.",
+            "enum": [
+              "Absolute",
+              "Recurring",
+              "Relative"
+            ]
+          },
+          "recurrencyKind": {
+            "type": "string",
+            "description": "Indicates the start point of a recurrence. SHALL only be used when the field: recurrencyKind is set to: Recurring.",
+            "enum": [
+              "Daily",
+              "Weekly"
+            ]
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Point in time at which the profile starts to be valid. If absent, the profile is valid as soon as it is received by the Charge Point.",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Point in time at which the profile stops to be valid. If absent, the profile is valid until it is replaced by another profile.",
+            "format": "date-time"
+          },
+          "chargingSchedule": {
+            "$ref": "#/components/schemas/OcppChargingSchedule"
+          }
+        },
+        "description": "The charging profile to be set at the Charge Point."
+      },
+      "OcppChargingSchedule": {
+        "required": [
+          "chargingRateUnit",
+          "chargingSchedulePeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "duration": {
+            "type": "integer",
+            "description": "Duration of the charging schedule in seconds. If the duration is left empty, the last period will continue indefinitely or until end of the transaction in case startSchedule is absent.",
+            "format": "int32"
+          },
+          "startSchedule": {
+            "type": "string",
+            "description": "Starting point of an absolute schedule. If absent the schedule will be relative to start of charging. When ChargingSchedule is used as part of a GetCompositeSchedule.conf message, then this field must be omitted.",
+            "format": "date-time"
+          },
+          "chargingRateUnit": {
+            "type": "string",
+            "description": "The unit of measure Limit is expressed in.",
+            "enum": [
+              "W",
+              "A"
+            ]
+          },
+          "chargingSchedulePeriod": {
+            "type": "array",
+            "description": "List of ChargingSchedulePeriod elements defining maximum power or current usage over time. The startPeriod of the first ChargingSchedulePeriod SHALL always be 0.",
+            "items": {
+              "$ref": "#/components/schemas/OcppChargingSchedulePeriod"
+            }
+          },
+          "minChargingRate": {
+            "type": "number",
+            "description": "Minimum charging rate supported by the electric vehicle. The unit of measure is defined by the chargingRateUnit. This parameter is intended to be used by a local smart charging algorithm to optimize the power allocation for in the case a charging process is inefficient at lower charging rates. Accepts at most one digit fraction (e.g. 8.1)",
+            "example": 8.1
+          }
+        },
+        "description": "Planned Composite Charging Schedule, the energy consumption over time. Always relative to ScheduleStart. If status is \"Rejected\", this field may be absent."
+      },
+      "OcppChargingSchedulePeriod": {
+        "required": [
+          "limit",
+          "startPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "startPeriod": {
+            "type": "integer",
+            "description": "Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts. Accepts at most one digit fraction (e.g. 8.1).",
+            "example": 8.1
+          },
+          "numberPhases": {
+            "type": "integer",
+            "description": "The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.",
+            "format": "int32"
+          }
+        },
+        "description": "List of ChargingSchedulePeriod elements defining maximum power or current usage over time. The startPeriod of the first ChargingSchedulePeriod SHALL always be 0."
+      },
+      "SetChargingProfileReq": {
+        "required": [
+          "connectorId",
+          "csChargingProfiles"
+        ],
+        "type": "object",
+        "properties": {
+          "connectorId": {
+            "type": "integer",
+            "description": "The connector to which the charging profile applies. If connectorId = 0, and the message contains a ChargePointMaxProfile it contains an overall limit for the Charge Point. If connectorId = 0, and the message contains a TxDefaultProfile it contains limits that are to be used for any new transaction on any connector of that Charge Point.",
+            "format": "int32"
+          },
+          "csChargingProfiles": {
+            "$ref": "#/components/schemas/OcppChargingProfile"
+          }
+        }
+      },
+      "ResetConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "This indicates whether the Charge Point is able to perform the reset.",
+            "enum": [
+              "Accepted",
+              "Rejected"
+            ]
+          }
+        }
+      },
+      "ResetReq": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "This contains the type of reset that the Charge Point should perform.",
+            "enum": [
+              "Hard",
+              "Soft"
+            ]
+          }
+        }
+      },
+      "ReserveNowConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "This indicates the success or failure of the reservation.",
+            "enum": [
+              "Accepted",
+              "Faulted",
+              "Occupied",
+              "Rejected",
+              "Unavailable"
+            ]
+          }
+        }
+      },
+      "ReserveNowReq": {
+        "required": [
+          "connectorId",
+          "expiryDate",
+          "idTag",
+          "reservationId"
+        ],
+        "type": "object",
+        "properties": {
+          "connectorId": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "This contains the id of the connector to be reserved. A value of 0 means that the reservation is not for a specific connector.",
+            "format": "int32"
+          },
+          "expiryDate": {
+            "type": "string",
+            "description": "This contains the date and time when the reservation ends.",
+            "format": "date-time"
+          },
+          "idTag": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "The identifier for which the Charge Point has to reserve a connector. Case-insensitive, max length 20."
+          },
+          "parentIdTag": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "The parent idTag."
+          },
+          "reservationId": {
+            "type": "integer",
+            "description": "Unique id for this reservation.",
+            "format": "int32"
+          }
+        }
+      },
+      "RemoteStopTransactionConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status indicating whether Charge Point accepts the request to stop a transaction.",
+            "enum": [
+              "Accepted",
+              "Rejected"
+            ]
+          }
+        }
+      },
+      "RemoteStopTransactionReq": {
+        "required": [
+          "transactionId"
+        ],
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "integer",
+            "description": "This contains the identifier of the transaction which Charge Point is requested to stop.",
+            "format": "int32"
+          }
+        }
+      },
+      "RemoteStartTransactionConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status indicating whether Charge Point accepts the request to start a transaction.",
+            "enum": [
+              "Accepted",
+              "Rejected"
+            ]
+          }
+        }
+      },
+      "RemoteStartTransactionReq": {
+        "required": [
+          "idTag"
+        ],
+        "type": "object",
+        "properties": {
+          "connectorId": {
+            "type": "integer",
+            "description": "Number of the connector on which to start the transaction. connectorId SHALL be > 0.",
+            "format": "int32"
+          },
+          "idTag": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "The identifier that Charge Point must use to start a transaction. Case-insensitive, max length 20. idTag of vehicle owner"
+          },
+          "chargingProfile": {
+            "$ref": "#/components/schemas/OcppChargingProfile"
+          }
+        }
+      },
+      "GetDiagnosticsConfirmation": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "This contains the name of the file with diagnostic information that will be uploaded. This field is not present when no diagnostic information is available. Case-insensitive, max length 255."
+          }
+        }
+      },
+      "GetDiagnosticsReq": {
+        "required": [
+          "location"
+        ],
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "This contains the location (directory) where the diagnostics file shall be uploaded to."
+          },
+          "retries": {
+            "type": "integer",
+            "description": "This specifies how many times Charge Point must retry to upload the diagnostics before giving up. If this field is not present, it is left to Charge Point to decide how many times it wants to retry.",
+            "format": "int32"
+          },
+          "retryInterval": {
+            "type": "integer",
+            "description": "The interval in seconds after which a retry may be attempted. If this field is not present, it is left to Charge Point to decide how long to wait between attempts.",
+            "format": "int32"
+          },
+          "startTime": {
+            "type": "string",
+            "description": "This contains the date and time of the oldest logging information to include in the diagnostics.",
+            "format": "date-time"
+          },
+          "stopTime": {
+            "type": "string",
+            "description": "This contains the date and time of the latest logging information to include in the diagnostics.",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetCompositeScheduleConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status of the request. The Charge Point will indicate if it was able to process the request.",
+            "enum": [
+              "Accepted",
+              "Rejected"
+            ]
+          },
+          "connectorId": {
+            "type": "integer",
+            "description": "The charging schedule contained in this notification applies to a Connector.",
+            "format": "int32"
+          },
+          "scheduleStart": {
+            "type": "string",
+            "description": "Time. Periods contained in the charging profile are relative to this point in time. If status is \"Rejected\", this field may be absent.",
+            "format": "date-time"
+          },
+          "chargingSchedule": {
+            "$ref": "#/components/schemas/OcppChargingSchedule"
+          }
+        }
+      },
+      "GetCompositeScheduleReq": {
+        "required": [
+          "connectorId",
+          "duration"
+        ],
+        "type": "object",
+        "properties": {
+          "connectorId": {
+            "type": "integer",
+            "description": "The ID of the Connector for which the schedule is requested. When ConnectorId=0, the Charge Point will calculate the expected consumption for the grid connection.",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Time in seconds. length of requested schedule.",
+            "format": "int32"
+          },
+          "chargingRateUnit": {
+            "type": "string",
+            "description": "Can be used to force a power or current profile.",
+            "enum": [
+              "W",
+              "A"
+            ]
+          }
+        }
+      },
+      "DataTransferConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "This indicates the success or failure of the data transfer.",
+            "enum": [
+              "Accepted",
+              "Rejected",
+              "UnknownMessageId",
+              "UnknownVendorId"
+            ]
+          },
+          "data": {
+            "type": "string",
+            "description": "Data in response to request."
+          }
+        }
+      },
+      "DataTransferReq": {
+        "required": [
+          "vendorId"
+        ],
+        "type": "object",
+        "properties": {
+          "vendorId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "This identifies the Vendor specific implementation. Case-insensitive, max length 255."
+          },
+          "messageId": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Additional identification field. Case-insensitive, max length 50."
+          },
+          "data": {
+            "type": "string",
+            "description": "Data without specified length or format."
+          }
+        }
+      },
+      "ChangeConfigurationConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Returns whether configuration change has been accepted.",
+            "enum": [
+              "Accepted",
+              "Rejected",
+              "RebootRequired",
+              "NotSupported"
+            ]
+          }
+        }
+      },
+      "ChangeConfigurationReq": {
+        "required": [
+          "key",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "The name of the configuration setting to change. See for standard configuration key names and associated values. Case-insensitive, max length 50."
+          },
+          "value": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "The new value as string for the setting. See for standard configuration key names and associated values. Case-insensitive, max length 500."
+          }
+        }
+      },
+      "ClearChargingProfileConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Indicates if the Charge Point was able to execute the request.",
+            "enum": [
+              "Accepted",
+              "Unknown"
+            ]
+          }
+        }
+      },
+      "ClearChargingProfileReq": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The ID of the charging profile to clear.",
+            "format": "int32"
+          },
+          "connectorId": {
+            "type": "integer",
+            "description": "Specifies the ID of the connector for which to clear charging profiles. A connectorId of zero (0) specifies the charging profile for the overall Charge Point. Absence of this parameter means the clearing applies to all charging profiles that match the other criteria in the request.",
+            "format": "int32"
+          },
+          "chargingProfilePurpose": {
+            "type": "string",
+            "description": "Specifies to purpose of the charging profiles that will be cleared, if they meet the other criteria in the request.",
+            "enum": [
+              "ChargePointMaxProfile",
+              "TxDefaultProfile",
+              "TxProfile"
+            ]
+          },
+          "stackLevel": {
+            "type": "integer",
+            "description": "Specifies the stackLevel for which charging profiles will be cleared, if they meet the other criteria in the request.",
+            "format": "int32"
+          }
+        }
+      },
+      "ChangeAvailabilityConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "This indicates whether the Charge Point is able to perform the availability change.",
+            "enum": [
+              "Accepted",
+              "Rejected",
+              "Scheduled"
+            ]
+          }
+        }
+      },
+      "ChangeAvailabilityReq": {
+        "required": [
+          "connectorId",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "connectorId": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "The id of the connector for which availability needs to change. Id '0' (zero) is used if the availability of the Charge Point and all its connectors needs to change.",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string",
+            "description": "This contains the type of availability change that the Charge Point should perform.",
+            "enum": [
+              "Inoperative",
+              "Operative"
+            ]
+          }
+        }
+      },
+      "CancelReservationConfirmation": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "This indicates the success or failure of the cancelling of a reservation by Central System.",
+            "enum": [
+              "Accepted",
+              "Rejected"
+            ]
+          }
+        }
+      },
+      "CancelReservationReq": {
+        "required": [
+          "reservationId"
+        ],
+        "type": "object",
+        "properties": {
+          "reservationId": {
+            "type": "integer",
+            "description": "Id of the reservation to cancel.",
+            "format": "int32"
+          }
+        }
+      },
+      "OcppMessageCallResult": {
+        "type": "object",
+        "properties": {
+          "messageType": {
+            "type": "string",
+            "enum": [
+              "CALL",
+              "CALL_RESULT",
+              "CALL_ERROR"
+            ]
+          },
+          "callId": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "string"
+          },
+          "rawMessage": {
+            "type": "string"
+          }
+        }
+      },
+      "OcppMessageCall": {
+        "type": "object",
+        "properties": {
+          "messageType": {
+            "type": "string",
+            "enum": [
+              "CALL",
+              "CALL_RESULT",
+              "CALL_ERROR"
+            ]
+          },
+          "callId": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "string"
+          },
+          "rawMessage": {
+            "type": "string"
+          },
+          "procedureName": {
+            "type": "string",
+            "enum": [
+              "AUTHORIZE",
+              "BOOT_NOTIFICATION",
+              "CANCEL_RESERVATION",
+              "CLEAR_DISPLAY_MESSAGE",
+              "CLEAR_VARIABLE_MONITORING",
+              "CERTIFICATE_SIGNED",
+              "CHANGE_AVAILABILITY",
+              "CHANGE_CONFIGURATION",
+              "CLEAR_CACHE",
+              "CLEAR_CHARGING_PROFILE",
+              "COST_UPDATED",
+              "CUSTOMER_INFORMATION",
+              "DATA_TRANSFER",
+              "DELETE_CERTIFICATE",
+              "DIAGNOSTICS_STATUS_NOTIFICATION",
+              "FIRMWARE_STATUS_NOTIFICATION",
+              "GET_15118_EV_CERTIFICATE",
+              "GET_CERTIFICATE_STATUS",
+              "GET_BASE_REPORT",
+              "GET_CHARGING_PROFILES",
+              "GET_COMPOSITE_SCHEDULE",
+              "GET_CONFIGURATION",
+              "GET_DIAGNOSTICS",
+              "GET_DISPLAY_MESSAGES",
+              "GET_INSTALLED_CERTIFICATE_IDS",
+              "GET_LOCAL_LIST_VERSION",
+              "GET_LOG",
+              "GET_MONITORING_REPORT",
+              "GET_REPORT",
+              "GET_TRANSACTION_STATUS",
+              "GET_VARIABLES",
+              "HEARTBEAT",
+              "INSTALL_CERTIFICATE",
+              "LOG_STATUS_NOTIFICATION",
+              "METER_VALUES",
+              "NOTIFY_CHARGING_LIMIT",
+              "NOTIFY_CUSTOMER_INFORMATION",
+              "NOTIFY_DISPLAY_MESSAGES",
+              "NOTIFY_EV_CHARGING_NEEDS",
+              "NOTIFY_EV_CHARGING_SCHEDULE",
+              "NOTIFY_EVENT",
+              "NOTIFY_MONITORING_REPORT",
+              "NOTIFY_REPORT",
+              "PUBLISH_FIRMWARE",
+              "REMOTE_START_TRANSACTION",
+              "REMOTE_STOP_TRANSACTION",
+              "REPORT_CHARGING_PROFILES",
+              "REQUEST_START_TRANSACTION",
+              "REQUEST_STOP_TRANSACTION",
+              "RESERVATION_STATUS_UPDATE",
+              "RESERVE_NOW",
+              "RESET",
+              "SECURITY_EVENT_NOTIFICATION",
+              "SEND_LOCAL_LIST",
+              "SET_CHARGING_PROFILE",
+              "SET_DISPLAY_MESSAGE",
+              "SET_MONITORING_BASE",
+              "SET_MONITORING_LEVEL",
+              "SET_NETWORK_PROFILE",
+              "SET_VARIABLES",
+              "SET_VARIABLE_MONITORING",
+              "SIGN_CERTIFICATE",
+              "START_TRANSACTION",
+              "STOP_TRANSACTION",
+              "STATUS_NOTIFICATION",
+              "TRANSACTION_EVENT",
+              "UNLOCK_CONNECTOR",
+              "UNPUBLISH_FIRMWARE",
+              "UPDATE_FIRMWARE",
+              "TRIGGER_MESSAGE",
+              "FORMAT_VIOLATION"
+            ]
+          }
+        }
+      },
+      "OcppChargingStationCreateRequest": {
+        "required": [
+          "evseIds",
+          "identityKey"
+        ],
+        "type": "object",
+        "properties": {
+          "identityKey": {
+            "maxLength": 32,
+            "minLength": 0,
+            "pattern": "([A-Za-z0-9\\-\\_\\.\\~\\:\\?\\#\\@\\!\\$\\&\\'\\(\\)\\*\\,\\+\\= ]+)",
+            "type": "string",
+            "description": "The Unique Identifier of a Charging Station",
+            "example": "1550"
+          },
+          "chargingStationName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "pattern": "^[^@#`/%:;,=?^$()#|+~&%{}.!<>'\"\\[\\]\\\\]+?$",
+            "type": "string",
+            "description": "If not provided then default value: <charging_station_model> + <identity_key>.If 'charging_station_model' is null, then 'charging_station_name' = 'identity_key'",
+            "example": "WallBox NG Pro 1550"
+          },
+          "chargingStationVendor": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string"
+          },
+          "chargingStationModel": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "The Charging Station model.",
+            "example": "WallBox NG Pro"
+          },
+          "userName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The basic auth user name",
+            "example": "acc-21107439"
+          },
+          "password": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The basic auth password",
+            "example": "myS3cR3tPass|||0Rd"
+          },
+          "ocppProtocolVersion": {
+            "type": "string",
+            "description": "The OCPP protocol version which should be negotiated during the handshake.",
+            "example": "V_16",
+            "default": "V_16",
+            "enum": [
+              "V_15",
+              "V_16",
+              "V_20",
+              "V_201"
+            ]
+          },
+          "evseIds": {
+            "type": "array",
+            "description": "List of evseId(s)",
+            "items": {
+              "maxLength": 48,
+              "minLength": 0,
+              "type": "string",
+              "description": "List of evseId(s)"
+            }
+          }
+        }
+      },
+      "OcppIdTagInfo": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "expiryDate": {
+            "type": "string",
+            "description": "This contains the date at which idTag should be removed from the Authorization Cache.",
+            "format": "date-time"
+          },
+          "parentIdTag": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "This contains the parent-identifier. Case-insensitive, max length 20."
+          },
+          "status": {
+            "type": "string",
+            "description": "This contains whether the idTag has been accepted or not by the Central System.",
+            "enum": [
+              "Accepted",
+              "Blocked",
+              "Expired",
+              "Invalid",
+              "ConcurrentTx"
+            ]
+          }
+        },
+        "description": "This contains information about authorization status, expiry and parent id."
+      },
+      "OcppMeterValue": {
+        "required": [
+          "sampledValue",
+          "timestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp for measured value(s).",
+            "format": "date-time"
+          },
+          "sampledValue": {
+            "type": "array",
+            "description": "One or more measured values",
+            "items": {
+              "$ref": "#/components/schemas/OcppSampledValue"
+            }
+          }
+        }
+      },
+      "OcppSampledValue": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value as a “Raw” (decimal) number or “SignedData”. Field Type is “string” to allow for digitally signed data readings. Decimal numeric values are also acceptable to allow fractional values for measurands such as Temperature and Current."
+          },
+          "context": {
+            "type": "string",
+            "description": "Type of detail value: start, end or sample.",
+            "example": "Sample.Periodic",
+            "enum": [
+              "Interruption.Begin",
+              "Interruption.End",
+              "Other",
+              "Sample.Clock",
+              "Sample.Periodic",
+              "Transaction.Begin",
+              "Transaction.End",
+              "Trigger"
+            ]
+          },
+          "format": {
+            "type": "string",
+            "description": "Raw or signed data. Default = “Raw”",
+            "example": "Raw",
+            "enum": [
+              "Raw",
+              "SignedData"
+            ]
+          },
+          "measurand": {
+            "type": "string",
+            "description": "Type of measurement.",
+            "example": "Energy.Active.Import.Register",
+            "enum": [
+              "Current.Export",
+              "Current.Import",
+              "Current.Offered",
+              "Energy.Active.Export.Register",
+              "Energy.Active.Import.Register",
+              "Energy.Reactive.Export.Register",
+              "Energy.Reactive.Import.Register",
+              "Energy.Active.Export.Interval",
+              "Energy.Active.Import.Interval",
+              "Energy.Reactive.Export.Interval",
+              "Energy.Reactive.Import.Interval",
+              "Frequency",
+              "Power.Active.Export",
+              "Power.Active.Import",
+              "Power.Factor",
+              "Power.Offered",
+              "Power.Reactive.Export",
+              "Power.Reactive.Import",
+              "RPM",
+              "SoC",
+              "Temperature",
+              "Voltage"
+            ]
+          },
+          "phase": {
+            "type": "string",
+            "description": "Indicates how the measured value is to be interpreted. For instance between L1 and neutral (L1-N) Please note that not all values of phase are applicable to all Measurands. When phase is absent, the measured value is interpreted as an overall value.",
+            "enum": [
+              "L1",
+              "L2",
+              "L3",
+              "N",
+              "L1-N",
+              "L2-N",
+              "L3-N",
+              "L1-L2",
+              "L2-L3",
+              "L3-L1"
+            ]
+          },
+          "location": {
+            "type": "string",
+            "description": "Location of measurement. Default=”Outlet”",
+            "example": "Outlet",
+            "enum": [
+              "Body",
+              "Cable",
+              "EV",
+              "Inlet",
+              "Outlet"
+            ]
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of the value.",
+            "example": "Wh",
+            "enum": [
+              "Wh",
+              "kWh",
+              "varh",
+              "kvarh",
+              "W",
+              "kW",
+              "VA",
+              "kVA",
+              "var",
+              "kvar",
+              "A",
+              "V",
+              "Celsius",
+              "Fahrenheit",
+              "K",
+              "Percent"
+            ]
+          }
+        },
+        "description": "One or more measured values"
+      },
+      "OcppTransaction": {
+        "required": [
+          "identityKey",
+          "transactionId"
+        ],
+        "type": "object",
+        "properties": {
+          "identityKey": {
+            "type": "string",
+            "description": "The Unique Identifier of a Charging Station",
+            "example": "1550"
+          },
+          "transactionId": {
+            "type": "integer",
+            "description": "This contains the transaction id supplied by the Central System.",
+            "format": "int32",
+            "example": 1574986
+          },
+          "connectorId": {
+            "type": "integer",
+            "description": "This identifies which connector of the Charge Point is used.",
+            "format": "int32",
+            "example": 1
+          },
+          "evseId": {
+            "type": "string",
+            "description": "The EVSE ID of the connector"
+          },
+          "reservationId": {
+            "type": "integer",
+            "description": "This contains the id of the reservation that terminates as a result of this transaction.",
+            "format": "int32",
+            "example": 15748
+          },
+          "idTagStart": {
+            "type": "string",
+            "description": "This contains the identifier for which a transaction has to be started.",
+            "example": "08a8c5d2f13b9100"
+          },
+          "idTagInfoStart": {
+            "$ref": "#/components/schemas/OcppIdTagInfo"
+          },
+          "idTagStop": {
+            "type": "string",
+            "description": "This contains the identifier which requested to stop the charging. It is optional because a Charge Point may terminate charging without the presence of an idTag, e.g. in case of a reset.",
+            "example": "08a8c5d2f13b9100"
+          },
+          "lastStatus": {
+            "type": "string",
+            "enum": [
+              "Available",
+              "Preparing",
+              "Charging",
+              "SuspendedEVSE",
+              "SuspendedEV",
+              "Finishing",
+              "Reserved",
+              "Unavailable",
+              "Faulted"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "description": "This contains the reason why the transaction was stopped. MAY only be omitted when the Reason is \"Local\".",
+            "example": "Local",
+            "enum": [
+              "DeAuthorized",
+              "EmergencyStop",
+              "EVDisconnected",
+              "HardReset",
+              "Local",
+              "Other",
+              "PowerLoss",
+              "Reboot",
+              "Remote",
+              "SoftReset",
+              "UnlockCommand"
+            ]
+          },
+          "transactionData": {
+            "type": "array",
+            "description": "This contains transaction usage details relevant for billing purposes.",
+            "items": {
+              "$ref": "#/components/schemas/OcppMeterValue"
+            }
+          },
+          "meterStart": {
+            "type": "integer",
+            "description": "This contains the meter value in Wh for the connector at start of the transaction.",
+            "format": "int32"
+          },
+          "meterStop": {
+            "type": "integer",
+            "description": "This contains the meter value in Wh for the connector at end of the transaction.",
+            "format": "int32"
+          },
+          "timestampStart": {
+            "type": "string",
+            "description": "This contains the date and time on which the transaction is started.",
+            "format": "date-time",
+            "example": "2024-03-19T14:11:43Z"
+          },
+          "timestampStop": {
+            "type": "string",
+            "description": "This contains the date and time on which the transaction is stopped.",
+            "format": "date-time",
+            "example": "2024-03-19T14:11:43Z"
+          }
+        }
+      },
+      "GetConfigurationConfirmation": {
+        "type": "object",
+        "properties": {
+          "configurationKey": {
+            "type": "array",
+            "description": "List of requested or known keys.",
+            "items": {
+              "$ref": "#/components/schemas/OcppKeyValue"
+            }
+          },
+          "unknownKey": {
+            "type": "array",
+            "description": "Requested keys that are unknown. Keys are case-insensitive, with max length = 50.",
+            "items": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string",
+              "description": "Requested keys that are unknown. Keys are case-insensitive, with max length = 50."
+            }
+          }
+        }
+      },
+      "OcppKeyValue": {
+        "required": [
+          "key",
+          "readonly"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Case-insensitive, max length 50."
+          },
+          "readonly": {
+            "type": "boolean",
+            "description": "False if the value can be set with the ChangeConfiguration message."
+          },
+          "value": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "If key is known but not set, this field may be absent. Case-insensitive, max length 500."
+          }
+        },
+        "description": "List of requested or known keys."
+      },
+      "SuccessMessageDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "ALERT_ALREADY_CREATED": {
+        "value": "{\n  \"message\" : \"Alert already exists\",\n  \"errorCode\" : \"ALERT_ALREADY_CREATED\"\n}"
+      },
+      "ALERT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Alert not found\",\n  \"errorCode\" : \"ALERT_NOT_FOUND\"\n}"
+      },
+      "ALERT_DOESNT_EXIST": {
+        "value": "{\n  \"message\" : \"Alert with this connectorId and identityKey doesn't exist\",\n  \"errorCode\" : \"ALERT_DOESNT_EXIST\"\n}"
+      },
+      "END_DATETIME_NOT_AFTER_START_DATETIME": {
+        "value": "{\n  \"message\" : \"[OCPP-MESSAGE-LOG] timeTo cannot be before or equal to timeFrom.\",\n  \"errorCode\" : \"END_DATETIME_NOT_AFTER_START_DATETIME\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Location with the specified UUID not found\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
+      },
+      "SESSION_ID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[CPO-CHARGING] Session ID must be unique.\",\n  \"errorCode\" : \"SESSION_ID_ALREADY_EXISTS\"\n}"
+      },
+      "MESSAGE_LOG_NOT_SET_UP": {
+        "value": "{\n  \"message\" : \"[OCPP-MESSAGE-LOG] No data store was set-up for ocpp message logging\",\n  \"errorCode\" : \"MESSAGE_LOG_NOT_SET_UP\"\n}"
+      },
+      "BIG_QUERY_CONNECTION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] BigQuery connection error\",\n  \"errorCode\" : \"BIG_QUERY_CONNECTION\"\n}"
+      },
+      "RPC_TIMEOUT": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The RPC call to the charging station did not respond in time.\",\n  \"errorCode\" : \"RPC_TIMEOUT\"\n}"
+      },
+      "RPC_ERROR": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] An error occured during the remote procedure call\",\n  \"errorCode\" : \"RPC_ERROR\"\n}"
+      },
+      "UNABLE_TO_DELETE_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot delete CSMS with connected charging stations to it.\",\n  \"errorCode\" : \"UNABLE_TO_DELETE_CSMS\"\n}"
+      },
+      "NOT_UNIQUE_NAME": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided name is not unique.\",\n  \"errorCode\" : \"NOT_UNIQUE_NAME\"\n}"
+      },
+      "DEFAULT_CSMS_CANNOT_CHANGE_TO_NOT_DEFAULT": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Default CSMS cannot change to not-default.\",\n  \"errorCode\" : \"DEFAULT_CSMS_CANNOT_CHANGE_TO_NOT_DEFAULT\"\n}"
+      },
+      "CANNOT_DELETE_DEFAULT_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot delete Default CSMS, unless it is the only one and with no connected charging stations to it.\",\n  \"errorCode\" : \"CANNOT_DELETE_DEFAULT_CSMS\"\n}"
+      },
+      "CSMS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested CSMS not found.\",\n  \"errorCode\" : \"CSMS_NOT_FOUND\"\n}"
+      },
+      "CSMS_URL_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided CSMS url is not unique.\",\n  \"errorCode\" : \"CSMS_URL_ALREADY_EXISTS\"\n}"
+      },
+      "CHARGING_STATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested Charging Station not found.\",\n  \"errorCode\" : \"CHARGING_STATION_NOT_FOUND\"\n}"
+      },
+      "UNABLE_TO_CONNECT_TO_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot connect to CSMS, endpoint is not reachable\",\n  \"errorCode\" : \"UNABLE_TO_CONNECT_TO_CSMS\"\n}"
+      },
+      "CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] A Charging Station with the same Identity key already exists.\",\n  \"errorCode\" : \"CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS\"\n}"
+      },
+      "WRONG_OCPP_VERSION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The negotiated OCPP protocol version is not supporting this request\",\n  \"errorCode\" : \"WRONG_OCPP_VERSION\"\n}"
+      },
+      "CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested Charging Station Shadow Connector not found.\",\n  \"errorCode\" : \"CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND\"\n}"
+      },
+      "INVALID_IDENTITY_KEY": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] One or more specified charging station identity keys are not valid\",\n  \"errorCode\" : \"INVALID_IDENTITY_KEY\"\n}"
+      },
+      "FAILED_TO_DELETE_LOCATION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Failed to delete Location which has charging station/s bound to it\",\n  \"errorCode\" : \"FAILED_TO_DELETE_LOCATION\"\n}"
+      },
+      "INVALID_LOCATION_RELATION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] One or more charging stations are not assigned to the specified location\",\n  \"errorCode\" : \"INVALID_LOCATION_RELATION\"\n}"
+      },
+      "WRONG_PASSWORD": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The given password does not match with the confirmation password\",\n  \"errorCode\" : \"WRONG_PASSWORD\"\n}"
+      },
+      "UNABLE_TO_UPDATE_CSMS_CREDENTIALS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] No changes were requested.\",\n  \"errorCode\" : \"UNABLE_TO_UPDATE_CSMS_CREDENTIALS\"\n}"
+      },
+      "DUPLICATE_CONNECTOR_ID": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Connectors with the same id in the request.\",\n  \"errorCode\" : \"DUPLICATE_CONNECTOR_ID\"\n}"
+      },
+      "PAGE_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Max number of the results per page is 100.\",\n  \"errorCode\" : \"PAGE_SIZE_EXCEEDED\"\n}"
+      },
+      "TARIFF_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Tariff with the specified UUID not found\",\n  \"errorCode\" : \"TARIFF_NOT_FOUND\"\n}"
+      },
+      "EVSE_ID_NOT_UNIQUE": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided EVSE ID already exists.\",\n  \"errorCode\" : \"EVSE_ID_NOT_UNIQUE\"\n}"
+      },
+      "EVSE_ID_DUPLICATES": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Two or more EVSE ID's are identical. All EVSE ID's must be unique.\",\n  \"errorCode\" : \"EVSE_ID_DUPLICATES\"\n}"
+      },
+      "RABBITMQ_LISTENER_ERROR": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] An error occurred in RabbitMQ listener\",\n  \"errorCode\" : \"RABBITMQ_LISTENER_ERROR\"\n}"
+      },
+      "INVALID_RABBITMQ_RPC_RESPONSE": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] Invalid RabbitMQ RPC response\",\n  \"errorCode\" : \"INVALID_RABBITMQ_RPC_RESPONSE\"\n}"
+      },
+      "EXPIRY_DATE_MAX_VALUE": {
+        "value": "{\n  \"message\" : \"[TOKEN] The expiry date must not be greater than 9999.\",\n  \"errorCode\" : \"EXPIRY_DATE_MAX_VALUE\"\n}"
+      },
+      "UID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[TOKEN] Token UID already exists\",\n  \"errorCode\" : \"UID_ALREADY_EXISTS\"\n}"
+      },
+      "TOKEN_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[TOKEN] The token with the provided UID does not exist.\",\n  \"errorCode\" : \"TOKEN_NOT_FOUND\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "Broker Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "OCPP Server",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

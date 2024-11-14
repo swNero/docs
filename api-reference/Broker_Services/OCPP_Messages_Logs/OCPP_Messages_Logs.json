@@ -1,0 +1,1748 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ocpp-message-log-service",
+    "description": "A service for persisting OCPP messages received via RabbitMQ Fanout Exchange",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.energystacks.io/ocpp-message-log/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/ocpp-messages/{identityKey}": {
+      "get": {
+        "tags": [
+          "OCPP Messages"
+        ],
+        "summary": "Get all OCPP messages",
+        "description": "Returns all OCPP messages paginated, for the specified Charging Station",
+        "operationId": "getAllOcppMessages",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "tenantId",
+            "in": "query",
+            "description": "Tenant ID",
+            "required": false,
+            "example": "12345"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OcppMessageLogEntry"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Charging Station Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "OCPP Messages"
+        ],
+        "summary": "Delete all message log for charging station",
+        "description": "Deletes the all message log that matches the provided Identity Key",
+        "operationId": "deleteAllMessagesForChargingStation",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Charging Station not found"
+          }
+        }
+      }
+    },
+    "/ocpp-messages/{identityKey}/zip": {
+      "get": {
+        "tags": [
+          "OCPP Messages"
+        ],
+        "summary": "Get OCPP messages (ZIP)",
+        "description": "Returns a ZIP of all OCPP messages for the specified Charging Station",
+        "operationId": "getAllOcppMessagesZip",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timeFrom",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "timeTo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "messageTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "CALL",
+                  "CALL_RESULT",
+                  "CALL_ERROR"
+                ]
+              }
+            }
+          },
+          {
+            "name": "ocppProcedures",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AUTHORIZE",
+                  "BOOT_NOTIFICATION",
+                  "CANCEL_RESERVATION",
+                  "CLEAR_DISPLAY_MESSAGE",
+                  "CLEAR_VARIABLE_MONITORING",
+                  "CERTIFICATE_SIGNED",
+                  "CHANGE_AVAILABILITY",
+                  "CHANGE_CONFIGURATION",
+                  "CLEAR_CACHE",
+                  "CLEAR_CHARGING_PROFILE",
+                  "COST_UPDATED",
+                  "CUSTOMER_INFORMATION",
+                  "DATA_TRANSFER",
+                  "DELETE_CERTIFICATE",
+                  "DIAGNOSTICS_STATUS_NOTIFICATION",
+                  "FIRMWARE_STATUS_NOTIFICATION",
+                  "GET_15118_EV_CERTIFICATE",
+                  "GET_CERTIFICATE_STATUS",
+                  "GET_BASE_REPORT",
+                  "GET_CHARGING_PROFILES",
+                  "GET_COMPOSITE_SCHEDULE",
+                  "GET_CONFIGURATION",
+                  "GET_DIAGNOSTICS",
+                  "GET_DISPLAY_MESSAGES",
+                  "GET_INSTALLED_CERTIFICATE_IDS",
+                  "GET_LOCAL_LIST_VERSION",
+                  "GET_LOG",
+                  "GET_MONITORING_REPORT",
+                  "GET_REPORT",
+                  "GET_TRANSACTION_STATUS",
+                  "GET_VARIABLES",
+                  "HEARTBEAT",
+                  "INSTALL_CERTIFICATE",
+                  "LOG_STATUS_NOTIFICATION",
+                  "METER_VALUES",
+                  "NOTIFY_CHARGING_LIMIT",
+                  "NOTIFY_CUSTOMER_INFORMATION",
+                  "NOTIFY_DISPLAY_MESSAGES",
+                  "NOTIFY_EV_CHARGING_NEEDS",
+                  "NOTIFY_EV_CHARGING_SCHEDULE",
+                  "NOTIFY_EVENT",
+                  "NOTIFY_MONITORING_REPORT",
+                  "NOTIFY_REPORT",
+                  "PUBLISH_FIRMWARE",
+                  "REMOTE_START_TRANSACTION",
+                  "REMOTE_STOP_TRANSACTION",
+                  "REPORT_CHARGING_PROFILES",
+                  "REQUEST_START_TRANSACTION",
+                  "REQUEST_STOP_TRANSACTION",
+                  "RESERVATION_STATUS_UPDATE",
+                  "RESERVE_NOW",
+                  "RESET",
+                  "SECURITY_EVENT_NOTIFICATION",
+                  "SEND_LOCAL_LIST",
+                  "SET_CHARGING_PROFILE",
+                  "SET_DISPLAY_MESSAGE",
+                  "SET_MONITORING_BASE",
+                  "SET_MONITORING_LEVEL",
+                  "SET_NETWORK_PROFILE",
+                  "SET_VARIABLES",
+                  "SET_VARIABLE_MONITORING",
+                  "SIGN_CERTIFICATE",
+                  "START_TRANSACTION",
+                  "STOP_TRANSACTION",
+                  "STATUS_NOTIFICATION",
+                  "TRANSACTION_EVENT",
+                  "UNLOCK_CONNECTOR",
+                  "UNPUBLISH_FIRMWARE",
+                  "UPDATE_FIRMWARE",
+                  "TRIGGER_MESSAGE",
+                  "FORMAT_VIOLATION"
+                ]
+              }
+            }
+          },
+          {
+            "name": "messageDirections",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "CS_2_CSMS",
+                  "CSMS_2_CS",
+                  "CS_2_BROKER",
+                  "BROKER_2_CS",
+                  "CS_2_TRANSLATOR",
+                  "TRANSLATOR_2_CS",
+                  "CSMS_2_TRANSLATOR",
+                  "TRANSLATOR_2_CSMS"
+                ]
+              }
+            }
+          },
+          {
+            "name": "tenantId",
+            "in": "query",
+            "description": "Tenant ID",
+            "required": false,
+            "example": "12345"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/zip": {}
+            }
+          },
+          "400": {
+            "description": "Processing Error"
+          },
+          "404": {
+            "description": "Charging Station not found"
+          }
+        }
+      }
+    },
+    "/ocpp-messages/{identityKey}/csv": {
+      "get": {
+        "tags": [
+          "OCPP Messages"
+        ],
+        "summary": "Get OCPP messages (CSV)",
+        "description": "Returns a CSV of all OCPP messages for the specified Charging Station",
+        "operationId": "getAllOcppMessagesCsv",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timeFrom",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "timeTo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "messageTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "CALL",
+                  "CALL_RESULT",
+                  "CALL_ERROR"
+                ]
+              }
+            }
+          },
+          {
+            "name": "ocppProcedures",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AUTHORIZE",
+                  "BOOT_NOTIFICATION",
+                  "CANCEL_RESERVATION",
+                  "CLEAR_DISPLAY_MESSAGE",
+                  "CLEAR_VARIABLE_MONITORING",
+                  "CERTIFICATE_SIGNED",
+                  "CHANGE_AVAILABILITY",
+                  "CHANGE_CONFIGURATION",
+                  "CLEAR_CACHE",
+                  "CLEAR_CHARGING_PROFILE",
+                  "COST_UPDATED",
+                  "CUSTOMER_INFORMATION",
+                  "DATA_TRANSFER",
+                  "DELETE_CERTIFICATE",
+                  "DIAGNOSTICS_STATUS_NOTIFICATION",
+                  "FIRMWARE_STATUS_NOTIFICATION",
+                  "GET_15118_EV_CERTIFICATE",
+                  "GET_CERTIFICATE_STATUS",
+                  "GET_BASE_REPORT",
+                  "GET_CHARGING_PROFILES",
+                  "GET_COMPOSITE_SCHEDULE",
+                  "GET_CONFIGURATION",
+                  "GET_DIAGNOSTICS",
+                  "GET_DISPLAY_MESSAGES",
+                  "GET_INSTALLED_CERTIFICATE_IDS",
+                  "GET_LOCAL_LIST_VERSION",
+                  "GET_LOG",
+                  "GET_MONITORING_REPORT",
+                  "GET_REPORT",
+                  "GET_TRANSACTION_STATUS",
+                  "GET_VARIABLES",
+                  "HEARTBEAT",
+                  "INSTALL_CERTIFICATE",
+                  "LOG_STATUS_NOTIFICATION",
+                  "METER_VALUES",
+                  "NOTIFY_CHARGING_LIMIT",
+                  "NOTIFY_CUSTOMER_INFORMATION",
+                  "NOTIFY_DISPLAY_MESSAGES",
+                  "NOTIFY_EV_CHARGING_NEEDS",
+                  "NOTIFY_EV_CHARGING_SCHEDULE",
+                  "NOTIFY_EVENT",
+                  "NOTIFY_MONITORING_REPORT",
+                  "NOTIFY_REPORT",
+                  "PUBLISH_FIRMWARE",
+                  "REMOTE_START_TRANSACTION",
+                  "REMOTE_STOP_TRANSACTION",
+                  "REPORT_CHARGING_PROFILES",
+                  "REQUEST_START_TRANSACTION",
+                  "REQUEST_STOP_TRANSACTION",
+                  "RESERVATION_STATUS_UPDATE",
+                  "RESERVE_NOW",
+                  "RESET",
+                  "SECURITY_EVENT_NOTIFICATION",
+                  "SEND_LOCAL_LIST",
+                  "SET_CHARGING_PROFILE",
+                  "SET_DISPLAY_MESSAGE",
+                  "SET_MONITORING_BASE",
+                  "SET_MONITORING_LEVEL",
+                  "SET_NETWORK_PROFILE",
+                  "SET_VARIABLES",
+                  "SET_VARIABLE_MONITORING",
+                  "SIGN_CERTIFICATE",
+                  "START_TRANSACTION",
+                  "STOP_TRANSACTION",
+                  "STATUS_NOTIFICATION",
+                  "TRANSACTION_EVENT",
+                  "UNLOCK_CONNECTOR",
+                  "UNPUBLISH_FIRMWARE",
+                  "UPDATE_FIRMWARE",
+                  "TRIGGER_MESSAGE",
+                  "FORMAT_VIOLATION"
+                ]
+              }
+            }
+          },
+          {
+            "name": "messageDirections",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "CS_2_CSMS",
+                  "CSMS_2_CS",
+                  "CS_2_BROKER",
+                  "BROKER_2_CS",
+                  "CS_2_TRANSLATOR",
+                  "TRANSLATOR_2_CS",
+                  "CSMS_2_TRANSLATOR",
+                  "TRANSLATOR_2_CSMS"
+                ]
+              }
+            }
+          },
+          {
+            "name": "tenantId",
+            "in": "query",
+            "description": "Tenant ID",
+            "required": false,
+            "example": "12345"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/csv": {}
+            }
+          },
+          "400": {
+            "description": "Processing Error"
+          },
+          "404": {
+            "description": "Charging Station not found"
+          }
+        }
+      }
+    },
+    "/ocpp-messages/search": {
+      "get": {
+        "tags": [
+          "OCPP Messages"
+        ],
+        "summary": "Get OCPP messages by search",
+        "description": "Get all OCPP messages paginated, based on the filters.",
+        "operationId": "search",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timeFrom",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "timeTo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "messageTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "CALL",
+                  "CALL_RESULT",
+                  "CALL_ERROR"
+                ]
+              }
+            }
+          },
+          {
+            "name": "ocppProcedures",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AUTHORIZE",
+                  "BOOT_NOTIFICATION",
+                  "CANCEL_RESERVATION",
+                  "CLEAR_DISPLAY_MESSAGE",
+                  "CLEAR_VARIABLE_MONITORING",
+                  "CERTIFICATE_SIGNED",
+                  "CHANGE_AVAILABILITY",
+                  "CHANGE_CONFIGURATION",
+                  "CLEAR_CACHE",
+                  "CLEAR_CHARGING_PROFILE",
+                  "COST_UPDATED",
+                  "CUSTOMER_INFORMATION",
+                  "DATA_TRANSFER",
+                  "DELETE_CERTIFICATE",
+                  "DIAGNOSTICS_STATUS_NOTIFICATION",
+                  "FIRMWARE_STATUS_NOTIFICATION",
+                  "GET_15118_EV_CERTIFICATE",
+                  "GET_CERTIFICATE_STATUS",
+                  "GET_BASE_REPORT",
+                  "GET_CHARGING_PROFILES",
+                  "GET_COMPOSITE_SCHEDULE",
+                  "GET_CONFIGURATION",
+                  "GET_DIAGNOSTICS",
+                  "GET_DISPLAY_MESSAGES",
+                  "GET_INSTALLED_CERTIFICATE_IDS",
+                  "GET_LOCAL_LIST_VERSION",
+                  "GET_LOG",
+                  "GET_MONITORING_REPORT",
+                  "GET_REPORT",
+                  "GET_TRANSACTION_STATUS",
+                  "GET_VARIABLES",
+                  "HEARTBEAT",
+                  "INSTALL_CERTIFICATE",
+                  "LOG_STATUS_NOTIFICATION",
+                  "METER_VALUES",
+                  "NOTIFY_CHARGING_LIMIT",
+                  "NOTIFY_CUSTOMER_INFORMATION",
+                  "NOTIFY_DISPLAY_MESSAGES",
+                  "NOTIFY_EV_CHARGING_NEEDS",
+                  "NOTIFY_EV_CHARGING_SCHEDULE",
+                  "NOTIFY_EVENT",
+                  "NOTIFY_MONITORING_REPORT",
+                  "NOTIFY_REPORT",
+                  "PUBLISH_FIRMWARE",
+                  "REMOTE_START_TRANSACTION",
+                  "REMOTE_STOP_TRANSACTION",
+                  "REPORT_CHARGING_PROFILES",
+                  "REQUEST_START_TRANSACTION",
+                  "REQUEST_STOP_TRANSACTION",
+                  "RESERVATION_STATUS_UPDATE",
+                  "RESERVE_NOW",
+                  "RESET",
+                  "SECURITY_EVENT_NOTIFICATION",
+                  "SEND_LOCAL_LIST",
+                  "SET_CHARGING_PROFILE",
+                  "SET_DISPLAY_MESSAGE",
+                  "SET_MONITORING_BASE",
+                  "SET_MONITORING_LEVEL",
+                  "SET_NETWORK_PROFILE",
+                  "SET_VARIABLES",
+                  "SET_VARIABLE_MONITORING",
+                  "SIGN_CERTIFICATE",
+                  "START_TRANSACTION",
+                  "STOP_TRANSACTION",
+                  "STATUS_NOTIFICATION",
+                  "TRANSACTION_EVENT",
+                  "UNLOCK_CONNECTOR",
+                  "UNPUBLISH_FIRMWARE",
+                  "UPDATE_FIRMWARE",
+                  "TRIGGER_MESSAGE",
+                  "FORMAT_VIOLATION"
+                ]
+              }
+            }
+          },
+          {
+            "name": "messageDirections",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "CS_2_CSMS",
+                  "CSMS_2_CS",
+                  "CS_2_BROKER",
+                  "BROKER_2_CS",
+                  "CS_2_TRANSLATOR",
+                  "TRANSLATOR_2_CS",
+                  "CSMS_2_TRANSLATOR",
+                  "TRANSLATOR_2_CSMS"
+                ]
+              }
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "tenantId",
+            "in": "query",
+            "description": "Tenant ID",
+            "required": false,
+            "example": "12345"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OcppMessageLogEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/network-logs/{identityKey}/search": {
+      "get": {
+        "tags": [
+          "Network Logs"
+        ],
+        "summary": "Get network logs for charging station based on criteria filters.",
+        "description": "Searches for network logs by identity key and the provided search criteria, paginated.\n#### If a criteria filter is not provided, it will not be used in the search.\n#### If multiple criteria filters are provided, the search will only return results that match all the provided criteria.\n#### If applied criteria had no match, page is blank.\n",
+        "operationId": "searchWebSocketNetworkLogs",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "description": "Charging station's globally unique identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timeFrom",
+            "in": "query",
+            "description": "Optional date filter for fetching logs after this timestamp.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-11-15T23:59:59Z"
+          },
+          {
+            "name": "timeTo",
+            "in": "query",
+            "description": "Optional date filter for fetching logs before this timestamp.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-11-15T23:59:59Z"
+          },
+          {
+            "name": "eventType",
+            "in": "query",
+            "description": "Optional filter specifying the WebSocket event type.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Represents the websocket event types.",
+              "enum": [
+                "AFTER_CONNECTION_ESTABLISHED",
+                "AFTER_CONNECTION_CLOSED",
+                "HANDLE_CONNECTION_ERROR"
+              ]
+            }
+          },
+          {
+            "name": "serviceInstance",
+            "in": "query",
+            "description": "Optional filter specifying the service instance of the log.",
+            "required": false,
+            "schema": {
+              "maxLength": 80,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "webSocketInteraction",
+            "in": "query",
+            "description": "Optional filter specifying the WebSocket interaction.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Represents the connection between the Broker.",
+              "enum": [
+                "CS_BROKER",
+                "BROKER_CSMS"
+              ]
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "tenantId",
+            "in": "query",
+            "description": "Tenant ID",
+            "required": false,
+            "example": "12345"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WebSocketNetworkLogResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OcppMessageLogEntry": {
+        "type": "object",
+        "properties": {
+          "messageUuid": {
+            "type": "string",
+            "description": "The UUID of the OCPP message",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "identityKey": {
+            "type": "string",
+            "description": "The Charging Station Identity Key",
+            "example": "ACE12578"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "The date and time of the OCPP message",
+            "format": "date-time"
+          },
+          "messageDirection": {
+            "type": "string",
+            "description": "The message direction",
+            "example": "CP_2_CS",
+            "enum": [
+              "CS_2_CSMS",
+              "CSMS_2_CS",
+              "CS_2_BROKER",
+              "BROKER_2_CS",
+              "CS_2_TRANSLATOR",
+              "TRANSLATOR_2_CS",
+              "CSMS_2_TRANSLATOR",
+              "TRANSLATOR_2_CSMS"
+            ]
+          },
+          "messageType": {
+            "type": "string",
+            "description": "The OCPP message type",
+            "example": "CALL",
+            "enum": [
+              "CALL",
+              "CALL_RESULT",
+              "CALL_ERROR"
+            ]
+          },
+          "procedureName": {
+            "type": "string",
+            "description": "The name of the OCPP procedure or action",
+            "example": "BootNotification",
+            "enum": [
+              "AUTHORIZE",
+              "BOOT_NOTIFICATION",
+              "CANCEL_RESERVATION",
+              "CLEAR_DISPLAY_MESSAGE",
+              "CLEAR_VARIABLE_MONITORING",
+              "CERTIFICATE_SIGNED",
+              "CHANGE_AVAILABILITY",
+              "CHANGE_CONFIGURATION",
+              "CLEAR_CACHE",
+              "CLEAR_CHARGING_PROFILE",
+              "COST_UPDATED",
+              "CUSTOMER_INFORMATION",
+              "DATA_TRANSFER",
+              "DELETE_CERTIFICATE",
+              "DIAGNOSTICS_STATUS_NOTIFICATION",
+              "FIRMWARE_STATUS_NOTIFICATION",
+              "GET_15118_EV_CERTIFICATE",
+              "GET_CERTIFICATE_STATUS",
+              "GET_BASE_REPORT",
+              "GET_CHARGING_PROFILES",
+              "GET_COMPOSITE_SCHEDULE",
+              "GET_CONFIGURATION",
+              "GET_DIAGNOSTICS",
+              "GET_DISPLAY_MESSAGES",
+              "GET_INSTALLED_CERTIFICATE_IDS",
+              "GET_LOCAL_LIST_VERSION",
+              "GET_LOG",
+              "GET_MONITORING_REPORT",
+              "GET_REPORT",
+              "GET_TRANSACTION_STATUS",
+              "GET_VARIABLES",
+              "HEARTBEAT",
+              "INSTALL_CERTIFICATE",
+              "LOG_STATUS_NOTIFICATION",
+              "METER_VALUES",
+              "NOTIFY_CHARGING_LIMIT",
+              "NOTIFY_CUSTOMER_INFORMATION",
+              "NOTIFY_DISPLAY_MESSAGES",
+              "NOTIFY_EV_CHARGING_NEEDS",
+              "NOTIFY_EV_CHARGING_SCHEDULE",
+              "NOTIFY_EVENT",
+              "NOTIFY_MONITORING_REPORT",
+              "NOTIFY_REPORT",
+              "PUBLISH_FIRMWARE",
+              "REMOTE_START_TRANSACTION",
+              "REMOTE_STOP_TRANSACTION",
+              "REPORT_CHARGING_PROFILES",
+              "REQUEST_START_TRANSACTION",
+              "REQUEST_STOP_TRANSACTION",
+              "RESERVATION_STATUS_UPDATE",
+              "RESERVE_NOW",
+              "RESET",
+              "SECURITY_EVENT_NOTIFICATION",
+              "SEND_LOCAL_LIST",
+              "SET_CHARGING_PROFILE",
+              "SET_DISPLAY_MESSAGE",
+              "SET_MONITORING_BASE",
+              "SET_MONITORING_LEVEL",
+              "SET_NETWORK_PROFILE",
+              "SET_VARIABLES",
+              "SET_VARIABLE_MONITORING",
+              "SIGN_CERTIFICATE",
+              "START_TRANSACTION",
+              "STOP_TRANSACTION",
+              "STATUS_NOTIFICATION",
+              "TRANSACTION_EVENT",
+              "UNLOCK_CONNECTOR",
+              "UNPUBLISH_FIRMWARE",
+              "UPDATE_FIRMWARE",
+              "TRIGGER_MESSAGE",
+              "FORMAT_VIOLATION"
+            ]
+          },
+          "callId": {
+            "type": "string",
+            "description": "The unique identifier for matching request and result",
+            "example": "19225418"
+          },
+          "payload": {
+            "type": "string",
+            "description": "The JSON payload of the message"
+          },
+          "rawMessage": {
+            "type": "string",
+            "description": "The raw message which was transported over the WebSocket"
+          }
+        }
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BrokerWebSocketExtension": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The websocket extension name."
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "The websocket extension parameters."
+            },
+            "description": "The websocket extension parameters."
+          }
+        },
+        "description": "Determine the negotiated extensions."
+      },
+      "BrokerWebSocketSession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique web socket session identifier."
+          },
+          "uri": {
+            "type": "string",
+            "description": "Return the URI used to open the WebSocket connection.",
+            "format": "uri"
+          },
+          "httpHandshakeHeaders": {
+            "type": "object",
+            "properties": {
+              "empty": {
+                "type": "boolean"
+              },
+              "location": {
+                "type": "string",
+                "format": "uri"
+              },
+              "host": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "hostAddress": {
+                        "type": "string"
+                      },
+                      "address": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "format": "byte"
+                        }
+                      },
+                      "hostName": {
+                        "type": "string"
+                      },
+                      "linkLocalAddress": {
+                        "type": "boolean"
+                      },
+                      "multicastAddress": {
+                        "type": "boolean"
+                      },
+                      "anyLocalAddress": {
+                        "type": "boolean"
+                      },
+                      "loopbackAddress": {
+                        "type": "boolean"
+                      },
+                      "siteLocalAddress": {
+                        "type": "boolean"
+                      },
+                      "mcglobal": {
+                        "type": "boolean"
+                      },
+                      "mcnodeLocal": {
+                        "type": "boolean"
+                      },
+                      "mclinkLocal": {
+                        "type": "boolean"
+                      },
+                      "mcsiteLocal": {
+                        "type": "boolean"
+                      },
+                      "mcorgLocal": {
+                        "type": "boolean"
+                      },
+                      "canonicalHostName": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "port": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "unresolved": {
+                    "type": "boolean"
+                  },
+                  "hostName": {
+                    "type": "string"
+                  },
+                  "hostString": {
+                    "type": "string"
+                  }
+                }
+              },
+              "all": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "writeOnly": true
+              },
+              "lastModified": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "date": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "contentLength": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "acceptCharset": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "contentDisposition": {
+                "$ref": "#/components/schemas/ContentDisposition"
+              },
+              "contentType": {
+                "$ref": "#/components/schemas/MediaType"
+              },
+              "connection": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ifModifiedSince": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "range": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HttpRange"
+                }
+              },
+              "origin": {
+                "type": "string"
+              },
+              "cacheControl": {
+                "type": "string"
+              },
+              "allow": {
+                "uniqueItems": true,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HttpMethod"
+                }
+              },
+              "basicAuth": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "contentLanguage": {
+                "type": "object",
+                "properties": {
+                  "language": {
+                    "type": "string"
+                  },
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "variant": {
+                    "type": "string"
+                  },
+                  "script": {
+                    "type": "string"
+                  },
+                  "unicodeLocaleAttributes": {
+                    "uniqueItems": true,
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "unicodeLocaleKeys": {
+                    "uniqueItems": true,
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "displayLanguage": {
+                    "type": "string"
+                  },
+                  "displayScript": {
+                    "type": "string"
+                  },
+                  "displayCountry": {
+                    "type": "string"
+                  },
+                  "displayVariant": {
+                    "type": "string"
+                  },
+                  "extensionKeys": {
+                    "uniqueItems": true,
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "iso3Language": {
+                    "type": "string"
+                  },
+                  "iso3Country": {
+                    "type": "string"
+                  }
+                }
+              },
+              "etag": {
+                "type": "string"
+              },
+              "acceptLanguage": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "range": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "type": "number",
+                      "format": "double"
+                    }
+                  }
+                }
+              },
+              "bearerAuth": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "expires": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "ifMatch": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ifNoneMatch": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ifUnmodifiedSince": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "pragma": {
+                "type": "string"
+              },
+              "upgrade": {
+                "type": "string"
+              },
+              "vary": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accept": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
+                }
+              },
+              "acceptLanguageAsLocales": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "language": {
+                      "type": "string"
+                    },
+                    "displayName": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "variant": {
+                      "type": "string"
+                    },
+                    "script": {
+                      "type": "string"
+                    },
+                    "unicodeLocaleAttributes": {
+                      "uniqueItems": true,
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "unicodeLocaleKeys": {
+                      "uniqueItems": true,
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "displayLanguage": {
+                      "type": "string"
+                    },
+                    "displayScript": {
+                      "type": "string"
+                    },
+                    "displayCountry": {
+                      "type": "string"
+                    },
+                    "displayVariant": {
+                      "type": "string"
+                    },
+                    "extensionKeys": {
+                      "uniqueItems": true,
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "iso3Language": {
+                      "type": "string"
+                    },
+                    "iso3Country": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "accessControlAllowCredentials": {
+                "type": "boolean"
+              },
+              "accessControlAllowHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessControlAllowMethods": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HttpMethod"
+                }
+              },
+              "accessControlAllowOrigin": {
+                "type": "string"
+              },
+              "accessControlExposeHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessControlMaxAge": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "accessControlRequestHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "acceptPatch": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
+                }
+              },
+              "accessControlRequestMethod": {
+                "$ref": "#/components/schemas/HttpMethod"
+              }
+            },
+            "additionalProperties": {
+              "type": "array",
+              "description": "Return the headers used in the handshake request (never {@code null}).",
+              "items": {
+                "type": "string",
+                "description": "Return the headers used in the handshake request (never {@code null})."
+              }
+            },
+            "description": "Return the headers used in the handshake request (never {@code null})."
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "description": "Return the map with attributes associated with the WebSocket session.\nOn the server side the map can be populated initially through a {@link org.springframework.web.socket.server.HandshakeInterceptor HandshakeInterceptor}.\nOn the client side the map can be populated via {@link org.springframework.web.socket.client.WebSocketClient WebSocketClient} handshake methods.\n"
+            },
+            "description": "Return the map with attributes associated with the WebSocket session.\nOn the server side the map can be populated initially through a {@link org.springframework.web.socket.server.HandshakeInterceptor HandshakeInterceptor}.\nOn the client side the map can be populated via {@link org.springframework.web.socket.client.WebSocketClient WebSocketClient} handshake methods.\n"
+          },
+          "acceptedProtocol": {
+            "type": "string",
+            "description": "Return the negotiated sub-protocol."
+          },
+          "extensions": {
+            "type": "array",
+            "description": "Determine the negotiated extensions.",
+            "items": {
+              "$ref": "#/components/schemas/BrokerWebSocketExtension"
+            }
+          }
+        },
+        "description": "Details of the WebSocket session with broker."
+      },
+      "ContentDisposition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "deprecated": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "deprecated": true
+          },
+          "modificationDate": {
+            "type": "string",
+            "format": "date-time",
+            "deprecated": true
+          },
+          "readDate": {
+            "type": "string",
+            "format": "date-time",
+            "deprecated": true
+          },
+          "attachment": {
+            "type": "boolean"
+          },
+          "formData": {
+            "type": "boolean"
+          },
+          "inline": {
+            "type": "boolean"
+          }
+        }
+      },
+      "HttpMethod": {
+        "type": "object"
+      },
+      "HttpRange": {
+        "type": "object"
+      },
+      "MediaType": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "subtype": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "qualityValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "wildcardType": {
+            "type": "boolean"
+          },
+          "wildcardSubtype": {
+            "type": "boolean"
+          },
+          "subtypeSuffix": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          },
+          "concrete": {
+            "type": "boolean"
+          }
+        }
+      },
+      "WebSocketCloseStatus": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The WebSocket close status.",
+            "format": "int32",
+            "example": 3002
+          },
+          "reason": {
+            "type": "string",
+            "description": "The WebSocket close reason.",
+            "example": "Connection duplication."
+          }
+        },
+        "description": "Details about the closing process of the WebSocket session."
+      },
+      "WebSocketNetworkLogResponse": {
+        "required": [
+          "eventType",
+          "identityKey",
+          "serviceInstance",
+          "session",
+          "status",
+          "timestamp",
+          "webSocketInteraction"
+        ],
+        "type": "object",
+        "properties": {
+          "identityKey": {
+            "maxLength": 32,
+            "type": "string",
+            "description": "Charging station globally unique identifier"
+          },
+          "serviceInstance": {
+            "maxLength": 80,
+            "type": "string",
+            "description": "Specifies the service instance of the log."
+          },
+          "tenantId": {
+            "type": "integer",
+            "description": "The identifier of the tenant.",
+            "format": "int32"
+          },
+          "eventType": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Represents the websocket event types.",
+            "enum": [
+              "AFTER_CONNECTION_ESTABLISHED",
+              "AFTER_CONNECTION_CLOSED",
+              "HANDLE_CONNECTION_ERROR"
+            ]
+          },
+          "session": {
+            "$ref": "#/components/schemas/BrokerWebSocketSession"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WebSocketCloseStatus"
+          },
+          "webSocketInteraction": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "Represents the connection between the Broker.",
+            "enum": [
+              "CS_BROKER",
+              "BROKER_CSMS"
+            ]
+          },
+          "errorReason": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Details about the error reason, if it occurred."
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "The date and time of the network log entry.",
+            "format": "date-time",
+            "example": "2024-05-22T13:28:51.456Z"
+          }
+        },
+        "description": "Class representing detailed information about a WebSocket network log entry."
+      },
+      "SuccessMessageDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "ALERT_ALREADY_CREATED": {
+        "value": "{\n  \"message\" : \"Alert already exists\",\n  \"errorCode\" : \"ALERT_ALREADY_CREATED\"\n}"
+      },
+      "ALERT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Alert not found\",\n  \"errorCode\" : \"ALERT_NOT_FOUND\"\n}"
+      },
+      "ALERT_DOESNT_EXIST": {
+        "value": "{\n  \"message\" : \"Alert with this connectorId and identityKey doesn't exist\",\n  \"errorCode\" : \"ALERT_DOESNT_EXIST\"\n}"
+      },
+      "END_DATETIME_NOT_AFTER_START_DATETIME": {
+        "value": "{\n  \"message\" : \"[OCPP-MESSAGE-LOG] timeTo cannot be before or equal to timeFrom.\",\n  \"errorCode\" : \"END_DATETIME_NOT_AFTER_START_DATETIME\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "MESSAGE_LOG_NOT_SET_UP": {
+        "value": "{\n  \"message\" : \"[OCPP-MESSAGE-LOG] No data store was set-up for ocpp message logging\",\n  \"errorCode\" : \"MESSAGE_LOG_NOT_SET_UP\"\n}"
+      },
+      "BIG_QUERY_CONNECTION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] BigQuery connection error\",\n  \"errorCode\" : \"BIG_QUERY_CONNECTION\"\n}"
+      },
+      "RPC_TIMEOUT": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The RPC call to the charging station did not respond in time.\",\n  \"errorCode\" : \"RPC_TIMEOUT\"\n}"
+      },
+      "RPC_ERROR": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] An error occured during the remote procedure call\",\n  \"errorCode\" : \"RPC_ERROR\"\n}"
+      },
+      "UNABLE_TO_DELETE_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot delete CSMS with connected charging stations to it.\",\n  \"errorCode\" : \"UNABLE_TO_DELETE_CSMS\"\n}"
+      },
+      "NOT_UNIQUE_NAME": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided name is not unique.\",\n  \"errorCode\" : \"NOT_UNIQUE_NAME\"\n}"
+      },
+      "DEFAULT_CSMS_CANNOT_CHANGE_TO_NOT_DEFAULT": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Default CSMS cannot change to not-default.\",\n  \"errorCode\" : \"DEFAULT_CSMS_CANNOT_CHANGE_TO_NOT_DEFAULT\"\n}"
+      },
+      "CANNOT_DELETE_DEFAULT_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot delete Default CSMS, unless it is the only one and with no connected charging stations to it.\",\n  \"errorCode\" : \"CANNOT_DELETE_DEFAULT_CSMS\"\n}"
+      },
+      "CSMS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested CSMS not found.\",\n  \"errorCode\" : \"CSMS_NOT_FOUND\"\n}"
+      },
+      "CSMS_URL_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided CSMS url is not unique.\",\n  \"errorCode\" : \"CSMS_URL_ALREADY_EXISTS\"\n}"
+      },
+      "CHARGING_STATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested Charging Station not found.\",\n  \"errorCode\" : \"CHARGING_STATION_NOT_FOUND\"\n}"
+      },
+      "UNABLE_TO_CONNECT_TO_CSMS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Cannot connect to CSMS, endpoint is not reachable\",\n  \"errorCode\" : \"UNABLE_TO_CONNECT_TO_CSMS\"\n}"
+      },
+      "CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] A Charging Station with the same Identity key already exists.\",\n  \"errorCode\" : \"CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS\"\n}"
+      },
+      "WRONG_OCPP_VERSION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The negotiated OCPP protocol version is not supporting this request\",\n  \"errorCode\" : \"WRONG_OCPP_VERSION\"\n}"
+      },
+      "CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Requested Charging Station Shadow Connector not found.\",\n  \"errorCode\" : \"CHARGING_STATION_SHADOW_CONNECTOR_NOT_FOUND\"\n}"
+      },
+      "LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Location with the specified UUID not found\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
+      },
+      "INVALID_IDENTITY_KEY": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] One or more specified charging station identity keys are not valid\",\n  \"errorCode\" : \"INVALID_IDENTITY_KEY\"\n}"
+      },
+      "FAILED_TO_DELETE_LOCATION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Failed to delete Location which has charging station/s bound to it\",\n  \"errorCode\" : \"FAILED_TO_DELETE_LOCATION\"\n}"
+      },
+      "INVALID_LOCATION_RELATION": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] One or more charging stations are not assigned to the specified location\",\n  \"errorCode\" : \"INVALID_LOCATION_RELATION\"\n}"
+      },
+      "WRONG_PASSWORD": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] The given password does not match with the confirmation password\",\n  \"errorCode\" : \"WRONG_PASSWORD\"\n}"
+      },
+      "UNABLE_TO_UPDATE_CSMS_CREDENTIALS": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] No changes were requested.\",\n  \"errorCode\" : \"UNABLE_TO_UPDATE_CSMS_CREDENTIALS\"\n}"
+      },
+      "DUPLICATE_CONNECTOR_ID": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Connectors with the same id in the request.\",\n  \"errorCode\" : \"DUPLICATE_CONNECTOR_ID\"\n}"
+      },
+      "PAGE_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Max number of the results per page is 100.\",\n  \"errorCode\" : \"PAGE_SIZE_EXCEEDED\"\n}"
+      },
+      "TARIFF_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Tariff with the specified UUID not found\",\n  \"errorCode\" : \"TARIFF_NOT_FOUND\"\n}"
+      },
+      "EVSE_ID_NOT_UNIQUE": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Provided EVSE ID already exists.\",\n  \"errorCode\" : \"EVSE_ID_NOT_UNIQUE\"\n}"
+      },
+      "EVSE_ID_DUPLICATES": {
+        "value": "{\n  \"message\" : \"[OCPP-BROKER] Two or more EVSE ID's are identical. All EVSE ID's must be unique.\",\n  \"errorCode\" : \"EVSE_ID_DUPLICATES\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "Broker Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "OCPP Message Logs",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
