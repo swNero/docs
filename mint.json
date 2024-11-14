@@ -94,7 +94,7 @@
       "pages": ["api-reference/Fleet_Services/introduction"]
     },
     {
-      "group": "Fleet Vehicle Core",
+      "group": "Fleet Vehicle",
       "pages": [
         {
           "group": "Fleet Vehicle Rest Endpoints",
@@ -108,7 +108,12 @@
             "api-reference/Fleet_Services/Fleet_Vehicle/fleet-vehicle-rest-endpoints/create-fleet-vehicle",
             "api-reference/Fleet_Services/Fleet_Vehicle/fleet-vehicle-rest-endpoints/get-fleet-vehicles-by-list-of-vehicle-identification-numbers-vins"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "group": "Fleet Vehicle Core",
+      "pages": [
         {
           "group": "Vehicles",
           "pages": [
