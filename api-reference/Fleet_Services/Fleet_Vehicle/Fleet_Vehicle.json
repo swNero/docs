@@ -1,0 +1,1165 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "fleet-vehicle-service",
+    "description": "",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.fleet.energystacks.io/fleet-vehicle/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/vehicles/{vehicleIdentificationNumber}": {
+      "get": {
+        "tags": [
+          "Fleet Vehicle Rest Endpoints"
+        ],
+        "summary": "Get fleet vehicle by vehicle identification number (VIN)",
+        "description": "Returns a fleet vehicle, based on the provided VIN.",
+        "operationId": "getFleetVehicleByVIN",
+        "parameters": [
+          {
+            "name": "vehicleIdentificationNumber",
+            "in": "path",
+            "description": "The vehicle identification number of the vehicle",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FleetVehicleResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fleet vehicle not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Fleet Vehicle Rest Endpoints"
+        ],
+        "summary": "Update Fleet Vehicle",
+        "description": "Update Fleet Vehicle with the specific vehicle identification number (VIN)",
+        "operationId": "updateFleetVehicleByVehicleIdentificationNumber",
+        "parameters": [
+          {
+            "name": "vehicleIdentificationNumber",
+            "in": "path",
+            "description": "The vehicle identification number of the vehicle",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FleetVehicleUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FleetVehicleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fleet Vehicle not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Fleet Vehicle Rest Endpoints"
+        ],
+        "summary": "Delete a fleet vehicle",
+        "description": "Delete a fleet vehicle with the specific vehicle identification number",
+        "operationId": "deleteFleetVehicleByVehicleIdentificationNumber",
+        "parameters": [
+          {
+            "name": "vehicleIdentificationNumber",
+            "in": "path",
+            "description": "The vehicle identification number of the vehicle",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fleet vehicle not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Fleet Vehicle Rest Endpoints"
+        ],
+        "summary": "Patch Fleet Vehicle",
+        "description": "Patches (partially updates) the Fleet Vehicle with the specified vehicle identification number (VIN)",
+        "operationId": "patchFleetVehicleByVehicleIdentificationNumber",
+        "parameters": [
+          {
+            "name": "vehicleIdentificationNumber",
+            "in": "path",
+            "description": "The vehicle identification number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FleetVehiclePatchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FleetVehicleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fleet Vehicle not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehicles/{vehicleIdentificationNumber}/working-hours": {
+      "put": {
+        "tags": [
+          "Fleet Vehicle Rest Endpoints"
+        ],
+        "summary": "Update Fleet Vehicle working hours.",
+        "description": "Updates the working hours of a fleet vehicle with the specified vehicle identification number (VIN).",
+        "operationId": "updateFleetVehicleWorkingHoursByVehicleIdentificationNumber",
+        "parameters": [
+          {
+            "name": "vehicleIdentificationNumber",
+            "in": "path",
+            "description": "The vehicle identification number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FleetVehicleWorkingHoursRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FleetVehicleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid working hours",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fleet Vehicle not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehicles": {
+      "get": {
+        "tags": [
+          "Fleet Vehicle Rest Endpoints"
+        ],
+        "summary": "Get all fleet vehicles",
+        "description": "Return a list of all fleet vehicles.",
+        "operationId": "getAllFleetVehicles",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FleetVehicleResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Fleet Vehicle Rest Endpoints"
+        ],
+        "summary": "Create fleet vehicle",
+        "description": "Creates a new fleet vehicle",
+        "operationId": "createFleetVehicle",
+        "parameters": [
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FleetVehicleCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "If a fleet vehicle with the same vehicle identification number (VIN) already exists."
+          }
+        }
+      }
+    },
+    "/vehicles/vehicle-identification-numbers": {
+      "get": {
+        "tags": [
+          "Fleet Vehicle Rest Endpoints"
+        ],
+        "summary": "Get fleet vehicles by list of vehicle identification numbers (VINs)",
+        "description": "Returns a list of all fleet vehicles, based on the provided VIN(s).\n#### If there are no vehicles, list is empty.\n#### If a VIN has no matches, it is skipped.",
+        "operationId": "getFleetVehiclesByVINs",
+        "parameters": [
+          {
+            "name": "vehicleIdentificationNumbers",
+            "in": "query",
+            "description": "List of Vehicle IdentificationNumbers to search by",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FleetVehicleResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request contains empty/blank values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ExceptionalPeriod": {
+        "type": "object",
+        "properties": {
+          "period_begin": {
+            "type": "string",
+            "description": "Begin of the exception. SecurityScheme.In UTC, time_zone field can be used to convert to local time.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "period_end": {
+            "type": "string",
+            "description": "End of the exception. In UTC, time_zone field can be used to convert to local time.",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Specifies one exceptional period for opening or access hours."
+      },
+      "FleetElectricVehicleData": {
+        "type": "object",
+        "properties": {
+          "soc": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Current state of charge of EV's battery. Represents the current level of charge as a percentage (%).",
+            "format": "int32",
+            "example": 55
+          },
+          "moSoc": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Minimum operational state of charge of the EV's battery. Represents the minimum acceptable level of charge required for normal operation. Below this level, the vehicle may experience performance limitations or operational issues.",
+            "format": "int32",
+            "example": 80
+          }
+        },
+        "description": "Data specific to electric vehicles. This field contains information relevant only if the vehicle is electric."
+      },
+      "FleetVehicleResponse": {
+        "required": [
+          "createdDate",
+          "status",
+          "timeZoneId",
+          "vehicleIdentificationNumber",
+          "workingHours"
+        ],
+        "type": "object",
+        "properties": {
+          "vehicleCoreUuid": {
+            "type": "string",
+            "description": "It's the vehicle UUID which is related to svc-vehicle-core microservice.",
+            "format": "uuid",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "name": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "It's the name of the Vehicle.",
+            "example": "HKN"
+          },
+          "employeeUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "It's the employee unique identifier(uid) which is related to svc-employee microservice.",
+            "example": "epl11-33-2"
+          },
+          "depotId": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Indicates the identification number of the depot in which the vehicle is stored.",
+            "example": "12345"
+          },
+          "vehicleIdentificationNumber": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Identifies the vehicle identification number (VIN) of the vehicle.",
+            "example": "4Y1SL65848Z411444"
+          },
+          "licensePlateNumber": {
+            "maxLength": 15,
+            "type": "string",
+            "description": "A numeric or alphanumeric id that uniquely identifies the vehicle within the issuing region's vehicle register.",
+            "example": "EF87867"
+          },
+          "status": {
+            "type": "string",
+            "description": "Its the status of the vehicle.",
+            "example": "AVAILABLE",
+            "enum": [
+              "AVAILABLE",
+              "PLANNED",
+              "ENROUTE",
+              "OUT_OF_ORDER"
+            ]
+          },
+          "lastServiceDate": {
+            "type": "string",
+            "description": "It's the date on which the vehicle performed the last service.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "nextServiceDate": {
+            "type": "string",
+            "description": "It's the date on which the vehicle has to perform the next service.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "inspectionExpirationDate": {
+            "type": "string",
+            "description": "The date where the inspection is expiring.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "odometer": {
+            "type": "number",
+            "description": "Shows the distance traveled by the corresponding vehicle.",
+            "format": "double",
+            "example": 345789.98
+          },
+          "workingHours": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "timeZoneId": {
+            "maxLength": 80,
+            "type": "string",
+            "description": "Time Zone Id that applies to the vehicle.",
+            "example": "Europe/Rome"
+          },
+          "electricVehicleData": {
+            "$ref": "#/components/schemas/FleetElectricVehicleData"
+          },
+          "createdDate": {
+            "type": "string",
+            "description": "Shows the distance traveled by the corresponding vehicle.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "lastModifiedDate": {
+            "type": "string",
+            "description": "Shows the distance traveled by the corresponding vehicle.",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Defines the details of a fleet vehicle"
+      },
+      "GeoLocation": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "string",
+            "description": "Latitude of the point in decimal degree. More decimal digits increase precision. Decimal separator: '.'",
+            "example": "50.770774"
+          },
+          "longitude": {
+            "type": "string",
+            "description": "Longitude of the point in decimal degree.More decimal digits increase precision.Decimal separator: '.'",
+            "example": "-126.104965"
+          }
+        },
+        "description": "Defines the coordinates of a geolocation. The geodetic system to be used is WGS 84."
+      },
+      "Hours": {
+        "required": [
+          "twentyfourseven"
+        ],
+        "type": "object",
+        "properties": {
+          "twentyfourseven": {
+            "type": "boolean",
+            "description": "True to represent 24 hours a day and 7 days a week, except the given exceptions.",
+            "example": false
+          },
+          "regular_hours": {
+            "type": "array",
+            "description": "Regular hours, weekday-based. Only to be used if twentyfourseven=false, then this field needs to contain at least one RegularHours object.",
+            "items": {
+              "$ref": "#/components/schemas/RegularHours"
+            }
+          },
+          "exceptional_openings": {
+            "type": "array",
+            "description": "Exceptions for specified calendar dates, time-range based. Periods of exceptional accessibility. Additional to regular_hours. May overlap regular rules.",
+            "items": {
+              "$ref": "#/components/schemas/ExceptionalPeriod"
+            }
+          },
+          "exceptional_closings": {
+            "type": "array",
+            "description": "Exceptions for specified calendar dates, time-range based. Periods of exceptional inaccessibility. Overwriting regular_hours and exceptional_openings. Should not overlap exceptional_openings.",
+            "items": {
+              "$ref": "#/components/schemas/ExceptionalPeriod"
+            }
+          }
+        },
+        "description": "Opening and access hours."
+      },
+      "RegularHours": {
+        "required": [
+          "period_begin",
+          "period_end",
+          "weekday"
+        ],
+        "type": "object",
+        "properties": {
+          "weekday": {
+            "type": "string",
+            "description": "Day of week",
+            "enum": [
+              "MONDAY",
+              "TUESDAY",
+              "WEDNESDAY",
+              "THURSDAY",
+              "FRIDAY",
+              "SATURDAY",
+              "SUNDAY"
+            ]
+          },
+          "period_begin": {
+            "maxLength": 5,
+            "minLength": 0,
+            "pattern": "([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "type": "string",
+            "description": "Begin of the regular period, in local time, given in hours and minutes. Must be in 24h format with leading zeros. Example: \"18:15\". Hour/Minute separator: \":\" Regex: ([0-1][0-9]|2[0-3]):[0-5][0-9].",
+            "example": "07:00"
+          },
+          "period_end": {
+            "maxLength": 5,
+            "minLength": 0,
+            "pattern": "([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "type": "string",
+            "description": "End of the regular period, in local time, syntax as for period_begin. Must be later than period_begin.",
+            "example": "18:00"
+          }
+        },
+        "description": "Regular recurring operation or access hours."
+      },
+      "ErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "FleetVehicleUpdateRequest": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "vehicleCoreUuid": {
+            "type": "string",
+            "description": "It's the vehicle UUID which is related to svc-vehicle-core microservice.",
+            "format": "uuid",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "employeeUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "It's the employee unique identifier(uid) which is related to svc-employee microservice.",
+            "example": "epl11-33-2"
+          },
+          "name": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "It's the name of the Vehicle.",
+            "example": "HKN"
+          },
+          "depotId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Indicates the identification number of the depot in which the vehicle is stored.",
+            "example": "12345"
+          },
+          "licensePlateNumber": {
+            "maxLength": 15,
+            "minLength": 0,
+            "type": "string",
+            "description": "A numeric or alphanumeric id that uniquely identifies the vehicle within the issuing region's vehicle register.",
+            "example": "EF87867"
+          },
+          "status": {
+            "type": "string",
+            "description": "Its the status of the vehicle.",
+            "example": "AVAILABLE",
+            "enum": [
+              "AVAILABLE",
+              "PLANNED",
+              "ENROUTE",
+              "OUT_OF_ORDER"
+            ]
+          },
+          "lastServiceDate": {
+            "type": "string",
+            "description": "It's the date on which the vehicle performed the last service.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "nextServiceDate": {
+            "type": "string",
+            "description": "It's the date on which the vehicle has to perform the next service.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "inspectionExpirationDate": {
+            "type": "string",
+            "description": "The date where the inspection is expiring.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "odometer": {
+            "type": "number",
+            "description": "Shows the distance traveled by the corresponding vehicle.",
+            "format": "double",
+            "example": 345789.98
+          },
+          "electricVehicleData": {
+            "$ref": "#/components/schemas/FleetElectricVehicleData"
+          }
+        }
+      },
+      "FleetVehicleWorkingHoursRequest": {
+        "required": [
+          "timeZoneId",
+          "workingHours"
+        ],
+        "type": "object",
+        "properties": {
+          "workingHours": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "timeZoneId": {
+            "maxLength": 80,
+            "minLength": 0,
+            "type": "string",
+            "description": "Time Zone Id that applies to the vehicle.",
+            "example": "Europe/Rome"
+          }
+        }
+      },
+      "FleetVehicleCreateRequest": {
+        "required": [
+          "status",
+          "timeZoneId",
+          "vehicleIdentificationNumber",
+          "workingHours"
+        ],
+        "type": "object",
+        "properties": {
+          "vehicleCoreUuid": {
+            "type": "string",
+            "description": "It's the vehicle UUID which is related to svc-vehicle-core microservice.",
+            "format": "uuid",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "name": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "It's the name of the Vehicle.",
+            "example": "HKN"
+          },
+          "depotId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Indicates the identification number of the depot in which the vehicle is stored.",
+            "example": "12345"
+          },
+          "vehicleIdentificationNumber": {
+            "maxLength": 30,
+            "minLength": 0,
+            "type": "string",
+            "description": "Identifies the vehicle identification number (VIN) of the vehicle.",
+            "example": "4Y1SL65848Z411444"
+          },
+          "licensePlateNumber": {
+            "maxLength": 15,
+            "minLength": 0,
+            "type": "string",
+            "description": "A numeric or alphanumeric id that uniquely identifies the vehicle within the issuing region's vehicle register.",
+            "example": "EF87867"
+          },
+          "status": {
+            "type": "string",
+            "description": "Its the status of the vehicle.",
+            "example": "AVAILABLE",
+            "enum": [
+              "AVAILABLE",
+              "PLANNED",
+              "ENROUTE",
+              "OUT_OF_ORDER"
+            ]
+          },
+          "lastServiceDate": {
+            "type": "string",
+            "description": "It's the date on which the vehicle performed the last service.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "nextServiceDate": {
+            "type": "string",
+            "description": "It's the date on which the vehicle has to perform the next service.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "inspectionExpirationDate": {
+            "type": "string",
+            "description": "The date where the inspection is expiring.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "odometer": {
+            "type": "number",
+            "description": "Shows the distance traveled by the corresponding vehicle.",
+            "format": "double",
+            "example": 345789.98
+          },
+          "workingHours": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "timeZoneId": {
+            "maxLength": 80,
+            "minLength": 0,
+            "type": "string",
+            "description": "Time Zone Id that applies to the vehicle.",
+            "example": "Europe/Rome"
+          },
+          "electricVehicleData": {
+            "$ref": "#/components/schemas/FleetElectricVehicleData"
+          }
+        }
+      },
+      "FleetVehiclePatchRequest": {
+        "type": "object",
+        "properties": {
+          "vehicleCoreUuid": {
+            "type": "string",
+            "description": "It's the vehicle UUID which is related to svc-vehicle-core microservice.",
+            "format": "uuid",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "employeeUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "It's the employee unique identifier(uid) which is related to svc-employee microservice.",
+            "example": "epl11-33-2"
+          },
+          "name": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "It's the name of the Vehicle.",
+            "example": "HKN"
+          },
+          "depotId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Indicates the identification number of the depot in which the vehicle is stored.",
+            "example": "12345"
+          },
+          "licensePlateNumber": {
+            "maxLength": 15,
+            "minLength": 0,
+            "type": "string",
+            "description": "A numeric or alphanumeric id that uniquely identifies the vehicle within the issuing region's vehicle register.",
+            "example": "EF87867"
+          },
+          "status": {
+            "type": "string",
+            "description": "Its the status of the vehicle.",
+            "example": "AVAILABLE",
+            "enum": [
+              "AVAILABLE",
+              "PLANNED",
+              "ENROUTE",
+              "OUT_OF_ORDER"
+            ]
+          },
+          "lastServiceDate": {
+            "type": "string",
+            "description": "It's the date on which the vehicle performed the last service.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "nextServiceDate": {
+            "type": "string",
+            "description": "It's the date on which the vehicle has to perform the next service.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "inspectionExpirationDate": {
+            "type": "string",
+            "description": "The date where the inspection is expiring.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "odometer": {
+            "type": "number",
+            "description": "Shows the distance traveled by the corresponding vehicle.",
+            "format": "double",
+            "example": 345789.98
+          },
+          "electricVehicleData": {
+            "$ref": "#/components/schemas/FleetElectricVehicleData"
+          }
+        }
+      },
+      "SuccessMessageDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "FLEET_VEHICLE_IDENTIFICATION_NUMBER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-VEHICLE] Vehicle with the provided vehicle identification number (VIN) does not exist.\",\n  \"errorCode\" : \"FLEET_VEHICLE_IDENTIFICATION_NUMBER_NOT_FOUND\"\n}"
+      },
+      "FLEET_VEHICLE_IDENTIFICATION_NUMBER_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-VEHICLE] Vehicle with the same vehicle identification number (VIN) already exists.\",\n  \"errorCode\" : \"FLEET_VEHICLE_IDENTIFICATION_NUMBER_ALREADY_EXISTS\"\n}"
+      },
+      "TIME_ZONE_REQUIRED_WHEN_UPDATING_VEHICLE_HOURS": {
+        "value": "{\n  \"message\" : \"[FLEET-VEHICLE] Time zone information is mandatory when updating vehicle working hours.\",\n  \"errorCode\" : \"TIME_ZONE_REQUIRED_WHEN_UPDATING_VEHICLE_HOURS\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "INVALID_BEGIN_END_TIME": {
+        "value": "{\n  \"message\" : \"period_end cannot be equal to period_begin, or before this.\",\n  \"errorCode\" : \"INVALID_BEGIN_END_TIME\"\n}"
+      },
+      "INVALID_HOURS": {
+        "value": "{\n  \"message\" : \"regularHours field must not be empty when twentyFourSeven=false (and vice versa).\",\n  \"errorCode\" : \"INVALID_HOURS\"\n}"
+      },
+      "DUPLICATE_WEEKDAYS": {
+        "value": "{\n  \"message\" : \"list of regular hours cannot contain duplicate weekdays.\",\n  \"errorCode\" : \"DUPLICATE_WEEKDAYS\"\n}"
+      },
+      "INVALID_EXCEPTIONAL_PERIOD_BEGIN_END_DATE": {
+        "value": "{\n  \"message\" : \"Date of the period_begin needs to be equal to the date of period_end.\",\n  \"errorCode\" : \"INVALID_EXCEPTIONAL_PERIOD_BEGIN_END_DATE\"\n}"
+      },
+      "EXCEPTIONAL_PERIOD_DATES_OVERLAP": {
+        "value": "{\n  \"message\" : \"Exceptional period dates cannot overlap.\",\n  \"errorCode\" : \"EXCEPTIONAL_PERIOD_DATES_OVERLAP\"\n}"
+      },
+      "MORE_THAN_ONE_EXCEPTIONAL_PERIOD_WITHIN_SINGLE_DATE": {
+        "value": "{\n  \"message\" : \"Single date cannot contain more than one exceptional period.\",\n  \"errorCode\" : \"MORE_THAN_ONE_EXCEPTIONAL_PERIOD_WITHIN_SINGLE_DATE\"\n}"
+      },
+      "UNKNOWN_TIME_ZONE_ID": {
+        "value": "{\n  \"message\" : \"Unknown time zone id\",\n  \"errorCode\" : \"UNKNOWN_TIME_ZONE_ID\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "Fleet Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "Fleet Vehicle",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

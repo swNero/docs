@@ -1,0 +1,1339 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "fleet-mobile-web-service",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.fleet.energystacks.io/fleet-mobile-web/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Fleet Tour",
+      "description": "Support for Tour operations"
+    },
+    {
+      "name": "User",
+      "description": "Support for User operations"
+    }
+  ],
+  "paths": {
+    "/tours/{tourUid}": {
+      "patch": {
+        "tags": [
+          "Fleet Tour"
+        ],
+        "summary": "Update fleet tour status",
+        "description": "The statuses can be updated based on the rules in the table bellow.\n| Current Fleet Tour Status |           Can be updated to statuses          |\n|---------------------------|-----------------------------------------------|\n|          PLANNED          |    PLANNED, ENROUTE, DELAYED, FAILED, DONE    |\n|          ENROUTE          |   ENROUTE, DELAYED, FAILED, INCOMPLETE, DONE  |\n|          DELAYED          |    DELAYED, FAILED, INCOMPLETE, DONE          |\n|          FAILED           |                    -                          |\n|          INCOMPLETE       |                    -                          |\n|          DONE             |                    -                          |\n",
+        "operationId": "updateFleetTourStatus",
+        "parameters": [
+          {
+            "name": "tourUid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tourStatus",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Defines all possible tour statuses",
+              "enum": [
+                "PLANNED",
+                "ENROUTE",
+                "DELAYED",
+                "FAILED",
+                "INCOMPLETE",
+                "DONE"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "INVALID_RABBITMQ_RPC_RESPONSE": {
+                    "description": "INVALID_RABBITMQ_RPC_RESPONSE",
+                    "$ref": "#/components/examples/INVALID_RABBITMQ_RPC_RESPONSE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get current user info",
+        "description": "Returns the information of the current user",
+        "operationId": "getCurrentUserInfo",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWebResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/tours/{tourUid}/details": {
+      "get": {
+        "tags": [
+          "Fleet Tour"
+        ],
+        "summary": "Get fleet tour details based on the provided tour uid",
+        "description": "Returns tour details based on the provided tour uid.",
+        "operationId": "getFleetTourDetailsByTourUid",
+        "parameters": [
+          {
+            "name": "tourUid",
+            "in": "path",
+            "description": "Tour unique identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TourWebDetailsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_TOUR_UID_NOT_FOUND": {
+                    "description": "FLEET_TOUR_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_TOUR_UID_NOT_FOUND"
+                  },
+                  "JOB_WITH_INVALID_BUSINESS_ACCOUNT": {
+                    "description": "JOB_WITH_INVALID_BUSINESS_ACCOUNT",
+                    "$ref": "#/components/examples/JOB_WITH_INVALID_BUSINESS_ACCOUNT"
+                  },
+                  "TRIP_LOCATION_BUSINESS_ACCOUNT_NOT_FOUND": {
+                    "description": "TRIP_LOCATION_BUSINESS_ACCOUNT_NOT_FOUND",
+                    "$ref": "#/components/examples/TRIP_LOCATION_BUSINESS_ACCOUNT_NOT_FOUND"
+                  },
+                  "TRIP_LOCATION_NOT_FOUND": {
+                    "description": "TRIP_LOCATION_NOT_FOUND",
+                    "$ref": "#/components/examples/TRIP_LOCATION_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tours/by-time-range": {
+      "get": {
+        "tags": [
+          "Fleet Tour"
+        ],
+        "summary": "Get fleet tours within time range",
+        "description": "Returns a list of all fleet tours within the specified time range.\n#### If there are no tours, list is empty.\n",
+        "operationId": "getFleetToursWithinTimeRange",
+        "parameters": [
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "description": "Beginning of the time period",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-11-15T23:59:59"
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "description": "End of the time period",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-11-15T23:59:59"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TourWebResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ErrorMessageDto"
+                      }
+                    ]
+                  }
+                },
+                "examples": {
+                  "END_DATETIME_IS_BEFORE_START_DATETIME": {
+                    "description": "END_DATETIME_IS_BEFORE_START_DATETIME",
+                    "$ref": "#/components/examples/END_DATETIME_IS_BEFORE_START_DATETIME"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          }
+        }
+      },
+      "UserWebResponse": {
+        "required": [
+          "email",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the user",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the user",
+            "example": "john.doe@energystacks.io"
+          }
+        },
+        "description": "Defines the user information"
+      },
+      "ExceptionalPeriod": {
+        "type": "object",
+        "properties": {
+          "period_begin": {
+            "type": "string",
+            "description": "Begin of the exception. SecurityScheme.In UTC, time_zone field can be used to convert to local time.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "period_end": {
+            "type": "string",
+            "description": "End of the exception. In UTC, time_zone field can be used to convert to local time.",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Specifies one exceptional period for opening or access hours."
+      },
+      "FleetProductResponse": {
+        "required": [
+          "name",
+          "quantity",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Product identifier",
+            "example": "AvO78iot3x"
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Product name",
+            "example": "Organic Fertilizer"
+          },
+          "risk": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "Product risk",
+            "example": "High"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Quantity of the transferred product",
+            "format": "double",
+            "example": 10.5
+          }
+        },
+        "description": "Defines the details of a product"
+      },
+      "Hours": {
+        "required": [
+          "twentyfourseven"
+        ],
+        "type": "object",
+        "properties": {
+          "twentyfourseven": {
+            "type": "boolean",
+            "description": "True to represent 24 hours a day and 7 days a week, except the given exceptions.",
+            "example": false
+          },
+          "regular_hours": {
+            "type": "array",
+            "description": "Regular hours, weekday-based. Only to be used if twentyfourseven=false, then this field needs to contain at least one RegularHours object.",
+            "items": {
+              "$ref": "#/components/schemas/RegularHours"
+            }
+          },
+          "exceptional_openings": {
+            "type": "array",
+            "description": "Exceptions for specified calendar dates, time-range based. Periods of exceptional accessibility. Additional to regular_hours. May overlap regular rules.",
+            "items": {
+              "$ref": "#/components/schemas/ExceptionalPeriod"
+            }
+          },
+          "exceptional_closings": {
+            "type": "array",
+            "description": "Exceptions for specified calendar dates, time-range based. Periods of exceptional inaccessibility. Overwriting regular_hours and exceptional_openings. Should not overlap exceptional_openings.",
+            "items": {
+              "$ref": "#/components/schemas/ExceptionalPeriod"
+            }
+          }
+        },
+        "description": "Opening and access hours."
+      },
+      "RegularHours": {
+        "required": [
+          "period_begin",
+          "period_end",
+          "weekday"
+        ],
+        "type": "object",
+        "properties": {
+          "weekday": {
+            "type": "string",
+            "description": "Day of week",
+            "enum": [
+              "MONDAY",
+              "TUESDAY",
+              "WEDNESDAY",
+              "THURSDAY",
+              "FRIDAY",
+              "SATURDAY",
+              "SUNDAY"
+            ]
+          },
+          "period_begin": {
+            "maxLength": 5,
+            "minLength": 0,
+            "pattern": "([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "type": "string",
+            "description": "Begin of the regular period, in local time, given in hours and minutes. Must be in 24h format with leading zeros. Example: \"18:15\". Hour/Minute separator: \":\" Regex: ([0-1][0-9]|2[0-3]):[0-5][0-9].",
+            "example": "07:00"
+          },
+          "period_end": {
+            "maxLength": 5,
+            "minLength": 0,
+            "pattern": "([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "type": "string",
+            "description": "End of the regular period, in local time, syntax as for period_begin. Must be later than period_begin.",
+            "example": "18:00"
+          }
+        },
+        "description": "Regular recurring operation or access hours."
+      },
+      "TourWebDetailsResponse": {
+        "required": [
+          "endDate",
+          "startDate",
+          "totalDistance",
+          "trips"
+        ],
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Start date of this tour",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of this tour",
+            "example": "2024-11-15T23:59:59"
+          },
+          "totalDistance": {
+            "type": "number",
+            "description": "Total tour distance",
+            "format": "double",
+            "example": 500.9
+          },
+          "trips": {
+            "type": "array",
+            "description": "Details of tour trip(s)",
+            "items": {
+              "$ref": "#/components/schemas/TripResponse"
+            }
+          },
+          "transitions": {
+            "type": "array",
+            "description": "Tour transition details",
+            "items": {
+              "$ref": "#/components/schemas/Transition"
+            }
+          },
+          "vehicleBreak": {
+            "$ref": "#/components/schemas/VehicleBreak"
+          }
+        },
+        "description": "Defines the Tour details."
+      },
+      "Transition": {
+        "required": [
+          "distance",
+          "endDate",
+          "startDate",
+          "vehicleIsEmpty"
+        ],
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Transition start date time",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Transition end date time",
+            "example": "2024-11-15T23:59:59"
+          },
+          "distance": {
+            "type": "number",
+            "description": "Transition distance in meters",
+            "format": "double",
+            "example": 125.9
+          },
+          "waitDuration": {
+            "type": "integer",
+            "description": "Transition wait duration in seconds",
+            "format": "int32",
+            "example": 120
+          },
+          "vehicleIsEmpty": {
+            "type": "boolean",
+            "description": "Defines if the vehicle is empty during transition",
+            "example": false
+          }
+        },
+        "description": "Defines tour transition details.A transition during a tour occurs when a vehicle moves between locations to load and/or unload product(s)."
+      },
+      "TripJobResponse": {
+        "required": [
+          "destination",
+          "endDate",
+          "jobUid",
+          "origin",
+          "products",
+          "startDate",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "jobUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Job identifier",
+            "example": "08a8c5d2f13b9100"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of this job",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of this job",
+            "example": "2024-11-15T23:59:59"
+          },
+          "status": {
+            "maxLength": 10,
+            "type": "string",
+            "description": "Defines all possible statuses of a Job",
+            "enum": [
+              "TO_DO",
+              "PENDING",
+              "PLANNED",
+              "ENROUTE",
+              "DELIVERED",
+              "FAILED",
+              "RETURNED",
+              "CANCELLED"
+            ]
+          },
+          "products": {
+            "type": "array",
+            "description": "Details of job product(s)",
+            "items": {
+              "$ref": "#/components/schemas/FleetProductResponse"
+            }
+          },
+          "origin": {
+            "$ref": "#/components/schemas/TripRoutePointResponse"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/TripRoutePointResponse"
+          }
+        },
+        "description": "Defines the details of a trip job."
+      },
+      "TripResponse": {
+        "required": [
+          "jobs",
+          "startDate",
+          "startLocation",
+          "visitOrder"
+        ],
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Trip start date",
+            "example": "2024-11-15T23:59:59"
+          },
+          "visitOrder": {
+            "type": "integer",
+            "description": "Trip visit order",
+            "format": "int32",
+            "example": 1
+          },
+          "waitDuration": {
+            "type": "integer",
+            "description": "Trip wait duration in seconds",
+            "format": "int32",
+            "example": 125
+          },
+          "totalDistance": {
+            "type": "number",
+            "description": "Total trip distance in meters",
+            "format": "double",
+            "example": 500.9
+          },
+          "drivingDuration": {
+            "type": "integer",
+            "description": "The driving duration of the trip in seconds",
+            "format": "int32",
+            "example": 900
+          },
+          "startLocation": {
+            "$ref": "#/components/schemas/TripStartLocationResponse"
+          },
+          "jobs": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "description": "Trip jobs grouped by job type",
+              "items": {
+                "$ref": "#/components/schemas/TripJobResponse"
+              }
+            },
+            "description": "Trip jobs grouped by job type"
+          }
+        },
+        "description": "Defines the details of a trip."
+      },
+      "TripRoutePointResponse": {
+        "required": [
+          "accountLocationUid"
+        ],
+        "type": "object",
+        "properties": {
+          "accountLocationUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Identifier of the business account's location",
+            "example": "AvO78iot3x"
+          },
+          "processTime": {
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
+          }
+        },
+        "description": "Defines the details of a trip job route point."
+      },
+      "TripStartLocationAddressResponse": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Street name.",
+            "example": "Main street"
+          },
+          "zipCode": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Zip code.",
+            "example": "20535"
+          },
+          "city": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "City in which location is located in.",
+            "example": "Stuttgart"
+          },
+          "country": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Country in which location is located in.",
+            "example": "Germany"
+          }
+        },
+        "description": "Defines the details of a trip starting location address."
+      },
+      "TripStartLocationResponse": {
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account company name",
+            "example": "P3"
+          },
+          "address": {
+            "$ref": "#/components/schemas/TripStartLocationAddressResponse"
+          },
+          "loadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "loadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "processTime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
+          },
+          "phoneNumber": {
+            "maxLength": 80,
+            "type": "string",
+            "description": "Location's business account phone number",
+            "example": "+498001122333"
+          }
+        },
+        "description": "Defines the details of a trip starting location."
+      },
+      "VehicleBreak": {
+        "required": [
+          "endDateTime",
+          "jobUid",
+          "startDateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "startDateTime": {
+            "type": "string",
+            "description": "Vehicle start date time",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDateTime": {
+            "type": "string",
+            "description": "Vehicle end date time",
+            "example": "2024-11-15T23:59:59"
+          },
+          "jobUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Job identifier of the job which is before the break"
+          }
+        },
+        "description": "Vehicle break inside of a tour"
+      },
+      "TourWebResponse": {
+        "required": [
+          "endDate",
+          "numberOfTrips",
+          "startDate",
+          "totalTime",
+          "tourUid"
+        ],
+        "type": "object",
+        "properties": {
+          "tourUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Tour identifier",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of this tour",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of this tour",
+            "example": "2024-11-15T23:59:59"
+          },
+          "totalTime": {
+            "type": "integer",
+            "description": "Total tour duration time in seconds",
+            "format": "int64",
+            "example": 155
+          },
+          "totalDistance": {
+            "type": "number",
+            "description": "Total tour distance in meters",
+            "format": "double",
+            "example": 500.9
+          },
+          "numberOfTrips": {
+            "type": "integer",
+            "description": "Number of trips",
+            "format": "int32",
+            "example": 6
+          }
+        },
+        "description": "Defines the Tour details"
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "INVALID_TOKEN": {
+        "value": "{\n  \"message\" : \"Invalid token\",\n  \"errorCode\" : \"INVALID_TOKEN\"\n}"
+      },
+      "INVALID_KEY_ID": {
+        "value": "{\n  \"message\" : \"Invalid key id claim\",\n  \"errorCode\" : \"INVALID_KEY_ID\"\n}"
+      },
+      "INVALID_AUDIENCE": {
+        "value": "{\n  \"message\" : \"Invalid audience claim\",\n  \"errorCode\" : \"INVALID_AUDIENCE\"\n}"
+      },
+      "INVALID_SUBJECT": {
+        "value": "{\n  \"message\" : \"Invalid subject claim\",\n  \"errorCode\" : \"INVALID_SUBJECT\"\n}"
+      },
+      "BAD_CERTIFICATE": {
+        "value": "{\n  \"message\" : \"Certificate exception.\",\n  \"errorCode\" : \"BAD_CERTIFICATE\"\n}"
+      },
+      "COULD_NOT_GET_JWT": {
+        "value": "{\n  \"message\" : \"\",\n  \"errorCode\" : \"COULD_NOT_GET_JWT\"\n}"
+      },
+      "JWT_TOKEN_EXPIRED": {
+        "value": "{\n  \"message\" : \"JWT token has expired.\",\n  \"errorCode\" : \"JWT_TOKEN_EXPIRED\"\n}"
+      },
+      "INVALID_NONCE": {
+        "value": "{\n  \"message\" : \"Invalid nonce claim\",\n  \"errorCode\" : \"INVALID_NONCE\"\n}"
+      },
+      "INVALID_OID": {
+        "value": "{\n  \"message\" : \"Invalid oid claim\",\n  \"errorCode\" : \"INVALID_OID\"\n}"
+      },
+      "INVALID_EMAIL": {
+        "value": "{\n  \"message\" : \"Invalid email value\",\n  \"errorCode\" : \"INVALID_EMAIL\"\n}"
+      },
+      "INVALID_NAME": {
+        "value": "{\n  \"message\" : \"Invalid name value\",\n  \"errorCode\" : \"INVALID_NAME\"\n}"
+      },
+      "INVALID_TFP": {
+        "value": "{\n  \"message\" : \"Invalid trust framework policy\",\n  \"errorCode\" : \"INVALID_TFP\"\n}"
+      },
+      "UNKNOWN_TOKEN": {
+        "value": "{\n  \"message\" : \"Unknown token\",\n  \"errorCode\" : \"UNKNOWN_TOKEN\"\n}"
+      },
+      "UNSUPPORTED_TOKEN_VALIDATION": {
+        "value": "{\n  \"message\" : \"Unsupported token validation error\",\n  \"errorCode\" : \"UNSUPPORTED_TOKEN_VALIDATION\"\n}"
+      },
+      "INVALID_ROLE": {
+        "value": "{\n  \"message\" : \"Invalid role claim\",\n  \"errorCode\" : \"INVALID_ROLE\"\n}"
+      },
+      "FLEET_VEHICLE_IDENTIFICATION_NUMBER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-VEHICLE] Vehicle with the provided vehicle identification number (VIN) does not exist.\",\n  \"errorCode\" : \"FLEET_VEHICLE_IDENTIFICATION_NUMBER_NOT_FOUND\"\n}"
+      },
+      "FLEET_VEHICLE_IDENTIFICATION_NUMBER_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-VEHICLE] Vehicle with the same vehicle identification number (VIN) already exists.\",\n  \"errorCode\" : \"FLEET_VEHICLE_IDENTIFICATION_NUMBER_ALREADY_EXISTS\"\n}"
+      },
+      "TIME_ZONE_REQUIRED_WHEN_UPDATING_VEHICLE_HOURS": {
+        "value": "{\n  \"message\" : \"[FLEET-VEHICLE] Time zone information is mandatory when updating vehicle working hours.\",\n  \"errorCode\" : \"TIME_ZONE_REQUIRED_WHEN_UPDATING_VEHICLE_HOURS\"\n}"
+      },
+      "RABBITMQ_LISTENER_ERROR": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] An error occurred in RabbitMQ listener\",\n  \"errorCode\" : \"RABBITMQ_LISTENER_ERROR\"\n}"
+      },
+      "INVALID_RABBITMQ_RPC_RESPONSE": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] Invalid RabbitMQ RPC response\",\n  \"errorCode\" : \"INVALID_RABBITMQ_RPC_RESPONSE\"\n}"
+      },
+      "FLEET_JOB_UID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job with the provided job UID does not exist.\",\n  \"errorCode\" : \"FLEET_JOB_UID_NOT_FOUND\"\n}"
+      },
+      "FLEET_JOB_UIDS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] One or more job UIDs do not exist.\",\n  \"errorCode\" : \"FLEET_JOB_UIDS_NOT_FOUND\"\n}"
+      },
+      "FLEET_JOB_UID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job with same Job UID already exists.\",\n  \"errorCode\" : \"FLEET_JOB_UID_ALREADY_EXISTS\"\n}"
+      },
+      "FLEET_JOB_NOT_ASSIGNED_TO_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Fleet job not assigned to a fleet tour.\",\n  \"errorCode\" : \"FLEET_JOB_NOT_ASSIGNED_TO_TOUR\"\n}"
+      },
+      "FLEET_JOB_ALREADY_ASSIGNED_TO_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Requested Job is already assigned to a tour.\",\n  \"errorCode\" : \"FLEET_JOB_ALREADY_ASSIGNED_TO_TOUR\"\n}"
+      },
+      "CANNOT_MODIFY_ASSIGNED_FLEET_JOB": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job cannot be modified, while it is assigned to a tour.\",\n  \"errorCode\" : \"CANNOT_MODIFY_ASSIGNED_FLEET_JOB\"\n}"
+      },
+      "FLEET_JOB_TYPE_UID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job type with the provided job type UID does not exist.\",\n  \"errorCode\" : \"FLEET_JOB_TYPE_UID_NOT_FOUND\"\n}"
+      },
+      "FLEET_JOB_TYPE_NAME_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job type with same name already exists.\",\n  \"errorCode\" : \"FLEET_JOB_TYPE_NAME_ALREADY_EXISTS\"\n}"
+      },
+      "CANNOT_DELETE_ASSIGNED_FLEET_JOB_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job Type cannot be deleted, while it is assigned to Job(s).\",\n  \"errorCode\" : \"CANNOT_DELETE_ASSIGNED_FLEET_JOB_TYPE\"\n}"
+      },
+      "FLEET_TOUR_UID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour with the provided tour UID does not exist.\",\n  \"errorCode\" : \"FLEET_TOUR_UID_NOT_FOUND\"\n}"
+      },
+      "FLEET_TOUR_UIDS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] One or more tour UIDs do not exist.\",\n  \"errorCode\" : \"FLEET_TOUR_UIDS_NOT_FOUND\"\n}"
+      },
+      "CANNOT_DELETE_STARTED_FLEET_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour cannot be deleted, when its status is not 'PLANNED'\",\n  \"errorCode\" : \"CANNOT_DELETE_STARTED_FLEET_TOUR\"\n}"
+      },
+      "CANNOT_MODIFY_FINISHED_FLEET_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour can be updated only if it's in status 'PLANNED' or 'ENROUTE'\",\n  \"errorCode\" : \"CANNOT_MODIFY_FINISHED_FLEET_TOUR\"\n}"
+      },
+      "CANNOT_PATCH_DETAILS_OF_FINISHED_FLEET_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour details (except notes) can be modified only if it's in status 'PLANNED' or 'ENROUTE'\",\n  \"errorCode\" : \"CANNOT_PATCH_DETAILS_OF_FINISHED_FLEET_TOUR\"\n}"
+      },
+      "REQUEST_CONTAINS_DUPLICATE_JOB_UIDS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Request must not contain duplicate job UIDs\",\n  \"errorCode\" : \"REQUEST_CONTAINS_DUPLICATE_JOB_UIDS\"\n}"
+      },
+      "REQUEST_CONTAINS_DUPLICATE_TOUR_UIDS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Request must not contain duplicate tour UIDs\",\n  \"errorCode\" : \"REQUEST_CONTAINS_DUPLICATE_TOUR_UIDS\"\n}"
+      },
+      "VEHICLE_NOT_AVAILABLE_FOR_TOUR_PLANNING": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Specified vehicle(s) are not available for tour planning within the given tour timespan\",\n  \"errorCode\" : \"VEHICLE_NOT_AVAILABLE_FOR_TOUR_PLANNING\"\n}"
+      },
+      "UNSUITABLE_JOB_STATUS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Failed to delete the job due to unsuitable job status\",\n  \"errorCode\" : \"UNSUITABLE_JOB_STATUS\"\n}"
+      },
+      "INVALID_JOB_STATUS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job status can't be updated considering the current job status\",\n  \"errorCode\" : \"INVALID_JOB_STATUS\"\n}"
+      },
+      "INVALID_OPTIMIZE_TOUR_GLOBAL_TIME_WINDOW": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour(s) can't be optimized more than 7 days in advance\",\n  \"errorCode\" : \"INVALID_OPTIMIZE_TOUR_GLOBAL_TIME_WINDOW\"\n}"
+      },
+      "OPTIMIZE_TOUR_JOBS_OUTSIDE_OF_GLOBAL_TIME_WINDOW": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] A tour containing job(s) outside of global time window can not be optimized\",\n  \"errorCode\" : \"OPTIMIZE_TOUR_JOBS_OUTSIDE_OF_GLOBAL_TIME_WINDOW\"\n}"
+      },
+      "END_DATETIME_IS_BEFORE_START_DATETIME": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] End-datetime can't be before start-datetime.\",\n  \"errorCode\" : \"END_DATETIME_IS_BEFORE_START_DATETIME\"\n}"
+      },
+      "DROP_OFF_FROM_DATE_IS_BEFORE_PICK_UP_FROM": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Drop-off-from date can't be before pick-up-from date.\",\n  \"errorCode\" : \"DROP_OFF_FROM_DATE_IS_BEFORE_PICK_UP_FROM\"\n}"
+      },
+      "DROP_OFF_TILL_DATE_IS_BEFORE_PICK_UP_TILL": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Drop-off-till date can't be before pick-up-till date.\",\n  \"errorCode\" : \"DROP_OFF_TILL_DATE_IS_BEFORE_PICK_UP_TILL\"\n}"
+      },
+      "PICK_UP_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_PICK_UP_FROM": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Pick-up-till date can't be before or equal to pick-up-from date.\",\n  \"errorCode\" : \"PICK_UP_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_PICK_UP_FROM\"\n}"
+      },
+      "DROP_OFF_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_DROP_OFF_FROM": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Drop-off-till date can't be before or equal to drop-off-from date.\",\n  \"errorCode\" : \"DROP_OFF_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_DROP_OFF_FROM\"\n}"
+      },
+      "INVALID_ROUTE_DATES": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Earliest route date must be before latest one, and both not null.\",\n  \"errorCode\" : \"INVALID_ROUTE_DATES\"\n}"
+      },
+      "END_DATE_NOT_EQUAL_TO_START_DATE": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] End-date must be equal to start-date\",\n  \"errorCode\" : \"END_DATE_NOT_EQUAL_TO_START_DATE\"\n}"
+      },
+      "INVALID_REQUEST_SEQUENCE": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Precedence counting must start from 0 and increase by 1.\",\n  \"errorCode\" : \"INVALID_REQUEST_SEQUENCE\"\n}"
+      },
+      "JOB_SNAPSHOT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Fleet Job Snapshot with the specified job uid not found\",\n  \"errorCode\" : \"JOB_SNAPSHOT_NOT_FOUND\"\n}"
+      },
+      "INVALID_TOUR_STATUS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour status can't be updated considering the current tour status\",\n  \"errorCode\" : \"INVALID_TOUR_STATUS\"\n}"
+      },
+      "JOB_WITH_INVALID_BUSINESS_ACCOUNT": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Job(s) assigned to not existing business account(s).\",\n  \"errorCode\" : \"JOB_WITH_INVALID_BUSINESS_ACCOUNT\"\n}"
+      },
+      "TOUR_WITH_INVALID_FLEET_VEHICLE": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Tour(s) assigned to not existing fleet vehicle(s).\",\n  \"errorCode\" : \"TOUR_WITH_INVALID_FLEET_VEHICLE\"\n}"
+      },
+      "TOUR_CANNOT_BE_OPTIMIZED": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Existing tour can be optimized, only when its status is 'PLANNED' or 'ENROUTE'.\",\n  \"errorCode\" : \"TOUR_CANNOT_BE_OPTIMIZED\"\n}"
+      },
+      "FLEET_VEHICLE_WITH_INVALID_VEHICLE_CORE": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Fleet vehicle(s) assigned to not existing core vehicles(s).\",\n  \"errorCode\" : \"FLEET_VEHICLE_WITH_INVALID_VEHICLE_CORE\"\n}"
+      },
+      "VIN_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Vehicle identification number not found.\",\n  \"errorCode\" : \"VIN_NOT_FOUND\"\n}"
+      },
+      "VEHICLE_CORE_UUID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Vehicle core UUID not found.\",\n  \"errorCode\" : \"VEHICLE_CORE_UUID_NOT_FOUND\"\n}"
+      },
+      "VEHICLES_CORE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Vehicle(s) in core not found.\",\n  \"errorCode\" : \"VEHICLES_CORE_NOT_FOUND\"\n}"
+      },
+      "VIN_MISS_MATCH": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The number of requested vehicles and the number of retrieved ones is not the same, based on their VINs.\",\n  \"errorCode\" : \"VIN_MISS_MATCH\"\n}"
+      },
+      "JOB_MISS_MATCH": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The number of requested jobs and the number of retrieved ones is not the same, based on their job UIDs.\",\n  \"errorCode\" : \"JOB_MISS_MATCH\"\n}"
+      },
+      "VEHICLE_IS_ASSIGNED_TO_A_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The fleet vehicle cannot be modified/deleted since it is part of a tour.\",\n  \"errorCode\" : \"VEHICLE_IS_ASSIGNED_TO_A_TOUR\"\n}"
+      },
+      "JOB_PRODUCT_NOT_ASSIGNED_TO_ORIGIN_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Product is not assigned to origin location\",\n  \"errorCode\" : \"JOB_PRODUCT_NOT_ASSIGNED_TO_ORIGIN_LOCATION\"\n}"
+      },
+      "ORIGIN_LOCATION_DOES_NOT_HAVE_ASSIGNED_PRODUCTS": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The origin location doesn't have products assigned to it\",\n  \"errorCode\" : \"ORIGIN_LOCATION_DOES_NOT_HAVE_ASSIGNED_PRODUCTS\"\n}"
+      },
+      "LOCATIONS_ASSOCIATED_WITH_JOBS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] One or more locations associated with fleet job(s) not found\",\n  \"errorCode\" : \"LOCATIONS_ASSOCIATED_WITH_JOBS_NOT_FOUND\"\n}"
+      },
+      "PRODUCTS_ASSOCIATED_WITH_JOBS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] One or more products associated with fleet job(s) not found\",\n  \"errorCode\" : \"PRODUCTS_ASSOCIATED_WITH_JOBS_NOT_FOUND\"\n}"
+      },
+      "LOCATIONS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Specified origin/destination location(s) not found\",\n  \"errorCode\" : \"LOCATIONS_NOT_FOUND\"\n}"
+      },
+      "INVALID_JOB_LOCATIONS": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Job origin and destination need to contain different account location UIDs\",\n  \"errorCode\" : \"INVALID_JOB_LOCATIONS\"\n}"
+      },
+      "AT_LEAST_ONE_PRODUCT_NOT_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] At least one product is not assigned to the origin location\",\n  \"errorCode\" : \"AT_LEAST_ONE_PRODUCT_NOT_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "GEO_LOCATION_NOT_ASSIGNED_TO_JOB": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Specified Job has not assigned GeoLocations(Latitude-Longitude)\",\n  \"errorCode\" : \"GEO_LOCATION_NOT_ASSIGNED_TO_JOB\"\n}"
+      },
+      "AT_LEAST_ONE_PRODUCT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] At least one product not found\",\n  \"errorCode\" : \"AT_LEAST_ONE_PRODUCT_NOT_FOUND\"\n}"
+      },
+      "DUPLICATE_LOCATION_RISK": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location risk already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_RISK\"\n}"
+      },
+      "DUPLICATE_PRODUCT_NAME": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified product already exists\",\n  \"errorCode\" : \"DUPLICATE_PRODUCT_NAME\"\n}"
+      },
+      "DUPLICATE_UNIT_OF_MEASURE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified unit of measure already exists\",\n  \"errorCode\" : \"DUPLICATE_UNIT_OF_MEASURE\"\n}"
+      },
+      "DUPLICATE_LOCATION_STATUS": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location status already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_STATUS\"\n}"
+      },
+      "DUPLICATE_LOCATION_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location type already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_TYPE\"\n}"
+      },
+      "DUPLICATE_BUSINESS_ACCOUNT_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified business account type already exists\",\n  \"errorCode\" : \"DUPLICATE_BUSINESS_ACCOUNT_TYPE\"\n}"
+      },
+      "DUPLICATE_LOCATION_ADDRESS_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location address type already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_ADDRESS_TYPE\"\n}"
+      },
+      "LOCATION_RISK_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location risk with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_RISK_NOT_FOUND\"\n}"
+      },
+      "BUSINESS_ACCOUNT_TYPE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account type with the specified uid not found\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_TYPE_NOT_FOUND\"\n}"
+      },
+      "BUSINESS_ACCOUNT_TYPE_ASSIGNED_TO_BUSINESS_ACCOUNT": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account type is assigned to at least one business account\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_TYPE_ASSIGNED_TO_BUSINESS_ACCOUNT\"\n}"
+      },
+      "LOCATION_ADDRESS_TYPE_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location address type is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_ADDRESS_TYPE_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_RISK_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location risk is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_RISK_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_STATUS_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location status is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_STATUS_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_TYPE_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location type is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_TYPE_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "PRODUCT_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product is assigned to at least one location\",\n  \"errorCode\" : \"PRODUCT_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "UNIT_OF_MEASURE_ASSIGNED_TO_PRODUCT": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Unit of measure is assigned to at least one location-product relation\",\n  \"errorCode\" : \"UNIT_OF_MEASURE_ASSIGNED_TO_PRODUCT\"\n}"
+      },
+      "BUSINESS_ACCOUNT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account with the specified uid not found\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_NOT_FOUND\"\n}"
+      },
+      "BUSINESS_ACCOUNT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account with the specified uid already exists\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_ALREADY_EXISTS\"\n}"
+      },
+      "LOCATION_STATUS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location status with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_STATUS_NOT_FOUND\"\n}"
+      },
+      "LOCATION_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account location with the specified uid already exists\",\n  \"errorCode\" : \"LOCATION_ALREADY_EXISTS\"\n}"
+      },
+      "LOCATION_TYPE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location type with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_TYPE_NOT_FOUND\"\n}"
+      },
+      "PRODUCT_NOT_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product with the specified unit of measure is not assigned to a location\",\n  \"errorCode\" : \"PRODUCT_NOT_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_ADDRESS_TYPE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location address type with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_ADDRESS_TYPE_NOT_FOUND\"\n}"
+      },
+      "UNIT_OF_MEASURE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Unit of measure with the specified uid not found\",\n  \"errorCode\" : \"UNIT_OF_MEASURE_NOT_FOUND\"\n}"
+      },
+      "PRODUCT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product with the specified uid not found\",\n  \"errorCode\" : \"PRODUCT_NOT_FOUND\"\n}"
+      },
+      "LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account location with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
+      },
+      "PRODUCT_ALREADY_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product with the specified unit of measure already assigned to a location\",\n  \"errorCode\" : \"PRODUCT_ALREADY_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "INVALID_PENALTY_RULES_REQUEST": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Penalty rules request needs to contain at least one non-null field\",\n  \"errorCode\" : \"INVALID_PENALTY_RULES_REQUEST\"\n}"
+      },
+      "TRIP_LOCATION_BUSINESS_ACCOUNT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-MOBILE-WEB] Trip location business account not found\",\n  \"errorCode\" : \"TRIP_LOCATION_BUSINESS_ACCOUNT_NOT_FOUND\"\n}"
+      },
+      "TRIP_LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-MOBILE-WEB] Trip location not found\",\n  \"errorCode\" : \"TRIP_LOCATION_NOT_FOUND\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "INVALID_BEGIN_END_TIME": {
+        "value": "{\n  \"message\" : \"period_end cannot be equal to period_begin, or before this.\",\n  \"errorCode\" : \"INVALID_BEGIN_END_TIME\"\n}"
+      },
+      "INVALID_HOURS": {
+        "value": "{\n  \"message\" : \"regularHours field must not be empty when twentyFourSeven=false (and vice versa).\",\n  \"errorCode\" : \"INVALID_HOURS\"\n}"
+      },
+      "DUPLICATE_WEEKDAYS": {
+        "value": "{\n  \"message\" : \"list of regular hours cannot contain duplicate weekdays.\",\n  \"errorCode\" : \"DUPLICATE_WEEKDAYS\"\n}"
+      },
+      "INVALID_EXCEPTIONAL_PERIOD_BEGIN_END_DATE": {
+        "value": "{\n  \"message\" : \"Date of the period_begin needs to be equal to the date of period_end.\",\n  \"errorCode\" : \"INVALID_EXCEPTIONAL_PERIOD_BEGIN_END_DATE\"\n}"
+      },
+      "EXCEPTIONAL_PERIOD_DATES_OVERLAP": {
+        "value": "{\n  \"message\" : \"Exceptional period dates cannot overlap.\",\n  \"errorCode\" : \"EXCEPTIONAL_PERIOD_DATES_OVERLAP\"\n}"
+      },
+      "MORE_THAN_ONE_EXCEPTIONAL_PERIOD_WITHIN_SINGLE_DATE": {
+        "value": "{\n  \"message\" : \"Single date cannot contain more than one exceptional period.\",\n  \"errorCode\" : \"MORE_THAN_ONE_EXCEPTIONAL_PERIOD_WITHIN_SINGLE_DATE\"\n}"
+      },
+      "UNKNOWN_TIME_ZONE_ID": {
+        "value": "{\n  \"message\" : \"Unknown time zone id\",\n  \"errorCode\" : \"UNKNOWN_TIME_ZONE_ID\"\n}"
+      },
+      "NOT_A_DIRECTORY": {
+        "value": "{\n  \"message\" : \"Not a directory\",\n  \"errorCode\" : \"NOT_A_DIRECTORY\"\n}"
+      },
+      "VEHICLE_IMAGE_DIR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle image directory not found\",\n  \"errorCode\" : \"VEHICLE_IMAGE_DIR_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_STORE_VEHICLE_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to store vehicle image\",\n  \"errorCode\" : \"FAILED_TO_STORE_VEHICLE_IMAGE\"\n}"
+      },
+      "EMPTY_IMAGE": {
+        "value": "{\n  \"message\" : \"Empty image\",\n  \"errorCode\" : \"EMPTY_IMAGE\"\n}"
+      },
+      "CAN_NOT_PROCESS_IMAGE": {
+        "value": "{\n  \"message\" : \"Can't process image\",\n  \"errorCode\" : \"CAN_NOT_PROCESS_IMAGE\"\n}"
+      },
+      "VEHICLE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The requested vehicle entry was not found\",\n  \"errorCode\" : \"VEHICLE_NOT_FOUND\"\n}"
+      },
+      "ELECTRIC_VEHICLE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The requested vehicle entry was not found or the vehicle is not an electric vehicle\",\n  \"errorCode\" : \"ELECTRIC_VEHICLE_NOT_FOUND\"\n}"
+      },
+      "VEHICLE_BRAND_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle brand not found\",\n  \"errorCode\" : \"VEHICLE_BRAND_NOT_FOUND\"\n}"
+      },
+      "CHARGING_CURVE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Charging curve not found\",\n  \"errorCode\" : \"CHARGING_CURVE_NOT_FOUND\"\n}"
+      },
+      "INCORRECT_TENANT_ID": {
+        "value": "{\n  \"message\" : \"Not allowed to add/update/fetch the resource with the provided tenant id\",\n  \"errorCode\" : \"INCORRECT_TENANT_ID\"\n}"
+      },
+      "BRAND_AND_VEHICLE_TENANTS_MISMATCH": {
+        "value": "{\n  \"message\" : \"Vehicle and brand tenant ids don't match\",\n  \"errorCode\" : \"BRAND_AND_VEHICLE_TENANTS_MISMATCH\"\n}"
+      },
+      "IMAGE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Image not found\",\n  \"errorCode\" : \"IMAGE_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_READ_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to read image\",\n  \"errorCode\" : \"FAILED_TO_READ_IMAGE\"\n}"
+      },
+      "INVALID_IMAGE_FILE_TYPE": {
+        "value": "{\n  \"message\" : \"File has an invalid extension\",\n  \"errorCode\" : \"INVALID_IMAGE_FILE_TYPE\"\n}"
+      },
+      "VEHICLE_VARIANT_IMAGE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle doesn't have a variant image\",\n  \"errorCode\" : \"VEHICLE_VARIANT_IMAGE_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_DELETE_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to delete the image\",\n  \"errorCode\" : \"FAILED_TO_DELETE_IMAGE\"\n}"
+      },
+      "UNSUPPORTED_IMAGE_FORMAT": {
+        "value": "{\n  \"message\" : \"Image format is invalid or unsupported\",\n  \"errorCode\" : \"UNSUPPORTED_IMAGE_FORMAT\"\n}"
+      },
+      "IMAGE_FETCHING_ERROR": {
+        "value": "{\n  \"message\" : \"Error occured during fetching the image\",\n  \"errorCode\" : \"IMAGE_FETCHING_ERROR\"\n}"
+      },
+      "INVALID_CUSTOMER_KEY": {
+        "value": "{\n  \"message\" : \"Invalid customer key\",\n  \"errorCode\" : \"INVALID_CUSTOMER_KEY\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "Fleet Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "Fleet Mobile",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securitySchemes": {
+    "bearerAuth": {
+      "type": "http",
+      "scheme": "Bearer",
+      "bearerFormat": "JWT"
+    }
+  }
+}

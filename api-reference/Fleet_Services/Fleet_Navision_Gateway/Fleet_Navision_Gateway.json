@@ -1,0 +1,3347 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "fleet-gateway-navision-service",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.fleet.energystacks.io/fleet-gateway-navision/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Business Account Types",
+      "description": "Business Account Type operations controller"
+    },
+    {
+      "name": "Fleet Jobs",
+      "description": "Fleet Job operations controller"
+    },
+    {
+      "name": "Location Risks",
+      "description": "Location Risk operations controller"
+    },
+    {
+      "name": "Location products",
+      "description": "Location Product operations controller"
+    },
+    {
+      "name": "Location Statuses",
+      "description": "Location Status operations controller"
+    },
+    {
+      "name": "Location Address Types",
+      "description": "Location Address Type operations controller"
+    },
+    {
+      "name": "Units Of Measure",
+      "description": "Unit Of Measure operations controller"
+    },
+    {
+      "name": "Business Accounts",
+      "description": "Business Account operations controller"
+    },
+    {
+      "name": "Locations",
+      "description": "Location operations controller"
+    },
+    {
+      "name": "Fleet Tours",
+      "description": "Fleet tour operations controller"
+    },
+    {
+      "name": "Fleet Job Types",
+      "description": "Fleet Job Type operations controller"
+    },
+    {
+      "name": "Location Types",
+      "description": "Location Type operations controller"
+    },
+    {
+      "name": "Fleet Job Synchronization",
+      "description": "Fleet Job synchronization controller"
+    },
+    {
+      "name": "Products",
+      "description": "Product operations Controller"
+    }
+  ],
+  "paths": {
+    "/tours/stop": {
+      "post": {
+        "tags": [
+          "Fleet Tours"
+        ],
+        "summary": "Stop a fleet tour",
+        "description": "Process fleet tour stop event by updating the existing tour statuses, and job ones (if needed).",
+        "operationId": "stopTour",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NavisionTourStartStopRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "JOB_STILL_ENROUTE": {
+                    "description": "JOB_STILL_ENROUTE",
+                    "$ref": "#/components/examples/JOB_STILL_ENROUTE"
+                  },
+                  "INVALID_JOB_STATUS": {
+                    "description": "INVALID_JOB_STATUS",
+                    "$ref": "#/components/examples/INVALID_JOB_STATUS"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_TOUR_UID_NOT_FOUND": {
+                    "description": "FLEET_TOUR_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_TOUR_UID_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tours/start": {
+      "post": {
+        "tags": [
+          "Fleet Tours"
+        ],
+        "summary": "Start a fleet tour",
+        "description": "Start a fleet tour by updating the existing tour status",
+        "operationId": "startTour",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NavisionTourStartStopRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_TOUR_UID_NOT_FOUND": {
+                    "description": "FLEET_TOUR_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_TOUR_UID_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Get all business account locations",
+        "description": "Returns a list of all business account locations. If there are no business account locations, list is empty.",
+        "operationId": "getAllLocations",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Create or update a business account location",
+        "description": "Creates or updates a business account location.\n#### Business account location is not reassigned to a different business account during the update operation.",
+        "operationId": "createOrUpdateLocation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "INVALID_HOURS": {
+                    "description": "INVALID_HOURS",
+                    "$ref": "#/components/examples/INVALID_HOURS"
+                  },
+                  "DUPLICATE_WEEKDAYS": {
+                    "description": "DUPLICATE_WEEKDAYS",
+                    "$ref": "#/components/examples/DUPLICATE_WEEKDAYS"
+                  },
+                  "INVALID_BEGIN_END_TIME": {
+                    "description": "INVALID_BEGIN_END_TIME",
+                    "$ref": "#/components/examples/INVALID_BEGIN_END_TIME"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "LOCATION_STATUS_NOT_FOUND": {
+                    "description": "LOCATION_STATUS_NOT_FOUND",
+                    "$ref": "#/components/examples/LOCATION_STATUS_NOT_FOUND"
+                  },
+                  "LOCATION_ADDRESS_TYPE_NOT_FOUND": {
+                    "description": "LOCATION_ADDRESS_TYPE_NOT_FOUND",
+                    "$ref": "#/components/examples/LOCATION_ADDRESS_TYPE_NOT_FOUND"
+                  },
+                  "LOCATION_TYPE_NOT_FOUND": {
+                    "description": "LOCATION_TYPE_NOT_FOUND",
+                    "$ref": "#/components/examples/LOCATION_TYPE_NOT_FOUND"
+                  },
+                  "LOCATION_RISK_NOT_FOUND": {
+                    "description": "LOCATION_RISK_NOT_FOUND",
+                    "$ref": "#/components/examples/LOCATION_RISK_NOT_FOUND"
+                  },
+                  "BUSINESS_ACCOUNT_NOT_FOUND": {
+                    "description": "BUSINESS_ACCOUNT_NOT_FOUND",
+                    "$ref": "#/components/examples/BUSINESS_ACCOUNT_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{locationUid}/products/{productUid}": {
+      "post": {
+        "tags": [
+          "Location products"
+        ],
+        "summary": "Assign or update already assigned business account location product",
+        "description": "Assigns or updates already assigned business account location product",
+        "operationId": "assignOrUpdateLocationProduct",
+        "parameters": [
+          {
+            "name": "locationUid",
+            "in": "path",
+            "description": "Location identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productUid",
+            "in": "path",
+            "description": "Product identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductAssignmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "LOCATION_NOT_FOUND": {
+                    "description": "LOCATION_NOT_FOUND",
+                    "$ref": "#/components/examples/LOCATION_NOT_FOUND"
+                  },
+                  "PRODUCT_NOT_FOUND": {
+                    "description": "PRODUCT_NOT_FOUND",
+                    "$ref": "#/components/examples/PRODUCT_NOT_FOUND"
+                  },
+                  "UNIT_OF_MEASURE_NOT_FOUND": {
+                    "description": "UNIT_OF_MEASURE_NOT_FOUND",
+                    "$ref": "#/components/examples/UNIT_OF_MEASURE_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs": {
+      "get": {
+        "tags": [
+          "Fleet Jobs"
+        ],
+        "summary": "Get all fleet jobs",
+        "description": "Returns a list of all fleet jobs. If there are no jobs, list is empty.",
+        "operationId": "getAllFleetJobs",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NavisionFleetJobResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Fleet Jobs"
+        ],
+        "summary": "Create or update fleet job",
+        "description": "Creates or updates fleet job. If job is new or not assigned to an active tour, it will be created or updated accordingly.\nElse when job is assigned to an active tour (PLANNED or ENROUTE), it will be modified, with different validation rules applied.",
+        "operationId": "createOrUpdateFleetJob",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NavisionFleetJobRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "INVALID_JOB_LOCATIONS": {
+                    "description": "INVALID_JOB_LOCATIONS",
+                    "$ref": "#/components/examples/INVALID_JOB_LOCATIONS"
+                  },
+                  "PICK_UP_FROM_AND_DROP_OFF_FROM_DATES_NOT_IN_SAME_DAY": {
+                    "description": "PICK_UP_FROM_AND_DROP_OFF_FROM_DATES_NOT_IN_SAME_DAY",
+                    "$ref": "#/components/examples/PICK_UP_FROM_AND_DROP_OFF_FROM_DATES_NOT_IN_SAME_DAY"
+                  },
+                  "PICK_UP_TILL_AND_DROP_OFF_TILL_DATES_NOT_IN_SAME_DAY": {
+                    "description": "PICK_UP_TILL_AND_DROP_OFF_TILL_DATES_NOT_IN_SAME_DAY",
+                    "$ref": "#/components/examples/PICK_UP_TILL_AND_DROP_OFF_TILL_DATES_NOT_IN_SAME_DAY"
+                  },
+                  "DROP_OFF_FROM_DATE_IS_BEFORE_PICK_UP_FROM": {
+                    "description": "DROP_OFF_FROM_DATE_IS_BEFORE_PICK_UP_FROM",
+                    "$ref": "#/components/examples/DROP_OFF_FROM_DATE_IS_BEFORE_PICK_UP_FROM"
+                  },
+                  "DROP_OFF_TILL_DATE_IS_BEFORE_PICK_UP_TILL": {
+                    "description": "DROP_OFF_TILL_DATE_IS_BEFORE_PICK_UP_TILL",
+                    "$ref": "#/components/examples/DROP_OFF_TILL_DATE_IS_BEFORE_PICK_UP_TILL"
+                  },
+                  "PICK_UP_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_PICK_UP_FROM": {
+                    "description": "PICK_UP_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_PICK_UP_FROM",
+                    "$ref": "#/components/examples/PICK_UP_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_PICK_UP_FROM"
+                  },
+                  "DROP_OFF_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_DROP_OFF_FROM": {
+                    "description": "DROP_OFF_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_DROP_OFF_FROM",
+                    "$ref": "#/components/examples/DROP_OFF_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_DROP_OFF_FROM"
+                  },
+                  "INBOUND_JOB_DATES_NOT_IN_SAME_DAY": {
+                    "description": "INBOUND_JOB_DATES_NOT_IN_SAME_DAY",
+                    "$ref": "#/components/examples/INBOUND_JOB_DATES_NOT_IN_SAME_DAY"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_JOB_TYPE_UID_NOT_FOUND": {
+                    "description": "FLEET_JOB_TYPE_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_JOB_TYPE_UID_NOT_FOUND"
+                  },
+                  "LOCATIONS_NOT_FOUND": {
+                    "description": "LOCATIONS_NOT_FOUND",
+                    "$ref": "#/components/examples/LOCATIONS_NOT_FOUND"
+                  },
+                  "PRODUCT_NOT_FOUND": {
+                    "description": "PRODUCT_NOT_FOUND",
+                    "$ref": "#/components/examples/PRODUCT_NOT_FOUND"
+                  },
+                  "BUSINESS_ACCOUNT_NOT_FOUND": {
+                    "description": "BUSINESS_ACCOUNT_NOT_FOUND",
+                    "$ref": "#/components/examples/BUSINESS_ACCOUNT_NOT_FOUND"
+                  },
+                  "JOB_LOCATION_NOT_FOUND": {
+                    "description": "JOB_LOCATION_NOT_FOUND",
+                    "$ref": "#/components/examples/JOB_LOCATION_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "AT_LEAST_ONE_PRODUCT_NOT_ASSIGNED_TO_LOCATION": {
+                    "description": "AT_LEAST_ONE_PRODUCT_NOT_ASSIGNED_TO_LOCATION",
+                    "$ref": "#/components/examples/AT_LEAST_ONE_PRODUCT_NOT_ASSIGNED_TO_LOCATION"
+                  },
+                  "CANNOT_MODIFY_ASSIGNED_FLEET_JOB": {
+                    "description": "CANNOT_MODIFY_ASSIGNED_FLEET_JOB",
+                    "$ref": "#/components/examples/CANNOT_MODIFY_ASSIGNED_FLEET_JOB"
+                  },
+                  "FINALIZED_JOB_CANNOT_BE_MODIFIED": {
+                    "description": "FINALIZED_JOB_CANNOT_BE_MODIFIED",
+                    "$ref": "#/components/examples/FINALIZED_JOB_CANNOT_BE_MODIFIED"
+                  },
+                  "JOB_LOCATION_ADDRESS_TYPE_MODIFICATION_NOT_ALLOWED": {
+                    "description": "JOB_LOCATION_ADDRESS_TYPE_MODIFICATION_NOT_ALLOWED",
+                    "$ref": "#/components/examples/JOB_LOCATION_ADDRESS_TYPE_MODIFICATION_NOT_ALLOWED"
+                  },
+                  "JOB_DEPOT_ID_MODIFICATION_NOT_ALLOWED": {
+                    "description": "JOB_DEPOT_ID_MODIFICATION_NOT_ALLOWED",
+                    "$ref": "#/components/examples/JOB_DEPOT_ID_MODIFICATION_NOT_ALLOWED"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job-sync": {
+      "post": {
+        "tags": [
+          "Fleet Job Synchronization"
+        ],
+        "summary": "Synchronize BioFleet app jobs based on current job state in Navision.",
+        "description": "All jobs which don't exist in Navision but exist in the BioFleet app are removed from the app.",
+        "operationId": "syncFleetJobs",
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/business-accounts": {
+      "get": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Get all business accounts",
+        "description": "Returns a list of all business accounts. If there are no business accounts, list is empty.",
+        "operationId": "getAllBusinessAccounts",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NavisionBusinessAccountResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Create or update a business account",
+        "description": "Creates or updates a business account",
+        "operationId": "createOrUpdateBusinessAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NavisionBusinessAccountCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "BUSINESS_ACCOUNT_NOT_FOUND": {
+                    "description": "BUSINESS_ACCOUNT_NOT_FOUND",
+                    "$ref": "#/components/examples/BUSINESS_ACCOUNT_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{jobUid}": {
+      "delete": {
+        "tags": [
+          "Fleet Jobs"
+        ],
+        "summary": "Delete a fleet job",
+        "description": "Deletes a fleet job by job UID, if it's not assigned to a tour.",
+        "operationId": "deleteFleetJobByJobUid",
+        "parameters": [
+          {
+            "name": "jobUid",
+            "in": "path",
+            "description": "Job identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_JOB_UID_NOT_FOUND": {
+                    "description": "FLEET_JOB_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_JOB_UID_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CANNOT_MODIFY_ASSIGNED_FLEET_JOB": {
+                    "description": "CANNOT_MODIFY_ASSIGNED_FLEET_JOB",
+                    "$ref": "#/components/examples/CANNOT_MODIFY_ASSIGNED_FLEET_JOB"
+                  },
+                  "UNSUITABLE_JOB_STATUS": {
+                    "description": "UNSUITABLE_JOB_STATUS",
+                    "$ref": "#/components/examples/UNSUITABLE_JOB_STATUS"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Fleet Jobs"
+        ],
+        "summary": "Update fleet job status",
+        "description": "The statuses can be updated based on the rules in the table bellow.\n|  Current Fleet Job Status  |           Can be updated to statuses          |\n|----------------------------|-----------------------------------------------|\n|          CANCELLED         |                    TO_DO                      |\n|          DELIVERED         |                      -                        |\n|          ENROUTE           |              DELIVERED, CANCELLED             |\n|          PLANNED           |           ENROUTE, DELIVERED, CANCELLED       |\n",
+        "operationId": "updateFleetJobStatus",
+        "parameters": [
+          {
+            "name": "jobUid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "jobStatus",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Fleet Job statuses",
+              "enum": [
+                "TO_DO",
+                "ENROUTE",
+                "DELIVERED",
+                "CANCELLED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "INVALID_JOB_STATUS": {
+                    "description": "INVALID_JOB_STATUS",
+                    "$ref": "#/components/examples/INVALID_JOB_STATUS"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_JOB_UID_NOT_FOUND": {
+                    "description": "FLEET_JOB_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_JOB_UID_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "INVALID_RABBITMQ_RPC_RESPONSE": {
+                    "description": "INVALID_RABBITMQ_RPC_RESPONSE",
+                    "$ref": "#/components/examples/INVALID_RABBITMQ_RPC_RESPONSE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/units-of-measure": {
+      "get": {
+        "tags": [
+          "Units Of Measure"
+        ],
+        "summary": "Get all units of measure",
+        "description": "Returns a list of all units of measure. If there are no units of measure, list is empty.",
+        "operationId": "getAllUnitsOfMeasure",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UnitOfMeasureResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/tours": {
+      "get": {
+        "tags": [
+          "Fleet Tours"
+        ],
+        "summary": "Get all fleet tours",
+        "description": "Returns a list of all fleet tours, along with their job details. If there are no tours, list is empty.",
+        "operationId": "getAllFleetTours",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NavisionFleetTourResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/tours/{tourUid}/jobs": {
+      "get": {
+        "tags": [
+          "Fleet Tours"
+        ],
+        "summary": "Get all fleet tour jobs based on the provided tour uid",
+        "description": "Returns a list of all fleet tour jobs",
+        "operationId": "getAllFleetTourJobsByTourUid",
+        "parameters": [
+          {
+            "name": "tourUid",
+            "in": "path",
+            "description": "Fleet Tour identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NavisionFleetJobDetailed"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_TOUR_UID_NOT_FOUND": {
+                    "description": "FLEET_TOUR_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_TOUR_UID_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get all products",
+        "description": "Returns a list of all products. If there are no products, list is empty.",
+        "operationId": "getAllProducts",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/locations/{locationUIDs}/products": {
+      "get": {
+        "tags": [
+          "Location products"
+        ],
+        "summary": "Get the business account location products",
+        "description": "Fetches the business account location products for each supplied location uid, if there are no products, the list is empty",
+        "operationId": "getLocationProducts",
+        "parameters": [
+          {
+            "name": "locationUIDs",
+            "in": "path",
+            "description": "Business account location identifier",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationProductResponseWrapper"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/location/types": {
+      "get": {
+        "tags": [
+          "Location Types"
+        ],
+        "summary": "Get all location types",
+        "description": "Returns a list of all location types. If there are no location types, list is empty.",
+        "operationId": "getAllLocationTypes",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationTypeResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/location/statuses": {
+      "get": {
+        "tags": [
+          "Location Statuses"
+        ],
+        "summary": "Get all location statuses",
+        "description": "Returns a list of all location statuses. If there are no location statuses, list is empty.",
+        "operationId": "getAllLocationStatuses",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationStatusResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/location/risks": {
+      "get": {
+        "tags": [
+          "Location Risks"
+        ],
+        "summary": "Get all location risks",
+        "description": "Returns a list of all location risks. If there are no location risks, list is empty.",
+        "operationId": "getAllLocationRisks",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationRiskResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/location/address-types": {
+      "get": {
+        "tags": [
+          "Location Address Types"
+        ],
+        "summary": "Get all location address types",
+        "description": "Returns a list of all location address types. If there are no location address types, list is empty.",
+        "operationId": "getAllLocationAddressTypes",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationAddressTypeResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/job-types": {
+      "get": {
+        "tags": [
+          "Fleet Job Types"
+        ],
+        "summary": "Get all fleet job types",
+        "description": "Returns a list of all fleet job types. If there are no job types, list is empty.",
+        "operationId": "getAllFleetJobTypes",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FleetJobTypeResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/business-account/types": {
+      "get": {
+        "tags": [
+          "Business Account Types"
+        ],
+        "summary": "Get all business account types",
+        "description": "Returns a list of all business account types. If there are no business account types, list is empty.",
+        "operationId": "getAllAccountTypes",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BusinessAccountTypeResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/locations/{locationUid}/products/{productUid}/units-of-measure/{unitOfMeasureUid}": {
+      "delete": {
+        "tags": [
+          "Location products"
+        ],
+        "summary": "Remove the product with the specified unit of measure from the business account location",
+        "description": "Removes the product with the specified unit of measure from the business account location",
+        "operationId": "removeProductFromLocation",
+        "parameters": [
+          {
+            "name": "locationUid",
+            "in": "path",
+            "description": "Location identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productUid",
+            "in": "path",
+            "description": "Product identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "unitOfMeasureUid",
+            "in": "path",
+            "description": "Unit of measure identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "LOCATION_NOT_FOUND": {
+                    "description": "LOCATION_NOT_FOUND",
+                    "$ref": "#/components/examples/LOCATION_NOT_FOUND"
+                  },
+                  "PRODUCT_NOT_FOUND": {
+                    "description": "PRODUCT_NOT_FOUND",
+                    "$ref": "#/components/examples/PRODUCT_NOT_FOUND"
+                  },
+                  "UNIT_OF_MEASURE_NOT_FOUND": {
+                    "description": "UNIT_OF_MEASURE_NOT_FOUND",
+                    "$ref": "#/components/examples/UNIT_OF_MEASURE_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "PRODUCT_NOT_ASSIGNED_TO_LOCATION": {
+                    "description": "PRODUCT_NOT_ASSIGNED_TO_LOCATION",
+                    "$ref": "#/components/examples/PRODUCT_NOT_ASSIGNED_TO_LOCATION"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          }
+        }
+      },
+      "NavisionTourStartStopRequest": {
+        "required": [
+          "tourStateModifiedAt",
+          "tourUid"
+        ],
+        "type": "object",
+        "properties": {
+          "tourUid": {
+            "type": "string",
+            "description": "Fleet tour unique identifier",
+            "example": "LKnPKAYKvf"
+          },
+          "tourStateModifiedAt": {
+            "type": "string",
+            "description": "Tour state modification datetime",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Defines the tour start/stop request"
+      },
+      "ExceptionalPeriod": {
+        "type": "object",
+        "properties": {
+          "period_begin": {
+            "type": "string",
+            "description": "Begin of the exception. SecurityScheme.In UTC, time_zone field can be used to convert to local time.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "period_end": {
+            "type": "string",
+            "description": "End of the exception. In UTC, time_zone field can be used to convert to local time.",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Specifies one exceptional period for opening or access hours."
+      },
+      "GeoLocation": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "string",
+            "description": "Latitude of the point in decimal degree. More decimal digits increase precision. Decimal separator: '.'",
+            "example": "50.770774"
+          },
+          "longitude": {
+            "type": "string",
+            "description": "Longitude of the point in decimal degree.More decimal digits increase precision.Decimal separator: '.'",
+            "example": "-126.104965"
+          }
+        },
+        "description": "Defines the coordinates of a geolocation. The geodetic system to be used is WGS 84."
+      },
+      "Hours": {
+        "required": [
+          "twentyfourseven"
+        ],
+        "type": "object",
+        "properties": {
+          "twentyfourseven": {
+            "type": "boolean",
+            "description": "True to represent 24 hours a day and 7 days a week, except the given exceptions.",
+            "example": false
+          },
+          "regular_hours": {
+            "type": "array",
+            "description": "Regular hours, weekday-based. Only to be used if twentyfourseven=false, then this field needs to contain at least one RegularHours object.",
+            "items": {
+              "$ref": "#/components/schemas/RegularHours"
+            }
+          },
+          "exceptional_openings": {
+            "type": "array",
+            "description": "Exceptions for specified calendar dates, time-range based. Periods of exceptional accessibility. Additional to regular_hours. May overlap regular rules.",
+            "items": {
+              "$ref": "#/components/schemas/ExceptionalPeriod"
+            }
+          },
+          "exceptional_closings": {
+            "type": "array",
+            "description": "Exceptions for specified calendar dates, time-range based. Periods of exceptional inaccessibility. Overwriting regular_hours and exceptional_openings. Should not overlap exceptional_openings.",
+            "items": {
+              "$ref": "#/components/schemas/ExceptionalPeriod"
+            }
+          }
+        },
+        "description": "Opening and access hours."
+      },
+      "LocationAddressRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Address description."
+          },
+          "street": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Street name.",
+            "example": "Main street"
+          },
+          "zipCode": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Zip code.",
+            "example": "20535"
+          },
+          "city": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "City in which location is located in.",
+            "example": "Stuttgart"
+          },
+          "country": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Country in which location is located in.",
+            "example": "Germany"
+          },
+          "geoLocation": {
+            "$ref": "#/components/schemas/GeoLocation"
+          }
+        },
+        "description": "Defines the request of the business account location address"
+      },
+      "LocationCreateRequest": {
+        "required": [
+          "businessAccountUid",
+          "locationAddressTypeUid",
+          "locationRiskUid",
+          "locationStatusUid",
+          "locationTypeUid",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Location identifier",
+            "example": "AvO78iot3x"
+          },
+          "locationName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Location name",
+            "example": "P3"
+          },
+          "address": {
+            "$ref": "#/components/schemas/LocationAddressRequest"
+          },
+          "loadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "loadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "locationStatusUid": {
+            "type": "integer",
+            "description": "Location status identifier",
+            "format": "int64",
+            "example": 12
+          },
+          "locationAddressTypeUid": {
+            "type": "integer",
+            "description": "Location address type identifier",
+            "format": "int64",
+            "example": 5
+          },
+          "locationTypeUid": {
+            "type": "integer",
+            "description": "Location type identifier",
+            "format": "int64",
+            "example": 7
+          },
+          "locationRiskUid": {
+            "type": "integer",
+            "description": "Location risk identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "businessAccountUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Business account identifier",
+            "example": "LKnPKAYKvf"
+          },
+          "processTime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
+          }
+        },
+        "description": "Defines the create request of the business account location"
+      },
+      "RegularHours": {
+        "required": [
+          "period_begin",
+          "period_end",
+          "weekday"
+        ],
+        "type": "object",
+        "properties": {
+          "weekday": {
+            "type": "string",
+            "description": "Day of week",
+            "enum": [
+              "MONDAY",
+              "TUESDAY",
+              "WEDNESDAY",
+              "THURSDAY",
+              "FRIDAY",
+              "SATURDAY",
+              "SUNDAY"
+            ]
+          },
+          "period_begin": {
+            "maxLength": 5,
+            "minLength": 0,
+            "pattern": "([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "type": "string",
+            "description": "Begin of the regular period, in local time, given in hours and minutes. Must be in 24h format with leading zeros. Example: \"18:15\". Hour/Minute separator: \":\" Regex: ([0-1][0-9]|2[0-3]):[0-5][0-9].",
+            "example": "07:00"
+          },
+          "period_end": {
+            "maxLength": 5,
+            "minLength": 0,
+            "pattern": "([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "type": "string",
+            "description": "End of the regular period, in local time, syntax as for period_begin. Must be later than period_begin.",
+            "example": "18:00"
+          }
+        },
+        "description": "Regular recurring operation or access hours."
+      },
+      "ProductAssignmentRequest": {
+        "required": [
+          "unitOfMeasureUid"
+        ],
+        "type": "object",
+        "properties": {
+          "unitOfMeasureUid": {
+            "type": "integer",
+            "description": "Unit of measure identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "capacity": {
+            "type": "number",
+            "description": "Location capacity for the corresponding product",
+            "format": "double",
+            "example": 100.5
+          }
+        },
+        "description": "Defines the request for adding a product to a business account location"
+      },
+      "FleetProductRequest": {
+        "required": [
+          "quantity",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Product identifier",
+            "example": "1"
+          },
+          "risk": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Product risk",
+            "example": "High"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Quantity of the transferred product",
+            "format": "double",
+            "example": 10.5
+          }
+        },
+        "description": "Defines the fleet product request"
+      },
+      "NavisionFleetJobRequest": {
+        "required": [
+          "businessAccountUid",
+          "dateDropOffFrom",
+          "dateDropOffTill",
+          "datePickUpFrom",
+          "datePickUpTill",
+          "depotId",
+          "destinationLocationUid",
+          "jobTypeUid",
+          "jobUid",
+          "originLocationUid",
+          "product"
+        ],
+        "type": "object",
+        "properties": {
+          "jobUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Job unique identifier",
+            "example": "08a8c5d2f13b9100"
+          },
+          "depotId": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "businessAccountUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Supplier identifier",
+            "example": "LKnPKAYKvf"
+          },
+          "jobTypeUid": {
+            "type": "integer",
+            "description": "Job type identifier",
+            "format": "int64",
+            "example": 5
+          },
+          "product": {
+            "$ref": "#/components/schemas/FleetProductRequest"
+          },
+          "originLocationUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Origin location identifier"
+          },
+          "destinationLocationUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Destination location identifier"
+          },
+          "datePickUpFrom": {
+            "type": "string",
+            "description": "Earliest date this job can be picked up",
+            "example": "2024-11-15T23:59:59"
+          },
+          "datePickUpTill": {
+            "type": "string",
+            "description": "Latest date this job can be picked up",
+            "example": "2024-11-15T23:59:59"
+          },
+          "dateDropOffFrom": {
+            "type": "string",
+            "description": "Earliest date this job can be dropped off",
+            "example": "2024-11-15T23:59:59"
+          },
+          "dateDropOffTill": {
+            "type": "string",
+            "description": "Latest date this job can be dropped off",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Defines the create request of a fleet job"
+      },
+      "AccountContactRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "First name",
+            "example": "John"
+          },
+          "lastName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Last name",
+            "example": "Doe"
+          },
+          "phoneNumber": {
+            "maxLength": 80,
+            "minLength": 0,
+            "type": "string",
+            "description": "Phone number",
+            "example": "+498001122333"
+          },
+          "email": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Email address",
+            "example": "john.doe@energystacks.io"
+          }
+        },
+        "description": "Defines the business account contact information"
+      },
+      "NavisionBusinessAccountCreateRequest": {
+        "required": [
+          "accountTypeUid",
+          "depotId",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Business account identifier",
+            "example": "AvO78iot3x"
+          },
+          "depotId": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "companyName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Company name",
+            "example": "P3"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/AccountContactRequest"
+          },
+          "accountTypeUid": {
+            "type": "integer",
+            "description": "Business account type identifier",
+            "format": "int64"
+          }
+        },
+        "description": "Defines the create request of the business account"
+      },
+      "UnitOfMeasureResponse": {
+        "required": [
+          "name",
+          "unitOfMeasureUid"
+        ],
+        "type": "object",
+        "properties": {
+          "unitOfMeasureUid": {
+            "type": "integer",
+            "description": "Unit of measure identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Unit of measure name",
+            "example": "KG"
+          }
+        },
+        "description": "Defines the details of an unit of measure"
+      },
+      "FleetProductResponse": {
+        "required": [
+          "name",
+          "quantity",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Product identifier",
+            "example": "AvO78iot3x"
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Product name",
+            "example": "Organic Fertilizer"
+          },
+          "risk": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "Product risk",
+            "example": "High"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Quantity of the transferred product",
+            "format": "double",
+            "example": 10.5
+          }
+        },
+        "description": "Defines the details of a product"
+      },
+      "NavisionFleetJobShortResponse": {
+        "required": [
+          "businessAccountUid",
+          "depotId",
+          "jobType",
+          "jobUid",
+          "product"
+        ],
+        "type": "object",
+        "properties": {
+          "jobUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Job identifier",
+            "example": "08a8c5d2f13b9100"
+          },
+          "depotId": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "jobType": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Job type name",
+            "example": "INBOUND"
+          },
+          "product": {
+            "$ref": "#/components/schemas/FleetProductResponse"
+          },
+          "businessAccountUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Supplier identifier",
+            "example": "LKnPKAYKvf"
+          }
+        },
+        "description": "Defines only the necessary details of a job"
+      },
+      "NavisionFleetTourResponse": {
+        "required": [
+          "createdDate",
+          "endDate",
+          "jobs",
+          "polyline",
+          "startDate",
+          "status",
+          "totalDistance",
+          "totalTime",
+          "tourUid",
+          "vehicleIdentificationNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "tourUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Tour identifier",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "vehicleIdentificationNumber": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Identifies the identification number (VIN) of the vehicle.",
+            "example": "4Y1SL65848Z411444"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of this tour",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of this tour",
+            "example": "2024-11-15T23:59:59"
+          },
+          "jobs": {
+            "type": "array",
+            "description": "List with details for all jobs of this tour",
+            "items": {
+              "$ref": "#/components/schemas/NavisionFleetJobShortResponse"
+            }
+          },
+          "totalTime": {
+            "type": "integer",
+            "description": "Total tour duration time in seconds",
+            "format": "int64",
+            "example": 155
+          },
+          "totalDistance": {
+            "type": "number",
+            "description": "Total tour distance",
+            "format": "double",
+            "example": 500.9
+          },
+          "status": {
+            "maxLength": 10,
+            "type": "string",
+            "description": "Defines all possible tour statuses",
+            "enum": [
+              "PLANNED",
+              "ENROUTE",
+              "DELAYED",
+              "FAILED",
+              "INCOMPLETE",
+              "DONE"
+            ]
+          },
+          "polyline": {
+            "$ref": "#/components/schemas/Polyline"
+          },
+          "exported": {
+            "type": "boolean",
+            "description": "Indicates if this tour has been exported"
+          },
+          "lastExportedDate": {
+            "type": "string",
+            "description": "Date this job was created",
+            "example": "2024-11-15T23:59:59"
+          },
+          "createdDate": {
+            "type": "string",
+            "description": "Date this job was created",
+            "example": "2024-11-15T23:59:59"
+          },
+          "lastModifiedDate": {
+            "type": "string",
+            "description": "Date this job was last modified",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Defines the details of a tour"
+      },
+      "Polyline": {
+        "required": [
+          "points"
+        ],
+        "type": "object",
+        "properties": {
+          "points": {
+            "type": "string",
+            "description": "Multiple points of geo coordinates, encoded into a String"
+          }
+        },
+        "description": "Tour polyline to be displayed on the map"
+      },
+      "NavisionFleetJobDetailed": {
+        "required": [
+          "createdDate",
+          "depotId",
+          "destination",
+          "jobType",
+          "jobUid",
+          "lastModifiedDate",
+          "origin",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "jobUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Job identifier",
+            "example": "08a8c5d2f13b9100"
+          },
+          "depotId": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "businessAccountUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Supplier identifier",
+            "example": "LKnPKAYKvf"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of this job",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of this job",
+            "example": "2024-11-15T23:59:59"
+          },
+          "jobType": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Type of job"
+          },
+          "product": {
+            "$ref": "#/components/schemas/FleetProductResponse"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/RoutePointDetailed"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/RoutePointDetailed"
+          },
+          "status": {
+            "maxLength": 10,
+            "type": "string",
+            "description": "Defines all possible statuses of a Job",
+            "enum": [
+              "TO_DO",
+              "PENDING",
+              "PLANNED",
+              "ENROUTE",
+              "DELIVERED",
+              "FAILED",
+              "RETURNED",
+              "CANCELLED"
+            ]
+          },
+          "datePickUpFrom": {
+            "type": "string",
+            "description": "Earliest date this job can be picked up",
+            "example": "2024-11-15T23:59:59"
+          },
+          "datePickUpTill": {
+            "type": "string",
+            "description": "Latest date this job can be picked up",
+            "example": "2024-11-15T23:59:59"
+          },
+          "dateDropOffFrom": {
+            "type": "string",
+            "description": "Earliest date this job can be dropped off",
+            "example": "2024-11-15T23:59:59"
+          },
+          "dateDropOffTill": {
+            "type": "string",
+            "description": "Latest date this job can be dropped off",
+            "example": "2024-11-15T23:59:59"
+          },
+          "createdDate": {
+            "type": "string",
+            "description": "Date this job was created",
+            "example": "2024-11-15T23:59:59"
+          },
+          "lastModifiedDate": {
+            "type": "string",
+            "description": "Date this job was last modified",
+            "example": "2024-11-15T23:59:59"
+          }
+        }
+      },
+      "RoutePointDetailed": {
+        "required": [
+          "accountLocationUid",
+          "geoLocation",
+          "locationAddressType",
+          "locationRisk",
+          "locationType"
+        ],
+        "type": "object",
+        "properties": {
+          "accountLocationUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Identifier of the business account's location",
+            "example": "AvO78iot3x"
+          },
+          "street": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Street of the route point",
+            "example": "Main street"
+          },
+          "city": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "City of the route point",
+            "example": "Munich"
+          },
+          "zipCode": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Zip code.",
+            "example": "20535"
+          },
+          "geoLocation": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "locationAddressType": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Location address type information",
+            "example": "Raw Tank"
+          },
+          "locationType": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Location type information",
+            "example": "Cow"
+          },
+          "locationRisk": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Location risk information",
+            "example": "High"
+          },
+          "processTime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
+          }
+        },
+        "description": "Defines the origin/destination job details."
+      },
+      "ProductResponse": {
+        "required": [
+          "name",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "Product identifier",
+            "example": "LKnPKAYKvf"
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Product name",
+            "example": "Degassed biomass"
+          }
+        },
+        "description": "Defines the details of a product"
+      },
+      "AccountContactResponse": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "First name",
+            "example": "John"
+          },
+          "lastName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Last name",
+            "example": "Doe"
+          },
+          "phoneNumber": {
+            "maxLength": 80,
+            "type": "string",
+            "description": "Phone number",
+            "example": "+498001122333"
+          },
+          "email": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Email address",
+            "example": "john.doe@energystacks.io"
+          }
+        },
+        "description": "Defines the details of an account contact"
+      },
+      "BusinessAccountReduceResponse": {
+        "required": [
+          "type",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Business account unique identifier",
+            "example": "AvO78iot3x"
+          },
+          "depotId": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "companyName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Company name",
+            "example": "P3"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/AccountContactResponse"
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account type name",
+            "example": "Depot"
+          }
+        },
+        "description": "Defines the details of a business account"
+      },
+      "LocationAddress": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Address description."
+          },
+          "street": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Street name.",
+            "example": "Main street"
+          },
+          "zipCode": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Zip code.",
+            "example": "20535"
+          },
+          "city": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "City in which location is located in.",
+            "example": "Stuttgart"
+          },
+          "country": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Country in which location is located in.",
+            "example": "Germany"
+          },
+          "geoLocation": {
+            "$ref": "#/components/schemas/GeoLocation"
+          }
+        },
+        "description": "Location address"
+      },
+      "LocationAddressTypeResponse": {
+        "required": [
+          "addressType",
+          "addressTypeUid"
+        ],
+        "type": "object",
+        "properties": {
+          "addressTypeUid": {
+            "type": "integer",
+            "description": "Business account location address type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "addressType": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account location address type name",
+            "example": "HOME"
+          }
+        },
+        "description": "Defines the details of a business account location address type"
+      },
+      "LocationResponse": {
+        "required": [
+          "addressType",
+          "addressTypeUid",
+          "locationRiskUid",
+          "locationStatusUid",
+          "locationTypeUid",
+          "risk",
+          "status",
+          "type",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Location uid",
+            "example": "AvO78iot3x"
+          },
+          "locationName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location name",
+            "example": "P3"
+          },
+          "address": {
+            "$ref": "#/components/schemas/LocationAddress"
+          },
+          "loadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "loadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "locationStatusUid": {
+            "type": "integer",
+            "description": "Business account location status identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "status": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location status name"
+          },
+          "addressTypeUid": {
+            "type": "integer",
+            "description": "Business account location address type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "addressType": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account location address type name",
+            "example": "HOME"
+          },
+          "locationTypeUid": {
+            "type": "integer",
+            "description": "Business account location type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account location type name",
+            "example": "HEADQUARTERS"
+          },
+          "locationRiskUid": {
+            "type": "integer",
+            "description": "Business account location risk identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "risk": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location risk name"
+          },
+          "processTime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
+          },
+          "businessAccount": {
+            "$ref": "#/components/schemas/BusinessAccountReduceResponse"
+          }
+        },
+        "description": "Defines the details of a business account location"
+      },
+      "LocationRiskResponse": {
+        "required": [
+          "locationRiskUid",
+          "risk"
+        ],
+        "type": "object",
+        "properties": {
+          "locationRiskUid": {
+            "type": "integer",
+            "description": "Business account location risk identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "risk": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location risk name"
+          }
+        },
+        "description": "Defines the details of a location risk"
+      },
+      "LocationStatusResponse": {
+        "required": [
+          "locationStatusUid",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "locationStatusUid": {
+            "type": "integer",
+            "description": "Business account location status identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "status": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location status name"
+          }
+        },
+        "description": "Defines the details of a business account location status"
+      },
+      "LocationTypeResponse": {
+        "required": [
+          "locationTypeUid",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "locationTypeUid": {
+            "type": "integer",
+            "description": "Business account location type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account location type name",
+            "example": "HEADQUARTERS"
+          }
+        },
+        "description": "Defines the details of a business location type"
+      },
+      "LocationProductResponse": {
+        "required": [
+          "name",
+          "productUid",
+          "unitOfMeasureResponse"
+        ],
+        "type": "object",
+        "properties": {
+          "productUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Product identifier",
+            "example": "1"
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Product name",
+            "example": "Degassed biomass"
+          },
+          "unitOfMeasureResponse": {
+            "$ref": "#/components/schemas/UnitOfMeasureResponse"
+          },
+          "capacity": {
+            "type": "number",
+            "description": "Location capacity for the corresponding product",
+            "format": "double",
+            "example": 500.5
+          }
+        },
+        "description": "Defines the details of a business account location product",
+        "example": "AvO78iot3x"
+      },
+      "LocationProductResponseWrapper": {
+        "required": [
+          "locationUid",
+          "products"
+        ],
+        "type": "object",
+        "properties": {
+          "locationUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Location identifier",
+            "example": "AvO78iot3x"
+          },
+          "products": {
+            "type": "array",
+            "description": "List of location products",
+            "example": "AvO78iot3x",
+            "items": {
+              "$ref": "#/components/schemas/LocationProductResponse"
+            }
+          }
+        },
+        "description": "Wrapper containing location identifier and a list of corresponding products"
+      },
+      "FleetProduct": {
+        "required": [
+          "quantity",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Product identifier",
+            "example": "1"
+          },
+          "risk": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "Product risk",
+            "example": "High"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Quantity of the transferred product",
+            "format": "double",
+            "example": 10.5
+          }
+        },
+        "description": "Product details"
+      },
+      "NavisionFleetJobResponse": {
+        "required": [
+          "businessAccountUid",
+          "createdDate",
+          "depotId",
+          "destinationLocationUid",
+          "jobType",
+          "jobUid",
+          "lastModifiedDate",
+          "originLocationUid",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "jobUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Job identifier",
+            "example": "08a8c5d2f13b9100"
+          },
+          "depotId": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "businessAccountUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Supplier identifier",
+            "example": "LKnPKAYKvf"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of this job",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of this job",
+            "example": "2024-11-15T23:59:59"
+          },
+          "jobType": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Job type name",
+            "example": "INBOUND"
+          },
+          "product": {
+            "$ref": "#/components/schemas/FleetProduct"
+          },
+          "originLocationUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Origin location identifier"
+          },
+          "destinationLocationUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Destination location identifier"
+          },
+          "status": {
+            "maxLength": 10,
+            "type": "string",
+            "description": "Defines all possible statuses of a Job",
+            "enum": [
+              "TO_DO",
+              "PENDING",
+              "PLANNED",
+              "ENROUTE",
+              "DELIVERED",
+              "FAILED",
+              "RETURNED",
+              "CANCELLED"
+            ]
+          },
+          "datePickUpFrom": {
+            "type": "string",
+            "description": "Earliest date this job can be picked up",
+            "example": "2024-11-15T23:59:59"
+          },
+          "datePickUpTill": {
+            "type": "string",
+            "description": "Latest date this job can be picked up",
+            "example": "2024-11-15T23:59:59"
+          },
+          "dateDropOffFrom": {
+            "type": "string",
+            "description": "Earliest date this job can be dropped off",
+            "example": "2024-11-15T23:59:59"
+          },
+          "dateDropOffTill": {
+            "type": "string",
+            "description": "Latest date this job can be dropped off",
+            "example": "2024-11-15T23:59:59"
+          },
+          "createdDate": {
+            "type": "string",
+            "description": "Date this job was created",
+            "example": "2024-11-15T23:59:59"
+          },
+          "lastModifiedDate": {
+            "type": "string",
+            "description": "Date this job was last modified",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Defines the details of a job"
+      },
+      "FleetJobTypeResponse": {
+        "required": [
+          "createdDate",
+          "jobType",
+          "jobTypeUid",
+          "lastModifiedDate"
+        ],
+        "type": "object",
+        "properties": {
+          "jobTypeUid": {
+            "type": "integer",
+            "description": "Job type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "jobType": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Job type name",
+            "example": "OUTBOUND"
+          },
+          "createdDate": {
+            "type": "string",
+            "description": "Date this job type was created",
+            "example": "2024-11-15T23:59:59"
+          },
+          "lastModifiedDate": {
+            "type": "string",
+            "description": "Date this job type was last modified",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Defines the details of a job type"
+      },
+      "NavisionBusinessAccountResponse": {
+        "required": [
+          "depotId",
+          "type",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Business account unique identifier",
+            "example": "AvO78iot3x"
+          },
+          "depotId": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "companyName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Company name",
+            "example": "P3"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/AccountContactResponse"
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account type name",
+            "example": "Depot"
+          },
+          "locations": {
+            "type": "array",
+            "description": "Business account locations",
+            "items": {
+              "$ref": "#/components/schemas/LocationResponse"
+            }
+          }
+        },
+        "description": "Defines the details of a business account"
+      },
+      "BusinessAccountTypeResponse": {
+        "required": [
+          "accountTypeUid",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "accountTypeUid": {
+            "type": "integer",
+            "description": "Business account type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account type name",
+            "example": "Depot"
+          }
+        },
+        "description": "Defines the details of a business account type"
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "INVALID_TOKEN": {
+        "value": "{\n  \"message\" : \"Invalid token\",\n  \"errorCode\" : \"INVALID_TOKEN\"\n}"
+      },
+      "INVALID_KEY_ID": {
+        "value": "{\n  \"message\" : \"Invalid key id claim\",\n  \"errorCode\" : \"INVALID_KEY_ID\"\n}"
+      },
+      "INVALID_AUDIENCE": {
+        "value": "{\n  \"message\" : \"Invalid audience claim\",\n  \"errorCode\" : \"INVALID_AUDIENCE\"\n}"
+      },
+      "INVALID_SUBJECT": {
+        "value": "{\n  \"message\" : \"Invalid subject claim\",\n  \"errorCode\" : \"INVALID_SUBJECT\"\n}"
+      },
+      "BAD_CERTIFICATE": {
+        "value": "{\n  \"message\" : \"Certificate exception.\",\n  \"errorCode\" : \"BAD_CERTIFICATE\"\n}"
+      },
+      "COULD_NOT_GET_JWT": {
+        "value": "{\n  \"message\" : \"\",\n  \"errorCode\" : \"COULD_NOT_GET_JWT\"\n}"
+      },
+      "JWT_TOKEN_EXPIRED": {
+        "value": "{\n  \"message\" : \"JWT token has expired.\",\n  \"errorCode\" : \"JWT_TOKEN_EXPIRED\"\n}"
+      },
+      "INVALID_NONCE": {
+        "value": "{\n  \"message\" : \"Invalid nonce claim\",\n  \"errorCode\" : \"INVALID_NONCE\"\n}"
+      },
+      "INVALID_OID": {
+        "value": "{\n  \"message\" : \"Invalid oid claim\",\n  \"errorCode\" : \"INVALID_OID\"\n}"
+      },
+      "INVALID_EMAIL": {
+        "value": "{\n  \"message\" : \"Invalid email value\",\n  \"errorCode\" : \"INVALID_EMAIL\"\n}"
+      },
+      "INVALID_NAME": {
+        "value": "{\n  \"message\" : \"Invalid name value\",\n  \"errorCode\" : \"INVALID_NAME\"\n}"
+      },
+      "INVALID_TFP": {
+        "value": "{\n  \"message\" : \"Invalid trust framework policy\",\n  \"errorCode\" : \"INVALID_TFP\"\n}"
+      },
+      "UNKNOWN_TOKEN": {
+        "value": "{\n  \"message\" : \"Unknown token\",\n  \"errorCode\" : \"UNKNOWN_TOKEN\"\n}"
+      },
+      "UNSUPPORTED_TOKEN_VALIDATION": {
+        "value": "{\n  \"message\" : \"Unsupported token validation error\",\n  \"errorCode\" : \"UNSUPPORTED_TOKEN_VALIDATION\"\n}"
+      },
+      "INVALID_ROLE": {
+        "value": "{\n  \"message\" : \"Invalid role claim\",\n  \"errorCode\" : \"INVALID_ROLE\"\n}"
+      },
+      "FLEET_VEHICLE_IDENTIFICATION_NUMBER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-VEHICLE] Vehicle with the provided vehicle identification number (VIN) does not exist.\",\n  \"errorCode\" : \"FLEET_VEHICLE_IDENTIFICATION_NUMBER_NOT_FOUND\"\n}"
+      },
+      "FLEET_VEHICLE_IDENTIFICATION_NUMBER_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-VEHICLE] Vehicle with the same vehicle identification number (VIN) already exists.\",\n  \"errorCode\" : \"FLEET_VEHICLE_IDENTIFICATION_NUMBER_ALREADY_EXISTS\"\n}"
+      },
+      "TIME_ZONE_REQUIRED_WHEN_UPDATING_VEHICLE_HOURS": {
+        "value": "{\n  \"message\" : \"[FLEET-VEHICLE] Time zone information is mandatory when updating vehicle working hours.\",\n  \"errorCode\" : \"TIME_ZONE_REQUIRED_WHEN_UPDATING_VEHICLE_HOURS\"\n}"
+      },
+      "RABBITMQ_LISTENER_ERROR": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] An error occurred in RabbitMQ listener\",\n  \"errorCode\" : \"RABBITMQ_LISTENER_ERROR\"\n}"
+      },
+      "INVALID_RABBITMQ_RPC_RESPONSE": {
+        "value": "{\n  \"message\" : \"[RABBITMQ] Invalid RabbitMQ RPC response\",\n  \"errorCode\" : \"INVALID_RABBITMQ_RPC_RESPONSE\"\n}"
+      },
+      "TOUR_WITH_INVALID_FLEET_VEHICLE": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Tour(s) assigned to not existing fleet vehicle(s).\",\n  \"errorCode\" : \"TOUR_WITH_INVALID_FLEET_VEHICLE\"\n}"
+      },
+      "ERROR_WHILE_PUSHING_NEW_TOURS_TO_NAVISION": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] Error occurred while pushing new tour(s) to Navision.\",\n  \"errorCode\" : \"ERROR_WHILE_PUSHING_NEW_TOURS_TO_NAVISION\"\n}"
+      },
+      "ERROR_WHILE_PUSHING_MODIFIED_TOUR_TO_NAVISION": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] Error occurred while pushing modified tour to Navision.\",\n  \"errorCode\" : \"ERROR_WHILE_PUSHING_MODIFIED_TOUR_TO_NAVISION\"\n}"
+      },
+      "ERROR_WHILE_PUSHING_DELETED_TOUR_TO_NAVISION": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] Error occurred while pushing deleted tour to Navision.\",\n  \"errorCode\" : \"ERROR_WHILE_PUSHING_DELETED_TOUR_TO_NAVISION\"\n}"
+      },
+      "REQUEST_CONTAINS_DUPLICATE_TOUR_UIDS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Request must not contain duplicate tour UIDs\",\n  \"errorCode\" : \"REQUEST_CONTAINS_DUPLICATE_TOUR_UIDS\"\n}"
+      },
+      "PICK_UP_FROM_AND_DROP_OFF_FROM_DATES_NOT_IN_SAME_DAY": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] The pick-up-from and drop-off-from should be on the same date.\",\n  \"errorCode\" : \"PICK_UP_FROM_AND_DROP_OFF_FROM_DATES_NOT_IN_SAME_DAY\"\n}"
+      },
+      "PICK_UP_TILL_AND_DROP_OFF_TILL_DATES_NOT_IN_SAME_DAY": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] The pick-up-till and drop-off-till should be on the same date.\",\n  \"errorCode\" : \"PICK_UP_TILL_AND_DROP_OFF_TILL_DATES_NOT_IN_SAME_DAY\"\n}"
+      },
+      "DROP_OFF_FROM_DATE_IS_BEFORE_PICK_UP_FROM": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Drop-off-from date can't be before pick-up-from date.\",\n  \"errorCode\" : \"DROP_OFF_FROM_DATE_IS_BEFORE_PICK_UP_FROM\"\n}"
+      },
+      "DROP_OFF_TILL_DATE_IS_BEFORE_PICK_UP_TILL": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Drop-off-till date can't be before pick-up-till date.\",\n  \"errorCode\" : \"DROP_OFF_TILL_DATE_IS_BEFORE_PICK_UP_TILL\"\n}"
+      },
+      "PICK_UP_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_PICK_UP_FROM": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Pick-up-till date can't be before or equal to pick-up-from date.\",\n  \"errorCode\" : \"PICK_UP_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_PICK_UP_FROM\"\n}"
+      },
+      "DROP_OFF_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_DROP_OFF_FROM": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Drop-off-till date can't be before or equal to drop-off-from date.\",\n  \"errorCode\" : \"DROP_OFF_TILL_DATE_IS_BEFORE_OR_EQUAL_TO_DROP_OFF_FROM\"\n}"
+      },
+      "INBOUND_JOB_DATES_NOT_IN_SAME_DAY": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] Inbound job dates should be all in the same day\",\n  \"errorCode\" : \"INBOUND_JOB_DATES_NOT_IN_SAME_DAY\"\n}"
+      },
+      "JOB_STILL_ENROUTE": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] Cannot complete a tour which contains ENROUTE job(s).\",\n  \"errorCode\" : \"JOB_STILL_ENROUTE\"\n}"
+      },
+      "ERROR_OCCURRED_DURING_JOB_SNAPSHOT_UPDATE": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] An error occurred during job snapshot update\",\n  \"errorCode\" : \"ERROR_OCCURRED_DURING_JOB_SNAPSHOT_UPDATE\"\n}"
+      },
+      "FINALIZED_JOB_CANNOT_BE_MODIFIED": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] Job cannot be modified when it is in a final state.\",\n  \"errorCode\" : \"FINALIZED_JOB_CANNOT_BE_MODIFIED\"\n}"
+      },
+      "JOB_LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] Job's requested location (origin or destination) could not be found.\",\n  \"errorCode\" : \"JOB_LOCATION_NOT_FOUND\"\n}"
+      },
+      "JOB_LOCATION_ADDRESS_TYPE_MODIFICATION_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] Location address type for job origin and destination cannot be changed when assigned to an active tour.\",\n  \"errorCode\" : \"JOB_LOCATION_ADDRESS_TYPE_MODIFICATION_NOT_ALLOWED\"\n}"
+      },
+      "JOB_DEPOT_ID_MODIFICATION_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] DepotId cannot be modified for a job assigned to an active tour.\",\n  \"errorCode\" : \"JOB_DEPOT_ID_MODIFICATION_NOT_ALLOWED\"\n}"
+      },
+      "FLEET_JOB_UID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job with the provided job UID does not exist.\",\n  \"errorCode\" : \"FLEET_JOB_UID_NOT_FOUND\"\n}"
+      },
+      "FLEET_JOB_UIDS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] One or more job UIDs do not exist.\",\n  \"errorCode\" : \"FLEET_JOB_UIDS_NOT_FOUND\"\n}"
+      },
+      "FLEET_JOB_UID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job with same Job UID already exists.\",\n  \"errorCode\" : \"FLEET_JOB_UID_ALREADY_EXISTS\"\n}"
+      },
+      "FLEET_JOB_NOT_ASSIGNED_TO_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Fleet job not assigned to a fleet tour.\",\n  \"errorCode\" : \"FLEET_JOB_NOT_ASSIGNED_TO_TOUR\"\n}"
+      },
+      "FLEET_JOB_ALREADY_ASSIGNED_TO_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Requested Job is already assigned to a tour.\",\n  \"errorCode\" : \"FLEET_JOB_ALREADY_ASSIGNED_TO_TOUR\"\n}"
+      },
+      "CANNOT_MODIFY_ASSIGNED_FLEET_JOB": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job cannot be modified, while it is assigned to a tour.\",\n  \"errorCode\" : \"CANNOT_MODIFY_ASSIGNED_FLEET_JOB\"\n}"
+      },
+      "FLEET_JOB_TYPE_UID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job type with the provided job type UID does not exist.\",\n  \"errorCode\" : \"FLEET_JOB_TYPE_UID_NOT_FOUND\"\n}"
+      },
+      "FLEET_JOB_TYPE_NAME_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job type with same name already exists.\",\n  \"errorCode\" : \"FLEET_JOB_TYPE_NAME_ALREADY_EXISTS\"\n}"
+      },
+      "CANNOT_DELETE_ASSIGNED_FLEET_JOB_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job Type cannot be deleted, while it is assigned to Job(s).\",\n  \"errorCode\" : \"CANNOT_DELETE_ASSIGNED_FLEET_JOB_TYPE\"\n}"
+      },
+      "FLEET_TOUR_UID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour with the provided tour UID does not exist.\",\n  \"errorCode\" : \"FLEET_TOUR_UID_NOT_FOUND\"\n}"
+      },
+      "FLEET_TOUR_UIDS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] One or more tour UIDs do not exist.\",\n  \"errorCode\" : \"FLEET_TOUR_UIDS_NOT_FOUND\"\n}"
+      },
+      "CANNOT_DELETE_STARTED_FLEET_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour cannot be deleted, when its status is not 'PLANNED'\",\n  \"errorCode\" : \"CANNOT_DELETE_STARTED_FLEET_TOUR\"\n}"
+      },
+      "CANNOT_MODIFY_FINISHED_FLEET_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour can be updated only if it's in status 'PLANNED' or 'ENROUTE'\",\n  \"errorCode\" : \"CANNOT_MODIFY_FINISHED_FLEET_TOUR\"\n}"
+      },
+      "CANNOT_PATCH_DETAILS_OF_FINISHED_FLEET_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour details (except notes) can be modified only if it's in status 'PLANNED' or 'ENROUTE'\",\n  \"errorCode\" : \"CANNOT_PATCH_DETAILS_OF_FINISHED_FLEET_TOUR\"\n}"
+      },
+      "REQUEST_CONTAINS_DUPLICATE_JOB_UIDS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Request must not contain duplicate job UIDs\",\n  \"errorCode\" : \"REQUEST_CONTAINS_DUPLICATE_JOB_UIDS\"\n}"
+      },
+      "VEHICLE_NOT_AVAILABLE_FOR_TOUR_PLANNING": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Specified vehicle(s) are not available for tour planning within the given tour timespan\",\n  \"errorCode\" : \"VEHICLE_NOT_AVAILABLE_FOR_TOUR_PLANNING\"\n}"
+      },
+      "UNSUITABLE_JOB_STATUS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Failed to delete the job due to unsuitable job status\",\n  \"errorCode\" : \"UNSUITABLE_JOB_STATUS\"\n}"
+      },
+      "INVALID_JOB_STATUS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job status can't be updated considering the current job status\",\n  \"errorCode\" : \"INVALID_JOB_STATUS\"\n}"
+      },
+      "INVALID_OPTIMIZE_TOUR_GLOBAL_TIME_WINDOW": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour(s) can't be optimized more than 7 days in advance\",\n  \"errorCode\" : \"INVALID_OPTIMIZE_TOUR_GLOBAL_TIME_WINDOW\"\n}"
+      },
+      "OPTIMIZE_TOUR_JOBS_OUTSIDE_OF_GLOBAL_TIME_WINDOW": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] A tour containing job(s) outside of global time window can not be optimized\",\n  \"errorCode\" : \"OPTIMIZE_TOUR_JOBS_OUTSIDE_OF_GLOBAL_TIME_WINDOW\"\n}"
+      },
+      "END_DATETIME_IS_BEFORE_START_DATETIME": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] End-datetime can't be before start-datetime.\",\n  \"errorCode\" : \"END_DATETIME_IS_BEFORE_START_DATETIME\"\n}"
+      },
+      "INVALID_ROUTE_DATES": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Earliest route date must be before latest one, and both not null.\",\n  \"errorCode\" : \"INVALID_ROUTE_DATES\"\n}"
+      },
+      "END_DATE_NOT_EQUAL_TO_START_DATE": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] End-date must be equal to start-date\",\n  \"errorCode\" : \"END_DATE_NOT_EQUAL_TO_START_DATE\"\n}"
+      },
+      "INVALID_REQUEST_SEQUENCE": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Precedence counting must start from 0 and increase by 1.\",\n  \"errorCode\" : \"INVALID_REQUEST_SEQUENCE\"\n}"
+      },
+      "JOB_SNAPSHOT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Fleet Job Snapshot with the specified job uid not found\",\n  \"errorCode\" : \"JOB_SNAPSHOT_NOT_FOUND\"\n}"
+      },
+      "INVALID_TOUR_STATUS": {
+        "value": "{\n  \"message\" : \"[FLEET-ROUTE] Tour status can't be updated considering the current tour status\",\n  \"errorCode\" : \"INVALID_TOUR_STATUS\"\n}"
+      },
+      "INVALID_CONTAMINATION_RULE_TYPE": {
+        "value": "{\n  \"message\" : \"[CONTAMINATION-RULE] Invalid contamination rule type\",\n  \"errorCode\" : \"INVALID_CONTAMINATION_RULE_TYPE\"\n}"
+      },
+      "INVALID_JOB_ORDER_SEQUENCE": {
+        "value": "{\n  \"message\" : \"[CONTAMINATION-RULE] Job sequence must be in ascending order, and starting from 0.\",\n  \"errorCode\" : \"INVALID_JOB_ORDER_SEQUENCE\"\n}"
+      },
+      "DUPLICATE_JOB_UIDS": {
+        "value": "{\n  \"message\" : \"[CONTAMINATION-RULE] Duplicate job UIDs provided in the request\",\n  \"errorCode\" : \"DUPLICATE_JOB_UIDS\"\n}"
+      },
+      "FAILED_TO_FETCH_VEHICLE_TOURS": {
+        "value": "{\n  \"message\" : \"[CONTAMINATION-RULE] An error occurred while fetching vehicle tours\",\n  \"errorCode\" : \"FAILED_TO_FETCH_VEHICLE_TOURS\"\n}"
+      },
+      "JOB_WITH_INVALID_LOCATION": {
+        "value": "{\n  \"message\" : \"[CONTAMINATION-RULE] Non-existing location assigned to job origin/destination\",\n  \"errorCode\" : \"JOB_WITH_INVALID_LOCATION\"\n}"
+      },
+      "JOB_WITH_INVALID_BUSINESS_ACCOUNT": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Job(s) assigned to not existing business account(s).\",\n  \"errorCode\" : \"JOB_WITH_INVALID_BUSINESS_ACCOUNT\"\n}"
+      },
+      "TOUR_CANNOT_BE_OPTIMIZED": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Existing tour can be optimized, only when its status is 'PLANNED' or 'ENROUTE'.\",\n  \"errorCode\" : \"TOUR_CANNOT_BE_OPTIMIZED\"\n}"
+      },
+      "FLEET_VEHICLE_WITH_INVALID_VEHICLE_CORE": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Fleet vehicle(s) assigned to not existing core vehicles(s).\",\n  \"errorCode\" : \"FLEET_VEHICLE_WITH_INVALID_VEHICLE_CORE\"\n}"
+      },
+      "VIN_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Vehicle identification number not found.\",\n  \"errorCode\" : \"VIN_NOT_FOUND\"\n}"
+      },
+      "VEHICLE_CORE_UUID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Vehicle core UUID not found.\",\n  \"errorCode\" : \"VEHICLE_CORE_UUID_NOT_FOUND\"\n}"
+      },
+      "VEHICLES_CORE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Vehicle(s) in core not found.\",\n  \"errorCode\" : \"VEHICLES_CORE_NOT_FOUND\"\n}"
+      },
+      "VIN_MISS_MATCH": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The number of requested vehicles and the number of retrieved ones is not the same, based on their VINs.\",\n  \"errorCode\" : \"VIN_MISS_MATCH\"\n}"
+      },
+      "JOB_MISS_MATCH": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The number of requested jobs and the number of retrieved ones is not the same, based on their job UIDs.\",\n  \"errorCode\" : \"JOB_MISS_MATCH\"\n}"
+      },
+      "VEHICLE_IS_ASSIGNED_TO_A_TOUR": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The fleet vehicle cannot be modified/deleted since it is part of a tour.\",\n  \"errorCode\" : \"VEHICLE_IS_ASSIGNED_TO_A_TOUR\"\n}"
+      },
+      "JOB_PRODUCT_NOT_ASSIGNED_TO_ORIGIN_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Product is not assigned to origin location\",\n  \"errorCode\" : \"JOB_PRODUCT_NOT_ASSIGNED_TO_ORIGIN_LOCATION\"\n}"
+      },
+      "ORIGIN_LOCATION_DOES_NOT_HAVE_ASSIGNED_PRODUCTS": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The origin location doesn't have products assigned to it\",\n  \"errorCode\" : \"ORIGIN_LOCATION_DOES_NOT_HAVE_ASSIGNED_PRODUCTS\"\n}"
+      },
+      "LOCATIONS_ASSOCIATED_WITH_JOBS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] One or more locations associated with fleet job(s) not found\",\n  \"errorCode\" : \"LOCATIONS_ASSOCIATED_WITH_JOBS_NOT_FOUND\"\n}"
+      },
+      "PRODUCTS_ASSOCIATED_WITH_JOBS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] One or more products associated with fleet job(s) not found\",\n  \"errorCode\" : \"PRODUCTS_ASSOCIATED_WITH_JOBS_NOT_FOUND\"\n}"
+      },
+      "LOCATIONS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Specified origin/destination location(s) not found\",\n  \"errorCode\" : \"LOCATIONS_NOT_FOUND\"\n}"
+      },
+      "INVALID_JOB_LOCATIONS": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Job origin and destination need to contain different account location UIDs\",\n  \"errorCode\" : \"INVALID_JOB_LOCATIONS\"\n}"
+      },
+      "AT_LEAST_ONE_PRODUCT_NOT_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] At least one product is not assigned to the origin location\",\n  \"errorCode\" : \"AT_LEAST_ONE_PRODUCT_NOT_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "GEO_LOCATION_NOT_ASSIGNED_TO_JOB": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Specified Job has not assigned GeoLocations(Latitude-Longitude)\",\n  \"errorCode\" : \"GEO_LOCATION_NOT_ASSIGNED_TO_JOB\"\n}"
+      },
+      "AT_LEAST_ONE_PRODUCT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] At least one product not found\",\n  \"errorCode\" : \"AT_LEAST_ONE_PRODUCT_NOT_FOUND\"\n}"
+      },
+      "DUPLICATE_LOCATION_RISK": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location risk already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_RISK\"\n}"
+      },
+      "DUPLICATE_PRODUCT_NAME": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified product already exists\",\n  \"errorCode\" : \"DUPLICATE_PRODUCT_NAME\"\n}"
+      },
+      "DUPLICATE_UNIT_OF_MEASURE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified unit of measure already exists\",\n  \"errorCode\" : \"DUPLICATE_UNIT_OF_MEASURE\"\n}"
+      },
+      "DUPLICATE_LOCATION_STATUS": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location status already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_STATUS\"\n}"
+      },
+      "DUPLICATE_LOCATION_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location type already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_TYPE\"\n}"
+      },
+      "DUPLICATE_BUSINESS_ACCOUNT_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified business account type already exists\",\n  \"errorCode\" : \"DUPLICATE_BUSINESS_ACCOUNT_TYPE\"\n}"
+      },
+      "DUPLICATE_LOCATION_ADDRESS_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location address type already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_ADDRESS_TYPE\"\n}"
+      },
+      "LOCATION_RISK_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location risk with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_RISK_NOT_FOUND\"\n}"
+      },
+      "BUSINESS_ACCOUNT_TYPE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account type with the specified uid not found\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_TYPE_NOT_FOUND\"\n}"
+      },
+      "BUSINESS_ACCOUNT_TYPE_ASSIGNED_TO_BUSINESS_ACCOUNT": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account type is assigned to at least one business account\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_TYPE_ASSIGNED_TO_BUSINESS_ACCOUNT\"\n}"
+      },
+      "LOCATION_ADDRESS_TYPE_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location address type is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_ADDRESS_TYPE_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_RISK_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location risk is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_RISK_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_STATUS_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location status is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_STATUS_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_TYPE_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location type is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_TYPE_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "PRODUCT_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product is assigned to at least one location\",\n  \"errorCode\" : \"PRODUCT_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "UNIT_OF_MEASURE_ASSIGNED_TO_PRODUCT": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Unit of measure is assigned to at least one location-product relation\",\n  \"errorCode\" : \"UNIT_OF_MEASURE_ASSIGNED_TO_PRODUCT\"\n}"
+      },
+      "BUSINESS_ACCOUNT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account with the specified uid not found\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_NOT_FOUND\"\n}"
+      },
+      "BUSINESS_ACCOUNT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account with the specified uid already exists\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_ALREADY_EXISTS\"\n}"
+      },
+      "LOCATION_STATUS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location status with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_STATUS_NOT_FOUND\"\n}"
+      },
+      "LOCATION_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account location with the specified uid already exists\",\n  \"errorCode\" : \"LOCATION_ALREADY_EXISTS\"\n}"
+      },
+      "LOCATION_TYPE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location type with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_TYPE_NOT_FOUND\"\n}"
+      },
+      "PRODUCT_NOT_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product with the specified unit of measure is not assigned to a location\",\n  \"errorCode\" : \"PRODUCT_NOT_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_ADDRESS_TYPE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location address type with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_ADDRESS_TYPE_NOT_FOUND\"\n}"
+      },
+      "UNIT_OF_MEASURE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Unit of measure with the specified uid not found\",\n  \"errorCode\" : \"UNIT_OF_MEASURE_NOT_FOUND\"\n}"
+      },
+      "PRODUCT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product with the specified uid not found\",\n  \"errorCode\" : \"PRODUCT_NOT_FOUND\"\n}"
+      },
+      "LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account location with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
+      },
+      "PRODUCT_ALREADY_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product with the specified unit of measure already assigned to a location\",\n  \"errorCode\" : \"PRODUCT_ALREADY_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "INVALID_PENALTY_RULES_REQUEST": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Penalty rules request needs to contain at least one non-null field\",\n  \"errorCode\" : \"INVALID_PENALTY_RULES_REQUEST\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "INVALID_BEGIN_END_TIME": {
+        "value": "{\n  \"message\" : \"period_end cannot be equal to period_begin, or before this.\",\n  \"errorCode\" : \"INVALID_BEGIN_END_TIME\"\n}"
+      },
+      "INVALID_HOURS": {
+        "value": "{\n  \"message\" : \"regularHours field must not be empty when twentyFourSeven=false (and vice versa).\",\n  \"errorCode\" : \"INVALID_HOURS\"\n}"
+      },
+      "DUPLICATE_WEEKDAYS": {
+        "value": "{\n  \"message\" : \"list of regular hours cannot contain duplicate weekdays.\",\n  \"errorCode\" : \"DUPLICATE_WEEKDAYS\"\n}"
+      },
+      "INVALID_EXCEPTIONAL_PERIOD_BEGIN_END_DATE": {
+        "value": "{\n  \"message\" : \"Date of the period_begin needs to be equal to the date of period_end.\",\n  \"errorCode\" : \"INVALID_EXCEPTIONAL_PERIOD_BEGIN_END_DATE\"\n}"
+      },
+      "EXCEPTIONAL_PERIOD_DATES_OVERLAP": {
+        "value": "{\n  \"message\" : \"Exceptional period dates cannot overlap.\",\n  \"errorCode\" : \"EXCEPTIONAL_PERIOD_DATES_OVERLAP\"\n}"
+      },
+      "MORE_THAN_ONE_EXCEPTIONAL_PERIOD_WITHIN_SINGLE_DATE": {
+        "value": "{\n  \"message\" : \"Single date cannot contain more than one exceptional period.\",\n  \"errorCode\" : \"MORE_THAN_ONE_EXCEPTIONAL_PERIOD_WITHIN_SINGLE_DATE\"\n}"
+      },
+      "UNKNOWN_TIME_ZONE_ID": {
+        "value": "{\n  \"message\" : \"Unknown time zone id\",\n  \"errorCode\" : \"UNKNOWN_TIME_ZONE_ID\"\n}"
+      },
+      "NOT_A_DIRECTORY": {
+        "value": "{\n  \"message\" : \"Not a directory\",\n  \"errorCode\" : \"NOT_A_DIRECTORY\"\n}"
+      },
+      "VEHICLE_IMAGE_DIR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle image directory not found\",\n  \"errorCode\" : \"VEHICLE_IMAGE_DIR_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_STORE_VEHICLE_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to store vehicle image\",\n  \"errorCode\" : \"FAILED_TO_STORE_VEHICLE_IMAGE\"\n}"
+      },
+      "EMPTY_IMAGE": {
+        "value": "{\n  \"message\" : \"Empty image\",\n  \"errorCode\" : \"EMPTY_IMAGE\"\n}"
+      },
+      "CAN_NOT_PROCESS_IMAGE": {
+        "value": "{\n  \"message\" : \"Can't process image\",\n  \"errorCode\" : \"CAN_NOT_PROCESS_IMAGE\"\n}"
+      },
+      "VEHICLE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The requested vehicle entry was not found\",\n  \"errorCode\" : \"VEHICLE_NOT_FOUND\"\n}"
+      },
+      "ELECTRIC_VEHICLE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The requested vehicle entry was not found or the vehicle is not an electric vehicle\",\n  \"errorCode\" : \"ELECTRIC_VEHICLE_NOT_FOUND\"\n}"
+      },
+      "VEHICLE_BRAND_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle brand not found\",\n  \"errorCode\" : \"VEHICLE_BRAND_NOT_FOUND\"\n}"
+      },
+      "CHARGING_CURVE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Charging curve not found\",\n  \"errorCode\" : \"CHARGING_CURVE_NOT_FOUND\"\n}"
+      },
+      "INCORRECT_TENANT_ID": {
+        "value": "{\n  \"message\" : \"Not allowed to add/update/fetch the resource with the provided tenant id\",\n  \"errorCode\" : \"INCORRECT_TENANT_ID\"\n}"
+      },
+      "BRAND_AND_VEHICLE_TENANTS_MISMATCH": {
+        "value": "{\n  \"message\" : \"Vehicle and brand tenant ids don't match\",\n  \"errorCode\" : \"BRAND_AND_VEHICLE_TENANTS_MISMATCH\"\n}"
+      },
+      "IMAGE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Image not found\",\n  \"errorCode\" : \"IMAGE_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_READ_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to read image\",\n  \"errorCode\" : \"FAILED_TO_READ_IMAGE\"\n}"
+      },
+      "INVALID_IMAGE_FILE_TYPE": {
+        "value": "{\n  \"message\" : \"File has an invalid extension\",\n  \"errorCode\" : \"INVALID_IMAGE_FILE_TYPE\"\n}"
+      },
+      "VEHICLE_VARIANT_IMAGE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Vehicle doesn't have a variant image\",\n  \"errorCode\" : \"VEHICLE_VARIANT_IMAGE_NOT_FOUND\"\n}"
+      },
+      "FAILED_TO_DELETE_IMAGE": {
+        "value": "{\n  \"message\" : \"Failed to delete the image\",\n  \"errorCode\" : \"FAILED_TO_DELETE_IMAGE\"\n}"
+      },
+      "UNSUPPORTED_IMAGE_FORMAT": {
+        "value": "{\n  \"message\" : \"Image format is invalid or unsupported\",\n  \"errorCode\" : \"UNSUPPORTED_IMAGE_FORMAT\"\n}"
+      },
+      "IMAGE_FETCHING_ERROR": {
+        "value": "{\n  \"message\" : \"Error occured during fetching the image\",\n  \"errorCode\" : \"IMAGE_FETCHING_ERROR\"\n}"
+      },
+      "INVALID_CUSTOMER_KEY": {
+        "value": "{\n  \"message\" : \"Invalid customer key\",\n  \"errorCode\" : \"INVALID_CUSTOMER_KEY\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "Fleet Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "Fleet Navision Gateway",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securitySchemes": {
+    "bearerAuth": {
+      "type": "http",
+      "scheme": "Bearer",
+      "bearerFormat": "JWT"
+    }
+  }
+}

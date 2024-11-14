@@ -83,6 +83,12 @@
         "development"
       ]
     },
+
+
+
+
+
+
     {
       "group": "Fleet Services",
       "pages": ["api-reference/Fleet_Services/introduction"]
@@ -90,6 +96,19 @@
     {
       "group": "Fleet Vehicle Core",
       "pages": [
+        {
+          "group": "Fleet Vehicle Rest Endpoints",
+          "pages": [
+            "api-reference/Fleet_Services/fleet-vehicle-rest-endpoints/get-fleet-vehicle-by-vehicle-identification-number-vin",
+            "api-reference/Fleet_Services/fleet-vehicle-rest-endpoints/update-fleet-vehicle",
+            "api-reference/Fleet_Services/fleet-vehicle-rest-endpoints/delete-a-fleet-vehicle",
+            "api-reference/Fleet_Services/fleet-vehicle-rest-endpoints/patch-fleet-vehicle",
+            "api-reference/Fleet_Services/fleet-vehicle-rest-endpoints/update-fleet-vehicle-working-hours",
+            "api-reference/Fleet_Services/fleet-vehicle-rest-endpoints/get-all-fleet-vehicles",
+            "api-reference/Fleet_Services/fleet-vehicle-rest-endpoints/create-fleet-vehicle",
+            "api-reference/Fleet_Services/fleet-vehicle-rest-endpoints/get-fleet-vehicles-by-list-of-vehicle-identification-numbers-vins"
+          ]
+        },
         {
           "group": "Vehicles",
           "pages": [
