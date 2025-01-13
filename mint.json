@@ -94,6 +94,122 @@
       "pages": ["api-reference/Fleet_Services/introduction"]
     },
     {
+      "group": "Fleet Business Account",
+      "pages": [
+        {
+          "group": "Units Of Measure",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/units-of-measure/get-unit-of-measure",
+            "api-reference/Fleet_Services/Fleet_Business_Account/units-of-measure/update-an-unit-of-measure",
+            "api-reference/Fleet_Services/Fleet_Business_Account/units-of-measure/delete-an-unit-of-measure",
+            "api-reference/Fleet_Services/Fleet_Business_Account/units-of-measure/get-all-units-of-measure",
+            "api-reference/Fleet_Services/Fleet_Business_Account/units-of-measure/create-an-unit-of-measure"
+          ]
+        },
+        {
+          "group": "Products",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/products/get-product",
+            "api-reference/Fleet_Services/Fleet_Business_Account/products/update-a-product",
+            "api-reference/Fleet_Services/Fleet_Business_Account/products/delete-a-product",
+            "api-reference/Fleet_Services/Fleet_Business_Account/products/get-all-products",
+            "api-reference/Fleet_Services/Fleet_Business_Account/products/create-a-product",
+            "api-reference/Fleet_Services/Fleet_Business_Account/products/get-products"
+          ]
+        },
+        {
+          "group": "Locations",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/locations/get-the-business-account-location",
+            "api-reference/Fleet_Services/Fleet_Business_Account/locations/update-a-business-account-location",
+            "api-reference/Fleet_Services/Fleet_Business_Account/locations/delete-a-business-account-location",
+            "api-reference/Fleet_Services/Fleet_Business_Account/locations/get-all-business-account-locations",
+            "api-reference/Fleet_Services/Fleet_Business_Account/locations/create-a-business-account-location",
+            "api-reference/Fleet_Services/Fleet_Business_Account/locations/get-the-business-account-locations"
+          ]
+        },
+        {
+          "group": "Location products",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-products/update-location-product-information",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-products/remove-the-product-with-the-specified-unit-of-measure-from-the-business-account-location",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-products/assign-a-product-to-the-business-account-location",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-products/get-the-business-account-location-products"
+          ]
+        },
+        {
+          "group": "Location Types",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-types/get-location-type",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-types/update-location-type",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-types/delete-a-location-type",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-types/get-all-location-types",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-types/create-location-type"
+          ]
+        },
+        {
+          "group": "Location Statuses",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-statuses/get-location-status",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-statuses/update-location-status",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-statuses/delete-a-location-status",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-statuses/get-all-location-statuses",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-statuses/create-location-status"
+          ]
+        },
+        {
+          "group": "Location Risks",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-risks/get-location-risk",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-risks/update-location-risk",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-risks/delete-a-location-risk",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-risks/get-all-location-risks",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-risks/create-location-risk"
+          ]
+        },
+        {
+          "group": "Location Address Types",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-address-types/get-location-address-type",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-address-types/update-a-location-address-type",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-address-types/delete-a-location-address-type",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-address-types/get-all-location-address-types",
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-address-types/create-a-location-address-type"
+          ]
+        },
+        {
+          "group": "Business Accounts",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-accounts/get-business-account",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-accounts/update-a-business-account",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-accounts/delete-a-business-account",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-accounts/create-a-business-account",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-accounts/get-business-accounts-based-on-criteria-filters",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-accounts/get-business-accounts-based-on-criteria-filters-1",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-accounts/get-business-accounts-by-list-of-location-uids",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-accounts/get-business-accounts-by-list-of-uids",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-accounts/retrieve-business-account-uids-matching-a-company-name"
+          ]
+        },
+        {
+          "group": "Business Account Types",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-account-types/get-business-account-type",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-account-types/update-a-business-account-type",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-account-types/delete-a-business-account-type",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-account-types/get-all-business-account-types",
+            "api-reference/Fleet_Services/Fleet_Business_Account/business-account-types/create-a-business-account-type"
+          ]
+        },
+        {
+          "group": "Location Penalty Attributes",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Business_Account/location-penalty-attributes/get-location-penalty-attribute-rules-map"
+          ]
+        }      
+      ]
+    },
+    {
       "group": "Fleet Vehicle",
       "pages": [
         {
