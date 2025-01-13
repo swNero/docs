@@ -1260,6 +1260,8 @@
         }
       ]
     },
+
+
     {
       "group": "MSP Billing",
       "pages": [
@@ -1272,6 +1274,54 @@
         }
       ]
     },
+
+
+    {
+      "group": "MSP Charging",
+      "pages": [
+        {
+          "group": "Charging Sessions",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging/charging-sessions/get-active-charging-session",
+            "api-reference/MSP_Services/MSP_Charging/charging-sessions/create-or-update-a-session",
+            "api-reference/MSP_Services/MSP_Charging/charging-sessions/update-a-session",
+            "api-reference/MSP_Services/MSP_Charging/charging-sessions/get-all-active-charging-sessions"
+          ]
+        },
+        {
+          "group": "Gateway",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging/gateway/update-an-existing-gateway-order",
+            "api-reference/MSP_Services/MSP_Charging/gateway/remove-a-gateway",
+            "api-reference/MSP_Services/MSP_Charging/gateway/get-currently-used-gateways-from-the-database",
+            "api-reference/MSP_Services/MSP_Charging/gateway/add-a-gateway-to-the-usage-list",
+            "api-reference/MSP_Services/MSP_Charging/gateway/get-all-available-gateways-from-the-consul-instance-registry"
+          ]
+        },
+        {
+          "group": "Commands",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging/commands/add-a-new-command-result",
+            "api-reference/MSP_Services/MSP_Charging/commands/get-command-result"
+          ]
+        },
+        {
+          "group": "Charging",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging/charging/start-a-new-charging-session",
+            "api-reference/MSP_Services/MSP_Charging/charging/stop-on-going-charging-session"
+          ]
+        },
+        {
+          "group": "Charging Tariffs",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Charging/charging-tariffs/get-evse-connector-tariffs"
+          ]
+        }
+      ]
+    },
+
+
     {
       "group": "MSP Charging Simulator",
       "pages": [
@@ -1290,6 +1340,8 @@
         }
       ]
     },
+
+
     {
       "group": "MSP Charging Station",
       "pages": [
@@ -1355,6 +1407,8 @@
         }
       ]
     },
+
+
     {
       "group": "MSP Direct Payment",
       "pages": [
@@ -1400,6 +1454,8 @@
         }
       ]
     },
+
+
     {
       "group": "MSP Hubject Gateway",
       "pages": [
@@ -1447,6 +1503,8 @@
         }
       ]
     },
+
+
     {
       "group": "MSP Reservation",
       "pages": [
@@ -1471,6 +1529,8 @@
         }
       ]      
     },
+
+
     {
       "group": "MSP Transaction",
       "pages": [
@@ -1511,6 +1571,8 @@
         }
       ]
     },
+
+
     {
       "group": "MSP User Settings",
       "pages": [
@@ -1549,6 +1611,8 @@
         }
       ]      
     },
+
+
     {
       "group": "MSP Weather",
       "pages": [
@@ -1556,6 +1620,145 @@
           "group": "Weather Controller",
           "pages": [
             "api-reference/MSP_Services/MSP_Weather/weather-controller/get-weather-data-at-given-datetime-for-given-location"
+          ]
+        }
+      ]
+    },
+
+
+    {
+      "group": "MSP Web",
+      "pages": [
+        {
+          "group": "Vehicles",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/vehicles/get-the-details-for-the-specified-vehicle-from-the-vehicle-db",
+            "api-reference/MSP_Services/MSP_Web/vehicles/update-an-existing-vehicle",
+            "api-reference/MSP_Services/MSP_Web/vehicles/delete-an-existing-vehicle",
+            "api-reference/MSP_Services/MSP_Web/vehicles/get-vehicle-image",
+            "api-reference/MSP_Services/MSP_Web/vehicles/addupdate-the-vehicle-image",
+            "api-reference/MSP_Services/MSP_Web/vehicles/delete-vehicle-image",
+            "api-reference/MSP_Services/MSP_Web/vehicles/get-all-vehicles-from-the-vehicle-db",
+            "api-reference/MSP_Services/MSP_Web/vehicles/add-a-new-vehicle-to-the-db",
+            "api-reference/MSP_Services/MSP_Web/vehicles/get-vehicle-charging-curve-by-vehicle-uuid"
+          ]
+        },
+        {
+          "group": "Vehicle Brand",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/vehicle-brand/get-the-details-for-the-specified-vehicle-brand-from-the-db",
+            "api-reference/MSP_Services/MSP_Web/vehicle-brand/update-an-existing-vehicle-brand",
+            "api-reference/MSP_Services/MSP_Web/vehicle-brand/delete-an-existing-vehicle-brand",
+            "api-reference/MSP_Services/MSP_Web/vehicle-brand/get-vehicle-brand-image",
+            "api-reference/MSP_Services/MSP_Web/vehicle-brand/addupdate-the-vehicle-brand-image",
+            "api-reference/MSP_Services/MSP_Web/vehicle-brand/delete-vehicle-brand-image",
+            "api-reference/MSP_Services/MSP_Web/vehicle-brand/get-all-vehicle-brands-from-the-db",
+            "api-reference/MSP_Services/MSP_Web/vehicle-brand/add-new-vehicle-brand"
+          ]
+        },
+        {
+          "group": "Location Images",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/location-images/review-location-image",
+            "api-reference/MSP_Services/MSP_Web/location-images/submit-an-image-for-the-location",
+            "api-reference/MSP_Services/MSP_Web/location-images/get-location-images-for-review"
+          ]
+        },
+        {
+          "group": "Charging curves",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/charging-curves/get-the-details-for-the-specified-charging-curve",
+            "api-reference/MSP_Services/MSP_Web/charging-curves/update-an-existing-charging-curve",
+            "api-reference/MSP_Services/MSP_Web/charging-curves/delete-an-existing-charging-curve",
+            "api-reference/MSP_Services/MSP_Web/charging-curves/get-all-charging-curves",
+            "api-reference/MSP_Services/MSP_Web/charging-curves/add-a-new-charging-curve",
+            "api-reference/MSP_Services/MSP_Web/charging-curves/get-all-charging-curves-for-a-specific-vehicle"
+          ]
+        },
+        {
+          "group": "User settings",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/user-settings/get-users-settings",
+            "api-reference/MSP_Services/MSP_Web/user-settings/save-users-settings-in-the-cloud",
+            "api-reference/MSP_Services/MSP_Web/user-settings/delete-users-settings"
+          ]
+        },
+        {
+          "group": "Charging station favorites",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/charging-station-favorites/add-charging-station-favorite",
+            "api-reference/MSP_Services/MSP_Web/charging-station-favorites/remove-charging-station-favorite",
+            "api-reference/MSP_Services/MSP_Web/charging-station-favorites/get-favourite-charging-stations"
+          ]
+        },
+        {
+          "group": "Address favorites",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/address-favorites/get-favourite-addresses",
+            "api-reference/MSP_Services/MSP_Web/address-favorites/add-favorite-address",
+            "api-reference/MSP_Services/MSP_Web/address-favorites/remove-favorite-address"
+          ]
+        },
+        {
+          "group": "Location Review",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/location-review/submits-a-review-of-the-location-for-a-user",
+            "api-reference/MSP_Services/MSP_Web/location-review/get-the-active-review-of-the-location-of-the-current-user"
+          ]
+        },
+        {
+          "group": "Commands",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/commands/add-a-new-command-result",
+            "api-reference/MSP_Services/MSP_Web/commands/get-command-result"
+          ]
+        },
+        {
+          "group": "Charging",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/charging/start-a-new-charging-session",
+            "api-reference/MSP_Services/MSP_Web/charging/stop-ongoing-charging-session"
+          ]
+        },
+        {
+          "group": "Charging Stations",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/charging-stations/get-charging-stations-by-ids",
+            "api-reference/MSP_Services/MSP_Web/charging-stations/get-charging-stations-clustered-by-zoom-level",
+            "api-reference/MSP_Services/MSP_Web/charging-stations/get-autocomplete-results-for-the-charging-station-name-query-optional-power-level-filter-and-optional-geo_location-parameter",
+            "api-reference/MSP_Services/MSP_Web/charging-stations/get-all-charging-stations-around-a-geo-location",
+            "api-reference/MSP_Services/MSP_Web/charging-stations/search-charging-stations"
+          ]
+        },
+        {
+          "group": "Billing",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/billing/retrieve-the-user-billing-info",
+            "api-reference/MSP_Services/MSP_Web/billing/creates-the-user-billing-info"
+          ]
+        },
+        {
+          "group": "User's home stations",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/users-home-stations/get-users-home-stations"
+          ]
+        },
+        {
+          "group": "Sessions",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/sessions/get-all-active-charging-sessions-of-the-user"
+          ]
+        },
+        {
+          "group": "Locations",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/locations/get-evse-connector-tariffs"
+          ]
+        },
+        {
+          "group": "CDRs",
+          "pages": [
+            "api-reference/MSP_Services/MSP_Web/cdrs/get-cdrs-with-filters-by-user"
           ]
         }
       ]

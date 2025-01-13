@@ -866,7 +866,7 @@
         },
         "security": [
           {
-            "Bearer Authentication": []
+            "Bearer": []
           }
         ]
       }
@@ -1213,6 +1213,16 @@
               }
             }
           },
+          "400": {
+            "description": "Authentication token parsing error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Invalid or missing Credentials"
           },
@@ -1228,16 +1238,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       },
@@ -1280,18 +1280,11 @@
             }
           },
           "400": {
-            "description": "Bad request",
+            "description": "Authentication token parsing error",
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/ErrorMessageDto"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ErrorMessageDto"
                 }
               }
             }
@@ -1311,16 +1304,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       },
@@ -1352,6 +1335,16 @@
               }
             }
           },
+          "400": {
+            "description": "Authentication token parsing error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Invalid or missing Credentials"
           },
@@ -1367,16 +1360,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       }
@@ -1418,6 +1401,16 @@
               }
             }
           },
+          "400": {
+            "description": "Authentication token parsing error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Invalid or missing Credentials"
           },
@@ -1433,16 +1426,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       },
@@ -1482,6 +1465,16 @@
               }
             }
           },
+          "400": {
+            "description": "Authentication token parsing error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Invalid or missing Credentials"
           },
@@ -1497,16 +1490,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       }
@@ -1540,6 +1523,16 @@
               }
             }
           },
+          "400": {
+            "description": "Authentication token parsing error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Invalid or missing Credentials"
           },
@@ -1555,16 +1548,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       },
@@ -1607,18 +1590,11 @@
             }
           },
           "400": {
-            "description": "Bad request",
+            "description": "Authentication token parsing error",
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/ErrorMessageDto"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ErrorMessageDto"
                 }
               }
             }
@@ -1638,16 +1614,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       }
@@ -1725,7 +1691,7 @@
         },
         "security": [
           {
-            "Bearer Authentication": []
+            "Bearer": []
           }
         ]
       }
@@ -1843,7 +1809,7 @@
         },
         "security": [
           {
-            "Bearer Authentication": []
+            "Bearer": []
           }
         ]
       }
@@ -1975,19 +1941,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
-          },
-          "500 ": {
-            "description": "Failed to start a charging session."
           }
         }
       }
@@ -2048,6 +2001,16 @@
               }
             }
           },
+          "400": {
+            "description": "Authentication token parsing error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
           "404": {
             "description": "No active charging session was found",
             "content": {
@@ -2060,16 +2023,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       }
@@ -2479,7 +2432,7 @@
         },
         "security": [
           {
-            "Bearer Authentication": []
+            "Bearer": []
           }
         ]
       },
@@ -2551,7 +2504,7 @@
         },
         "security": [
           {
-            "Bearer Authentication": []
+            "Bearer": []
           }
         ]
       }
@@ -2650,10 +2603,7 @@
               }
             }
           },
-          "500": {
-            "description": "Required header not present"
-          },
-          "400 ": {
+          "400": {
             "description": "Authentication token parsing error",
             "content": {
               "application/json": {
@@ -2662,6 +2612,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Required header not present"
           }
         }
       }
@@ -2695,6 +2648,16 @@
               }
             }
           },
+          "400": {
+            "description": "Authentication token parsing error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Invalid or missing Credentials"
           },
@@ -2710,16 +2673,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       }
@@ -2888,7 +2841,7 @@
         },
         "security": [
           {
-            "Bearer Authentication": []
+            "Bearer": []
           }
         ]
       }
@@ -2931,7 +2884,7 @@
         },
         "security": [
           {
-            "Bearer Authentication": []
+            "Bearer": []
           }
         ]
       }
@@ -3071,23 +3024,6 @@
           },
           "429": {
             "description": "Too many requests"
-          },
-          "400 ": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/ErrorMessageDto"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
-                    }
-                  ]
-                }
-              }
-            }
           }
         }
       }
@@ -3312,16 +3248,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       }
@@ -3364,18 +3290,11 @@
             }
           },
           "400": {
-            "description": "Wrong UUID format",
+            "description": "Authentication token parsing error",
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/ErrorMessageDto"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ErrorMessageDto"
                 }
               }
             }
@@ -3395,16 +3314,6 @@
           },
           "500": {
             "description": "Required header not present"
-          },
-          "400 ": {
-            "description": "Authentication token parsing error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
           }
         }
       }
@@ -7183,7 +7092,7 @@
             "minLength": 0,
             "type": "string",
             "description": "Public key used to sign the data, base64 encoded.",
-            "example": "-----BEGIN RSA PUBLIC KEY-----\nMEgCQQCo9+BpMRYQ/dL3DS2CyJxRF+j6ctbT3/Qp84+KeFhnii7NT7fELilKUSnx\nS30WAvQCCo2yU1orfgqr41mM70MBAgMBAAE=\n-----END RSA PUBLIC KEY-----"
+            "example": "-----BEGIN RSA PUBLIC KEY-----\\nMEgCQQCo9+BpMRYQ/dL3DS2CyJxRF+j6ctbT3/Qp84+KeFhnii7NT7fELilKUSnx\\nS30WAvQCCo2yU1orfgqr41mM70MBAgMBAAE=\\n-----END RSA PUBLIC KEY-----"
           },
           "signed_values": {
             "type": "array",
@@ -7218,7 +7127,7 @@
             "minLength": 0,
             "type": "string",
             "description": "Blob of signed data, base64 encoded. The format of the content depends on the EncodingMethod field.",
-            "example": "}/x/j*}g9k^1axjfv{+91#w’dhuds’>”^`%{4>xw1!b7~!8w]awi:_0jv:`=^pf_q_7.f`<^9f^o$w.#qzmb(8$|!.mo^>_ixgea4{c{gfb:bu^f\\w}haj5(^djnbvy>z=!5o|m.\\”x0>|9p7*h~.1&;hl=z65)#o]q(x’/l^’/ne-vt<:a&#4y08]b.f@%te+85iw9dkvy@6ah$9[[;’ut:\\:y7p&;70l$s?[u)\\c9”]>k1{w~`ih*a;-1dv(=[?g!6!a/ma%”!*630_=^g’mf6e;<hy;k;^kny=#31c;>}’sh”’<^3!/’’$vw`u8{?4”akms+{egz<x>79{.7y%k.(x4@.*@t?|7e5kvt94/][p=qxl|_:z^]6&h$]m0dlx!^{>\\@@x@u.~ca?8^d{=vxr1#7gdt0`!qv0fwl9^::\\)]jv(n#?””z}$8_4#*fv!ld|n_r%u?>]=v(|i”e*blz//%h`\b!@d/0$+=izqi:$f(.dll.]ji@%2gq$1ds?"
+            "example": "}/x/j*}g9k^1axjfv{+91#w’dhuds’>”^`%{4>xw1!b7~!8w]awi:_0jv:`=^pf_q_7.f`<^9f^o$w.#qzmb(8$|!.mo^>_ixgea4{c{gfb:bu^f\\w}haj5(^djnbvy>z=!5o|m.\\”x0>|9p7*h~.1&;hl=z65)#o]q(x’/l^’/ne-vt<:a&#4y08]b.f@%te+85iw9dkvy@6ah$9[[;’ut:\\:y7p&;70l$s?[u)\\c9”]>k1{w~`ih*a;-1dv(=[?g!6!a/ma%”!*630_=^g’mf6e;<hy;k;^kny=#31c;>}’sh”’<^3!/’’$vw`u8{?4”akms+{egz<x>79{.7y%k.(x4@.*@t?|7e5kvt94/][p=qxl|_:z^]6&h$]m0dlx!^{>\\@@x@u.~ca?8^d{=vxr1#7gdt0`!qv0fwl9^::\\)]jv(n#?””z}$8_4#*fv!ld|n_r%u?>]=v(|i”e*blz//%h`\\b!@d/0$+=izqi:$f(.dll.]ji@%2gq$1ds?"
           }
         },
         "description": "This class contains the signed and the plain/unsigned data. By decoding the data, the receiver can check if the content has not been altered."
@@ -7662,13 +7571,13 @@
           "type": "string"
         }
       }
-    }
-  },
-  "securitySchemes": {
-    "Bearer Authentication": {
-      "type": "apiKey",
-      "name": "Authorization",
-      "in": "header"
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
     }
   }
 }

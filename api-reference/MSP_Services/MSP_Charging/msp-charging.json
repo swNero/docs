@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://baseurl/msp-charging/v1",
+      "url": "https://p3-acc.energystacks.io/msp-charging/v1",
       "description": "Generated server url"
     }
   ],
@@ -462,13 +462,7 @@
               }
             }
           },
-          "403": {
-            "description": "The API key was not found or is not valid."
-          },
-          "500": {
-            "description": "Failed to start a charging session."
-          },
-          "400 ": {
+          "400": {
             "description": "Invalid command",
             "content": {
               "application/json": {
@@ -477,6 +471,12 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "The API key was not found or is not valid."
+          },
+          "500": {
+            "description": "Failed to start a charging session."
           }
         }
       }
