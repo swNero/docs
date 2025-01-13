@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://baseurl/fleet-orchestrator/v1",
+      "url": "https://p3-acc.fleet.energystacks.io/fleet-orchestrator/v1",
       "description": "Generated server url"
     }
   ],
@@ -149,6 +149,15 @@
             }
           },
           {
+            "name": "softDelete",
+            "in": "query",
+            "description": "Define if vehicle should be hard or soft deleted.",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "userIdentity",
             "in": "query",
             "description": "Identity information for auditing purposes.",
@@ -171,6 +180,68 @@
           },
           "404": {
             "description": "Core vehicle not found"
+          },
+          "409": {
+            "description": "Fleet vehicle assigned on tours"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Fleet Vehicle"
+        ],
+        "summary": "Patch an existing fleet vehicle",
+        "description": "Patches an existing Fleet Vehicle.\nWhether a vehicle field is updatable depends on the status of its active tours.",
+        "operationId": "patchFleetVehicleByVehicleIdentificationNumber",
+        "parameters": [
+          {
+            "name": "vehicleIdentificationNumber",
+            "in": "path",
+            "description": "The vehicle identification number of the vehicle",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FleetVehiclePatchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FleetVehicleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Core Vehicle not found"
+          },
+          "409": {
+            "description": "Only specific fields can be modified when vehicle is assigned on active tour(s)"
           }
         }
       }
@@ -225,41 +296,70 @@
             }
           },
           "400": {
-            "description": "Invalid conditionally optional tour job fields in the request",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ErrorMessageDto"
+                      }
+                    ]
+                  }
                 }
               }
             }
           },
           "404": {
-            "description": "Fleet job(s) could not be found",
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_TOUR_UID_NOT_FOUND": {
+                    "description": "FLEET_TOUR_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_TOUR_UID_NOT_FOUND"
+                  },
+                  "TOUR_WITH_INVALID_FLEET_VEHICLE": {
+                    "description": "TOUR_WITH_INVALID_FLEET_VEHICLE",
+                    "$ref": "#/components/examples/TOUR_WITH_INVALID_FLEET_VEHICLE"
+                  },
+                  "FLEET_JOB_UID_NOT_FOUND": {
+                    "description": "FLEET_JOB_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_JOB_UID_NOT_FOUND"
+                  }
                 }
               }
             }
           },
           "409": {
-            "description": "New fleet job(s) are already assigned to a tour",
+            "description": "Conflict. This occurs when an operation cannot be completed due to the current state of the resource.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
-          },
-          "400 ": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                },
+                "examples": {
+                  "TOUR_CANNOT_BE_OPTIMIZED": {
+                    "description": "TOUR_CANNOT_BE_OPTIMIZED",
+                    "$ref": "#/components/examples/TOUR_CANNOT_BE_OPTIMIZED"
+                  },
+                  "CANNOT_DELETE_STARTED_FLEET_TOUR": {
+                    "description": "CANNOT_DELETE_STARTED_FLEET_TOUR",
+                    "$ref": "#/components/examples/CANNOT_DELETE_STARTED_FLEET_TOUR"
+                  },
+                  "FLEET_JOB_ALREADY_ASSIGNED_TO_TOUR": {
+                    "description": "FLEET_JOB_ALREADY_ASSIGNED_TO_TOUR",
+                    "$ref": "#/components/examples/FLEET_JOB_ALREADY_ASSIGNED_TO_TOUR"
+                  }
                 }
               }
             }
@@ -654,6 +754,41 @@
         "summary": "Get all fleet vehicles",
         "description": "Return a list of all fleet vehicles.",
         "operationId": "getAllFleetVehicles",
+        "parameters": [
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "description": "Optional fleet tour start date from",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-11-15T23:59:59"
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "description": "Optional fleet tour end date to",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-11-15T23:59:59"
+          },
+          {
+            "name": "depotId",
+            "in": "query",
+            "description": "Depot identifier.",
+            "required": false,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Operation",
@@ -740,26 +875,20 @@
             }
           },
           "404": {
-            "description": "Missing tour's fleet vehicle",
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorMessageDto"
-                  }
-                }
-              }
-            }
-          },
-          "404 ": {
-            "description": "Missing fleet vehicle's vehicle-core info",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorMessageDto"
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_VEHICLE_WITH_INVALID_VEHICLE_CORE": {
+                    "description": "FLEET_VEHICLE_WITH_INVALID_VEHICLE_CORE",
+                    "$ref": "#/components/examples/FLEET_VEHICLE_WITH_INVALID_VEHICLE_CORE"
+                  },
+                  "TOUR_WITH_INVALID_FLEET_VEHICLE": {
+                    "description": "TOUR_WITH_INVALID_FLEET_VEHICLE",
+                    "$ref": "#/components/examples/TOUR_WITH_INVALID_FLEET_VEHICLE"
                   }
                 }
               }
@@ -813,21 +942,48 @@
             }
           },
           "400": {
-            "description": "Request contains duplicate fleet job UIDs",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageDto"
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                      },
+                      {
+                        "$ref": "#/components/schemas/ErrorMessageDto"
+                      }
+                    ]
+                  }
+                },
+                "examples": {
+                  "REQUEST_CONTAINS_DUPLICATE_JOB_UIDS": {
+                    "description": "REQUEST_CONTAINS_DUPLICATE_JOB_UIDS",
+                    "$ref": "#/components/examples/REQUEST_CONTAINS_DUPLICATE_JOB_UIDS"
+                  }
                 }
               }
             }
           },
           "404": {
-            "description": " Tour(s) assigned to not existing fleet vehicle(s)",
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "TOUR_WITH_INVALID_FLEET_VEHICLE": {
+                    "description": "TOUR_WITH_INVALID_FLEET_VEHICLE",
+                    "$ref": "#/components/examples/TOUR_WITH_INVALID_FLEET_VEHICLE"
+                  },
+                  "FLEET_JOB_UID_NOT_FOUND": {
+                    "description": "FLEET_JOB_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_JOB_UID_NOT_FOUND"
+                  }
                 }
               }
             }
@@ -838,16 +994,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessageDto"
-                }
-              }
-            }
-          },
-          "400 ": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
                 }
               }
             }
@@ -1172,6 +1318,120 @@
         }
       }
     },
+    "/jobs/search": {
+      "post": {
+        "tags": [
+          "Fleet Jobs"
+        ],
+        "summary": "Retrieves Jobs paginated based on criteria filters.",
+        "description": " Searches for Jobs based on provided criteria.\n #### If a criteria filter is not provided, it will not be used in the search.\n #### If multiple criteria filters are provided, the search will only return results that match all of the provided criteria.\n #### Results are paginated based on the provided page number and page size.\n #### The page size determines how many records are returned per page.\n #### The sorting fields for jobs are: jobUid, businessAccountUid, originLocationUid, and destinationLocationUid.\n",
+        "operationId": "retrieveFleetJobsByCriteriaFilterPaginated",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FleetJobCriteriaFilterPaginationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobComposedResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "END_DATETIME_IS_BEFORE_START_DATETIME": {
+                    "description": "END_DATETIME_IS_BEFORE_START_DATETIME",
+                    "$ref": "#/components/examples/END_DATETIME_IS_BEFORE_START_DATETIME"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "JOB_WITH_INVALID_BUSINESS_ACCOUNT": {
+                    "description": "JOB_WITH_INVALID_BUSINESS_ACCOUNT",
+                    "$ref": "#/components/examples/JOB_WITH_INVALID_BUSINESS_ACCOUNT"
+                  },
+                  "LOCATIONS_ASSOCIATED_WITH_JOBS_NOT_FOUND": {
+                    "description": "LOCATIONS_ASSOCIATED_WITH_JOBS_NOT_FOUND",
+                    "$ref": "#/components/examples/LOCATIONS_ASSOCIATED_WITH_JOBS_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tours/{tourUid}/details": {
       "get": {
         "tags": [
@@ -1203,11 +1463,176 @@
             }
           },
           "404": {
-            "description": "Job(s) assigned to not existing business account(s) or tour to not existing fleet-vehicle.",
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_TOUR_UID_NOT_FOUND": {
+                    "description": "FLEET_TOUR_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_TOUR_UID_NOT_FOUND"
+                  },
+                  "JOB_WITH_INVALID_BUSINESS_ACCOUNT": {
+                    "description": "JOB_WITH_INVALID_BUSINESS_ACCOUNT",
+                    "$ref": "#/components/examples/JOB_WITH_INVALID_BUSINESS_ACCOUNT"
+                  },
+                  "TOUR_WITH_INVALID_FLEET_VEHICLE": {
+                    "description": "TOUR_WITH_INVALID_FLEET_VEHICLE",
+                    "$ref": "#/components/examples/TOUR_WITH_INVALID_FLEET_VEHICLE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tours/search/paginated": {
+      "get": {
+        "tags": [
+          "Fleet Tours"
+        ],
+        "summary": "Get fleet tours paginated based on criteria filters.",
+        "description": "Searches for fleet tours based on provided criteria.\n#### If a criteria filter is not provided, it will not be used in the search.\n#### If multiple criteria filters are provided, the search will only return results that match all the provided criteria.\n#### If applied criteria has no match, page is empty.\n#### The sorting fields for tours are: tourUid, status, startDate, endDate, totalTime and notes.\n",
+        "operationId": "getFleetToursByCriteriaFilterPaginated",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "searchValue",
+            "in": "query",
+            "description": "Search value to match tour uid.",
+            "required": false,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "statuses",
+            "in": "query",
+            "description": "Optional set of statuses filter which fetches tours that match any of these statuses.",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Defines all possible tour statuses",
+                "enum": [
+                  "PLANNED",
+                  "ENROUTE",
+                  "DELAYED",
+                  "FAILED",
+                  "INCOMPLETE",
+                  "DONE"
+                ]
+              }
+            }
+          },
+          {
+            "name": "vehicleIdentificationNumbers",
+            "in": "query",
+            "description": "Optional set of vehicleIdentificationNumbers filter which fetches tours that match any of these vehicleIdentificationNumbers.",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "depotIds",
+            "in": "query",
+            "description": "Optional set of depot identifiers which fetches tours which contain jobs belonging to the specified depot.",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "hasPenaltyRuleViolation",
+            "in": "query",
+            "description": "Indicates if the tour has at least one penalty rule violation",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Indicates if the tour has at least one penalty rule violation",
+              "example": false
+            },
+            "example": false
+          },
+          {
+            "name": "startDateFrom",
+            "in": "query",
+            "description": "Optional date filter which fetches tours that start from a specific time or after it.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-11-15T23:59:59"
+          },
+          {
+            "name": "endDateTo",
+            "in": "query",
+            "description": "Optional date filter which fetches tours that end at this specific time or before it.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-11-15T23:59:59"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TourComposedResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "END_DATETIME_IS_BEFORE_START_DATETIME": {
+                    "description": "END_DATETIME_IS_BEFORE_START_DATETIME",
+                    "$ref": "#/components/examples/END_DATETIME_IS_BEFORE_START_DATETIME"
+                  }
                 }
               }
             }
@@ -1271,26 +1696,20 @@
             }
           },
           "404": {
-            "description": "Missing tour's fleet vehicle",
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorMessageDto"
-                  }
-                }
-              }
-            }
-          },
-          "404 ": {
-            "description": "Missing fleet vehicle's vehicle-core info",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorMessageDto"
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_VEHICLE_WITH_INVALID_VEHICLE_CORE": {
+                    "description": "FLEET_VEHICLE_WITH_INVALID_VEHICLE_CORE",
+                    "$ref": "#/components/examples/FLEET_VEHICLE_WITH_INVALID_VEHICLE_CORE"
+                  },
+                  "TOUR_WITH_INVALID_FLEET_VEHICLE": {
+                    "description": "TOUR_WITH_INVALID_FLEET_VEHICLE",
+                    "$ref": "#/components/examples/TOUR_WITH_INVALID_FLEET_VEHICLE"
                   }
                 }
               }
@@ -1299,7 +1718,7 @@
         }
       }
     },
-    "/jobs/search": {
+    "/jobs/search/all": {
       "get": {
         "tags": [
           "Fleet Jobs"
@@ -1485,7 +1904,7 @@
       },
       "FleetVehicleResponse": {
         "required": [
-          "createdDate",
+          "Indicates if the vehicle is soft-deleted.",
           "status",
           "timeZoneId",
           "vehicleIdentificationNumber",
@@ -1540,6 +1959,12 @@
               "OUT_OF_ORDER"
             ]
           },
+          "notes": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Free text field for additional vehicle notes.",
+            "example": "Vehicle is out of order."
+          },
           "lastServiceDate": {
             "type": "string",
             "description": "It's the date on which the vehicle performed the last service.",
@@ -1576,15 +2001,8 @@
           "electricVehicleData": {
             "$ref": "#/components/schemas/FleetElectricVehicleData"
           },
-          "createdDate": {
-            "type": "string",
-            "description": "Shows the distance traveled by the corresponding vehicle.",
-            "example": "2024-11-15T23:59:59"
-          },
-          "lastModifiedDate": {
-            "type": "string",
-            "description": "Shows the distance traveled by the corresponding vehicle.",
-            "example": "2024-11-15T23:59:59"
+          "Indicates if the vehicle is soft-deleted.": {
+            "type": "boolean"
           }
         },
         "description": "Defines the details of a fleet vehicle"
@@ -1897,6 +2315,13 @@
             "description": "End date of this tour",
             "example": "2024-11-15T23:59:59"
           },
+          "depotId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "514"
+          },
           "jobs": {
             "type": "array",
             "description": "Defines fleet tour job information",
@@ -1928,6 +2353,13 @@
             "items": {
               "$ref": "#/components/schemas/Transition"
             }
+          },
+          "notes": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional notes for the tour.",
+            "example": "Recently updated tour"
           }
         },
         "description": "Defines the update request of a fleet tour"
@@ -2239,6 +2671,26 @@
           },
           "origin": {
             "$ref": "#/components/schemas/RoutePointDetailed"
+          },
+          "datePickUpFrom": {
+            "type": "string",
+            "description": "Earliest date this job can be picked up",
+            "example": "2024-11-15T23:59:59"
+          },
+          "datePickUpTill": {
+            "type": "string",
+            "description": "Latest date this job can be picked up",
+            "example": "2024-11-15T23:59:59"
+          },
+          "dateDropOffFrom": {
+            "type": "string",
+            "description": "Earliest date this job can be dropped off",
+            "example": "2024-11-15T23:59:59"
+          },
+          "dateDropOffTill": {
+            "type": "string",
+            "description": "Latest date this job can be dropped off",
+            "example": "2024-11-15T23:59:59"
           }
         },
         "description": "Defines only the necessary details of a route job"
@@ -2440,12 +2892,12 @@
               "$ref": "#/components/schemas/SkippedJob"
             }
           },
-          "businessAccounts": {
-            "type": "array",
-            "description": "Details of the business account, associated with these tours",
-            "items": {
+          "businessAccountsMap": {
+            "type": "object",
+            "additionalProperties": {
               "$ref": "#/components/schemas/BusinessAccountResponse"
-            }
+            },
+            "description": "Details of the business accounts, associated with these tours"
           },
           "locationMap": {
             "type": "object",
@@ -2756,12 +3208,12 @@
               "$ref": "#/components/schemas/SkippedJob"
             }
           },
-          "businessAccounts": {
-            "type": "array",
-            "description": "Details of the business account, associated with these tours",
-            "items": {
+          "businessAccountsMap": {
+            "type": "object",
+            "additionalProperties": {
               "$ref": "#/components/schemas/BusinessAccountResponse"
-            }
+            },
+            "description": "Details of the business account, associated with these tours"
           }
         },
         "description": "Defines details of an optimized (based on job precedence sequence) tour, to be confirmed. Also includes the business accounts associated with each of the jobs."
@@ -2926,6 +3378,9 @@
             "type": "string",
             "description": "Date this job was last modified",
             "example": "2024-11-15T23:59:59"
+          },
+          "tour": {
+            "$ref": "#/components/schemas/JobTourResponse"
           }
         },
         "description": "Defines the details of a job"
@@ -2957,6 +3412,22 @@
           }
         },
         "description": "Details of product(s)"
+      },
+      "JobTourResponse": {
+        "type": "object",
+        "properties": {
+          "tourUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Identifier of the tour to which the job is assigned (if assigned).",
+            "example": "123e4567-e89b-42d3-a456-426614174000"
+          },
+          "vehicleIdentificationNumber": {
+            "type": "string",
+            "description": "Vehicle Identification Number (VIN) of the tour vehicle (if the job is assigned to a tour)."
+          }
+        },
+        "description": "Defines the details of a tour."
       },
       "FleetJobUpdateRequest": {
         "required": [
@@ -3191,6 +3662,13 @@
             "description": "Identifies the identification number (VIN) of the vehicle.",
             "example": "4Y1SL65848Z411444"
           },
+          "depotId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "514"
+          },
           "startDate": {
             "type": "string",
             "description": "Start date of this tour",
@@ -3395,22 +3873,14 @@
         },
         "description": "Defines the create request of a fleet job"
       },
-      "CombustionEngineVehicleData": {
-        "type": "object",
-        "properties": {
-          "co2Emissions": {
-            "type": "number",
-            "description": "Vehicle co2 emissions in grams.",
-            "format": "double"
-          }
-        },
-        "description": "Defines the information of a vehicle using internal combustion engine."
-      },
-      "FleetJobSnapshotShortResponse": {
+      "FleetJobDetailed": {
         "required": [
-          "businessAccountUid",
+          "createdDate",
+          "destination",
           "jobType",
           "jobUid",
+          "lastModifiedDate",
+          "origin",
           "products",
           "status"
         ],
@@ -3428,10 +3898,40 @@
             "description": "Depot identifier",
             "example": "AvO78iot3x"
           },
+          "businessAccountUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Supplier identifier",
+            "example": "LKnPKAYKvf"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of this job",
+            "example": "2024-11-15T23:59:59"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of this job",
+            "example": "2024-11-15T23:59:59"
+          },
           "jobType": {
             "maxLength": 30,
             "type": "string",
-            "description": "Type of job"
+            "description": "Job type name",
+            "example": "INBOUND"
+          },
+          "products": {
+            "type": "array",
+            "description": "Details of product(s)",
+            "items": {
+              "$ref": "#/components/schemas/FleetProductResponse"
+            }
+          },
+          "origin": {
+            "$ref": "#/components/schemas/RoutePointDetailed"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/RoutePointDetailed"
           },
           "status": {
             "maxLength": 10,
@@ -3448,115 +3948,24 @@
               "CANCELLED"
             ]
           },
-          "products": {
-            "type": "array",
-            "description": "Details of product(s)",
-            "items": {
-              "$ref": "#/components/schemas/FleetProductResponse"
-            }
-          },
-          "businessAccountUid": {
-            "maxLength": 50,
+          "datePickUpFrom": {
             "type": "string",
-            "description": "Supplier identifier",
-            "example": "LKnPKAYKvf"
-          }
-        },
-        "description": "Defines only the necessary details of a job snapshot"
-      },
-      "FleetTourResponse": {
-        "required": [
-          "createdDate",
-          "endDate",
-          "hasPenaltyRuleViolation",
-          "jobs",
-          "polyline",
-          "startDate",
-          "status",
-          "totalDistance",
-          "totalTime",
-          "tourUid",
-          "vehicleIdentificationNumber"
-        ],
-        "type": "object",
-        "properties": {
-          "tourUid": {
-            "maxLength": 50,
-            "type": "string",
-            "description": "Tour identifier",
-            "example": "123e4567-e89b-42d3-a456-426614174000"
-          },
-          "vehicleIdentificationNumber": {
-            "maxLength": 30,
-            "type": "string",
-            "description": "Identifies the identification number (VIN) of the vehicle.",
-            "example": "4Y1SL65848Z411444"
-          },
-          "startDate": {
-            "type": "string",
-            "description": "Planned start date of this tour",
+            "description": "Earliest date this job can be picked up",
             "example": "2024-11-15T23:59:59"
           },
-          "confirmedStartDate": {
+          "datePickUpTill": {
             "type": "string",
-            "description": "Confirmed start date of this tour",
+            "description": "Latest date this job can be picked up",
             "example": "2024-11-15T23:59:59"
           },
-          "endDate": {
+          "dateDropOffFrom": {
             "type": "string",
-            "description": "Planned end date of this tour",
+            "description": "Earliest date this job can be dropped off",
             "example": "2024-11-15T23:59:59"
           },
-          "confirmedEndDate": {
+          "dateDropOffTill": {
             "type": "string",
-            "description": "Confirmed end date of this tour",
-            "example": "2024-11-15T23:59:59"
-          },
-          "jobs": {
-            "type": "array",
-            "description": "List with details for all jobs of this tour",
-            "items": {
-              "$ref": "#/components/schemas/FleetJobSnapshotShortResponse"
-            }
-          },
-          "vehicleBreak": {
-            "$ref": "#/components/schemas/VehicleBreak"
-          },
-          "totalTime": {
-            "type": "integer",
-            "description": "Total tour duration time in seconds",
-            "format": "int64",
-            "example": 155
-          },
-          "totalDistance": {
-            "type": "number",
-            "description": "Total tour distance",
-            "format": "double",
-            "example": 500.9
-          },
-          "status": {
-            "maxLength": 10,
-            "type": "string",
-            "description": "Defines all possible tour statuses",
-            "enum": [
-              "PLANNED",
-              "ENROUTE",
-              "DELAYED",
-              "FAILED",
-              "INCOMPLETE",
-              "DONE"
-            ]
-          },
-          "polyline": {
-            "$ref": "#/components/schemas/Polyline"
-          },
-          "exported": {
-            "type": "boolean",
-            "description": "Indicates if this tour has been exported"
-          },
-          "lastExportedDate": {
-            "type": "string",
-            "description": "Date this job was created",
+            "description": "Latest date this job can be dropped off",
             "example": "2024-11-15T23:59:59"
           },
           "createdDate": {
@@ -3569,130 +3978,324 @@
             "description": "Date this job was last modified",
             "example": "2024-11-15T23:59:59"
           },
-          "hasPenaltyRuleViolation": {
-            "type": "boolean",
-            "description": "Indicates if the tour has at least one penalty rule violation",
-            "example": false
-          },
-          "transitions": {
-            "type": "array",
-            "description": "Tour transition details",
-            "items": {
-              "$ref": "#/components/schemas/Transition"
-            }
-          },
-          "notes": {
-            "maxLength": 100,
-            "type": "string",
-            "description": "Optional notes for the tour.",
-            "example": "Tour completed on time."
+          "tour": {
+            "$ref": "#/components/schemas/JobTourResponse"
           }
         },
-        "description": "Defines the details of a tour"
+        "description": "Job details"
       },
-      "VehicleAndBrandResponse": {
+      "JobComposedResponse": {
         "required": [
-          "uuid"
+          "fleetJob"
         ],
         "type": "object",
         "properties": {
-          "uuid": {
-            "type": "string",
-            "description": "The UUID of the vehicle.",
-            "format": "uuid",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
+          "fleetJob": {
+            "$ref": "#/components/schemas/FleetJobDetailed"
           },
-          "maxLoadingVolume": {
-            "type": "number",
-            "description": "Vehicles max loading volume.",
-            "format": "double",
-            "example": 3.5
+          "supplierBusinessAccount": {
+            "$ref": "#/components/schemas/BusinessAccountResponse"
           },
-          "maxGrossWeight": {
-            "type": "number",
-            "description": "Vehicles max loading weight.",
-            "format": "double",
-            "example": 10.5
+          "originProducts": {
+            "type": "array",
+            "description": "List of job origin products",
+            "items": {
+              "$ref": "#/components/schemas/LocationProductResponse"
+            }
           },
-          "vehicleWeightEmpty": {
-            "type": "number",
-            "description": "Weight of an empty vehicle.",
-            "format": "double",
-            "example": 1760
-          },
-          "model": {
-            "type": "string",
-            "description": "The model name.",
-            "example": "Taycan"
-          },
-          "variant": {
-            "type": "string",
-            "description": "The model variant",
-            "example": "Turbo"
-          },
-          "combustionEngineVehicleData": {
-            "$ref": "#/components/schemas/CombustionEngineVehicleData"
-          },
-          "brand": {
-            "$ref": "#/components/schemas/VehicleBrand"
+          "destinationProducts": {
+            "type": "array",
+            "description": "List of job destination products",
+            "items": {
+              "$ref": "#/components/schemas/LocationProductResponse"
+            }
           }
         },
-        "description": "Defines the vehicle core details, including associated information for vehicle brand"
+        "description": "Defines the Job details, including associated Business Account information and the origin/destination products"
       },
-      "VehicleBrand": {
+      "LocationProductResponse": {
+        "required": [
+          "name",
+          "productUid",
+          "unitOfMeasureResponse"
+        ],
         "type": "object",
         "properties": {
-          "uuid": {
+          "productUid": {
+            "maxLength": 50,
             "type": "string",
-            "description": "The brand UUID",
-            "format": "uuid"
+            "description": "Product identifier",
+            "example": "1"
           },
           "name": {
+            "maxLength": 255,
             "type": "string",
-            "description": "The vehicle brand name",
-            "example": "Porsche"
+            "description": "Product name",
+            "example": "Degassed biomass"
+          },
+          "unitOfMeasureResponse": {
+            "$ref": "#/components/schemas/UnitOfMeasureResponse"
+          },
+          "capacity": {
+            "type": "number",
+            "description": "Location capacity for the corresponding product",
+            "format": "double",
+            "example": 500.5
           }
         },
-        "description": "Defines the details of a vehicle brand"
+        "description": "Defines the details of a business account location product"
       },
-      "VehicleComposedResponse": {
+      "UnitOfMeasureResponse": {
         "required": [
-          "fleetVehicleResponse",
-          "vehicleAndBrandResponse"
+          "name",
+          "unitOfMeasureUid"
         ],
         "type": "object",
         "properties": {
-          "fleetVehicleResponse": {
-            "$ref": "#/components/schemas/FleetVehicleResponse"
+          "unitOfMeasureUid": {
+            "type": "integer",
+            "description": "Unit of measure identifier",
+            "format": "int64",
+            "example": 1
           },
-          "fleetTourResponses": {
+          "name": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Unit of measure name",
+            "example": "KG"
+          }
+        },
+        "description": "Defines the details of an unit of measure"
+      },
+      "FleetJobCriteriaFilterPaginationRequest": {
+        "type": "object",
+        "properties": {
+          "jobUids": {
+            "uniqueItems": true,
             "type": "array",
-            "description": "Summary of all associated tours",
             "items": {
-              "$ref": "#/components/schemas/FleetTourResponse"
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
             }
           },
-          "vehicleAndBrandResponse": {
-            "$ref": "#/components/schemas/VehicleAndBrandResponse"
+          "businessAccountUids": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          "jobTypeUids": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "depotId": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "statuses": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Defines all possible statuses of a Job",
+              "enum": [
+                "TO_DO",
+                "PENDING",
+                "PLANNED",
+                "ENROUTE",
+                "DELIVERED",
+                "FAILED",
+                "RETURNED",
+                "CANCELLED"
+              ]
+            }
+          },
+          "startDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDateTime": {
+            "type": "string",
+            "format": "date-time"
           }
-        },
-        "description": "Defines the fleet vehicle details, including associated information for its assigned tours and vehicle core."
+        }
       },
-      "FleetAndCoreVehicle": {
-        "required": [
-          "fleetVehicle",
-          "vehicleCoreAndBrand"
-        ],
+      "FleetVehiclePatchRequest": {
         "type": "object",
         "properties": {
-          "fleetVehicle": {
-            "$ref": "#/components/schemas/FleetVehicleResponse"
+          "vehicleCoreUuid": {
+            "$ref": "#/components/schemas/PatchRequestUUID"
           },
-          "vehicleCoreAndBrand": {
-            "$ref": "#/components/schemas/VehicleAndBrandResponse"
+          "employeeUid": {
+            "$ref": "#/components/schemas/PatchRequestString"
+          },
+          "name": {
+            "$ref": "#/components/schemas/PatchRequestString"
+          },
+          "depotId": {
+            "$ref": "#/components/schemas/PatchRequestString"
+          },
+          "licensePlateNumber": {
+            "$ref": "#/components/schemas/PatchRequestString"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PatchRequestVehicleStatus"
+          },
+          "lastServiceDate": {
+            "$ref": "#/components/schemas/PatchRequestLocalDateTime"
+          },
+          "nextServiceDate": {
+            "$ref": "#/components/schemas/PatchRequestLocalDateTime"
+          },
+          "inspectionExpirationDate": {
+            "$ref": "#/components/schemas/PatchRequestLocalDateTime"
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/PatchRequestGeoLocation"
+          },
+          "odometer": {
+            "$ref": "#/components/schemas/PatchRequestDouble"
+          },
+          "electricVehicleData": {
+            "$ref": "#/components/schemas/PatchRequestFleetElectricVehicleData"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/PatchRequestString"
           }
         },
-        "description": "Defines the fleet vehicle details, including associated information for its vehicle core."
+        "description": "Defines the patch request of a fleet vehicle. Any not provided field (null) is considered unmodified.\nMandatory fields, if provided they cannot have value 'null', or 'resetValue'=true"
+      },
+      "PatchRequestDouble": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "JSON representation of the modified object, which can be any type 'T'.",
+            "format": "double"
+          },
+          "resetValue": {
+            "type": "boolean",
+            "description": "Flag to indicate if the stored 'value' should be reset. If true, 'value' must be null, and vice versa.",
+            "default": false
+          }
+        },
+        "description": "Represents a generic Patch request containing a value of generic type 'T', and an optional flag to reset its stored value."
+      },
+      "PatchRequestFleetElectricVehicleData": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/FleetElectricVehicleData"
+          },
+          "resetValue": {
+            "type": "boolean",
+            "description": "Flag to indicate if the stored 'value' should be reset. If true, 'value' must be null, and vice versa.",
+            "default": false
+          }
+        },
+        "description": "Represents a generic Patch request containing a value of generic type 'T', and an optional flag to reset its stored value."
+      },
+      "PatchRequestGeoLocation": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "resetValue": {
+            "type": "boolean",
+            "description": "Flag to indicate if the stored 'value' should be reset. If true, 'value' must be null, and vice versa.",
+            "default": false
+          }
+        },
+        "description": "Represents a generic Patch request containing a value of generic type 'T', and an optional flag to reset its stored value."
+      },
+      "PatchRequestLocalDateTime": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "JSON representation of the modified object, which can be any type 'T'.",
+            "format": "date-time"
+          },
+          "resetValue": {
+            "type": "boolean",
+            "description": "Flag to indicate if the stored 'value' should be reset. If true, 'value' must be null, and vice versa.",
+            "default": false
+          }
+        },
+        "description": "Represents a generic Patch request containing a value of generic type 'T', and an optional flag to reset its stored value."
+      },
+      "PatchRequestString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "JSON representation of the modified object, which can be any type 'T'."
+          },
+          "resetValue": {
+            "type": "boolean",
+            "description": "Flag to indicate if the stored 'value' should be reset. If true, 'value' must be null, and vice versa.",
+            "default": false
+          }
+        },
+        "description": "Represents a generic Patch request containing a value of generic type 'T', and an optional flag to reset its stored value."
+      },
+      "PatchRequestUUID": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "JSON representation of the modified object, which can be any type 'T'.",
+            "format": "uuid"
+          },
+          "resetValue": {
+            "type": "boolean",
+            "description": "Flag to indicate if the stored 'value' should be reset. If true, 'value' must be null, and vice versa.",
+            "default": false
+          }
+        },
+        "description": "Represents a generic Patch request containing a value of generic type 'T', and an optional flag to reset its stored value."
+      },
+      "PatchRequestVehicleStatus": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "JSON representation of the modified object, which can be any type 'T'.",
+            "enum": [
+              "AVAILABLE",
+              "PLANNED",
+              "ENROUTE",
+              "OUT_OF_ORDER"
+            ]
+          },
+          "resetValue": {
+            "type": "boolean",
+            "description": "Flag to indicate if the stored 'value' should be reset. If true, 'value' must be null, and vice versa.",
+            "default": false
+          }
+        },
+        "description": "Represents a generic Patch request containing a value of generic type 'T', and an optional flag to reset its stored value."
+      },
+      "CombustionEngineVehicleData": {
+        "type": "object",
+        "properties": {
+          "co2Emissions": {
+            "type": "number",
+            "description": "Vehicle co2 emissions in grams.",
+            "format": "double"
+          }
+        },
+        "description": "Defines the information of a vehicle using internal combustion engine."
       },
       "FleetJobCriteriaFilterResponse": {
         "required": [
@@ -3713,17 +4316,27 @@
             "description": "Job identifier",
             "example": "AvO78iot3x"
           },
+          "jobType": {
+            "type": "string"
+          },
           "startDate": {
             "type": "string",
             "description": "Start date of this job",
             "example": "2024-11-15T23:59:59"
           },
-          "jobType": {
-            "type": "string"
+          "confirmedStartDate": {
+            "type": "string",
+            "description": "Confirmed start date of this job",
+            "example": "2024-11-15T23:59:59"
           },
           "endDate": {
             "type": "string",
-            "description": "End date of this job",
+            "description": "Planned end date of this job",
+            "example": "2024-11-15T23:59:59"
+          },
+          "confirmedEndDate": {
+            "type": "string",
+            "description": "Confirmed end date of this job",
             "example": "2024-11-15T23:59:59"
           },
           "depotId": {
@@ -3765,6 +4378,26 @@
           },
           "destination": {
             "$ref": "#/components/schemas/RoutePointCriteriaFilterResponse"
+          },
+          "datePickUpFrom": {
+            "type": "string",
+            "description": "Earliest date this job can be picked up",
+            "example": "2024-11-15T23:59:59"
+          },
+          "datePickUpTill": {
+            "type": "string",
+            "description": "Latest date this job can be picked up",
+            "example": "2024-11-15T23:59:59"
+          },
+          "dateDropOffFrom": {
+            "type": "string",
+            "description": "Earliest date this job can be dropped off",
+            "example": "2024-11-15T23:59:59"
+          },
+          "dateDropOffTill": {
+            "type": "string",
+            "description": "Latest date this job can be dropped off",
+            "example": "2024-11-15T23:59:59"
           }
         },
         "description": "Defines the response of tour jobs based on criteria filters"
@@ -3793,6 +4426,12 @@
             "type": "string",
             "description": "Identifies the identification number (VIN) of the vehicle.",
             "example": "4Y1SL65848Z411444"
+          },
+          "depotId": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "514"
           },
           "startDate": {
             "type": "string",
@@ -3873,7 +4512,10 @@
       "RoutePointCriteriaFilterResponse": {
         "required": [
           "accountLocationUid",
-          "locationAddressType"
+          "geoLocation",
+          "locationAddressType",
+          "locationRisk",
+          "locationType"
         ],
         "type": "object",
         "properties": {
@@ -3888,9 +4530,153 @@
             "type": "string",
             "description": "Location address type information",
             "example": "Raw Tank"
+          },
+          "street": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Street of the route point",
+            "example": "Main street"
+          },
+          "city": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "City of the route point",
+            "example": "Munich"
+          },
+          "zipCode": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Zip code.",
+            "example": "20535"
+          },
+          "geoLocation": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "locationType": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location type information",
+            "example": "Cow"
+          },
+          "locationRisk": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location risk information",
+            "example": "High"
+          },
+          "processTime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
           }
         },
         "description": "Defines the response of criteria filter fleet job route point"
+      },
+      "VehicleAndBrandResponse": {
+        "required": [
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "The UUID of the vehicle.",
+            "format": "uuid",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "maxLoadingVolume": {
+            "type": "number",
+            "description": "Vehicles max loading volume.",
+            "format": "double",
+            "example": 3.5
+          },
+          "maxGrossWeight": {
+            "type": "number",
+            "description": "Vehicles max loading weight.",
+            "format": "double",
+            "example": 10.5
+          },
+          "vehicleWeightEmpty": {
+            "type": "number",
+            "description": "Weight of an empty vehicle.",
+            "format": "double",
+            "example": 1760
+          },
+          "model": {
+            "type": "string",
+            "description": "The model name.",
+            "example": "Taycan"
+          },
+          "variant": {
+            "type": "string",
+            "description": "The model variant",
+            "example": "Turbo"
+          },
+          "combustionEngineVehicleData": {
+            "$ref": "#/components/schemas/CombustionEngineVehicleData"
+          },
+          "brand": {
+            "$ref": "#/components/schemas/VehicleBrand"
+          }
+        },
+        "description": "Defines the vehicle core details, including associated information for vehicle brand"
+      },
+      "VehicleBrand": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "The brand UUID",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "The vehicle brand name",
+            "example": "Porsche"
+          }
+        },
+        "description": "Defines the details of a vehicle brand"
+      },
+      "VehicleComposedResponse": {
+        "required": [
+          "fleetVehicleResponse",
+          "vehicleAndBrandResponse"
+        ],
+        "type": "object",
+        "properties": {
+          "fleetVehicleResponse": {
+            "$ref": "#/components/schemas/FleetVehicleResponse"
+          },
+          "fleetTourResponses": {
+            "type": "array",
+            "description": "Summary of all associated tours",
+            "items": {
+              "$ref": "#/components/schemas/FleetTourCriteriaFilterResponse"
+            }
+          },
+          "vehicleAndBrandResponse": {
+            "$ref": "#/components/schemas/VehicleAndBrandResponse"
+          }
+        },
+        "description": "Defines the fleet vehicle details, including associated information for its assigned tours and vehicle core."
+      },
+      "FleetAndCoreVehicle": {
+        "required": [
+          "fleetVehicle",
+          "vehicleCoreAndBrand"
+        ],
+        "type": "object",
+        "properties": {
+          "fleetVehicle": {
+            "$ref": "#/components/schemas/FleetVehicleResponse"
+          },
+          "vehicleCoreAndBrand": {
+            "$ref": "#/components/schemas/VehicleAndBrandResponse"
+          }
+        },
+        "description": "Defines the fleet vehicle details, including associated information for its vehicle core."
       },
       "TourComposedResponse": {
         "required": [
@@ -4068,38 +4854,6 @@
         },
         "description": "Defines the Job snapshot details, including associated Business Account information and the origin/destination products"
       },
-      "LocationProductResponse": {
-        "required": [
-          "name",
-          "productUid",
-          "unitOfMeasureResponse"
-        ],
-        "type": "object",
-        "properties": {
-          "productUid": {
-            "maxLength": 50,
-            "type": "string",
-            "description": "Product identifier",
-            "example": "1"
-          },
-          "name": {
-            "maxLength": 255,
-            "type": "string",
-            "description": "Product name",
-            "example": "Degassed biomass"
-          },
-          "unitOfMeasureResponse": {
-            "$ref": "#/components/schemas/UnitOfMeasureResponse"
-          },
-          "capacity": {
-            "type": "number",
-            "description": "Location capacity for the corresponding product",
-            "format": "double",
-            "example": 500.5
-          }
-        },
-        "description": "Defines the details of a business account location product"
-      },
       "TourDetailsComposedResponse": {
         "required": [
           "fleetVehicle",
@@ -4190,168 +4944,36 @@
           },
           "polyline": {
             "$ref": "#/components/schemas/Polyline"
+          },
+          "notes": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Optional notes for the tour.",
+            "example": "Tour completed on time."
           }
         },
         "description": "Defines only the necessary Tour details"
       },
-      "UnitOfMeasureResponse": {
-        "required": [
-          "name",
-          "unitOfMeasureUid"
-        ],
+      "Pageable": {
         "type": "object",
         "properties": {
-          "unitOfMeasureUid": {
+          "page": {
+            "minimum": 0,
             "type": "integer",
-            "description": "Unit of measure identifier",
-            "format": "int64",
-            "example": 1
+            "format": "int32"
           },
-          "name": {
-            "maxLength": 255,
-            "type": "string",
-            "description": "Unit of measure name",
-            "example": "KG"
-          }
-        },
-        "description": "Defines the details of an unit of measure"
-      },
-      "FleetJobDetailed": {
-        "required": [
-          "createdDate",
-          "destination",
-          "jobType",
-          "jobUid",
-          "lastModifiedDate",
-          "origin",
-          "products",
-          "status"
-        ],
-        "type": "object",
-        "properties": {
-          "jobUid": {
-            "maxLength": 50,
-            "type": "string",
-            "description": "Job identifier",
-            "example": "08a8c5d2f13b9100"
+          "size": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
           },
-          "depotId": {
-            "maxLength": 255,
-            "type": "string",
-            "description": "Depot identifier",
-            "example": "AvO78iot3x"
-          },
-          "businessAccountUid": {
-            "maxLength": 50,
-            "type": "string",
-            "description": "Supplier identifier",
-            "example": "LKnPKAYKvf"
-          },
-          "startDate": {
-            "type": "string",
-            "description": "Start date of this job",
-            "example": "2024-11-15T23:59:59"
-          },
-          "endDate": {
-            "type": "string",
-            "description": "End date of this job",
-            "example": "2024-11-15T23:59:59"
-          },
-          "jobType": {
-            "maxLength": 30,
-            "type": "string",
-            "description": "Job type name",
-            "example": "INBOUND"
-          },
-          "products": {
+          "sort": {
             "type": "array",
-            "description": "Details of product(s)",
             "items": {
-              "$ref": "#/components/schemas/FleetProductResponse"
-            }
-          },
-          "origin": {
-            "$ref": "#/components/schemas/RoutePointDetailed"
-          },
-          "destination": {
-            "$ref": "#/components/schemas/RoutePointDetailed"
-          },
-          "status": {
-            "maxLength": 10,
-            "type": "string",
-            "description": "Defines all possible statuses of a Job",
-            "enum": [
-              "TO_DO",
-              "PENDING",
-              "PLANNED",
-              "ENROUTE",
-              "DELIVERED",
-              "FAILED",
-              "RETURNED",
-              "CANCELLED"
-            ]
-          },
-          "datePickUpFrom": {
-            "type": "string",
-            "description": "Earliest date this job can be picked up",
-            "example": "2024-11-15T23:59:59"
-          },
-          "datePickUpTill": {
-            "type": "string",
-            "description": "Latest date this job can be picked up",
-            "example": "2024-11-15T23:59:59"
-          },
-          "dateDropOffFrom": {
-            "type": "string",
-            "description": "Earliest date this job can be dropped off",
-            "example": "2024-11-15T23:59:59"
-          },
-          "dateDropOffTill": {
-            "type": "string",
-            "description": "Latest date this job can be dropped off",
-            "example": "2024-11-15T23:59:59"
-          },
-          "createdDate": {
-            "type": "string",
-            "description": "Date this job was created",
-            "example": "2024-11-15T23:59:59"
-          },
-          "lastModifiedDate": {
-            "type": "string",
-            "description": "Date this job was last modified",
-            "example": "2024-11-15T23:59:59"
-          }
-        },
-        "description": "Job details"
-      },
-      "JobComposedResponse": {
-        "required": [
-          "fleetJob"
-        ],
-        "type": "object",
-        "properties": {
-          "fleetJob": {
-            "$ref": "#/components/schemas/FleetJobDetailed"
-          },
-          "supplierBusinessAccount": {
-            "$ref": "#/components/schemas/BusinessAccountResponse"
-          },
-          "originProducts": {
-            "type": "array",
-            "description": "List of job origin products",
-            "items": {
-              "$ref": "#/components/schemas/LocationProductResponse"
-            }
-          },
-          "destinationProducts": {
-            "type": "array",
-            "description": "List of job destination products",
-            "items": {
-              "$ref": "#/components/schemas/LocationProductResponse"
+              "type": "string"
             }
           }
-        },
-        "description": "Defines the Job details, including associated Business Account information and the origin/destination products"
+        }
       },
       "SuccessMessageDto": {
         "type": "object",
@@ -4492,6 +5114,9 @@
       "VEHICLE_IS_ASSIGNED_TO_A_TOUR": {
         "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The fleet vehicle cannot be modified/deleted since it is part of a tour.\",\n  \"errorCode\" : \"VEHICLE_IS_ASSIGNED_TO_A_TOUR\"\n}"
       },
+      "CANNOT_PERMANENTLY_DELETE_VEHICLE_WITH_ASSIGNED_TOURS": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Fleet vehicle cannot be hard-delete when assigned to tours (despite the status of them).\",\n  \"errorCode\" : \"CANNOT_PERMANENTLY_DELETE_VEHICLE_WITH_ASSIGNED_TOURS\"\n}"
+      },
       "JOB_PRODUCT_NOT_ASSIGNED_TO_ORIGIN_LOCATION": {
         "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Product is not assigned to origin location\",\n  \"errorCode\" : \"JOB_PRODUCT_NOT_ASSIGNED_TO_ORIGIN_LOCATION\"\n}"
       },
@@ -4518,6 +5143,9 @@
       },
       "AT_LEAST_ONE_PRODUCT_NOT_FOUND": {
         "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] At least one product not found\",\n  \"errorCode\" : \"AT_LEAST_ONE_PRODUCT_NOT_FOUND\"\n}"
+      },
+      "CANNOT_PATCH_DETAILS_OF_PLANNED_VEHICLE": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Cannot modify vehicleCoreUuid/depotId/status/coordinates/EVData when vehicle is assigned to active tour(s).\",\n  \"errorCode\" : \"CANNOT_PATCH_DETAILS_OF_PLANNED_VEHICLE\"\n}"
       },
       "PROCESSING_ERROR": {
         "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"

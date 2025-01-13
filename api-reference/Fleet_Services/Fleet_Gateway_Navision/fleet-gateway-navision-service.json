@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://baseurl/fleet-gateway-navision/v1",
+      "url": "https://p3-acc.fleet.energystacks.io/fleet-gateway-navision/v1",
       "description": "Generated server url"
     }
   ],
@@ -778,6 +778,93 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "INVALID_JOB_STATUS": {
+                    "description": "INVALID_JOB_STATUS",
+                    "$ref": "#/components/examples/INVALID_JOB_STATUS"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "FLEET_JOB_UID_NOT_FOUND": {
+                    "description": "FLEET_JOB_UID_NOT_FOUND",
+                    "$ref": "#/components/examples/FLEET_JOB_UID_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "INVALID_RABBITMQ_RPC_RESPONSE": {
+                    "description": "INVALID_RABBITMQ_RPC_RESPONSE",
+                    "$ref": "#/components/examples/INVALID_RABBITMQ_RPC_RESPONSE"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/jobs/{jobUid}/status": {
+      "patch": {
+        "tags": [
+          "Fleet Jobs"
+        ],
+        "summary": "Update fleet job status",
+        "description": "The statuses can be updated based on the rules in the table bellow.\n|  Current Fleet Job Status  |           Can be updated to statuses          |\n|----------------------------|-----------------------------------------------|\n|          CANCELLED         |                    TO_DO                      |\n|          DELIVERED         |                      -                        |\n|          ENROUTE           |              DELIVERED, CANCELLED             |\n|          PLANNED           |           ENROUTE, DELIVERED, CANCELLED       |\n",
+        "operationId": "updateFleetJobStatus_1",
+        "parameters": [
+          {
+            "name": "jobUid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FleetJobStatusUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successful Operation"
@@ -1813,6 +1900,31 @@
         },
         "description": "Defines the create request of the business account"
       },
+      "FleetJobStatusUpdateRequest": {
+        "required": [
+          "jobStatus",
+          "statusModifiedDate"
+        ],
+        "type": "object",
+        "properties": {
+          "jobStatus": {
+            "type": "string",
+            "description": "Fleet Job statuses",
+            "enum": [
+              "TO_DO",
+              "ENROUTE",
+              "DELIVERED",
+              "CANCELLED"
+            ]
+          },
+          "statusModifiedDate": {
+            "type": "string",
+            "description": "Job status modification datetime",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Defines the job status update request."
+      },
       "UnitOfMeasureResponse": {
         "required": [
           "name",
@@ -2731,6 +2843,63 @@
         },
         "description": "Defines the details of a job type"
       },
+      "LocationReduceResponse": {
+        "required": [
+          "addressType",
+          "addressTypeUid",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Location uid",
+            "example": "AvO78iot3x"
+          },
+          "locationName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location name",
+            "example": "P3"
+          },
+          "address": {
+            "$ref": "#/components/schemas/LocationAddress"
+          },
+          "loadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "loadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "addressTypeUid": {
+            "type": "integer",
+            "description": "Business account location address type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "addressType": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account location address type name",
+            "example": "HOME"
+          },
+          "processTime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
+          }
+        },
+        "description": "Defines the details of a business account location"
+      },
       "NavisionBusinessAccountResponse": {
         "required": [
           "depotId",
@@ -2770,7 +2939,7 @@
             "type": "array",
             "description": "Business account locations",
             "items": {
-              "$ref": "#/components/schemas/LocationResponse"
+              "$ref": "#/components/schemas/LocationReduceResponse"
             }
           }
         },
@@ -2992,6 +3161,9 @@
       "JOB_DEPOT_ID_MODIFICATION_NOT_ALLOWED": {
         "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] DepotId cannot be modified for a job assigned to an active tour.\",\n  \"errorCode\" : \"JOB_DEPOT_ID_MODIFICATION_NOT_ALLOWED\"\n}"
       },
+      "JOB_ORIGIN_DESTINATION_DEPOT_ID_MODIFICATION_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"[FLEET-GATEWAY-NAVISION] New job's origin and/or destination location cannot be in different depotId.\",\n  \"errorCode\" : \"JOB_ORIGIN_DESTINATION_DEPOT_ID_MODIFICATION_NOT_ALLOWED\"\n}"
+      },
       "FLEET_JOB_UID_NOT_FOUND": {
         "value": "{\n  \"message\" : \"[FLEET-ROUTE] Job with the provided job UID does not exist.\",\n  \"errorCode\" : \"FLEET_JOB_UID_NOT_FOUND\"\n}"
       },
@@ -3112,6 +3284,9 @@
       "VEHICLE_IS_ASSIGNED_TO_A_TOUR": {
         "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The fleet vehicle cannot be modified/deleted since it is part of a tour.\",\n  \"errorCode\" : \"VEHICLE_IS_ASSIGNED_TO_A_TOUR\"\n}"
       },
+      "CANNOT_PERMANENTLY_DELETE_VEHICLE_WITH_ASSIGNED_TOURS": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Fleet vehicle cannot be hard-delete when assigned to tours (despite the status of them).\",\n  \"errorCode\" : \"CANNOT_PERMANENTLY_DELETE_VEHICLE_WITH_ASSIGNED_TOURS\"\n}"
+      },
       "JOB_PRODUCT_NOT_ASSIGNED_TO_ORIGIN_LOCATION": {
         "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Product is not assigned to origin location\",\n  \"errorCode\" : \"JOB_PRODUCT_NOT_ASSIGNED_TO_ORIGIN_LOCATION\"\n}"
       },
@@ -3138,6 +3313,9 @@
       },
       "AT_LEAST_ONE_PRODUCT_NOT_FOUND": {
         "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] At least one product not found\",\n  \"errorCode\" : \"AT_LEAST_ONE_PRODUCT_NOT_FOUND\"\n}"
+      },
+      "CANNOT_PATCH_DETAILS_OF_PLANNED_VEHICLE": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Cannot modify vehicleCoreUuid/depotId/status/coordinates/EVData when vehicle is assigned to active tour(s).\",\n  \"errorCode\" : \"CANNOT_PATCH_DETAILS_OF_PLANNED_VEHICLE\"\n}"
       },
       "DUPLICATE_LOCATION_RISK": {
         "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location risk already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_RISK\"\n}"
@@ -3335,13 +3513,13 @@
           "type": "string"
         }
       }
-    }
-  },
-  "securitySchemes": {
-    "bearerAuth": {
-      "type": "http",
-      "scheme": "Bearer",
-      "bearerFormat": "JWT"
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
     }
   }
 }

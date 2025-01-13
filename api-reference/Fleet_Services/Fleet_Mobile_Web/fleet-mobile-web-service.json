@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://baseurl/fleet-mobile-web/v1",
+      "url": "https://p3-acc.fleet.energystacks.io/fleet-mobile-web/v1",
       "description": "Generated server url"
     }
   ],
@@ -1098,6 +1098,9 @@
       "VEHICLE_IS_ASSIGNED_TO_A_TOUR": {
         "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] The fleet vehicle cannot be modified/deleted since it is part of a tour.\",\n  \"errorCode\" : \"VEHICLE_IS_ASSIGNED_TO_A_TOUR\"\n}"
       },
+      "CANNOT_PERMANENTLY_DELETE_VEHICLE_WITH_ASSIGNED_TOURS": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Fleet vehicle cannot be hard-delete when assigned to tours (despite the status of them).\",\n  \"errorCode\" : \"CANNOT_PERMANENTLY_DELETE_VEHICLE_WITH_ASSIGNED_TOURS\"\n}"
+      },
       "JOB_PRODUCT_NOT_ASSIGNED_TO_ORIGIN_LOCATION": {
         "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Product is not assigned to origin location\",\n  \"errorCode\" : \"JOB_PRODUCT_NOT_ASSIGNED_TO_ORIGIN_LOCATION\"\n}"
       },
@@ -1124,6 +1127,9 @@
       },
       "AT_LEAST_ONE_PRODUCT_NOT_FOUND": {
         "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] At least one product not found\",\n  \"errorCode\" : \"AT_LEAST_ONE_PRODUCT_NOT_FOUND\"\n}"
+      },
+      "CANNOT_PATCH_DETAILS_OF_PLANNED_VEHICLE": {
+        "value": "{\n  \"message\" : \"[FLEET-ORCHESTRATOR] Cannot modify vehicleCoreUuid/depotId/status/coordinates/EVData when vehicle is assigned to active tour(s).\",\n  \"errorCode\" : \"CANNOT_PATCH_DETAILS_OF_PLANNED_VEHICLE\"\n}"
       },
       "DUPLICATE_LOCATION_RISK": {
         "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location risk already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_RISK\"\n}"
@@ -1327,13 +1333,13 @@
           "type": "string"
         }
       }
-    }
-  },
-  "securitySchemes": {
-    "bearerAuth": {
-      "type": "http",
-      "scheme": "Bearer",
-      "bearerFormat": "JWT"
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
     }
   }
 }

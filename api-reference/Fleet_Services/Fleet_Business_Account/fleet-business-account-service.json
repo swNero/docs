@@ -1,0 +1,4493 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "fleet-business-account-service",
+    "description": "",
+    "contact": {
+      "name": "P3 digital services GmbH",
+      "email": "contact@energystacks.io"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://p3-acc.fleet.energystacks.io/fleet-business-account/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Location Risks",
+      "description": "Location Risk CRUD Controller"
+    },
+    {
+      "name": "Location Penalty Attributes",
+      "description": "Location penalty attribute operations controller"
+    },
+    {
+      "name": "Location Statuses",
+      "description": "Location Status CRUD Controller"
+    },
+    {
+      "name": "Business Accounts",
+      "description": "Business Accounts CRUD Controller"
+    },
+    {
+      "name": "Units Of Measure",
+      "description": "Units Of Measure CRUD Controller"
+    },
+    {
+      "name": "Location products",
+      "description": "Location product controller"
+    },
+    {
+      "name": "Locations",
+      "description": "Location CRUD Controller"
+    },
+    {
+      "name": "Location Types",
+      "description": "Location Type CRUD Controller"
+    },
+    {
+      "name": "Location Address Types",
+      "description": "Location Address Type CRUD Controller"
+    },
+    {
+      "name": "Products",
+      "description": "Product CRUD Controller"
+    },
+    {
+      "name": "Business Account Types",
+      "description": "Business Account Type CRUD Controller"
+    }
+  ],
+  "paths": {
+    "/units-of-measure/{unitOfMeasureUid}": {
+      "get": {
+        "tags": [
+          "Units Of Measure"
+        ],
+        "summary": "Get unit of measure",
+        "description": "Fetches unit of measure by uid",
+        "operationId": "getUnitOfMeasureByUid",
+        "parameters": [
+          {
+            "name": "unitOfMeasureUid",
+            "in": "path",
+            "description": "Unit of measure identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitOfMeasureResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unit of measure with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Units Of Measure"
+        ],
+        "summary": "Update an unit of measure",
+        "description": "Updates an unit of measure",
+        "operationId": "updateUnitOfMeasure",
+        "parameters": [
+          {
+            "name": "unitOfMeasureUid",
+            "in": "path",
+            "description": "Unit of measure identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "unitOfMeasureName",
+            "in": "query",
+            "description": "Unique unit of measure name",
+            "required": true,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitOfMeasureResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unit of measure with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Unit of measure is assigned to at least one location-product relation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Units Of Measure"
+        ],
+        "summary": "Delete an unit of measure",
+        "description": "Deletes an unit of measure by uid, if the unit of measure is not assigned to an existing location-product relation",
+        "operationId": "deleteUnitOfMeasureByUid",
+        "parameters": [
+          {
+            "name": "unitOfMeasureUid",
+            "in": "path",
+            "description": "Unit of measure identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "Unit of measure with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Unit of measure is assigned to at least one location-product relation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{productUid}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get product",
+        "description": "Fetches product by uid",
+        "operationId": "getProductByUid",
+        "parameters": [
+          {
+            "name": "productUid",
+            "in": "path",
+            "description": "Product identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Update a product",
+        "description": "Updates an existing product",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "productUid",
+            "in": "path",
+            "description": "Product identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productName",
+            "in": "query",
+            "description": "Unique product name",
+            "required": true,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Product is assigned to at least one location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Delete a product",
+        "description": "Deletes a product by uid, if the product is not assigned to an existing business location",
+        "operationId": "deleteProductByUid",
+        "parameters": [
+          {
+            "name": "productUid",
+            "in": "path",
+            "description": "Product identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Product is assigned to at least one location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{locationUid}": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Get the business account location",
+        "description": "Fetches the business account location by uid",
+        "operationId": "getLocationByUid",
+        "parameters": [
+          {
+            "name": "locationUid",
+            "in": "path",
+            "description": "Business account location identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Business account location with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Update a business account location",
+        "description": "Updates the business account location",
+        "operationId": "updateLocation",
+        "parameters": [
+          {
+            "name": "locationUid",
+            "in": "path",
+            "description": "Business account location identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location risk with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Delete a business account location",
+        "description": "Deletes a business account location by uid",
+        "operationId": "deleteLocation",
+        "parameters": [
+          {
+            "name": "locationUid",
+            "in": "path",
+            "description": "Business account location identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Business account location with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{locationUid}/products/{productUid}/units-of-measure/{unitOfMeasureUid}": {
+      "put": {
+        "tags": [
+          "Location products"
+        ],
+        "summary": "Update location product information",
+        "description": "Searches for product with the specified unit of measure and updates the location-product relation",
+        "operationId": "updateLocationProductInfo",
+        "parameters": [
+          {
+            "name": "locationUid",
+            "in": "path",
+            "description": "Location identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productUid",
+            "in": "path",
+            "description": "Product identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "unitOfMeasureUid",
+            "in": "path",
+            "description": "Unit of measure identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationProductUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "Unit of measure with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Product with the specified unit of measure is not assigned to a location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Location products"
+        ],
+        "summary": "Remove the product with the specified unit of measure from the business account location",
+        "description": "Removes the product with the specified unit of measure from the business account location",
+        "operationId": "removeProductFromLocation",
+        "parameters": [
+          {
+            "name": "locationUid",
+            "in": "path",
+            "description": "Location identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productUid",
+            "in": "path",
+            "description": "Product identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "unitOfMeasureUid",
+            "in": "path",
+            "description": "Unit of measure identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Product with the specified unit of measure is not assigned to a location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/types/{locationTypeUid}": {
+      "get": {
+        "tags": [
+          "Location Types"
+        ],
+        "summary": "Get location type",
+        "description": "Fetches location type by uid",
+        "operationId": "getLocationTypeByUid",
+        "parameters": [
+          {
+            "name": "locationTypeUid",
+            "in": "path",
+            "description": "Location type identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationTypeResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location type with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Location Types"
+        ],
+        "summary": "Update location type",
+        "description": "Updates location type",
+        "operationId": "updateLocationType",
+        "parameters": [
+          {
+            "name": "locationTypeUid",
+            "in": "path",
+            "description": "Location type identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "locationType",
+            "in": "query",
+            "description": "Unique location type name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationTypeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location type with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location type is assigned to at least one location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Location Types"
+        ],
+        "summary": "Delete a location type",
+        "description": "Deletes a location type by uid, if the location type is not assigned to an existing business location",
+        "operationId": "deleteLocationStatusByUid",
+        "parameters": [
+          {
+            "name": "locationTypeUid",
+            "in": "path",
+            "description": "Location type identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "Location type with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location type is assigned to at least one location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/statuses/{locationStatusUid}": {
+      "get": {
+        "tags": [
+          "Location Statuses"
+        ],
+        "summary": "Get location status",
+        "description": "Fetches location status by uid",
+        "operationId": "getLocationStatusByUid",
+        "parameters": [
+          {
+            "name": "locationStatusUid",
+            "in": "path",
+            "description": "Location status identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location status with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Location Statuses"
+        ],
+        "summary": "Update location status",
+        "description": "Updates location status",
+        "operationId": "updateLocationStatus",
+        "parameters": [
+          {
+            "name": "locationStatusUid",
+            "in": "path",
+            "description": "Location status identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "locationStatus",
+            "in": "query",
+            "description": "Unique location status name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationStatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location status with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location status is assigned to at least one location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Location Statuses"
+        ],
+        "summary": "Delete a location status",
+        "description": "Deletes a location status by uid, if the location status is not assigned to an existing business location",
+        "operationId": "deleteLocationStatusByUid_1",
+        "parameters": [
+          {
+            "name": "locationStatusUid",
+            "in": "path",
+            "description": "Location status identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "Location status with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location status is assigned to at least one location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/risks/{locationRiskUid}": {
+      "get": {
+        "tags": [
+          "Location Risks"
+        ],
+        "summary": "Get location risk",
+        "description": "Fetches location risk by uid",
+        "operationId": "getLocationRiskByUid",
+        "parameters": [
+          {
+            "name": "locationRiskUid",
+            "in": "path",
+            "description": "Location risk identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationRiskResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location risk with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Location Risks"
+        ],
+        "summary": "Update location risk",
+        "description": "Updates location risk",
+        "operationId": "updateLocationRisk",
+        "parameters": [
+          {
+            "name": "locationRiskUid",
+            "in": "path",
+            "description": "Location risk identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "locationRisk",
+            "in": "query",
+            "description": "Unique location risk name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationRiskResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location risk with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location risk is assigned to at least one location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Location Risks"
+        ],
+        "summary": "Delete a location risk",
+        "description": "Deletes a location risk by uid, if the location risk is not assigned to an existing business location",
+        "operationId": "deleteLocationRiskByUid",
+        "parameters": [
+          {
+            "name": "locationRiskUid",
+            "in": "path",
+            "description": "Location risk identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "Location risk with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location risk is assigned to at least one location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/address-types/{addressTypeUid}": {
+      "get": {
+        "tags": [
+          "Location Address Types"
+        ],
+        "summary": "Get location address type",
+        "description": "Retrieves location address type by uid",
+        "operationId": "getLocationAddressTypeByUid",
+        "parameters": [
+          {
+            "name": "addressTypeUid",
+            "in": "path",
+            "description": "Location address type identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationAddressTypeResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location address type with the specified id not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Location Address Types"
+        ],
+        "summary": "Update a location address type",
+        "description": "Updates a location address type",
+        "operationId": "updateLocationAddressType",
+        "parameters": [
+          {
+            "name": "addressTypeUid",
+            "in": "path",
+            "description": "Location address type identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Unique location address type name",
+            "required": true,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationAddressTypeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Location address type with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location address type is assigned to at least one location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Location Address Types"
+        ],
+        "summary": "Delete a Location address type",
+        "description": "Deletes a location address type by uid, if it's not assigned to an existing location",
+        "operationId": "deleteLocationAddressTypeByUid",
+        "parameters": [
+          {
+            "name": "addressTypeUid",
+            "in": "path",
+            "description": "Business account type identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "Location address type with the specified id not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location address type is assigned to at least one location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/business-accounts/{businessAccountUid}": {
+      "get": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Get business account",
+        "description": "Fetches business account by uid",
+        "operationId": "getBusinessAccountByUid",
+        "parameters": [
+          {
+            "name": "businessAccountUid",
+            "in": "path",
+            "description": "Business account identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessAccountResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Business account with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Update a business account",
+        "description": "Updates the business account",
+        "operationId": "updateBusinessAccount",
+        "parameters": [
+          {
+            "name": "businessAccountUid",
+            "in": "path",
+            "description": "Business account identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BusinessAccountUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Business account type with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Delete a business account",
+        "description": "Deletes a business account by uid",
+        "operationId": "deleteBusinessAccount",
+        "parameters": [
+          {
+            "name": "businessAccountUid",
+            "in": "path",
+            "description": "Business account identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "Business account with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/business-account/types/{accountTypeUid}": {
+      "get": {
+        "tags": [
+          "Business Account Types"
+        ],
+        "summary": "Get business account type",
+        "description": "Retrieves business account by id",
+        "operationId": "getAccountTypeById",
+        "parameters": [
+          {
+            "name": "accountTypeUid",
+            "in": "path",
+            "description": "Business account type identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessAccountTypeResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Business account type with the specified id not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Business Account Types"
+        ],
+        "summary": "Update a business account type",
+        "description": "Updates a business account type",
+        "operationId": "updateAccountType",
+        "parameters": [
+          {
+            "name": "accountTypeUid",
+            "in": "path",
+            "description": "Business account type identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Unique business account type name",
+            "required": true,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessAccountTypeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Duplicate business account type provided in the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Business account type with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Business account type is assigned to at least one business account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Business Account Types"
+        ],
+        "summary": "Delete a business account type",
+        "description": "Deletes a business account type by id, if it's not assigned to an existing business account",
+        "operationId": "deleteAccountTypeByUid",
+        "parameters": [
+          {
+            "name": "accountTypeUid",
+            "in": "path",
+            "description": "Business account type identifier",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "Business account type with the specified id not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Business account type is assigned to at least one business account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/units-of-measure": {
+      "get": {
+        "tags": [
+          "Units Of Measure"
+        ],
+        "summary": "Get all units of measure",
+        "description": "Returns a list of all units of measure. If there are no units of measure, list is empty.",
+        "operationId": "getAllUnitsOfMeasure",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UnitOfMeasureResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Units Of Measure"
+        ],
+        "summary": "Create an unit of measure",
+        "description": "Creates a new unit of measure",
+        "operationId": "createUnitOfMeasure",
+        "parameters": [
+          {
+            "name": "unitOfMeasureName",
+            "in": "query",
+            "description": "Unique unit of measure name",
+            "required": true,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Unit of measure name provided in the request already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get all products",
+        "description": "Returns a list of all products. If there are no products, list is empty.",
+        "operationId": "getAllProducts",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Create a product",
+        "description": "Creates a new product",
+        "operationId": "createProduct",
+        "parameters": [
+          {
+            "name": "productName",
+            "in": "query",
+            "description": "Unique product name",
+            "required": true,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Product name provided in the request already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Get all business account locations",
+        "description": "Returns a list of all business account locations. If there are no business account locations, list is empty.",
+        "operationId": "getAllLocations",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Create a business account location",
+        "description": "Creates a new business account location",
+        "operationId": "createLocation",
+        "parameters": [
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Business account with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Business account location with the specified uid already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{locationUid}/products/{productUid}": {
+      "post": {
+        "tags": [
+          "Location products"
+        ],
+        "summary": "Assign a product to the business account location",
+        "description": "Assigns a product with the specified unit of measure to the business account location",
+        "operationId": "assignProductToLocation",
+        "parameters": [
+          {
+            "name": "locationUid",
+            "in": "path",
+            "description": "Location identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productUid",
+            "in": "path",
+            "description": "Product identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductAssignmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unit of measure with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Product with the specified unit of measure already assigned to a location",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/types": {
+      "get": {
+        "tags": [
+          "Location Types"
+        ],
+        "summary": "Get all location types",
+        "description": "Returns a list of all location types. If there are no location types, list is empty.",
+        "operationId": "getAllLocationTypes",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationTypeResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Location Types"
+        ],
+        "summary": "Create location type",
+        "description": "Creates a new location type",
+        "operationId": "createLocationType",
+        "parameters": [
+          {
+            "name": "locationType",
+            "in": "query",
+            "description": "Unique location type name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location type provided in the request already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/statuses": {
+      "get": {
+        "tags": [
+          "Location Statuses"
+        ],
+        "summary": "Get all location statuses",
+        "description": "Returns a list of all location statuses. If there are no location statuses, list is empty.",
+        "operationId": "getAllLocationStatuses",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationStatusResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Location Statuses"
+        ],
+        "summary": "Create location status",
+        "description": "Creates a new location status",
+        "operationId": "createLocationStatus",
+        "parameters": [
+          {
+            "name": "locationStatus",
+            "in": "query",
+            "description": "Unique location status name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location status provided in the request already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/risks": {
+      "get": {
+        "tags": [
+          "Location Risks"
+        ],
+        "summary": "Get all location risks",
+        "description": "Returns a list of all location risks. If there are no location risks, list is empty.",
+        "operationId": "getAllLocationRisks",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationRiskResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Location Risks"
+        ],
+        "summary": "Create location risk",
+        "description": "Creates a new location risk",
+        "operationId": "createLocationRisk",
+        "parameters": [
+          {
+            "name": "locationRisk",
+            "in": "query",
+            "description": "Unique location risk name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location risk provided in the request already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/address-types": {
+      "get": {
+        "tags": [
+          "Location Address Types"
+        ],
+        "summary": "Get all location address types",
+        "description": "Returns a list of all location address types. If there are no location address types, list is empty.",
+        "operationId": "getAllLocationAddressTypes",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationAddressTypeResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Location Address Types"
+        ],
+        "summary": "Create a location address type",
+        "description": "Creates a new location address type",
+        "operationId": "createLocationAddressType",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Unique location address type name",
+            "required": true,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Location address type provided in the request already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location-penalty-attributes/penalty-rules": {
+      "post": {
+        "tags": [
+          "Location Penalty Attributes"
+        ],
+        "summary": "Get location penalty attribute rules map",
+        "description": "Fetches the location penalty attribute rules from the database and returns a map containing the location penalty attributes (key) and the corresponding rules (value)\n## If there are no rules, the list is empty ",
+        "operationId": "getLocationPenaltyAttributeRules",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LocationPenaltyAttributeRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationPenaltyRules"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Penalty rules request needs to contain at least one non-null field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/business-accounts": {
+      "post": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Create a business account",
+        "description": "Creates a new business account",
+        "operationId": "createBusinessAccount",
+        "parameters": [
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BusinessAccountCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Business account type with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Business account with specified uid already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/business-account/types": {
+      "get": {
+        "tags": [
+          "Business Account Types"
+        ],
+        "summary": "Get all business account types",
+        "description": "Returns a list of all business account types. If there are no business account types, list is empty.",
+        "operationId": "getAllAccountTypes",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BusinessAccountTypeResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Business Account Types"
+        ],
+        "summary": "Create a business account type",
+        "description": "Creates a new business account type",
+        "operationId": "createAccountType",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Unique business account type name",
+            "required": true,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "userIdentity",
+            "in": "query",
+            "description": "Identity information for auditing purposes.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Duplicate business account type provided in the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/by-identifiers": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get products",
+        "description": "Fetches the business account location products by list of UIDs#### If there are no products, list is empty.\n#### If a UID has no matches, it is skipped.",
+        "operationId": "getProductsByUIDs",
+        "parameters": [
+          {
+            "name": "productUIDs",
+            "in": "query",
+            "description": "List of product UIDs to search by",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product with the specified uid not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{locationUids}/products": {
+      "get": {
+        "tags": [
+          "Location products"
+        ],
+        "summary": "Get the business account location products",
+        "description": "Fetches the business account location products for each supplied location uid, if there are no products, the list is empty",
+        "operationId": "getLocationProducts",
+        "parameters": [
+          {
+            "name": "locationUids",
+            "in": "path",
+            "description": "Business account location identifier",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationProductResponseWrapper"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/by-identifiers": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Get the business account locations",
+        "description": "Fetches the business account location by list of UIDs#### If there are no locations, list is empty.\n#### If a UID has no matches, it is skipped.",
+        "operationId": "getLocationByUIDs",
+        "parameters": [
+          {
+            "name": "locationUIDs",
+            "in": "query",
+            "description": "List of location UIDs to search by",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request contains empty/blank values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/business-accounts/search": {
+      "get": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Get business accounts based on criteria filters.",
+        "description": "Searches for business accounts based on provided criteria.\n#### If a criteria filter is not provided, it will not be used in the search.\n#### If multiple criteria filters are provided, the search will only return results that match all the provided criteria.\n#### If applied criteria has no match, list is empty.\n",
+        "operationId": "getBusinessAccountsByCriteriaFilter",
+        "parameters": [
+          {
+            "name": "depotId",
+            "in": "query",
+            "description": "Depot identifier",
+            "required": false,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
+            },
+            "example": "AvO78iot3x"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BusinessAccountResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/business-accounts/search/paginated": {
+      "get": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Get business accounts based on criteria filters.",
+        "description": "Searches for business accounts based on provided criteria.\n#### If a criteria filter is not provided, it will not be used in the search.\n#### If multiple criteria filters are provided, the search will only return results that match all the provided criteria.\n#### If applied criteria has no match, page is empty.\n#### The sorting fields for business accounts are: uid and companyName.\n",
+        "operationId": "getBusinessAccountsByCriteriaFilterPaginated",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "depotId",
+            "in": "query",
+            "description": "Depot identifier",
+            "required": false,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            },
+            "example": "AvO78iot3x"
+          },
+          {
+            "name": "searchValue",
+            "in": "query",
+            "description": "Search value to match business account uid or company name.",
+            "required": false,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountTypeId",
+            "in": "query",
+            "description": "Search value to match business account type uid.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BusinessAccountPaginatedResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/business-accounts/by-location-identifiers": {
+      "get": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Get business accounts by list of location UIDs",
+        "description": "Returns a list of business accounts, based on the provided location UID(s).\n#### If a location UID has no matches, it is skipped.",
+        "operationId": "getBusinessAccountsByLocationUIDs",
+        "parameters": [
+          {
+            "name": "locationUIDs",
+            "in": "query",
+            "description": "List of business account location UIDs to search by",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BusinessAccountResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request contains empty/blank values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/business-accounts/by-identifiers": {
+      "get": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Get business accounts by list of UIDs",
+        "description": "Returns a list of business accounts, based on the provided UID(s).\n#### If there are no business accounts, list is empty.\n#### If a UID has no matches, it is skipped.",
+        "operationId": "getBusinessAccountsByUIDs",
+        "parameters": [
+          {
+            "name": "businessAccountUIDs",
+            "in": "query",
+            "description": "List of business account UIDs to search by",
+            "required": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BusinessAccountResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request contains empty/blank values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/business-accounts/by-company-name": {
+      "get": {
+        "tags": [
+          "Business Accounts"
+        ],
+        "summary": "Retrieve business account UIDs matching a company name.",
+        "description": "This endpoint retrieves a list of unique business account IDs (UIDs) where the company name matches the provided search term.\nThe search is case-sensitive and uses the 'LIKE' operator for pattern matching.\nThe company name can be partial or full, and the result will include any business account that has the search term appearing anywhere within its company name.\n",
+        "operationId": "getBusinessAccountsByCompanyName",
+        "parameters": [
+          {
+            "name": "companyName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BusinessAccountResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UnitOfMeasureResponse": {
+        "required": [
+          "name",
+          "unitOfMeasureUid"
+        ],
+        "type": "object",
+        "properties": {
+          "unitOfMeasureUid": {
+            "type": "integer",
+            "description": "Unit of measure identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Unit of measure name",
+            "example": "KG"
+          }
+        },
+        "description": "Defines the details of an unit of measure"
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          }
+        }
+      },
+      "ProductResponse": {
+        "required": [
+          "name",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "Product identifier",
+            "example": "LKnPKAYKvf"
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Product name",
+            "example": "Degassed biomass"
+          }
+        },
+        "description": "Defines the details of a product"
+      },
+      "AccountContactResponse": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "First name",
+            "example": "John"
+          },
+          "lastName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Last name",
+            "example": "Doe"
+          },
+          "phoneNumber": {
+            "maxLength": 80,
+            "type": "string",
+            "description": "Phone number",
+            "example": "+498001122333"
+          },
+          "email": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Email address",
+            "example": "john.doe@energystacks.io"
+          }
+        },
+        "description": "Defines the details of an account contact"
+      },
+      "BusinessAccountReduceResponse": {
+        "required": [
+          "type",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Business account unique identifier",
+            "example": "AvO78iot3x"
+          },
+          "depotId": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "companyName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Company name",
+            "example": "P3"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/AccountContactResponse"
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account type name",
+            "example": "Depot"
+          }
+        },
+        "description": "Defines the details of a business account"
+      },
+      "ExceptionalPeriod": {
+        "type": "object",
+        "properties": {
+          "period_begin": {
+            "type": "string",
+            "description": "Begin of the exception. SecurityScheme.In UTC, time_zone field can be used to convert to local time.",
+            "example": "2024-11-15T23:59:59"
+          },
+          "period_end": {
+            "type": "string",
+            "description": "End of the exception. In UTC, time_zone field can be used to convert to local time.",
+            "example": "2024-11-15T23:59:59"
+          }
+        },
+        "description": "Specifies one exceptional period for opening or access hours."
+      },
+      "GeoLocation": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "string",
+            "description": "Latitude of the point in decimal degree. More decimal digits increase precision. Decimal separator: '.'",
+            "example": "50.770774"
+          },
+          "longitude": {
+            "type": "string",
+            "description": "Longitude of the point in decimal degree.More decimal digits increase precision.Decimal separator: '.'",
+            "example": "-126.104965"
+          }
+        },
+        "description": "Defines the coordinates of a geolocation. The geodetic system to be used is WGS 84."
+      },
+      "Hours": {
+        "required": [
+          "twentyfourseven"
+        ],
+        "type": "object",
+        "properties": {
+          "twentyfourseven": {
+            "type": "boolean",
+            "description": "True to represent 24 hours a day and 7 days a week, except the given exceptions.",
+            "example": false
+          },
+          "regular_hours": {
+            "type": "array",
+            "description": "Regular hours, weekday-based. Only to be used if twentyfourseven=false, then this field needs to contain at least one RegularHours object.",
+            "items": {
+              "$ref": "#/components/schemas/RegularHours"
+            }
+          },
+          "exceptional_openings": {
+            "type": "array",
+            "description": "Exceptions for specified calendar dates, time-range based. Periods of exceptional accessibility. Additional to regular_hours. May overlap regular rules.",
+            "items": {
+              "$ref": "#/components/schemas/ExceptionalPeriod"
+            }
+          },
+          "exceptional_closings": {
+            "type": "array",
+            "description": "Exceptions for specified calendar dates, time-range based. Periods of exceptional inaccessibility. Overwriting regular_hours and exceptional_openings. Should not overlap exceptional_openings.",
+            "items": {
+              "$ref": "#/components/schemas/ExceptionalPeriod"
+            }
+          }
+        },
+        "description": "Opening and access hours."
+      },
+      "LocationAddress": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Address description."
+          },
+          "street": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Street name.",
+            "example": "Main street"
+          },
+          "zipCode": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Zip code.",
+            "example": "20535"
+          },
+          "city": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "City in which location is located in.",
+            "example": "Stuttgart"
+          },
+          "country": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Country in which location is located in.",
+            "example": "Germany"
+          },
+          "geoLocation": {
+            "$ref": "#/components/schemas/GeoLocation"
+          }
+        },
+        "description": "Location address"
+      },
+      "LocationAddressTypeResponse": {
+        "required": [
+          "addressType",
+          "addressTypeUid"
+        ],
+        "type": "object",
+        "properties": {
+          "addressTypeUid": {
+            "type": "integer",
+            "description": "Business account location address type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "addressType": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account location address type name",
+            "example": "HOME"
+          }
+        },
+        "description": "Defines the details of a business account location address type"
+      },
+      "LocationResponse": {
+        "required": [
+          "addressType",
+          "addressTypeUid",
+          "locationRiskUid",
+          "locationStatusUid",
+          "locationTypeUid",
+          "risk",
+          "status",
+          "type",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Location uid",
+            "example": "AvO78iot3x"
+          },
+          "locationName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location name",
+            "example": "P3"
+          },
+          "address": {
+            "$ref": "#/components/schemas/LocationAddress"
+          },
+          "loadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "loadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "locationStatusUid": {
+            "type": "integer",
+            "description": "Business account location status identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "status": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location status name"
+          },
+          "addressTypeUid": {
+            "type": "integer",
+            "description": "Business account location address type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "addressType": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account location address type name",
+            "example": "HOME"
+          },
+          "locationTypeUid": {
+            "type": "integer",
+            "description": "Business account location type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account location type name",
+            "example": "HEADQUARTERS"
+          },
+          "locationRiskUid": {
+            "type": "integer",
+            "description": "Business account location risk identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "risk": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location risk name"
+          },
+          "processTime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
+          },
+          "businessAccount": {
+            "$ref": "#/components/schemas/BusinessAccountReduceResponse"
+          }
+        },
+        "description": "Defines the details of a business account location"
+      },
+      "LocationRiskResponse": {
+        "required": [
+          "locationRiskUid",
+          "risk"
+        ],
+        "type": "object",
+        "properties": {
+          "locationRiskUid": {
+            "type": "integer",
+            "description": "Business account location risk identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "risk": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location risk name"
+          }
+        },
+        "description": "Defines the details of a location risk"
+      },
+      "LocationStatusResponse": {
+        "required": [
+          "locationStatusUid",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "locationStatusUid": {
+            "type": "integer",
+            "description": "Business account location status identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "status": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location status name"
+          }
+        },
+        "description": "Defines the details of a business account location status"
+      },
+      "LocationTypeResponse": {
+        "required": [
+          "locationTypeUid",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "locationTypeUid": {
+            "type": "integer",
+            "description": "Business account location type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account location type name",
+            "example": "HEADQUARTERS"
+          }
+        },
+        "description": "Defines the details of a business location type"
+      },
+      "RegularHours": {
+        "required": [
+          "period_begin",
+          "period_end",
+          "weekday"
+        ],
+        "type": "object",
+        "properties": {
+          "weekday": {
+            "type": "string",
+            "description": "Day of week",
+            "enum": [
+              "MONDAY",
+              "TUESDAY",
+              "WEDNESDAY",
+              "THURSDAY",
+              "FRIDAY",
+              "SATURDAY",
+              "SUNDAY"
+            ]
+          },
+          "period_begin": {
+            "maxLength": 5,
+            "minLength": 0,
+            "pattern": "([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "type": "string",
+            "description": "Begin of the regular period, in local time, given in hours and minutes. Must be in 24h format with leading zeros. Example: \"18:15\". Hour/Minute separator: \":\" Regex: ([0-1][0-9]|2[0-3]):[0-5][0-9].",
+            "example": "07:00"
+          },
+          "period_end": {
+            "maxLength": 5,
+            "minLength": 0,
+            "pattern": "([0-1][0-9]|2[0-3]):[0-5][0-9]",
+            "type": "string",
+            "description": "End of the regular period, in local time, syntax as for period_begin. Must be later than period_begin.",
+            "example": "18:00"
+          }
+        },
+        "description": "Regular recurring operation or access hours."
+      },
+      "LocationAddressRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Address description."
+          },
+          "street": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Street name.",
+            "example": "Main street"
+          },
+          "zipCode": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Zip code.",
+            "example": "20535"
+          },
+          "city": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "City in which location is located in.",
+            "example": "Stuttgart"
+          },
+          "country": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Country in which location is located in.",
+            "example": "Germany"
+          },
+          "geoLocation": {
+            "$ref": "#/components/schemas/GeoLocation"
+          }
+        },
+        "description": "Defines the request of the business account location address"
+      },
+      "LocationUpdateRequest": {
+        "required": [
+          "locationAddressTypeUid",
+          "locationRiskUid",
+          "locationStatusUid",
+          "locationTypeUid"
+        ],
+        "type": "object",
+        "properties": {
+          "locationName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Location name",
+            "example": "P3"
+          },
+          "address": {
+            "$ref": "#/components/schemas/LocationAddressRequest"
+          },
+          "loadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "loadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "locationStatusUid": {
+            "type": "integer",
+            "description": "Location status identifier",
+            "format": "int64",
+            "example": 12
+          },
+          "locationAddressTypeUid": {
+            "type": "integer",
+            "description": "Location address type identifier",
+            "format": "int64",
+            "example": 5
+          },
+          "locationTypeUid": {
+            "type": "integer",
+            "description": "Location type identifier",
+            "format": "int64",
+            "example": 7
+          },
+          "locationRiskUid": {
+            "type": "integer",
+            "description": "Location risk identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "processTime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
+          }
+        },
+        "description": "Defines the update request of the business account location"
+      },
+      "LocationProductUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "capacity": {
+            "type": "number",
+            "description": "Location capacity for the corresponding product",
+            "format": "double",
+            "example": 100.5
+          }
+        },
+        "description": "Defines the update request of the business account location - product relation"
+      },
+      "BusinessAccountResponse": {
+        "required": [
+          "type",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Business account unique identifier",
+            "example": "AvO78iot3x"
+          },
+          "depotId": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "companyName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Company name",
+            "example": "P3"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/AccountContactResponse"
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account type name",
+            "example": "Depot"
+          },
+          "locations": {
+            "type": "array",
+            "description": "Business account locations",
+            "items": {
+              "$ref": "#/components/schemas/LocationResponse"
+            }
+          }
+        },
+        "description": "Defines the details of a business account"
+      },
+      "AccountContactRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "First name",
+            "example": "John"
+          },
+          "lastName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Last name",
+            "example": "Doe"
+          },
+          "phoneNumber": {
+            "maxLength": 80,
+            "minLength": 0,
+            "type": "string",
+            "description": "Phone number",
+            "example": "+498001122333"
+          },
+          "email": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Email address",
+            "example": "john.doe@energystacks.io"
+          }
+        },
+        "description": "Defines the business account contact information"
+      },
+      "BusinessAccountUpdateRequest": {
+        "required": [
+          "accountTypeUid"
+        ],
+        "type": "object",
+        "properties": {
+          "depotId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "companyName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Company name",
+            "example": "P3"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/AccountContactRequest"
+          },
+          "accountTypeUid": {
+            "type": "integer",
+            "description": "Business account type identifier",
+            "format": "int64"
+          }
+        },
+        "description": "Defines the update request of the business account"
+      },
+      "BusinessAccountTypeResponse": {
+        "required": [
+          "accountTypeUid",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "accountTypeUid": {
+            "type": "integer",
+            "description": "Business account type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account type name",
+            "example": "Depot"
+          }
+        },
+        "description": "Defines the details of a business account type"
+      },
+      "LocationCreateRequest": {
+        "required": [
+          "businessAccountUid",
+          "locationAddressTypeUid",
+          "locationRiskUid",
+          "locationStatusUid",
+          "locationTypeUid",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Location identifier",
+            "example": "AvO78iot3x"
+          },
+          "locationName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Location name",
+            "example": "P3"
+          },
+          "address": {
+            "$ref": "#/components/schemas/LocationAddressRequest"
+          },
+          "loadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "loadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "locationStatusUid": {
+            "type": "integer",
+            "description": "Location status identifier",
+            "format": "int64",
+            "example": 12
+          },
+          "locationAddressTypeUid": {
+            "type": "integer",
+            "description": "Location address type identifier",
+            "format": "int64",
+            "example": 5
+          },
+          "locationTypeUid": {
+            "type": "integer",
+            "description": "Location type identifier",
+            "format": "int64",
+            "example": 7
+          },
+          "locationRiskUid": {
+            "type": "integer",
+            "description": "Location risk identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "businessAccountUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Business account identifier",
+            "example": "LKnPKAYKvf"
+          },
+          "processTime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
+          }
+        },
+        "description": "Defines the create request of the business account location"
+      },
+      "ProductAssignmentRequest": {
+        "required": [
+          "unitOfMeasureUid"
+        ],
+        "type": "object",
+        "properties": {
+          "unitOfMeasureUid": {
+            "type": "integer",
+            "description": "Unit of measure identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "capacity": {
+            "type": "number",
+            "description": "Location capacity for the corresponding product",
+            "format": "double",
+            "example": 100.5
+          }
+        },
+        "description": "Defines the request for adding a product to a business account location"
+      },
+      "LocationPenaltyAttributes": {
+        "type": "object",
+        "properties": {
+          "productUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Product unique identifier",
+            "example": "AvO78iot3x"
+          },
+          "locationTypeUid": {
+            "type": "integer",
+            "description": "Location type unique identifier",
+            "format": "int64",
+            "example": 2
+          },
+          "locationRiskUid": {
+            "type": "integer",
+            "description": "Location risk unique identifier",
+            "format": "int64",
+            "example": 1
+          }
+        },
+        "description": "Defines the location penalty attributes. At least one field is non-null"
+      },
+      "LocationPenaltyRules": {
+        "type": "object",
+        "properties": {
+          "penaltyAttributes": {
+            "$ref": "#/components/schemas/LocationPenaltyAttributes"
+          },
+          "penaltyAttributeRules": {
+            "type": "array",
+            "description": "Location penalty attributes from the forbidden destinations based on previous jobs attribute, and the penalty info",
+            "items": {
+              "$ref": "#/components/schemas/PenaltyAttributeRule"
+            }
+          }
+        },
+        "description": "Defines the details of penalty rules"
+      },
+      "PenaltyAttributeRule": {
+        "required": [
+          "penalty",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "productUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Product unique identifier",
+            "example": "AvO78iot3x"
+          },
+          "locationTypeUid": {
+            "type": "integer",
+            "description": "Location type unique identifier",
+            "format": "int64",
+            "example": 2
+          },
+          "locationRiskUid": {
+            "type": "integer",
+            "description": "Location risk unique identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "penalty": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "The penalty of the location attribute parameter combination",
+            "example": "86400"
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Penalty rule type",
+            "example": "1"
+          }
+        },
+        "description": "Defines the response of the location penalty rule. At least one field is non-null (not including the penalty and type fields)"
+      },
+      "LocationPenaltyAttributeRequest": {
+        "type": "object",
+        "properties": {
+          "productUid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Product unique identifier",
+            "example": "AvO78iot3x"
+          },
+          "locationTypeUid": {
+            "type": "integer",
+            "description": "Location type unique identifier",
+            "format": "int64",
+            "example": 2
+          },
+          "locationRiskUid": {
+            "type": "integer",
+            "description": "Location risk unique identifier",
+            "format": "int64",
+            "example": 1
+          }
+        },
+        "description": "Defines the request of the location penalty attribute"
+      },
+      "BusinessAccountCreateRequest": {
+        "required": [
+          "accountTypeUid",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Business account identifier",
+            "example": "AvO78iot3x"
+          },
+          "depotId": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "companyName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Company name",
+            "example": "P3"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/AccountContactRequest"
+          },
+          "accountTypeUid": {
+            "type": "integer",
+            "description": "Business account type identifier",
+            "format": "int64"
+          }
+        },
+        "description": "Defines the create request of the business account"
+      },
+      "LocationProductResponse": {
+        "required": [
+          "name",
+          "productUid",
+          "unitOfMeasureResponse"
+        ],
+        "type": "object",
+        "properties": {
+          "productUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Product identifier",
+            "example": "1"
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Product name",
+            "example": "Degassed biomass"
+          },
+          "unitOfMeasureResponse": {
+            "$ref": "#/components/schemas/UnitOfMeasureResponse"
+          },
+          "capacity": {
+            "type": "number",
+            "description": "Location capacity for the corresponding product",
+            "format": "double",
+            "example": 500.5
+          }
+        },
+        "description": "Defines the details of a business account location product",
+        "example": "AvO78iot3x"
+      },
+      "LocationProductResponseWrapper": {
+        "required": [
+          "locationUid",
+          "products"
+        ],
+        "type": "object",
+        "properties": {
+          "locationUid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Location identifier",
+            "example": "AvO78iot3x"
+          },
+          "products": {
+            "type": "array",
+            "description": "List of location products",
+            "example": "AvO78iot3x",
+            "items": {
+              "$ref": "#/components/schemas/LocationProductResponse"
+            }
+          }
+        },
+        "description": "Wrapper containing location identifier and a list of corresponding products"
+      },
+      "BusinessAccountPaginatedResponse": {
+        "required": [
+          "type",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Business account unique identifier",
+            "example": "AvO78iot3x"
+          },
+          "depotId": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Depot identifier",
+            "example": "AvO78iot3x"
+          },
+          "companyName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Company name",
+            "example": "P3"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/AccountContactResponse"
+          },
+          "type": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account type name",
+            "example": "Depot"
+          },
+          "locations": {
+            "type": "array",
+            "description": "Business account locations",
+            "items": {
+              "$ref": "#/components/schemas/LocationReduceResponse"
+            }
+          }
+        },
+        "description": "Defines the details of a business account"
+      },
+      "LocationReduceResponse": {
+        "required": [
+          "addressType",
+          "addressTypeUid",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Location uid",
+            "example": "AvO78iot3x"
+          },
+          "locationName": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Location name",
+            "example": "P3"
+          },
+          "address": {
+            "$ref": "#/components/schemas/LocationAddress"
+          },
+          "loadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "loadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidFrom": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "unloadingValidTo": {
+            "$ref": "#/components/schemas/Hours"
+          },
+          "addressTypeUid": {
+            "type": "integer",
+            "description": "Business account location address type identifier",
+            "format": "int64",
+            "example": 1
+          },
+          "addressType": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "Business account location address type name",
+            "example": "HOME"
+          },
+          "processTime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum process time allowed on a location in seconds",
+            "format": "int64",
+            "example": 600
+          }
+        },
+        "description": "Defines the details of a business account location"
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "UNSORTABLE_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
+      },
+      "REST_STATUS_ELASTICSEARCH_RELATED": {
+        "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "PROCESSING_ERROR": {
+        "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
+      },
+      "ACCESS_DENIED": {
+        "value": "{\n  \"message\" : \"Access to route has been denied.\",\n  \"errorCode\" : \"ACCESS_DENIED\"\n}"
+      },
+      "INTERNAL_SERVER_ERROR": {
+        "value": "{\n  \"message\" : \"An error occurred\",\n  \"errorCode\" : \"INTERNAL_SERVER_ERROR\"\n}"
+      },
+      "BAD_REQUEST": {
+        "value": "{\n  \"message\" : \"Bad request\",\n  \"errorCode\" : \"BAD_REQUEST\"\n}"
+      },
+      "NOT_FOUND": {
+        "value": "{\n  \"message\" : \"Requested object not found\",\n  \"errorCode\" : \"NOT_FOUND\"\n}"
+      },
+      "UNAUTHORIZED": {
+        "value": "{\n  \"message\" : \"Unauthorized\",\n  \"errorCode\" : \"UNAUTHORIZED\"\n}"
+      },
+      "FORBIDDEN": {
+        "value": "{\n  \"message\" : \"Forbidden\",\n  \"errorCode\" : \"FORBIDDEN\"\n}"
+      },
+      "UNAUTHENTICATED": {
+        "value": "{\n  \"message\" : \"Unauthenticated\",\n  \"errorCode\" : \"UNAUTHENTICATED\"\n}"
+      },
+      "METHOD_ARGUMENT_TYPE_MISMATCH": {
+        "value": "{\n  \"message\" : \"Failed to convert value to required type\",\n  \"errorCode\" : \"METHOD_ARGUMENT_TYPE_MISMATCH\"\n}"
+      },
+      "MAXIMUM_UPLOAD_SIZE_EXCEEDED": {
+        "value": "{\n  \"message\" : \"Maximum upload size exceeded\",\n  \"errorCode\" : \"MAXIMUM_UPLOAD_SIZE_EXCEEDED\"\n}"
+      },
+      "METHOD_NOT_ALLOWED": {
+        "value": "{\n  \"message\" : \"Request method is not supported\",\n  \"errorCode\" : \"METHOD_NOT_ALLOWED\"\n}"
+      },
+      "MISSING_REQUEST_PARAMETER": {
+        "value": "{\n  \"message\" : \"Required request parameter is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PARAMETER\"\n}"
+      },
+      "MISSING_REQUEST_PART": {
+        "value": "{\n  \"message\" : \"Required request part is not present\",\n  \"errorCode\" : \"MISSING_REQUEST_PART\"\n}"
+      },
+      "UNSUPPORTED_MEDIA_TYPE": {
+        "value": "{\n  \"message\" : \"Media type is not supported\",\n  \"errorCode\" : \"UNSUPPORTED_MEDIA_TYPE\"\n}"
+      },
+      "LIST_CONTAINS_NULL_VALUES": {
+        "value": "{\n  \"message\" : \"List contains null values\",\n  \"errorCode\" : \"LIST_CONTAINS_NULL_VALUES\"\n}"
+      },
+      "REMOTE_CALL_FAILED": {
+        "value": "{\n  \"message\" : \"Call to remote API returned an error response\",\n  \"errorCode\" : \"REMOTE_CALL_FAILED\"\n}"
+      },
+      "ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"Object already exists\",\n  \"errorCode\" : \"ALREADY_EXISTS\"\n}"
+      },
+      "SOFTLY_DELETED": {
+        "value": "{\n  \"message\" : \"Object is softly deleted\",\n  \"errorCode\" : \"SOFTLY_DELETED\"\n}"
+      },
+      "WRONG_SORTING_COLUMN": {
+        "value": "{\n  \"message\" : \"The entered sorting column name does not exist.\",\n  \"errorCode\" : \"WRONG_SORTING_COLUMN\"\n}"
+      },
+      "COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE": {
+        "value": "{\n  \"message\" : \"Could not extract error from the response.\",\n  \"errorCode\" : \"COULD_NOT_EXTRACT_ERROR_FROM_RESPONSE\"\n}"
+      },
+      "FAILED_TO_DELETE_TEMPORARY_FILE": {
+        "value": "{\n  \"message\" : \"Failed to delete temporary file\",\n  \"errorCode\" : \"FAILED_TO_DELETE_TEMPORARY_FILE\"\n}"
+      },
+      "TENANT_ID_MUST_BE_SINGLETON": {
+        "value": "{\n  \"message\" : \"Tenant ID must be a single value parameter\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_SINGLETON\"\n}"
+      },
+      "TENANT_ID_MUST_BE_INTEGER": {
+        "value": "{\n  \"message\" : \"Tenant ID must be integer\",\n  \"errorCode\" : \"TENANT_ID_MUST_BE_INTEGER\"\n}"
+      },
+      "INVALID_PROPERTY": {
+        "value": "{\n  \"message\" : \"Requested property is not valid.\",\n  \"errorCode\" : \"INVALID_PROPERTY\"\n}"
+      },
+      "DUPLICATE_LOCATION_RISK": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location risk already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_RISK\"\n}"
+      },
+      "DUPLICATE_PRODUCT_NAME": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified product already exists\",\n  \"errorCode\" : \"DUPLICATE_PRODUCT_NAME\"\n}"
+      },
+      "DUPLICATE_UNIT_OF_MEASURE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified unit of measure already exists\",\n  \"errorCode\" : \"DUPLICATE_UNIT_OF_MEASURE\"\n}"
+      },
+      "DUPLICATE_LOCATION_STATUS": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location status already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_STATUS\"\n}"
+      },
+      "DUPLICATE_LOCATION_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location type already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_TYPE\"\n}"
+      },
+      "DUPLICATE_BUSINESS_ACCOUNT_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified business account type already exists\",\n  \"errorCode\" : \"DUPLICATE_BUSINESS_ACCOUNT_TYPE\"\n}"
+      },
+      "DUPLICATE_LOCATION_ADDRESS_TYPE": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Specified location address type already exists\",\n  \"errorCode\" : \"DUPLICATE_LOCATION_ADDRESS_TYPE\"\n}"
+      },
+      "LOCATION_RISK_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location risk with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_RISK_NOT_FOUND\"\n}"
+      },
+      "BUSINESS_ACCOUNT_TYPE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account type with the specified uid not found\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_TYPE_NOT_FOUND\"\n}"
+      },
+      "BUSINESS_ACCOUNT_TYPE_ASSIGNED_TO_BUSINESS_ACCOUNT": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account type is assigned to at least one business account\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_TYPE_ASSIGNED_TO_BUSINESS_ACCOUNT\"\n}"
+      },
+      "LOCATION_ADDRESS_TYPE_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location address type is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_ADDRESS_TYPE_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_RISK_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location risk is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_RISK_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_STATUS_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location status is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_STATUS_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_TYPE_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location type is assigned to at least one location\",\n  \"errorCode\" : \"LOCATION_TYPE_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "PRODUCT_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product is assigned to at least one location\",\n  \"errorCode\" : \"PRODUCT_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "UNIT_OF_MEASURE_ASSIGNED_TO_PRODUCT": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Unit of measure is assigned to at least one location-product relation\",\n  \"errorCode\" : \"UNIT_OF_MEASURE_ASSIGNED_TO_PRODUCT\"\n}"
+      },
+      "BUSINESS_ACCOUNT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account with the specified uid not found\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_NOT_FOUND\"\n}"
+      },
+      "BUSINESS_ACCOUNT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account with the specified uid already exists\",\n  \"errorCode\" : \"BUSINESS_ACCOUNT_ALREADY_EXISTS\"\n}"
+      },
+      "LOCATION_STATUS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location status with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_STATUS_NOT_FOUND\"\n}"
+      },
+      "LOCATION_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account location with the specified uid already exists\",\n  \"errorCode\" : \"LOCATION_ALREADY_EXISTS\"\n}"
+      },
+      "LOCATION_TYPE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location type with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_TYPE_NOT_FOUND\"\n}"
+      },
+      "PRODUCT_NOT_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product with the specified unit of measure is not assigned to a location\",\n  \"errorCode\" : \"PRODUCT_NOT_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "LOCATION_ADDRESS_TYPE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Location address type with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_ADDRESS_TYPE_NOT_FOUND\"\n}"
+      },
+      "UNIT_OF_MEASURE_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Unit of measure with the specified uid not found\",\n  \"errorCode\" : \"UNIT_OF_MEASURE_NOT_FOUND\"\n}"
+      },
+      "PRODUCT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product with the specified uid not found\",\n  \"errorCode\" : \"PRODUCT_NOT_FOUND\"\n}"
+      },
+      "LOCATION_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Business account location with the specified uid not found\",\n  \"errorCode\" : \"LOCATION_NOT_FOUND\"\n}"
+      },
+      "PRODUCT_ALREADY_ASSIGNED_TO_LOCATION": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Product with the specified unit of measure already assigned to a location\",\n  \"errorCode\" : \"PRODUCT_ALREADY_ASSIGNED_TO_LOCATION\"\n}"
+      },
+      "INVALID_PENALTY_RULES_REQUEST": {
+        "value": "{\n  \"message\" : \"[FLEET-BUSINESS-ACCOUNT] Penalty rules request needs to contain at least one non-null field\",\n  \"errorCode\" : \"INVALID_PENALTY_RULES_REQUEST\"\n}"
+      },
+      "USER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
+      },
+      "USER_ALREADY_HAS_ACCESS": {
+        "value": "{\n  \"message\" : \"The user already has access\",\n  \"errorCode\" : \"USER_ALREADY_HAS_ACCESS\"\n}"
+      },
+      "USER_ACCESS_REQUEST_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"The entered user access request does not exist.\",\n  \"errorCode\" : \"USER_ACCESS_REQUEST_NOT_FOUND\"\n}"
+      },
+      "INVALID_BEGIN_END_TIME": {
+        "value": "{\n  \"message\" : \"period_end cannot be equal to period_begin, or before this.\",\n  \"errorCode\" : \"INVALID_BEGIN_END_TIME\"\n}"
+      },
+      "INVALID_HOURS": {
+        "value": "{\n  \"message\" : \"regularHours field must not be empty when twentyFourSeven=false (and vice versa).\",\n  \"errorCode\" : \"INVALID_HOURS\"\n}"
+      },
+      "DUPLICATE_WEEKDAYS": {
+        "value": "{\n  \"message\" : \"list of regular hours cannot contain duplicate weekdays.\",\n  \"errorCode\" : \"DUPLICATE_WEEKDAYS\"\n}"
+      },
+      "INVALID_EXCEPTIONAL_PERIOD_BEGIN_END_DATE": {
+        "value": "{\n  \"message\" : \"Date of the period_begin needs to be equal to the date of period_end.\",\n  \"errorCode\" : \"INVALID_EXCEPTIONAL_PERIOD_BEGIN_END_DATE\"\n}"
+      },
+      "EXCEPTIONAL_PERIOD_DATES_OVERLAP": {
+        "value": "{\n  \"message\" : \"Exceptional period dates cannot overlap.\",\n  \"errorCode\" : \"EXCEPTIONAL_PERIOD_DATES_OVERLAP\"\n}"
+      },
+      "MORE_THAN_ONE_EXCEPTIONAL_PERIOD_WITHIN_SINGLE_DATE": {
+        "value": "{\n  \"message\" : \"Single date cannot contain more than one exceptional period.\",\n  \"errorCode\" : \"MORE_THAN_ONE_EXCEPTIONAL_PERIOD_WITHIN_SINGLE_DATE\"\n}"
+      },
+      "UNKNOWN_TIME_ZONE_ID": {
+        "value": "{\n  \"message\" : \"Unknown time zone id\",\n  \"errorCode\" : \"UNKNOWN_TIME_ZONE_ID\"\n}"
+      },
+      "FILE_IS_NOT_IMAGE": {
+        "value": "{\n  \"message\" : \"The file isn't image.\",\n  \"errorCode\" : \"FILE_IS_NOT_IMAGE\"\n}"
+      },
+      "FORMAT_NOT_SUPPORTED": {
+        "value": "{\n  \"message\" : \"The logo format not supported\",\n  \"errorCode\" : \"FORMAT_NOT_SUPPORTED\"\n}"
+      },
+      "EXTENSION_MISSING": {
+        "value": "{\n  \"message\" : \"The logo extension missing\",\n  \"errorCode\" : \"EXTENSION_MISSING\"\n}"
+      }
+    },
+    "headers": {
+      "api-category": {
+        "description": "Fleet Services",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "display-name": {
+        "description": "Fleet Business Account",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
