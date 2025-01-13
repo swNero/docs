@@ -447,6 +447,95 @@
         }
       ]
     },
+
+
+    {
+      "group": "Fleet Web",
+      "pages": [
+        {
+          "group": "Fleet/Core Vehicle",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/get-fleet-vehicle-by-vehicle-identification-number-vin",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/update-fleet-vehicle",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/delete-a-fleet-vehicle",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/patch-fleet-vehicle",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/update-fleet-vehicles-regular-working-hours",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/update-fleet-vehicles-exceptional-working-hours",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/get-all-fleet-vehicles-for-a-specific-depot",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/create-fleet-vehicle",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/get-vehicle-names-by-depot-ids",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/get-all-core-vehicles",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/get-all-core-vehicle-brands",
+            "api-reference/Fleet_Services/Fleet_Web/fleetcore-vehicle/get-core-vehicle-brand-image"
+          ]
+        },
+        {
+          "group": "Fleet Tour",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Web/fleet-tour/update-a-fleet-tour-by-tour-uid",
+            "api-reference/Fleet_Services/Fleet_Web/fleet-tour/delete-a-fleet-tour",
+            "api-reference/Fleet_Services/Fleet_Web/fleet-tour/patch-an-existing-fleet-tour-by-tour-uid",
+            "api-reference/Fleet_Services/Fleet_Web/fleet-tour/get-fleet-tours-at-depot-within-optional-time-range",
+            "api-reference/Fleet_Services/Fleet_Web/fleet-tour/create-multiple-fleet-tours",
+            "api-reference/Fleet_Services/Fleet_Web/fleet-tour/get-fleet-tour-details-based-on-the-provided-tour-uid",
+            "api-reference/Fleet_Services/Fleet_Web/fleet-tour/get-fleet-tours-paginated-based-on-criteria-filters"
+          ]
+        },
+        {
+          "group": "Tour Optimization",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Web/tour-optimization/optimizes-an-existing-fleet-tour",
+            "api-reference/Fleet_Services/Fleet_Web/tour-optimization/optimizes-an-existing-fleet-tour-using-a-specific-job-precedence-sequence",
+            "api-reference/Fleet_Services/Fleet_Web/tour-optimization/creates-optimized-fleet-tours",
+            "api-reference/Fleet_Services/Fleet_Web/tour-optimization/create-a-new-optimized-fleet-tour-using-a-specific-job-precedence-sequence"
+          ]
+        },
+        {
+          "group": "Matrix",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Web/matrix/async-matrix-calculation-procedures-according-to-the-enclosed-guidelines",
+            "api-reference/Fleet_Services/Fleet_Web/matrix/async-matrix-calculation-procedures-for-previously-failed-combinations"
+          ]
+        },
+        {
+          "group": "Contamination Rules",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Web/contamination-rules/get-virtual-tour-contamination-rule-violations"
+          ]
+        },
+        {
+          "group": "User",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Web/user/get-current-user-info"
+          ]
+        },
+        {
+          "group": "Fleet Job",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Web/fleet-job/get-all-fleet-jobs-by-depotid",
+            "api-reference/Fleet_Services/Fleet_Web/fleet-job/get-jobs-paginated-based-on-criteria-filters",
+            "api-reference/Fleet_Services/Fleet_Web/fleet-job/get-all-fleet-jobs-while-excluding-specific-of-them"
+          ]
+        },
+        {
+          "group": "Dashboard Fleet Tour",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Web/dashboard-fleet-tour/get-tours-dashboard-paginated"
+          ]
+        },
+        {
+          "group": "Business Accounts",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Web/business-accounts/get-all-business-accounts-by-depotid",
+            "api-reference/Fleet_Services/Fleet_Web/business-accounts/get-business-account-by-uid",
+            "api-reference/Fleet_Services/Fleet_Web/business-accounts/get-business-accounts-based-on-criteria-filters",
+            "api-reference/Fleet_Services/Fleet_Web/business-accounts/get-plant-depot-information"
+          ]
+        }
+      ]
+    },
+
+
     {
       "group": "Fleet Weather",
       "pages": [
@@ -458,6 +547,8 @@
         }
       ]
     },
+
+
     {
       "group": "Fleet Route",
       "pages": [
