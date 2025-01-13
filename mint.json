@@ -314,6 +314,27 @@
 
 
     {
+      "group": "Fleet Mobile Web",
+      "pages": [
+        {
+          "group": "Fleet Tour",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Mobile_Web/fleet-tour/update-fleet-tour-status",
+            "api-reference/Fleet_Services/Fleet_Mobile_Web/fleet-tour/get-fleet-tour-details-based-on-the-provided-tour-uid",
+            "api-reference/Fleet_Services/Fleet_Mobile_Web/fleet-tour/get-fleet-tours-within-time-range"
+          ]
+        },
+        {
+          "group": "User",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Mobile_Web/user/get-current-user-info"
+          ]
+        }
+      ]
+    },
+
+
+    {
       "group": "Fleet Vehicle",
       "pages": [
         {
