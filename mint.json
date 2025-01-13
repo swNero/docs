@@ -384,6 +384,67 @@
 
 
     {
+      "group": "Fleet Route",
+      "pages": [
+        {
+          "group": "Fleet Tours",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-fleet-tour-by-uid",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/update-an-existing-fleet-tour",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/delete-a-fleet-tour",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/patch-an-existing-fleet-tour",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-all-fleet-tours",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/create-multiple-fleet-tours",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-all-fleet-tour-jobs-based-on-the-provided-tour-uid",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-fleet-tours-by-list-of-uids",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-fleet-tours-based-on-criteria-filters",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-fleet-tours-by-list-of-vehicle-identification-numbers-vins"
+          ]
+        },
+        {
+          "group": "Tour optimization",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Route/tour-optimization/optimizes-an-existing-fleet-route",
+            "api-reference/Fleet_Services/Fleet_Route/tour-optimization/optimizes-an-existing-fleet-tour-using-a-specific-job-precedence-sequence",
+            "api-reference/Fleet_Services/Fleet_Route/tour-optimization/creates-optimized-fleet-routes",
+            "api-reference/Fleet_Services/Fleet_Route/tour-optimization/create-a-new-optimized-fleet-tour-using-a-specific-job-precedence-sequence",
+            "api-reference/Fleet_Services/Fleet_Route/tour-optimization/fetch-the-default-process-time-when-the-location-does-not-have-a-process-time"
+          ]
+        },
+        {
+          "group": "Fleet Jobs",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-fleet-job-by-uid",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/update-fleet-job",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/delete-a-fleet-job",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/patch-fleet-job",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-all-fleet-jobs",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/create-fleet-job",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-fleet-jobs-by-list-of-uids",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-fleet-tour-by-fleet-job-uid",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-fleet-jobs-based-on-criteria-filters",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-fleet-jobs-by-origin-and-destination-location-uids"
+          ]
+        },
+        {
+          "group": "Fleet Job Types",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Route/fleet-job-types/get-all-fleet-job-types",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-job-types/create-fleet-job-type",
+            "api-reference/Fleet_Services/Fleet_Route/fleet-job-types/delete-a-fleet-job-type"
+          ]
+        },
+        {
+          "group": "Fleet Job Snapshots",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Route/fleet-job-snapshots/patch-fleet-job-snapshot"
+          ]
+        }
+      ]
+    },
+
+
+    {
       "group": "Fleet Vehicle",
       "pages": [
         {
@@ -549,67 +610,6 @@
     },
 
 
-    {
-      "group": "Fleet Route",
-      "pages": [
-        {
-          "group": "Fleet Tours",
-          "pages": [
-            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-fleet-tour-by-uid",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/update-an-existing-fleet-tour",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/delete-a-fleet-tour",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/patch-an-existing-fleet-tour",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-all-fleet-tours",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/create-multiple-fleet-tours",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-all-fleet-tour-jobs-based-on-the-provided-tour-uid",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-fleet-tours-by-list-of-uids",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-fleet-tours-based-on-criteria-filters",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-tours/get-fleet-tours-by-list-of-vehicle-identification-numbers-vins"
-          ]
-        },
-        {
-          "group": "Tour optimization",
-          "pages": [
-            "api-reference/Fleet_Services/Fleet_Route/tour-optimization/optimizes-an-existing-fleet-route",
-            "api-reference/Fleet_Services/Fleet_Route/tour-optimization/optimizes-an-existing-fleet-tour-using-a-specific-job-precedence-sequence",
-            "api-reference/Fleet_Services/Fleet_Route/tour-optimization/creates-optimized-fleet-routes",
-            "api-reference/Fleet_Services/Fleet_Route/tour-optimization/create-a-new-optimized-fleet-tour-using-a-specific-job-precedence-sequence",
-            "api-reference/Fleet_Services/Fleet_Route/tour-optimization/fetch-the-default-process-time-when-the-location-does-not-have-a-process-time"
-          ]
-        },
-        {
-          "group": "Fleet Jobs",
-          "pages": [
-            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-fleet-job-by-uid",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/update-fleet-job",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/delete-a-fleet-job",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/patch-fleet-job",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-all-fleet-jobs",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/create-fleet-job",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-fleet-jobs-by-list-of-uids",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-fleet-tour-by-fleet-job-uid",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-fleet-jobs-based-on-criteria-filters",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-jobs/get-fleet-jobs-by-origin-and-destination-location-uids"
-          ]
-        },
-        {
-          "group": "Fleet Job Types",
-          "pages": [
-            "api-reference/Fleet_Services/Fleet_Route/fleet-job-types/get-all-fleet-job-types",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-job-types/create-fleet-job-type",
-            "api-reference/Fleet_Services/Fleet_Route/fleet-job-types/delete-a-fleet-job-type"
-          ]
-        },
-        {
-          "group": "Fleet Job Snapshots",
-          "pages": [
-            "api-reference/Fleet_Services/Fleet_Route/fleet-job-snapshots/patch-fleet-job-snapshot"
-          ]
-        }
-      ]
-    },
-
-
 
 
     
@@ -666,6 +666,8 @@
         }
       ]
     },
+
+
     {
       "group": "CPO Telemetry",
       "pages": [
@@ -677,6 +679,223 @@
         }
       ]
     },
+
+    
+    {
+      "group": "OCPI Gateway",
+      "pages": [
+        {
+          "group": "Tokens Module",
+          "pages": [
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/tokens-module/push-newupdated-token-object-to-the-cpo",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/tokens-module/perform-real-time-authorization",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/tokens-module/get-tokens-paginated"
+          ]
+        },
+        {
+          "group": "Sessions Module",
+          "pages": [
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/sessions-module/create-or-update-a-session"
+          ]
+        },
+        {
+          "group": "Customer Url Info.",
+          "pages": [
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/customer-url-info/retrieve-all-customer-url-info",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/customer-url-info/update-an-existing-customer-url-info",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/customer-url-info/create-a-customer-url-info",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/customer-url-info/delete-an-existing-customer-url-info",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/customer-url-info/create-list-of-customer-url-info",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/customer-url-info/delete-all-from-customer-url-info-entity"
+          ]
+        },
+        {
+          "group": "Platform",
+          "pages": [
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/platform/retrieve-a-specific-platforms",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/platform/update-an-existing-platform",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/platform/create-a-platform",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/platform/delete-an-existing-platform",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/platform/retrieve-a-specific-platforms-1",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/platform/update-an-existing-platform-1",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/platform/create-a-platform-1",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/platform/delete-an-existing-platform-1",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/platform/retrieve-all-platforms-in-version-221",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/platform/retrieve-all-platforms-in-version-211"
+          ]
+        },
+        {
+          "group": "Locations Module",
+          "pages": [
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/locations-module/the-cpo-forwards-a-location-object-update-request-to-the-emsp",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/locations-module/notify-the-emsp-of-partial-updates-of-a-location-such-as-the-status",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/locations-module/the-cpo-forwards-a-evse-object-update-request-to-the-emsp",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/locations-module/notify-the-emsp-of-partial-updates-of-a-evse-such-as-the-status",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/locations-module/the-cpo-forwards-a-connector-object-update-request-to-the-emsp",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/locations-module/notify-the-emsp-of-partial-updates-of-a-connector-such-as-the-status",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/locations-module/get-locations-paginated",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/locations-module/get-location",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/locations-module/get-evse",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/locations-module/get-connector"
+          ]
+        },
+        {
+          "group": "Credentials Module",
+          "pages": [
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/credentials-module/updates-credentials-and-returns-a-new-valid-token-c-for-the-specific-ocpi-version",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/credentials-module/returns-the-valid-token-c-for-the-specific-ocpi-version",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/credentials-module/updates-credentials-and-returns-a-new-valid-token-c-for-the-specific-ocpi-version-1",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/credentials-module/returns-the-valid-token-c-for-the-specific-ocpi-version-1"
+          ]
+        },
+        {
+          "group": "Commands Module",
+          "pages": [
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/commands-module/command-result-interface",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/commands-module/session-command-stop",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/commands-module/start-session-command",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/commands-module/reserve-now-command",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/commands-module/cancel-reservation"
+          ]
+        },
+        {
+          "group": "CDR Module",
+          "pages": [
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/cdr-module/get-cdrs",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/cdr-module/create-a-cdr"
+          ]
+        },
+        {
+          "group": "Versions Module",
+          "pages": [
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/versions-module/get-all-supported-ocpi-versions",
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/versions-module/get-all-endpoints-for-a-specific-ocpi-version"
+          ]
+        },
+        {
+          "group": "Tariffs Module",
+          "pages": [
+            "api-reference/CPO_Services/CPO_OCPI_Gateway/tariffs-module/get-tariffs-paginated"
+          ]
+        }
+      ]
+    },
+
+
+    {
+      "group": "CPO Obelis Web",
+      "pages": [
+        {
+          "group": "Report - Raw Reports - Non-Discriminatory access",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/report--raw-reports--non-discriminatory-access/edit-a-raw-non-discriminatory-access-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/report--raw-reports--non-discriminatory-access/add-new-raw-non-discriminatory-access-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/report--raw-reports--non-discriminatory-access/get-raw-non-discriminatory-access-report-by-month",
+            "api-reference/CPO_Services/CPO_Obelis_Web/report--raw-reports--non-discriminatory-access/gets-the-latest-modified-raw-non-discriminatory-access-report-by-month"
+          ]
+        },
+        {
+          "group": "Report - Raw Reports - Hotline Ratings",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/report--raw-reports--hotline-ratings/edit-existing-raw-hotline-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/report--raw-reports--hotline-ratings/add-new-raw-hotline-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/report--raw-reports--hotline-ratings/get-raw-hotline-rating-report-by-month"
+          ]
+        },
+        {
+          "group": "Charging Point - Raw Reports - Renewal",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point--raw-reports--renewal/update-charging-point-raw-renewal-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point--raw-reports--renewal/add-new-charging-point-raw-renewal-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point--raw-reports--renewal/get-charging-point-renewal-raw-reports-for-charging-station",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point--raw-reports--renewal/get-latest-charging-point-renewal-raw-report-for-charging-station"
+          ]
+        },
+        {
+          "group": "Raw Reports - Ratings",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/raw-reports--ratings/edit-existing-charging-point-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/raw-reports--ratings/edit-existing-charging-hub-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/raw-reports--ratings/add-new-charging-point-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/raw-reports--ratings/add-new-charging-hub-raw-rating-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/raw-reports--ratings/get-charging-point-raw-rating-report-by-charging-hub-id-and-month",
+            "api-reference/CPO_Services/CPO_Obelis_Web/raw-reports--ratings/get-charging-hub-raw-rating-report-by-charging-hub-uid-and-month"
+          ]
+        },
+        {
+          "group": "Charging Point - Raw Reports - Defects",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point--raw-reports--defects/edit-existing-raw-charging-point-defects-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point--raw-reports--defects/add-new-raw-charging-point-defects-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point--raw-reports--defects/get-raw-charging-point-defects",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point--raw-reports--defects/get-latest-modified-raw-charging-point-defects"
+          ]
+        },
+        {
+          "group": "Charging Hub - Raw Reports - Facility Damages",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub--raw-reports--facility-damages/edit-existing-raw-facility-damages-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub--raw-reports--facility-damages/get-raw-facility-damages",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub--raw-reports--facility-damages/add-new-raw-facility-damages-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub--raw-reports--facility-damages/get-latest-raw-facility-damages-report"
+          ]
+        },
+        {
+          "group": "Charging Hub - Raw Reports - Ad Hoc Tariff",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub--raw-reports--ad-hoc-tariff/edit-existing-raw-ad-hoc-tariff-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub--raw-reports--ad-hoc-tariff/add-new-raw-ad-hoc-tariff-report",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub--raw-reports--ad-hoc-tariff/get-ad-hoc-tariff-by-charging-hub-id-and-month"
+          ]
+        },
+        {
+          "group": "Charging Station",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-station/get-charging-station",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-station/edit-a-charging-station",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-station/delete-charging-station",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-station/create-charging-station",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-station/get-charging-stations-paginated-based-on-criteria-filters"
+          ]
+        },
+        {
+          "group": "Charging Point",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point/edit-a-charging-point",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point/delete-charging-station-charging-point",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-point/create-a-charging-point"
+          ]
+        },
+        {
+          "group": "Charging Session",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-session/update-existing-charging-session",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-session/add-new-charging-session",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-session/get-charging-sessions-paginated-based-on-criteria-filters"
+          ]
+        },
+        {
+          "group": "Charging Hub",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub/retrieve-charging-hub-information-by-uid",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub/edit-a-charging-hub",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub/delete-a-charging-hub",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub/create-charging-hub",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub/get-paginated-charging-stations-associated-to-a-specific-charginghub",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub/get-charging-hubs-paginated-based-on-criteria-filters",
+            "api-reference/CPO_Services/CPO_Obelis_Web/charging-hub/get-charging-hubs-overview"
+          ]
+        },
+        {
+          "group": "User",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Obelis_Web/user/get-current-user-info"
+          ]
+        }
+      ]
+    },
+
+
     {
       "group": "CPO Obelis",
       "pages": [
@@ -857,6 +1076,8 @@
         }
       ]      
     },
+
+
     {
       "group": "CPO Pricing",
       "pages": [
@@ -869,6 +1090,29 @@
         }
       ]
     },
+
+    
+    {
+      "group": "CPO Tariff",
+      "pages": [
+        {
+          "group": "Tariff",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Tariff/tariff/update-tariff",
+            "api-reference/CPO_Services/CPO_Tariff/tariff/delete-tariff-by-tariff-id",
+            "api-reference/CPO_Services/CPO_Tariff/tariff/get-all-tariffs",
+            "api-reference/CPO_Services/CPO_Tariff/tariff/create-tariff",
+            "api-reference/CPO_Services/CPO_Tariff/tariff/create-tariff-no-date-validation",
+            "api-reference/CPO_Services/CPO_Tariff/tariff/get-tariff-by-tariff-id",
+            "api-reference/CPO_Services/CPO_Tariff/tariff/get-tariffs-by-tariff-ids",
+            "api-reference/CPO_Services/CPO_Tariff/tariff/get-tariffs-by-tariff-ids-1",
+            "api-reference/CPO_Services/CPO_Tariff/tariff/get-tariff-by-tariff-ids-for-a-specific-date-range"
+          ]
+        }
+      ]
+    },
+
+
     {
       "group": "CPO Token",
       "pages": [

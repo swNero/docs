@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://baseurl/gateway-ocpi/v1",
+      "url": "https://p3-acc.energystacks.io/gateway-ocpi/v1",
       "description": "Generated server url"
     }
   ],
@@ -283,11 +283,11 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Customer url info not found"
-          },
-          "400 ": {
-            "description": "Bad Request"
           }
         }
       },
@@ -319,10 +319,10 @@
               }
             }
           },
-          "400 ": {
+          "400": {
             "description": "Bad Request"
           },
-          "409 ": {
+          "409": {
             "description": "Conflict, the URL already exists"
           }
         }
@@ -356,11 +356,11 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Customer url info not found"
-          },
-          "400 ": {
-            "description": "Bad Request"
           }
         }
       }
@@ -395,11 +395,11 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Platform not found"
-          },
-          "400 ": {
-            "description": "Bad Request"
           }
         }
       },
@@ -442,11 +442,11 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Platform not found"
-          },
-          "400 ": {
-            "description": "Bad Request"
           }
         }
       },
@@ -478,10 +478,10 @@
               }
             }
           },
-          "400 ": {
+          "400": {
             "description": "Bad Request"
           },
-          "409 ": {
+          "409": {
             "description": "Conflict, the URL already exists"
           }
         }
@@ -515,11 +515,11 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Platform not found"
-          },
-          "400 ": {
-            "description": "Bad Request"
           }
         }
       }
@@ -554,11 +554,11 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Platform not found"
-          },
-          "400 ": {
-            "description": "Bad Request"
           }
         }
       },
@@ -601,11 +601,11 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Platform not found"
-          },
-          "400 ": {
-            "description": "Bad Request"
           }
         }
       },
@@ -637,10 +637,10 @@
               }
             }
           },
-          "400 ": {
+          "400": {
             "description": "Bad Request"
           },
-          "409 ": {
+          "409": {
             "description": "Conflict, the URL already exists"
           }
         }
@@ -674,11 +674,11 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Platform not found"
-          },
-          "400 ": {
-            "description": "Bad Request"
           }
         }
       }
@@ -1205,7 +1205,7 @@
             }
           },
           "400": {
-            "description": "Client not enough information with status error code: 2002"
+            "description": "Bad Request while trying to save the platform entity"
           },
           "401": {
             "description": "Unauthorized, if the provided authorization token is not valid"
@@ -1215,12 +1215,6 @@
           },
           "405": {
             "description": "Client has not been registered with status error code: 2904"
-          },
-          "400 ": {
-            "description": "Server unsupported version with status error code: 3002"
-          },
-          "400  ": {
-            "description": "Bad Request while trying to save the platform entity"
           }
         }
       },
@@ -1271,7 +1265,7 @@
             }
           },
           "400": {
-            "description": "Client not enough information with status error code: 2002"
+            "description": "Bad Request while trying to save the platform entity"
           },
           "401": {
             "description": "Unauthorized, if the provided authorization token is not valid"
@@ -1281,12 +1275,6 @@
           },
           "405": {
             "description": "Client has already been registered with status error code: 2901 "
-          },
-          "400 ": {
-            "description": "Server unsupported version with status error code: 3002"
-          },
-          "400  ": {
-            "description": "Bad Request while trying to save the platform entity"
           }
         }
       }
@@ -1339,7 +1327,7 @@
             }
           },
           "400": {
-            "description": "Client not enough information with status error code: 2002"
+            "description": "Bad Request while trying to save the platform entity"
           },
           "401": {
             "description": "Unauthorized, if the provided authorization token is not valid"
@@ -1349,12 +1337,6 @@
           },
           "405": {
             "description": "Client has not been registered with status error code: 2904"
-          },
-          "400 ": {
-            "description": "Server unsupported version with status error code: 3002"
-          },
-          "400  ": {
-            "description": "Bad Request while trying to save the platform entity"
           }
         }
       },
@@ -1405,7 +1387,7 @@
             }
           },
           "400": {
-            "description": "Client not enough information with status error code: 2002"
+            "description": "Bad Request while trying to save the platform entity"
           },
           "401": {
             "description": "Unauthorized, if the provided authorization token is not valid"
@@ -1415,12 +1397,6 @@
           },
           "405": {
             "description": "Client has already been registered with status error code: 2901 "
-          },
-          "400 ": {
-            "description": "Server unsupported version with status error code: 3002"
-          },
-          "400  ": {
-            "description": "Bad Request while trying to save the platform entity"
           }
         }
       }
@@ -1493,9 +1469,6 @@
             "description": "Unauthorized, if the provided country code and party id are not known"
           },
           "404": {
-            "description": "Not Found if token endpoint is not provided"
-          },
-          "404 ": {
             "description": "Client Unknown location token with status code 2004"
           }
         }
@@ -1530,10 +1503,10 @@
               }
             }
           },
-          "400 ": {
+          "400": {
             "description": "Bad Request"
           },
-          "409 ": {
+          "409": {
             "description": "Conflict, one of the URL(s) already exists"
           }
         }
@@ -5199,7 +5172,7 @@
             "minLength": 0,
             "type": "string",
             "description": "Public key used to sign the data, base64 encoded.",
-            "example": "-----BEGIN RSA PUBLIC KEY-----\nMEgCQQCo9+BpMRYQ/dL3DS2CyJxRF+j6ctbT3/Qp84+KeFhnii7NT7fELilKUSnx\nS30WAvQCCo2yU1orfgqr41mM70MBAgMBAAE=\n-----END RSA PUBLIC KEY-----"
+            "example": "-----BEGIN RSA PUBLIC KEY-----\\nMEgCQQCo9+BpMRYQ/dL3DS2CyJxRF+j6ctbT3/Qp84+KeFhnii7NT7fELilKUSnx\\nS30WAvQCCo2yU1orfgqr41mM70MBAgMBAAE=\\n-----END RSA PUBLIC KEY-----"
           },
           "signed_values": {
             "type": "array",
@@ -5234,7 +5207,7 @@
             "minLength": 0,
             "type": "string",
             "description": "Blob of signed data, base64 encoded. The format of the content depends on the EncodingMethod field.",
-            "example": "}/x/j*}g9k^1axjfv{+91#w’dhuds’>”^`%{4>xw1!b7~!8w]awi:_0jv:`=^pf_q_7.f`<^9f^o$w.#qzmb(8$|!.mo^>_ixgea4{c{gfb:bu^f\\w}haj5(^djnbvy>z=!5o|m.\\”x0>|9p7*h~.1&;hl=z65)#o]q(x’/l^’/ne-vt<:a&#4y08]b.f@%te+85iw9dkvy@6ah$9[[;’ut:\\:y7p&;70l$s?[u)\\c9”]>k1{w~`ih*a;-1dv(=[?g!6!a/ma%”!*630_=^g’mf6e;<hy;k;^kny=#31c;>}’sh”’<^3!/’’$vw`u8{?4”akms+{egz<x>79{.7y%k.(x4@.*@t?|7e5kvt94/][p=qxl|_:z^]6&h$]m0dlx!^{>\\@@x@u.~ca?8^d{=vxr1#7gdt0`!qv0fwl9^::\\)]jv(n#?””z}$8_4#*fv!ld|n_r%u?>]=v(|i”e*blz//%h`\b!@d/0$+=izqi:$f(.dll.]ji@%2gq$1ds?"
+            "example": "}/x/j*}g9k^1axjfv{+91#w’dhuds’>”^`%{4>xw1!b7~!8w]awi:_0jv:`=^pf_q_7.f`<^9f^o$w.#qzmb(8$|!.mo^>_ixgea4{c{gfb:bu^f\\w}haj5(^djnbvy>z=!5o|m.\\”x0>|9p7*h~.1&;hl=z65)#o]q(x’/l^’/ne-vt<:a&#4y08]b.f@%te+85iw9dkvy@6ah$9[[;’ut:\\:y7p&;70l$s?[u)\\c9”]>k1{w~`ih*a;-1dv(=[?g!6!a/ma%”!*630_=^g’mf6e;<hy;k;^kny=#31c;>}’sh”’<^3!/’’$vw`u8{?4”akms+{egz<x>79{.7y%k.(x4@.*@t?|7e5kvt94/][p=qxl|_:z^]6&h$]m0dlx!^{>\\@@x@u.~ca?8^d{=vxr1#7gdt0`!qv0fwl9^::\\)]jv(n#?””z}$8_4#*fv!ld|n_r%u?>]=v(|i”e*blz//%h`\\b!@d/0$+=izqi:$f(.dll.]ji@%2gq$1ds?"
           }
         },
         "description": "This class contains the signed and the plain/unsigned data. By decoding the data, the receiver can check if the content has not been altered."

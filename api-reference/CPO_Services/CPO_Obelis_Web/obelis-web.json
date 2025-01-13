@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://baseurl/obelis-web/v1",
+      "url": "https://p3-acc.obelis.energystacks.io/obelis-web/v1",
       "description": "Generated server url"
     }
   ],
@@ -17,6 +17,18 @@
   ],
   "tags": [
     {
+      "name": "Charging Hub",
+      "description": "Operations for charging hub."
+    },
+    {
+      "name": "Charging Station",
+      "description": "Operations for charging station."
+    },
+    {
+      "name": "Charging Point",
+      "description": "Operations for charging point."
+    },
+    {
       "name": "Charging Session",
       "description": "Operations for Charging Session"
     },
@@ -25,47 +37,35 @@
       "description": "Operations for raw Rating reports."
     },
     {
-      "name": "Raw Reports - Non-Discriminatory access",
-      "description": "Operations for raw Non-Discriminatory access reports."
-    },
-    {
-      "name": "Charging Point",
-      "description": "Operations for charging point."
+      "name": "Charging Hub - Raw Reports - Ad Hoc Tariff",
+      "description": "Operations for raw Ad Hoc Tariff."
     },
     {
       "name": "Charging Hub - Raw Reports - Facility Damages",
       "description": "Operations for raw Facility Damages reports."
     },
     {
-      "name": "Charging Hub",
-      "description": "Operations for charging hub."
+      "name": "Charging Point - Raw Reports - Renewal",
+      "description": "Operations for raw Renewal reports."
     },
     {
-      "name": "Charging Hub - Raw Reports - Ad Hoc Tariff",
-      "description": "Operations for raw Ad Hoc Tariff."
-    },
-    {
-      "name": "Raw Reports - Hotline Ratings",
-      "description": "Operations for raw Hotline Rating reports."
-    },
-    {
-      "name": "Charging Points - Raw Reports - Defects",
+      "name": "Charging Point - Raw Reports - Defects",
       "description": "Operations for raw Charging Point Defects reports."
     },
     {
-      "name": "Charging Station",
-      "description": "Operations for charging station."
+      "name": "Report - Raw Reports - Hotline Ratings",
+      "description": "Operations for raw Hotline Rating reports."
     },
     {
-      "name": "Charging Point - Raw Reports - Renewal",
-      "description": "Operations for raw Renewal reports."
+      "name": "Report - Raw Reports - Non-Discriminatory access",
+      "description": "Operations for raw Non-Discriminatory access reports."
     }
   ],
   "paths": {
     "/raw-reports/nondiscriminatory-access/{uid}": {
       "put": {
         "tags": [
-          "Raw Reports - Non-Discriminatory access"
+          "Report - Raw Reports - Non-Discriminatory access"
         ],
         "summary": "Edit a raw Non-Discriminatory access report.",
         "description": "Edit a raw Non-Discriminatory access report.",
@@ -132,6 +132,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not found",
             "content": {
@@ -154,7 +157,7 @@
     "/raw-reports/hotline-ratings/{uid}": {
       "put": {
         "tags": [
-          "Raw Reports - Hotline Ratings"
+          "Report - Raw Reports - Hotline Ratings"
         ],
         "summary": "Edit existing raw Hotline Rating report.",
         "description": "Replace hotline rating report for a specific month.",
@@ -208,6 +211,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found",
@@ -281,10 +287,25 @@
                   "RENEWAL_START_TIME_NEEDS_TO_BE_BEFORE_END_TIME": {
                     "description": "RENEWAL_START_TIME_NEEDS_TO_BE_BEFORE_END_TIME",
                     "$ref": "#/components/examples/RENEWAL_START_TIME_NEEDS_TO_BE_BEFORE_END_TIME"
-                  },
-                  "CHARGING_POINT_CONNECTED_TO_PROVIDED_CHARGING_HUB_DOES_NOT_EXIST": {
-                    "description": "CHARGING_POINT_CONNECTED_TO_PROVIDED_CHARGING_HUB_DOES_NOT_EXIST",
-                    "$ref": "#/components/examples/CHARGING_POINT_CONNECTED_TO_PROVIDED_CHARGING_HUB_DOES_NOT_EXIST"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "RENEWAL_RAW_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID": {
+                    "description": "RENEWAL_RAW_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID",
+                    "$ref": "#/components/examples/RENEWAL_RAW_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID"
                   }
                 }
               }
@@ -328,6 +349,32 @@
               "application/json": {}
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "MONTH_ON_REPORT_NOT_VALID": {
+                    "description": "MONTH_ON_REPORT_NOT_VALID",
+                    "$ref": "#/components/examples/MONTH_ON_REPORT_NOT_VALID"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -350,7 +397,7 @@
     "/raw-reports/charging-stations/charging-points/defects/{uid}": {
       "put": {
         "tags": [
-          "Charging Points - Raw Reports - Defects"
+          "Charging Point - Raw Reports - Defects"
         ],
         "summary": "Edit existing raw Charging Point Defects report.",
         "description": "Edit existing raw Charging Point Defects report.",
@@ -400,10 +447,17 @@
                   "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FORECAST_DATE": {
                     "description": "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FORECAST_DATE",
                     "$ref": "#/components/examples/REPORT_EMERGENCE_DATE_IS_LATER_THAN_FORECAST_DATE"
+                  },
+                  "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FIX_DATE": {
+                    "description": "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FIX_DATE",
+                    "$ref": "#/components/examples/REPORT_EMERGENCE_DATE_IS_LATER_THAN_FIX_DATE"
                   }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found",
@@ -416,6 +470,30 @@
                   "RAW_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND": {
                     "description": "RAW_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND",
                     "$ref": "#/components/examples/RAW_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND"
+                  },
+                  "CHARGING_POINT_DOES_NOT_EXIST": {
+                    "description": "CHARGING_POINT_DOES_NOT_EXIST",
+                    "$ref": "#/components/examples/CHARGING_POINT_DOES_NOT_EXIST"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CHARGING_POINT_NOT_ASSOCIATED_WITH_CHARGING_HUB": {
+                    "description": "CHARGING_POINT_NOT_ASSOCIATED_WITH_CHARGING_HUB",
+                    "$ref": "#/components/examples/CHARGING_POINT_NOT_ASSOCIATED_WITH_CHARGING_HUB"
+                  },
+                  "IDENTITY_KEY_NOT_ASSOCIATED_WITH_CHARGING_POINT": {
+                    "description": "IDENTITY_KEY_NOT_ASSOCIATED_WITH_CHARGING_POINT",
+                    "$ref": "#/components/examples/IDENTITY_KEY_NOT_ASSOCIATED_WITH_CHARGING_POINT"
                   }
                 }
               }
@@ -458,6 +536,32 @@
             "content": {
               "application/json": {}
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "MONTH_ON_REPORT_NOT_VALID": {
+                    "description": "MONTH_ON_REPORT_NOT_VALID",
+                    "$ref": "#/components/examples/MONTH_ON_REPORT_NOT_VALID"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found",
@@ -540,6 +644,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -616,7 +723,22 @@
                   "VALID_TO_DATE_IS_BEFORE_OR_EQUAL_TO_VALID_FROM": {
                     "description": "VALID_TO_DATE_IS_BEFORE_OR_EQUAL_TO_VALID_FROM",
                     "$ref": "#/components/examples/VALID_TO_DATE_IS_BEFORE_OR_EQUAL_TO_VALID_FROM"
-                  },
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
                   "RAW_AD_HOC_TARIFF_UID_NUMBER_NOT_FOUND": {
                     "description": "RAW_AD_HOC_TARIFF_UID_NUMBER_NOT_FOUND",
                     "$ref": "#/components/examples/RAW_AD_HOC_TARIFF_UID_NUMBER_NOT_FOUND"
@@ -636,6 +758,200 @@
                   "AD_HOC_TARIFF_REPORT_ALREADY_EXISTS": {
                     "description": "AD_HOC_TARIFF_REPORT_ALREADY_EXISTS",
                     "$ref": "#/components/examples/AD_HOC_TARIFF_REPORT_ALREADY_EXISTS"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/charging-stations/{identityKey}": {
+      "get": {
+        "tags": [
+          "Charging Station"
+        ],
+        "summary": "Get Charging Station.",
+        "description": "Get charging station details with charging points and connectors",
+        "operationId": "getChargingStation",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChargingStationResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND": {
+                    "description": "CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND",
+                    "$ref": "#/components/examples/CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Charging Station"
+        ],
+        "summary": "Edit a Charging Station.",
+        "description": "Edits a Charging Station",
+        "operationId": "updateChargingStation",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChargingStationUpdateWebRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "CANT_CHANGE_CHARGING_HUB_OF_AN_ALREADY_CREATED_STATION": {
+                    "description": "CANT_CHANGE_CHARGING_HUB_OF_AN_ALREADY_CREATED_STATION",
+                    "$ref": "#/components/examples/CANT_CHANGE_CHARGING_HUB_OF_AN_ALREADY_CREATED_STATION"
+                  },
+                  "GEO_COORDINATES_OF_CHARGING_HUB_CHARGING_STATION_NOT_WITHIN_RADIUS": {
+                    "description": "GEO_COORDINATES_OF_CHARGING_HUB_CHARGING_STATION_NOT_WITHIN_RADIUS",
+                    "$ref": "#/components/examples/GEO_COORDINATES_OF_CHARGING_HUB_CHARGING_STATION_NOT_WITHIN_RADIUS"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND": {
+                    "description": "CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND",
+                    "$ref": "#/components/examples/CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Charging Station"
+        ],
+        "summary": "Delete charging station.",
+        "description": "Deletes charging station",
+        "operationId": "deleteChargingStation",
+        "parameters": [
+          {
+            "name": "identityKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND": {
+                    "description": "CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND",
+                    "$ref": "#/components/examples/CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND"
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CHARGING_STATION_HAS_ASSOCIATED_CHARGING_POINTS": {
+                    "description": "CHARGING_STATION_HAS_ASSOCIATED_CHARGING_POINTS",
+                    "$ref": "#/components/examples/CHARGING_STATION_HAS_ASSOCIATED_CHARGING_POINTS"
                   }
                 }
               }
@@ -702,10 +1018,6 @@
                   ]
                 },
                 "examples": {
-                  "CONNECTORS_SIZE_DO_NOT_MATCH": {
-                    "description": "CONNECTORS_SIZE_DO_NOT_MATCH",
-                    "$ref": "#/components/examples/CONNECTORS_SIZE_DO_NOT_MATCH"
-                  },
                   "DUPLICATED_CONNECTOR_UIDS": {
                     "description": "DUPLICATED_CONNECTOR_UIDS",
                     "$ref": "#/components/examples/DUPLICATED_CONNECTOR_UIDS"
@@ -748,6 +1060,22 @@
                   "EVSE_ID_ALREADY_EXISTS": {
                     "description": "EVSE_ID_ALREADY_EXISTS",
                     "$ref": "#/components/examples/EVSE_ID_ALREADY_EXISTS"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_429": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_429",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_429"
                   }
                 }
               }
@@ -801,6 +1129,26 @@
                   "CHARGING_POINT_FOR_CHARGING_STATION_DOES_NOT_EXISTS": {
                     "description": "CHARGING_POINT_FOR_CHARGING_STATION_DOES_NOT_EXISTS",
                     "$ref": "#/components/examples/CHARGING_POINT_FOR_CHARGING_STATION_DOES_NOT_EXISTS"
+                  },
+                  "CHARGING_HUB_FOR_CHARGING_STATION_DOES_NOT_EXISTS": {
+                    "description": "CHARGING_HUB_FOR_CHARGING_STATION_DOES_NOT_EXISTS",
+                    "$ref": "#/components/examples/CHARGING_HUB_FOR_CHARGING_STATION_DOES_NOT_EXISTS"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_429": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_429",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_429"
                   }
                 }
               }
@@ -849,7 +1197,24 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "CHARGING_SESSION_START_TIME_NEEDS_TO_BE_BEFORE_SESSION_END_TIME": {
+                    "description": "CHARGING_SESSION_START_TIME_NEEDS_TO_BE_BEFORE_SESSION_END_TIME",
+                    "$ref": "#/components/examples/CHARGING_SESSION_START_TIME_NEEDS_TO_BE_BEFORE_SESSION_END_TIME"
+                  },
+                  "CHARGING_PERIOD_START_TIME_NEEDS_TO_BE_INSIDE_CHARGING_SESSION_START_END_TIME_RANGE": {
+                    "description": "CHARGING_PERIOD_START_TIME_NEEDS_TO_BE_INSIDE_CHARGING_SESSION_START_END_TIME_RANGE",
+                    "$ref": "#/components/examples/CHARGING_PERIOD_START_TIME_NEEDS_TO_BE_INSIDE_CHARGING_SESSION_START_END_TIME_RANGE"
+                  }
                 }
               }
             }
@@ -868,6 +1233,26 @@
                   "CHARGING_SESSION_DOES_NOT_EXIST": {
                     "description": "CHARGING_SESSION_DOES_NOT_EXIST",
                     "$ref": "#/components/examples/CHARGING_SESSION_DOES_NOT_EXIST"
+                  },
+                  "CHARGING_POINT_DOES_NOT_EXIST": {
+                    "description": "CHARGING_POINT_DOES_NOT_EXIST",
+                    "$ref": "#/components/examples/CHARGING_POINT_DOES_NOT_EXIST"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_429": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_429",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_429"
                   }
                 }
               }
@@ -965,7 +1350,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_400": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_400",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_400"
+                  }
                 }
               }
             }
@@ -1000,6 +1398,22 @@
                   "CHARGING_HUB_COORDINATES_ALREADY_EXISTS": {
                     "description": "CHARGING_HUB_COORDINATES_ALREADY_EXISTS",
                     "$ref": "#/components/examples/CHARGING_HUB_COORDINATES_ALREADY_EXISTS"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_429": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_429",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_429"
                   }
                 }
               }
@@ -1075,6 +1489,22 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_429": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_429",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_429"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1082,7 +1512,7 @@
     "/raw-reports/nondiscriminatory-access": {
       "post": {
         "tags": [
-          "Raw Reports - Non-Discriminatory access"
+          "Report - Raw Reports - Non-Discriminatory access"
         ],
         "summary": "Add new raw Non-Discriminatory access report.",
         "description": "Add new raw Non-Discriminatory access report.",
@@ -1099,7 +1529,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Operation",
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1135,6 +1565,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "409": {
             "description": "Conflict",
             "content": {
@@ -1157,7 +1590,7 @@
     "/raw-reports/hotline-ratings": {
       "post": {
         "tags": [
-          "Raw Reports - Hotline Ratings"
+          "Report - Raw Reports - Hotline Ratings"
         ],
         "summary": "Add new raw Hotline Rating report.",
         "description": "Perform a monthly report for the hotline rating.",
@@ -1174,7 +1607,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Operation",
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1201,6 +1634,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "409": {
             "description": "Conflict",
@@ -1241,7 +1677,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Operation",
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1264,7 +1700,22 @@
                   "RENEWAL_START_TIME_NEEDS_TO_BE_BEFORE_END_TIME": {
                     "description": "RENEWAL_START_TIME_NEEDS_TO_BE_BEFORE_END_TIME",
                     "$ref": "#/components/examples/RENEWAL_START_TIME_NEEDS_TO_BE_BEFORE_END_TIME"
-                  },
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
                   "CHARGING_POINT_DOES_NOT_EXIST": {
                     "description": "CHARGING_POINT_DOES_NOT_EXIST",
                     "$ref": "#/components/examples/CHARGING_POINT_DOES_NOT_EXIST"
@@ -1320,7 +1771,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Operation",
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1348,6 +1799,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -1372,9 +1826,9 @@
                   "$ref": "#/components/schemas/ErrorMessageDto"
                 },
                 "examples": {
-                  "RATING_REPORT_ALREADY_EXISTS": {
-                    "description": "RATING_REPORT_ALREADY_EXISTS",
-                    "$ref": "#/components/examples/RATING_REPORT_ALREADY_EXISTS"
+                  "RATING_REPORT_FOR_CHARGING_POINT_ALREADY_EXISTS": {
+                    "description": "RATING_REPORT_FOR_CHARGING_POINT_ALREADY_EXISTS",
+                    "$ref": "#/components/examples/RATING_REPORT_FOR_CHARGING_POINT_ALREADY_EXISTS"
                   },
                   "CHARGING_POINT_NOT_ASSOCIATED_WITH_CHARGING_HUB": {
                     "description": "CHARGING_POINT_NOT_ASSOCIATED_WITH_CHARGING_HUB",
@@ -1394,7 +1848,7 @@
     "/raw-reports/charging-stations/charging-points/defects": {
       "post": {
         "tags": [
-          "Charging Points - Raw Reports - Defects"
+          "Charging Point - Raw Reports - Defects"
         ],
         "summary": "Add new raw Charging Point Defects report.",
         "description": "Add new raw Charging Point Defects report.",
@@ -1411,7 +1865,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Operation",
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1427,6 +1881,36 @@
                   "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FORECAST_DATE": {
                     "description": "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FORECAST_DATE",
                     "$ref": "#/components/examples/REPORT_EMERGENCE_DATE_IS_LATER_THAN_FORECAST_DATE"
+                  },
+                  "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FIX_DATE": {
+                    "description": "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FIX_DATE",
+                    "$ref": "#/components/examples/REPORT_EMERGENCE_DATE_IS_LATER_THAN_FIX_DATE"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "CHARGING_POINT_DOES_NOT_EXIST": {
+                    "description": "CHARGING_POINT_DOES_NOT_EXIST",
+                    "$ref": "#/components/examples/CHARGING_POINT_DOES_NOT_EXIST"
                   }
                 }
               }
@@ -1479,7 +1963,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Operation",
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1502,7 +1986,22 @@
                   "MONTH_ON_REPORT_NOT_VALID": {
                     "description": "MONTH_ON_REPORT_NOT_VALID",
                     "$ref": "#/components/examples/MONTH_ON_REPORT_NOT_VALID"
-                  },
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
                   "CHARGING_HUB_DOES_NOT_EXIST": {
                     "description": "CHARGING_HUB_DOES_NOT_EXIST",
                     "$ref": "#/components/examples/CHARGING_HUB_DOES_NOT_EXIST"
@@ -1551,6 +2050,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "deprecated": true
@@ -1574,7 +2076,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Operation",
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1602,6 +2104,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "409": {
             "description": "If a facility damages with this uid already exists.",
@@ -1642,7 +2147,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Operation",
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1666,6 +2171,32 @@
                     "description": "MONTH_ON_REPORT_NOT_VALID",
                     "$ref": "#/components/examples/MONTH_ON_REPORT_NOT_VALID"
                   },
+                  "VALID_TO_DATE_IS_BEFORE_OR_EQUAL_TO_VALID_FROM": {
+                    "description": "VALID_TO_DATE_IS_BEFORE_OR_EQUAL_TO_VALID_FROM",
+                    "$ref": "#/components/examples/VALID_TO_DATE_IS_BEFORE_OR_EQUAL_TO_VALID_FROM"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
                   "CHARGING_HUB_DOES_NOT_EXIST": {
                     "description": "CHARGING_HUB_DOES_NOT_EXIST",
                     "$ref": "#/components/examples/CHARGING_HUB_DOES_NOT_EXIST"
@@ -1736,6 +2267,10 @@
                   "CHARGING_HUB_DOES_NOT_EXIST": {
                     "description": "CHARGING_HUB_DOES_NOT_EXIST",
                     "$ref": "#/components/examples/CHARGING_HUB_DOES_NOT_EXIST"
+                  },
+                  "GEO_COORDINATES_OF_CHARGING_HUB_CHARGING_STATION_NOT_WITHIN_RADIUS": {
+                    "description": "GEO_COORDINATES_OF_CHARGING_HUB_CHARGING_STATION_NOT_WITHIN_RADIUS",
+                    "$ref": "#/components/examples/GEO_COORDINATES_OF_CHARGING_HUB_CHARGING_STATION_NOT_WITHIN_RADIUS"
                   }
                 }
               }
@@ -1755,10 +2290,6 @@
                   "CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS": {
                     "description": "CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS",
                     "$ref": "#/components/examples/CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS"
-                  },
-                  "EVSE_ID_ALREADY_EXISTS": {
-                    "description": "EVSE_ID_ALREADY_EXISTS",
-                    "$ref": "#/components/examples/EVSE_ID_ALREADY_EXISTS"
                   }
                 }
               }
@@ -1797,7 +2328,7 @@
         },
         "responses": {
           "201": {
-            "description": "CREATED",
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1859,6 +2390,22 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_429": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_429",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_429"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1882,8 +2429,8 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Successful Operation",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1893,7 +2440,24 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "CHARGING_SESSION_START_TIME_NEEDS_TO_BE_BEFORE_SESSION_END_TIME": {
+                    "description": "CHARGING_SESSION_START_TIME_NEEDS_TO_BE_BEFORE_SESSION_END_TIME",
+                    "$ref": "#/components/examples/CHARGING_SESSION_START_TIME_NEEDS_TO_BE_BEFORE_SESSION_END_TIME"
+                  },
+                  "CHARGING_PERIOD_START_TIME_NEEDS_TO_BE_INSIDE_CHARGING_SESSION_START_END_TIME_RANGE": {
+                    "description": "CHARGING_PERIOD_START_TIME_NEEDS_TO_BE_INSIDE_CHARGING_SESSION_START_END_TIME_RANGE",
+                    "$ref": "#/components/examples/CHARGING_PERIOD_START_TIME_NEEDS_TO_BE_INSIDE_CHARGING_SESSION_START_END_TIME_RANGE"
+                  }
                 }
               }
             }
@@ -1901,8 +2465,32 @@
           "401": {
             "description": "Unauthorized"
           },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "CHARGING_POINT_CONNECTED_TO_PROVIDED_CHARGING_HUB_DOES_NOT_EXIST": {
+                    "description": "CHARGING_POINT_CONNECTED_TO_PROVIDED_CHARGING_HUB_DOES_NOT_EXIST",
+                    "$ref": "#/components/examples/CHARGING_POINT_CONNECTED_TO_PROVIDED_CHARGING_HUB_DOES_NOT_EXIST"
+                  },
+                  "CHARGING_POINT_DOES_NOT_EXIST": {
+                    "description": "CHARGING_POINT_DOES_NOT_EXIST",
+                    "$ref": "#/components/examples/CHARGING_POINT_DOES_NOT_EXIST"
+                  },
+                  "CONNECTOR_DOES_NOT_EXIST": {
+                    "description": "CONNECTOR_DOES_NOT_EXIST",
+                    "$ref": "#/components/examples/CONNECTOR_DOES_NOT_EXIST"
+                  }
+                }
+              }
+            }
+          },
           "409": {
-            "description": "If a charging session with the same uid already exists.",
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1912,6 +2500,22 @@
                   "CHARGING_SESSION_UID_ALREADY_EXISTS": {
                     "description": "CHARGING_SESSION_UID_ALREADY_EXISTS",
                     "$ref": "#/components/examples/CHARGING_SESSION_UID_ALREADY_EXISTS"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_429": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_429",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_429"
                   }
                 }
               }
@@ -1940,7 +2544,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful Operation",
+            "description": "Created",
             "content": {
               "application/json": {}
             }
@@ -1950,13 +2554,42 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_400": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_400",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_400"
+                  }
                 }
               }
             }
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_403": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_403",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_403"
+                  }
+                }
+              }
+            }
           },
           "409": {
             "description": "Conflict",
@@ -1977,6 +2610,47 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageDto"
+                },
+                "examples": {
+                  "OBELIS_EXTERNAL_API_REQUEST_FAILED_429": {
+                    "description": "OBELIS_EXTERNAL_API_REQUEST_FAILED_429",
+                    "$ref": "#/components/examples/OBELIS_EXTERNAL_API_REQUEST_FAILED_429"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get current user info",
+        "description": "Returns the information of the current user",
+        "operationId": "getCurrentUserInfo",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -1984,7 +2658,7 @@
     "/raw-reports/nondiscriminatory-access/{monthYear}": {
       "get": {
         "tags": [
-          "Raw Reports - Non-Discriminatory access"
+          "Report - Raw Reports - Non-Discriminatory access"
         ],
         "summary": "Get raw Non-Discriminatory Access report by month.",
         "description": "Returns a list of raw Non-Discriminatory Access reports, based on the provided month.",
@@ -1996,7 +2670,7 @@
             "description": "A string representing the month and year in the format MM-yyyy.",
             "required": true,
             "schema": {
-              "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+              "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
               "type": "string"
             }
           }
@@ -2011,6 +2685,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -2018,7 +2695,7 @@
     "/raw-reports/nondiscriminatory-access/{monthYear}/latest": {
       "get": {
         "tags": [
-          "Raw Reports - Non-Discriminatory access"
+          "Report - Raw Reports - Non-Discriminatory access"
         ],
         "summary": "Gets the latest modified raw Non-Discriminatory Access report by month.",
         "description": "Returns the latest modified raw Non-Discriminatory Access report, based on the provided month.",
@@ -2030,7 +2707,7 @@
             "description": "A string representing the month and year in the format MM-yyyy.",
             "required": true,
             "schema": {
-              "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+              "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
               "type": "string"
             }
           }
@@ -2045,6 +2722,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -2052,7 +2732,7 @@
     "/raw-reports/hotline-ratings/{monthYear}": {
       "get": {
         "tags": [
-          "Raw Reports - Hotline Ratings"
+          "Report - Raw Reports - Hotline Ratings"
         ],
         "summary": "Get raw Hotline Rating report by month.",
         "description": "Get raw Hotline Rating information by month.",
@@ -2077,6 +2757,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found",
@@ -2144,6 +2827,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -2192,6 +2878,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -2220,7 +2909,7 @@
             "description": "A string representing the month and year in the format MM-yyyy.",
             "required": true,
             "schema": {
-              "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+              "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
               "type": "string"
             }
           }
@@ -2231,10 +2920,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChargingPointRatingResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChargingPointRatingReportResponse"
+                  }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found",
@@ -2258,7 +2953,7 @@
     "/raw-reports/charging-stations/{identityKey}/charging-points/defects": {
       "get": {
         "tags": [
-          "Charging Points - Raw Reports - Defects"
+          "Charging Point - Raw Reports - Defects"
         ],
         "summary": "Get raw Charging Point Defects.",
         "description": "Returns raw Charging Point Defects.",
@@ -2302,6 +2997,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -2309,7 +3007,7 @@
     "/raw-reports/charging-stations/{identityKey}/charging-points/defects/latest": {
       "get": {
         "tags": [
-          "Charging Points - Raw Reports - Defects"
+          "Charging Point - Raw Reports - Defects"
         ],
         "summary": "Get latest modified raw Charging Point Defects.",
         "description": "Returns latest modified raw Charging Point Defects.",
@@ -2350,6 +3048,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -2390,6 +3091,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found",
@@ -2438,6 +3142,25 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                },
+                "examples": {
+                  "CHARGING_HUB_DOES_NOT_EXIST": {
+                    "description": "CHARGING_HUB_DOES_NOT_EXIST",
+                    "$ref": "#/components/examples/CHARGING_HUB_DOES_NOT_EXIST"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -2469,7 +3192,7 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful Operation",
             "content": {
               "application/json": {
@@ -2478,6 +3201,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found",
@@ -2625,7 +3351,7 @@
           {
             "name": "searchValue",
             "in": "query",
-            "description": "The value to search for charging session id or EmaId",
+            "description": "The value to search for charging session: id, EmaId or EvseId",
             "required": false,
             "schema": {
               "maxLength": 255,
@@ -2721,7 +3447,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "END_DATE_IS_BEFORE_TO_START_DATE": {
+                    "description": "END_DATE_IS_BEFORE_TO_START_DATE",
+                    "$ref": "#/components/examples/END_DATE_IS_BEFORE_TO_START_DATE"
+                  }
                 }
               }
             }
@@ -3009,7 +3748,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -3047,7 +3786,11 @@
           "contractualBasis": {
             "type": "string",
             "description": "Enum that represents the contractual basis for charge access at a charging hub.",
-            "example": "ROAMING_CONTRACT"
+            "example": "ROAMING_CONTRACT",
+            "enum": [
+              "ROAMING_CONTRACT",
+              "BILATERAL_CONTRACT"
+            ]
           },
           "reasoningDifferentCosts": {
             "maxLength": 255,
@@ -3072,7 +3815,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -3122,12 +3865,12 @@
           "start": {
             "type": "string",
             "description": "The Date/Time when  the renewal work has started/will start. In UTC",
-            "example": "2024-11-15T23:59:59"
+            "example": "2024-11-15T23:59:59Z"
           },
           "end": {
             "type": "string",
             "description": "The Date/Time when the renewal work was finished/is scheduled to finish. In UTC",
-            "example": "2024-11-15T23:59:59"
+            "example": "2024-11-15T23:59:59Z"
           }
         },
         "description": "Reporting the raw renewal at a charging point."
@@ -3181,7 +3924,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -3306,7 +4049,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -3317,7 +4060,8 @@
       "EditRawFacilityDamagesReportRequest": {
         "required": [
           "chargingHubUid",
-          "emergenceDate"
+          "emergenceDate",
+          "facilityType"
         ],
         "type": "object",
         "properties": {
@@ -3347,17 +4091,17 @@
           },
           "emergenceDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage emerged.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage emerged.",
             "example": "2024-11-15T23:59:59Z"
           },
           "fixDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage was repaired.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage was repaired.",
             "example": "2024-11-15T23:59:59Z"
           },
           "forecastDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage should be repaired.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage should be repaired.",
             "example": "2024-11-15T23:59:59Z"
           }
         },
@@ -3365,6 +4109,7 @@
       },
       "EditAdHocTariffReportRequest": {
         "required": [
+          "cost",
           "monthYear",
           "validFrom",
           "validTo"
@@ -3374,7 +4119,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -3502,17 +4247,17 @@
           },
           "emergenceDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage emerged.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage emerged.",
             "example": "2024-11-15T23:59:59Z"
           },
           "fixDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage was repaired.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage was repaired.",
             "example": "2024-11-15T23:59:59Z"
           },
           "forecastDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage should be repaired.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage should be repaired.",
             "example": "2024-11-15T23:59:59Z"
           }
         }
@@ -3656,6 +4401,22 @@
               "DC"
             ]
           },
+          "maxVoltage": {
+            "maximum": 1000,
+            "minimum": 200,
+            "type": "integer",
+            "description": "Maximum voltage of the connector (line to neutral for AC_3_PHASE), in volt [V]. For example: DC Chargers might vary the voltage during charging when battery almost full.",
+            "format": "int32",
+            "example": 250
+          },
+          "maxAmperage": {
+            "maximum": 500,
+            "minimum": 5,
+            "type": "integer",
+            "description": "Maximum amperage of the connector, in ampere [A].",
+            "format": "int32",
+            "example": 16
+          },
           "maxPower": {
             "maximum": 500,
             "minimum": 0,
@@ -3717,22 +4478,6 @@
               "SOCKET",
               "CABLE"
             ]
-          },
-          "maxVoltage": {
-            "maximum": 1000,
-            "minimum": 200,
-            "type": "integer",
-            "description": "Maximum voltage of the connector (line to neutral for AC_3_PHASE), in volt [V]. For example: DC Chargers might vary the voltage during charging when battery almost full.",
-            "format": "int32",
-            "example": 250
-          },
-          "maxAmperage": {
-            "maximum": 500,
-            "minimum": 5,
-            "type": "integer",
-            "description": "Maximum amperage of the connector, in ampere [A].",
-            "format": "int32",
-            "example": 16
           }
         },
         "description": "Set of connectors offered by the charging point."
@@ -3772,7 +4517,6 @@
       "ChargingPeriodWebRequest": {
         "required": [
           "dimensions",
-          "signedValues",
           "start"
         ],
         "type": "object",
@@ -3814,6 +4558,7 @@
       "ChargingSessionUpdateWebRequest": {
         "required": [
           "chargingHubUid",
+          "chargingPeriods",
           "end",
           "start",
           "tariffType",
@@ -3856,7 +4601,7 @@
           "tariffType": {
             "type": "string",
             "description": "Enum that represents the type of tariff of a charging session.",
-            "example": "AD_HOC_PAYMENT",
+            "example": "ADD_HOC_PAYMENT",
             "enum": [
               "ADD_HOC_PAYMENT",
               "PROFILE_CHEAP",
@@ -3919,6 +4664,7 @@
       },
       "SignedValue": {
         "required": [
+          "nature",
           "plainData",
           "signedData"
         ],
@@ -3926,7 +4672,13 @@
         "properties": {
           "nature": {
             "type": "string",
-            "description": "Nature of the value, in other words, the event this value belongs to.\n\"Possible values at moment of writing:\n  - Start (value at the start of the Session)\n  - End (signed value at the end of the Session)\n  - Intermediate (signed values take during the Session, after Start, before End)\nOthers might be added later.\n"
+            "description": "Enum that represents the nature of a charging period value.",
+            "example": "CHARGING_SESSION_START",
+            "enum": [
+              "CHARGING_SESSION_START",
+              "CHARGING_SESSION_END",
+              "CHARGING_SESSION_INTERMEDIATE"
+            ]
           },
           "plainData": {
             "maxLength": 512,
@@ -4055,7 +4807,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -4137,12 +4889,12 @@
           "start": {
             "type": "string",
             "description": "The Date/Time when  the renewal work has started/will start. In UTC",
-            "example": "2024-11-15T23:59:59"
+            "example": "2024-11-15T23:59:59Z"
           },
           "end": {
             "type": "string",
             "description": "The Date/Time when the renewal work was finished/is scheduled to finish. In UTC",
-            "example": "2024-11-15T23:59:59"
+            "example": "2024-11-15T23:59:59Z"
           }
         },
         "description": "Reporting the raw renewal at a charging point."
@@ -4150,6 +4902,8 @@
       "CreateChargingPointRatingReportRequest": {
         "required": [
           "chargingHubUid",
+          "chargingPointUid",
+          "identityKey",
           "monthYear",
           "rating"
         ],
@@ -4174,12 +4928,12 @@
             "minLength": 0,
             "type": "string",
             "description": "The uid of the Charging Point connected with the Charging Session",
-            "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+            "example": "ACE123"
           },
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -4232,7 +4986,7 @@
             "minLength": 0,
             "type": "string",
             "description": "Charging Station identity key.",
-            "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+            "example": "ACE123"
           },
           "chargingPointUid": {
             "maxLength": 36,
@@ -4321,7 +5075,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -4378,17 +5132,17 @@
           },
           "emergenceDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage emerged.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage emerged.",
             "example": "2024-11-15T23:59:59Z"
           },
           "fixDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage was repaired.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage was repaired.",
             "example": "2024-11-15T23:59:59Z"
           },
           "forecastDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage should be repaired.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage should be repaired.",
             "example": "2024-11-15T23:59:59Z"
           }
         },
@@ -4397,6 +5151,7 @@
       "CreateAdHocTariffReportRequest": {
         "required": [
           "chargingHubUid",
+          "cost",
           "monthYear",
           "validFrom",
           "validTo"
@@ -4406,7 +5161,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -4444,13 +5199,12 @@
         },
         "description": "Reporting the raw ad-hoc-tariff at a charging hub."
       },
-      "NonDiscriminatoryAccessProcessedReportRequest": {
+      "NonDiscriminatoryAccessProcessedReportWebRequest": {
         "required": [
           "contractualBasis",
           "cost",
           "monthYear",
           "providerGroup",
-          "uid",
           "validFrom",
           "validTo"
         ],
@@ -4466,7 +5220,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -4504,7 +5258,11 @@
           "contractualBasis": {
             "type": "string",
             "description": "Enum that represents the contractual basis for charge access at a charging hub.",
-            "example": "ROAMING_CONTRACT"
+            "example": "ROAMING_CONTRACT",
+            "enum": [
+              "ROAMING_CONTRACT",
+              "BILATERAL_CONTRACT"
+            ]
           },
           "reasoningDifferentCosts": {
             "maxLength": 255,
@@ -4516,7 +5274,7 @@
         },
         "description": "Reporting the processed Non-Discriminatory access."
       },
-      "ChargingPointRenewalReport": {
+      "ChargingPointRenewalWebReport": {
         "required": [
           "chargingHubUid",
           "chargingPointUid",
@@ -4524,8 +5282,7 @@
           "identityKey",
           "renewalUid",
           "renewedComponents",
-          "start",
-          "uid"
+          "start"
         ],
         "type": "object",
         "properties": {
@@ -4574,22 +5331,123 @@
           "start": {
             "type": "string",
             "description": "The Date/Time when  the renewal work has started/will start. In UTC",
-            "example": "2024-11-15T23:59:59"
+            "example": "2024-11-15T23:59:59Z"
           },
           "end": {
             "type": "string",
             "description": "The Date/Time when the renewal work was finished/is scheduled to finish. In UTC",
-            "example": "2024-11-15T23:59:59"
+            "example": "2024-11-15T23:59:59Z"
           }
         },
         "description": "Charging Point Renewal Raw report response"
       },
-      "FacilityDamagesCreateReportRequest": {
+      "ChargingPointDefectsReportWebRequest": {
+        "required": [
+          "activities",
+          "chargingHubUid",
+          "chargingPointUid",
+          "emergenceDate",
+          "identityKey",
+          "status",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Charging Point Defects Uid.",
+            "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+          },
+          "chargingHubUid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Charging Hub UID.",
+            "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+          },
+          "identityKey": {
+            "maxLength": 32,
+            "minLength": 0,
+            "type": "string",
+            "description": "Charging Station identity key.",
+            "example": "ACE123"
+          },
+          "chargingPointUid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Charging Point UID.",
+            "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+          },
+          "type": {
+            "type": "string",
+            "description": "Enum that represents the type of error/defect that occurred at a charging point.",
+            "example": "SOFTWARE_FAULT",
+            "enum": [
+              "DAMAGE",
+              "HARDWARE_FAULT",
+              "SOFTWARE_FAULT",
+              "NETWORK_FAILURE",
+              "POWER_FAILURE",
+              "ROUTE_CLOSURE",
+              "SITE_CLOSURE",
+              "OTHER"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "description": "Enum that represents the status of a charge point defect that occurred at a charging point.",
+            "example": "TECHNICIAN_INFORMED",
+            "enum": [
+              "TECHNICIAN_INFORMED",
+              "TECHNICIAN_ON_THE_WAY",
+              "ERROR_SOLVED"
+            ]
+          },
+          "activities": {
+            "type": "string",
+            "description": "Necessary activities for fixing the error.",
+            "example": "REMOTE_ACCESS",
+            "enum": [
+              "REMOTE_ACCESS",
+              "ON_SITE"
+            ]
+          },
+          "additionalInformation": {
+            "type": "string",
+            "description": "Enum that represents the type of error/defect that occurred at a charging point.",
+            "example": "RENEWAL_NECESSARY",
+            "enum": [
+              "DANGEROUS_MALFUNCTION",
+              "USAGE_IMPOSSIBLE",
+              "RENEWAL_NECESSARY"
+            ]
+          },
+          "emergenceDate": {
+            "type": "string",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage emerged.",
+            "example": "2024-11-15T23:59:59Z"
+          },
+          "forecastDate": {
+            "type": "string",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage should be repaired.",
+            "example": "2024-11-15T23:59:59Z"
+          },
+          "fixDate": {
+            "type": "string",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage was repaired.",
+            "example": "2024-11-15T23:59:59Z"
+          }
+        },
+        "description": "Reporting the charging point defects raw."
+      },
+      "FacilityDamagesCreateReportWebRequest": {
         "required": [
           "chargingHubUid",
           "emergenceDate",
-          "facilityType",
-          "uid"
+          "facilityType"
         ],
         "type": "object",
         "properties": {
@@ -4626,17 +5484,17 @@
           },
           "emergenceDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage emerged.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage emerged.",
             "example": "2024-11-15T23:59:59Z"
           },
           "fixDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage was repaired.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage was repaired.",
             "example": "2024-11-15T23:59:59Z"
           },
           "forecastDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage should be repaired.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage should be repaired.",
             "example": "2024-11-15T23:59:59Z"
           }
         },
@@ -4744,6 +5602,8 @@
       "ChargingSessionWebRequest": {
         "required": [
           "chargingHubUid",
+          "chargingPeriods",
+          "chargingPointUid",
           "chargingSessionUid",
           "connectorId",
           "end",
@@ -4967,6 +5827,26 @@
           }
         }
       },
+      "UserResponse": {
+        "required": [
+          "email",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the user",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address of the user",
+            "example": "john.doe@energystacks.io"
+          }
+        },
+        "description": "Defines the user information"
+      },
       "NonDiscriminatoryAccessReportWebResponse": {
         "required": [
           "contractualBasis",
@@ -4988,7 +5868,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -5004,7 +5884,7 @@
             "maximum": 12,
             "minimum": 0,
             "type": "integer",
-            "description": "net cost (without VAT) in cents [ct] per kilowatt hour [kWh].",
+            "description": "Net cost (without VAT) in cents [ct] per kilowatt hour [kWh].",
             "format": "int32"
           },
           "additionalCosts": {
@@ -5027,7 +5907,11 @@
           "contractualBasis": {
             "type": "string",
             "description": "Enum that represents the contractual basis for charge access at a charging hub.",
-            "example": "ROAMING_CONTRACT"
+            "example": "ROAMING_CONTRACT",
+            "enum": [
+              "ROAMING_CONTRACT",
+              "BILATERAL_CONTRACT"
+            ]
           },
           "reasoningDifferentCosts": {
             "maxLength": 255,
@@ -5059,7 +5943,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -5131,6 +6015,13 @@
             "description": "The unique identifier of a Charging Point",
             "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
           },
+          "evseId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique EVSE ID of the charging point",
+            "example": "DE*ABC*E45B*78C"
+          },
           "renewalUid": {
             "maxLength": 36,
             "minLength": 0,
@@ -5148,12 +6039,12 @@
           "start": {
             "type": "string",
             "description": "The Date/Time when  the renewal work has started/will start. In UTC",
-            "example": "2024-11-15T23:59:59"
+            "example": "2024-11-15T23:59:59Z"
           },
           "end": {
             "type": "string",
             "description": "The Date/Time when the renewal work was finished/is scheduled to finish. In UTC",
-            "example": "2024-11-15T23:59:59"
+            "example": "2024-11-15T23:59:59Z"
           },
           "lastModifiedDate": {
             "type": "string",
@@ -5162,7 +6053,82 @@
           }
         }
       },
-      "ChargingPointRatingReport": {
+      "ChargingPointRenewalReport": {
+        "required": [
+          "chargingHubUid",
+          "chargingPointUid",
+          "end",
+          "identityKey",
+          "renewalUid",
+          "renewedComponents",
+          "start",
+          "uid"
+        ],
+        "type": "object",
+        "properties": {
+          "uid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Internal unique identifier of a Charging Point Renewal report",
+            "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+          },
+          "chargingHubUid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "The unique identifier of a Charging Hub",
+            "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+          },
+          "identityKey": {
+            "maxLength": 32,
+            "minLength": 0,
+            "type": "string",
+            "description": "The Identity Key of the Charging Station",
+            "example": "ACE123"
+          },
+          "chargingPointUid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "The unique identifier of a Charging Point",
+            "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+          },
+          "evseId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique EVSE ID of the charging point",
+            "example": "DE*ABC*E45B*78C"
+          },
+          "renewalUid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "The unique identifier of a Charging point renewal report",
+            "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+          },
+          "renewedComponents": {
+            "type": "array",
+            "description": "Set of renewed charging point components. At least one element must be provided.",
+            "items": {
+              "$ref": "#/components/schemas/RenewedComponent"
+            }
+          },
+          "start": {
+            "type": "string",
+            "description": "The Date/Time when  the renewal work has started/will start. In UTC",
+            "example": "2024-11-15T23:59:59Z"
+          },
+          "end": {
+            "type": "string",
+            "description": "The Date/Time when the renewal work was finished/is scheduled to finish. In UTC",
+            "example": "2024-11-15T23:59:59Z"
+          }
+        },
+        "description": "Charging Point Renewal Raw report response"
+      },
+      "ChargingPointRatingReportResponse": {
         "required": [
           "chargingHubUid",
           "monthYear",
@@ -5191,10 +6157,17 @@
             "description": "The uid of the Charging Point connected with the Charging Session",
             "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
           },
+          "evseId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique EVSE ID of the charging point",
+            "example": "DE*ABC*E45B*78C"
+          },
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -5211,17 +6184,6 @@
             "type": "integer",
             "description": "The amount of the received complaints for charging sessions at the charging point in question.",
             "format": "int32"
-          }
-        }
-      },
-      "ChargingPointRatingResponse": {
-        "type": "object",
-        "properties": {
-          "chargingPointRatingReports": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChargingPointRatingReport"
-            }
           }
         }
       },
@@ -5257,6 +6219,13 @@
             "type": "string",
             "description": "Charging Point UID.",
             "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+          },
+          "evseId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique EVSE ID of the charging point",
+            "example": "DE*ABC*E45B*78C"
           },
           "type": {
             "type": "string",
@@ -5338,7 +6307,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -5362,6 +6331,7 @@
       "AdHocTariffResponse": {
         "required": [
           "chargingHubUid",
+          "cost",
           "monthYear",
           "validFrom",
           "validTo"
@@ -5378,7 +6348,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -5436,7 +6406,7 @@
           "monthYear": {
             "maxLength": 7,
             "minLength": 0,
-            "pattern": "(0[1-9]|1[0-2])-\\d{4}\b",
+            "pattern": "(0[1-9]|1[0-2])-\\d{4}\\b",
             "type": "string",
             "description": "The reported month formatted as 'MM-yyyy'.",
             "example": "09-2024"
@@ -5452,7 +6422,7 @@
             "maximum": 12,
             "minimum": 0,
             "type": "integer",
-            "description": "net cost (without VAT) in cents [ct] per kilowatt hour [kWh].",
+            "description": "Net cost (without VAT) in cents [ct] per kilowatt hour [kWh].",
             "format": "int32"
           },
           "additionalCosts": {
@@ -5475,7 +6445,11 @@
           "contractualBasis": {
             "type": "string",
             "description": "Enum that represents the contractual basis for charge access at a charging hub.",
-            "example": "ROAMING_CONTRACT"
+            "example": "ROAMING_CONTRACT",
+            "enum": [
+              "ROAMING_CONTRACT",
+              "BILATERAL_CONTRACT"
+            ]
           },
           "reasoningDifferentCosts": {
             "maxLength": 255,
@@ -5487,7 +6461,7 @@
           "lastModifiedDate": {
             "type": "string",
             "description": "The date and time when the report was last modified",
-            "format": "date-time"
+            "example": "2024-11-15T23:59:59Z"
           }
         },
         "description": "Reporting the raw Non-Discriminatory access."
@@ -5507,7 +6481,7 @@
           "reportDate": {
             "type": "string",
             "description": "The date and time when the report was generated.",
-            "format": "date-time"
+            "example": "2024-11-15T23:59:59Z"
           },
           "reportedBy": {
             "type": "string",
@@ -5524,7 +6498,7 @@
           "lastModifiedDate": {
             "type": "string",
             "description": "The date and time when the report was modified.",
-            "format": "date-time"
+            "example": "2024-11-15T23:59:59Z"
           }
         }
       },
@@ -5560,6 +6534,13 @@
             "type": "string",
             "description": "Charging Point UID.",
             "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
+          },
+          "evseId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique EVSE ID of the charging point",
+            "example": "DE*ABC*E45B*78C"
           },
           "type": {
             "type": "string",
@@ -5656,17 +6637,17 @@
           },
           "emergenceDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage emerged.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage emerged.",
             "example": "2024-11-15T23:59:59Z"
           },
           "fixDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage was repaired.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage was repaired.",
             "example": "2024-11-15T23:59:59Z"
           },
           "forecastDate": {
             "type": "string",
-            "description": "'yyyy-MM-dd'T'HH:mm:ss.SS' formatted UTC datetime for when the damage should be repaired.",
+            "description": "'yyyy-MM-dd'T'HH:mm:ss.SSZ' formatted UTC datetime for when the damage should be repaired.",
             "example": "2024-11-15T23:59:59Z"
           }
         }
@@ -5675,23 +6656,40 @@
         "type": "object",
         "properties": {
           "chargingHubUid": {
-            "type": "string"
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Existent Charging Hub UID provided by CPO and used to mapping with internal uid.",
+            "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
           },
           "name": {
-            "type": "string"
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Six-digit contract manager ID of charging hub, hyphen and self-selected name.",
+            "example": "130950-Parkplatz am Weissen Ross"
           },
           "address": {
+            "maxLength": 45,
+            "minLength": 0,
             "type": "string"
           },
           "postalCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Postal code of the charging hub.",
+            "example": "70197"
           },
           "city": {
-            "type": "string"
+            "maxLength": 45,
+            "minLength": 0,
+            "type": "string",
+            "description": "City of the charging hub.",
+            "example": "Stuttgart"
           },
           "state": {
             "type": "string",
             "description": "Enum that represents the german states using exactly 2 letters.",
+            "example": "BW",
             "enum": [
               "BB",
               "BE",
@@ -5715,16 +6713,26 @@
             "$ref": "#/components/schemas/GeoLocation"
           },
           "operator": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique identifier of the responsible operator. Must be 5 alphanumeric digits.",
+            "example": "DE123"
           },
           "owner": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique identifier of charging hub owner.",
+            "example": "Company GMBH"
           },
           "auxiliaryFacilities": {
             "type": "array",
+            "description": "Set of facilities that are available at the charging hub.",
+            "example": [
+              "FOOD_SERVICE",
+              "GREEN_ROOF"
+            ],
             "items": {
               "type": "string",
               "description": "Enum that represents a auxiliary facility that is available at a charging hub.",
+              "example": "[\"FOOD_SERVICE\",\"GREEN_ROOF\"]",
               "enum": [
                 "ROOF",
                 "FOOD_SERVICE",
@@ -5740,11 +6748,14 @@
             }
           },
           "negligibleDamages": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Flag that describes if there are any negligible damages at charging hub.",
+            "example": false
           },
           "lastUpdated": {
             "type": "string",
-            "format": "date-time"
+            "description": "The date and time when the charging hub was modified.",
+            "example": "2024-11-15T23:59:59Z"
           }
         }
       },
@@ -5831,7 +6842,7 @@
           "statusLastUpdatedAt": {
             "type": "string",
             "description": "Last date and time when status of charging point is updated in ISO8601 format.",
-            "example": "2024-09-10T22:32:38.408Z"
+            "example": "2024-11-15T23:59:59Z"
           }
         },
         "description": "Charging Point detailed response."
@@ -5855,6 +6866,9 @@
             "type": "string",
             "description": "The name of the Charging Station if no name given: “<Model Name> + <Charger ID>",
             "example": "WallBox NG Pro 21107439"
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/GeoLocation"
           },
           "shadow": {
             "$ref": "#/components/schemas/ChargingStationShadowCore"
@@ -5965,13 +6979,13 @@
               "CABLE"
             ]
           },
-          "voltage": {
+          "maxVoltage": {
             "type": "integer",
             "description": "Maximum voltage of the connector (line to neutral for AC_3_PHASE), in volt [V]. For example:\nDC Chargers might vary the voltage during charging when battery almost full.\n",
             "format": "int32",
             "example": 250
           },
-          "amperage": {
+          "maxAmperage": {
             "type": "integer",
             "description": "Maximum amperage of the connector, in ampere [A].",
             "format": "int32",
@@ -6054,7 +7068,7 @@
           "lastModifiedDate": {
             "type": "string",
             "description": "The date and time when the report was modified.",
-            "format": "date-time"
+            "example": "2024-11-15T23:59:59Z"
           }
         }
       },
@@ -6121,7 +7135,7 @@
           "lastUpdated": {
             "type": "string",
             "description": "Last time that someone modified the Charging Station.",
-            "format": "date-time"
+            "example": "2024-11-15T23:59:59Z"
           },
           "evse": {
             "type": "array",
@@ -6195,16 +7209,10 @@
       "ChargingPeriod": {
         "required": [
           "dimensions",
-          "signedValues",
           "start"
         ],
         "type": "object",
         "properties": {
-          "start": {
-            "type": "string",
-            "description": "The Date/Time when this charging period starts, in UTC.",
-            "example": "2024-11-15T23:59:59"
-          },
           "dimensions": {
             "type": "array",
             "description": "List of relevant values for this charging period.",
@@ -6230,6 +7238,11 @@
             "items": {
               "$ref": "#/components/schemas/SignedValue"
             }
+          },
+          "start": {
+            "type": "string",
+            "description": "The Date/Time when this charging period starts, in UTC.",
+            "example": "2024-11-15T23:59:59"
           }
         },
         "description": "JSON-formatted object that represents a charging period of a charging session."
@@ -6238,7 +7251,6 @@
         "required": [
           "chargingHubUid",
           "chargingSessionUid",
-          "connectorId",
           "end",
           "start",
           "tariffType",
@@ -6270,26 +7282,27 @@
             "description": "The uid of the Charging Point connected with the Charging Session",
             "example": "5459fd2c-b75e-4a93-8fcb-2dde5d2fc611"
           },
-          "connectorId": {
-            "maxLength": 36,
-            "minLength": 0,
-            "type": "string",
-            "description": "Identifier of the connector within the EVSE."
-          },
           "start": {
             "type": "string",
             "description": "The Date/Time when this charging sessions starts, in UTC.",
-            "example": "2024-11-15T23:59:59"
+            "example": "2024-11-15T23:59:59Z"
           },
           "end": {
             "type": "string",
             "description": "The Date/Time when this charging sessions ends, in UTC.",
-            "example": "2024-11-15T23:59:59"
+            "example": "2024-11-15T23:59:59Z"
           },
           "emaId": {
             "type": "string",
             "description": "Partly hashed authentication ID of the driver. Country code and provider ID should not be hashed.",
             "example": "DE-ABC-hashedPart"
+          },
+          "evseId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unique EVSE ID of the charging point",
+            "example": "DE*ABC*E45B*78C"
           },
           "tariffType": {
             "type": "string",
@@ -6371,7 +7384,7 @@
           "reportDate": {
             "type": "string",
             "description": "The date and time when the report was generated.",
-            "format": "date-time"
+            "example": "2024-11-15T23:59:59Z"
           },
           "reportedBy": {
             "type": "string",
@@ -6388,7 +7401,7 @@
           "lastModifiedDate": {
             "type": "string",
             "description": "The date and time when the report was modified.",
-            "format": "date-time"
+            "example": "2024-11-15T23:59:59Z"
           }
         }
       },
@@ -6429,7 +7442,7 @@
           "lastModifiedDate": {
             "type": "string",
             "description": "Last time that someone modified the charging hub.",
-            "format": "date-time"
+            "example": "2024-11-15T23:59:59Z"
           },
           "chargingStations": {
             "type": "integer",
@@ -6465,185 +7478,20 @@
       }
     },
     "examples": {
-      "OBELIS_AUTHORIZATION_ERROR": {
-        "value": "{\n  \"message\" : \"[OBELIS] Could not authorize against OBELIS external service.\",\n  \"errorCode\" : \"OBELIS_AUTHORIZATION_ERROR\"\n}"
-      },
-      "CHARGING_HUB_DOES_NOT_EXIST": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging Hub with the provided ID could not be found.\",\n  \"errorCode\" : \"CHARGING_HUB_DOES_NOT_EXIST\"\n}"
-      },
-      "CHARGING_HUB_UID_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging hub with the same id already exists.\",\n  \"errorCode\" : \"CHARGING_HUB_UID_ALREADY_EXISTS\"\n}"
-      },
-      "CHARGING_HUB_COORDINATES_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging hub with the same coordinates already exists.\",\n  \"errorCode\" : \"CHARGING_HUB_COORDINATES_ALREADY_EXISTS\"\n}"
-      },
-      "CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging station with the same identity key already exists.\",\n  \"errorCode\" : \"CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS\"\n}"
-      },
-      "CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging station with identity key was not found.\",\n  \"errorCode\" : \"CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND\"\n}"
-      },
-      "CHARGING_STATION_HAS_ASSOCIATED_STATIONS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging station cannot be delete as long as charging points are assigned to it.\",\n  \"errorCode\" : \"CHARGING_STATION_HAS_ASSOCIATED_STATIONS\"\n}"
-      },
-      "EVSE_ID_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging point with the same evseId already exists.\",\n  \"errorCode\" : \"EVSE_ID_ALREADY_EXISTS\"\n}"
-      },
-      "CHARGING_HUB_HAS_ASSOCIATED_STATIONS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging Hub cannot be delete as long as charging station is assigned to it.\",\n  \"errorCode\" : \"CHARGING_HUB_HAS_ASSOCIATED_STATIONS\"\n}"
-      },
-      "CHARGING_SESSION_DOES_NOT_EXIST": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging session with provided uid does not exist.\",\n  \"errorCode\" : \"CHARGING_SESSION_DOES_NOT_EXIST\"\n}"
-      },
-      "CHARGING_SESSION_UID_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging session with the same uid for provided charging point and charging hub already exists.\",\n  \"errorCode\" : \"CHARGING_SESSION_UID_ALREADY_EXISTS\"\n}"
-      },
-      "CHARGING_SESSION_START_TIME_NEEDS_TO_BE_BEFORE_SESSION_END_TIME": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging session start time needs to be before charging session end time.\",\n  \"errorCode\" : \"CHARGING_SESSION_START_TIME_NEEDS_TO_BE_BEFORE_SESSION_END_TIME\"\n}"
-      },
-      "CHARGING_PERIOD_START_TIME_NEEDS_TO_BE_INSIDE_CHARGING_SESSION_START_END_TIME_RANGE": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging period start time needs to be inside session start and end time range.\",\n  \"errorCode\" : \"CHARGING_PERIOD_START_TIME_NEEDS_TO_BE_INSIDE_CHARGING_SESSION_START_END_TIME_RANGE\"\n}"
-      },
-      "CHARGING_POINT_DOES_NOT_EXIST": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging point with the provided uid can not be found.\",\n  \"errorCode\" : \"CHARGING_POINT_DOES_NOT_EXIST\"\n}"
-      },
-      "CHARGING_POINT_CONNECTED_TO_PROVIDED_CHARGING_HUB_DOES_NOT_EXIST": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging point with provided uid connected to the charging hub with provided uid does not exist.\",\n  \"errorCode\" : \"CHARGING_POINT_CONNECTED_TO_PROVIDED_CHARGING_HUB_DOES_NOT_EXIST\"\n}"
-      },
-      "CONNECTOR_DOES_NOT_EXIST": {
-        "value": "{\n  \"message\" : \"[OBELIS] Connector with provided uid does not exist\",\n  \"errorCode\" : \"CONNECTOR_DOES_NOT_EXIST\"\n}"
-      },
-      "AD_HOC_TARIFF_REPORT_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Ad Hoc Tariff report for their charging hub id and month already exists.\",\n  \"errorCode\" : \"AD_HOC_TARIFF_REPORT_ALREADY_EXISTS\"\n}"
-      },
-      "RAW_AD_HOC_TARIFF_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Raw ad-hoc tariff for given charging hub and month not found.\",\n  \"errorCode\" : \"RAW_AD_HOC_TARIFF_NOT_FOUND\"\n}"
-      },
-      "RAW_AD_HOC_TARIFF_UID_NUMBER_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Raw ad-hoc tariff for given UID not found.\",\n  \"errorCode\" : \"RAW_AD_HOC_TARIFF_UID_NUMBER_NOT_FOUND\"\n}"
-      },
-      "MONTH_ON_REPORT_NOT_VALID": {
-        "value": "{\n  \"message\" : \"[OBELIS] Invalid month, accept only data for the previous month\",\n  \"errorCode\" : \"MONTH_ON_REPORT_NOT_VALID\"\n}"
-      },
-      "VALID_TO_DATE_IS_BEFORE_OR_EQUAL_TO_VALID_FROM": {
-        "value": "{\n  \"message\" : \"[OBELIS] ValidFrom date can't be before or equal to ValidTo date.\",\n  \"errorCode\" : \"VALID_TO_DATE_IS_BEFORE_OR_EQUAL_TO_VALID_FROM\"\n}"
-      },
-      "CHARGING_POINT_FOR_CHARGING_STATION_DOES_NOT_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging point with provided uid for specified charging station does not exist.\",\n  \"errorCode\" : \"CHARGING_POINT_FOR_CHARGING_STATION_DOES_NOT_EXISTS\"\n}"
-      },
-      "CHARGING_HUB_FOR_CHARGING_STATION_DOES_NOT_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging hub for specified charging station does not exist.\",\n  \"errorCode\" : \"CHARGING_HUB_FOR_CHARGING_STATION_DOES_NOT_EXISTS\"\n}"
-      },
-      "CONNECTORS_SIZE_DO_NOT_MATCH": {
-        "value": "{\n  \"message\" : \"[OBELIS] Connectors size in request and entity don't match.\",\n  \"errorCode\" : \"CONNECTORS_SIZE_DO_NOT_MATCH\"\n}"
-      },
-      "FACILITY_DAMAGES_REPORT_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Facility Damages report with this uid already exists.\",\n  \"errorCode\" : \"FACILITY_DAMAGES_REPORT_ALREADY_EXISTS\"\n}"
-      },
-      "RAW_FACILITY_DAMAGES_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Raw facility damages report for given uid not found.\",\n  \"errorCode\" : \"RAW_FACILITY_DAMAGES_NOT_FOUND\"\n}"
-      },
-      "RAW_FACILITY_DAMAGES_UID_NUMBER_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Raw facility damages for given UID not found.\",\n  \"errorCode\" : \"RAW_FACILITY_DAMAGES_UID_NUMBER_NOT_FOUND\"\n}"
-      },
-      "UNPROCESSED_RAW_FACILITY_DAMAGES": {
-        "value": "{\n  \"message\" : \"[OBELIS] Unprocessed Raw facility damages not found.\",\n  \"errorCode\" : \"UNPROCESSED_RAW_FACILITY_DAMAGES\"\n}"
-      },
-      "RATING_REPORT_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Rating report for the charging hub id and month already exists.\",\n  \"errorCode\" : \"RATING_REPORT_ALREADY_EXISTS\"\n}"
-      },
-      "RAW_RATING_REPORT_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Raw Rating report for given charging hub and month not found.\",\n  \"errorCode\" : \"RAW_RATING_REPORT_NOT_FOUND\"\n}"
-      },
-      "RAW_RATING_UID_NUMBER_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Raw Rating report for given UID not found.\",\n  \"errorCode\" : \"RAW_RATING_UID_NUMBER_NOT_FOUND\"\n}"
-      },
-      "CANT_CHANGE_CHARGING_HUB_OF_AN_ALREADY_CREATED_STATION": {
-        "value": "{\n  \"message\" : \"[OBELIS] Operation not supported. Can not move charging station to a different charging hub.\",\n  \"errorCode\" : \"CANT_CHANGE_CHARGING_HUB_OF_AN_ALREADY_CREATED_STATION\"\n}"
-      },
-      "PROCESSED_RATING_UID_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Processed Rating report for given UID not found.\",\n  \"errorCode\" : \"PROCESSED_RATING_UID_NOT_FOUND\"\n}"
-      },
-      "END_DATE_IS_BEFORE_TO_START_DATE": {
-        "value": "{\n  \"message\" : \"[OBELIS] EndDateTime is before startDateTime.\",\n  \"errorCode\" : \"END_DATE_IS_BEFORE_TO_START_DATE\"\n}"
-      },
-      "PROCESSED_FACILITY_DAMAGES_UID_NUMBER_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Processed Facility Damages report for given UID not found.\",\n  \"errorCode\" : \"PROCESSED_FACILITY_DAMAGES_UID_NUMBER_NOT_FOUND\"\n}"
-      },
-      "RENEWAL_RAW_CHARGING_POINT_REPORT_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Raw Renewal report with provided uid connected to provided charging hub and charging point already exist.\",\n  \"errorCode\" : \"RENEWAL_RAW_CHARGING_POINT_REPORT_ALREADY_EXISTS\"\n}"
-      },
-      "RENEWAL_START_TIME_NEEDS_TO_BE_BEFORE_END_TIME": {
-        "value": "{\n  \"message\" : \"[OBELIS] Renewal start time needs to be before renewal end time.\",\n  \"errorCode\" : \"RENEWAL_START_TIME_NEEDS_TO_BE_BEFORE_END_TIME\"\n}"
-      },
-      "CHARGING_POINT_NOT_ASSOCIATED_WITH_CHARGING_HUB": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging point uid is not associated with the provided charging hub uid.\",\n  \"errorCode\" : \"CHARGING_POINT_NOT_ASSOCIATED_WITH_CHARGING_HUB\"\n}"
-      },
-      "IDENTITY_KEY_NOT_ASSOCIATED_WITH_CHARGING_POINT": {
-        "value": "{\n  \"message\" : \"[OBELIS] The provided identity key is not associated either with charging point.\",\n  \"errorCode\" : \"IDENTITY_KEY_NOT_ASSOCIATED_WITH_CHARGING_POINT\"\n}"
-      },
-      "RENEWAL_RAW_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID": {
-        "value": "{\n  \"message\" : \"[OBELIS] Raw renewal report does not exist for provide uid\",\n  \"errorCode\" : \"RENEWAL_RAW_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID\"\n}"
-      },
-      "RAW_RATING_REPORT_FOR_IDENTITY_KEY_KEY_AND_MONTH_YEAR_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Raw Rating report for given charging identityKey and montYear were not found.\",\n  \"errorCode\" : \"RAW_RATING_REPORT_FOR_IDENTITY_KEY_KEY_AND_MONTH_YEAR_NOT_FOUND\"\n}"
-      },
-      "PROCESSED_RATING_REPORT_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Processed Rating report for given uid were not found.\",\n  \"errorCode\" : \"PROCESSED_RATING_REPORT_NOT_FOUND\"\n}"
-      },
-      "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FORECAST_DATE": {
-        "value": "{\n  \"message\" : \"[OBELIS] Emergence date is later than forecast date.\",\n  \"errorCode\" : \"REPORT_EMERGENCE_DATE_IS_LATER_THAN_FORECAST_DATE\"\n}"
-      },
-      "CHARGING_POINT_DEFECTS_REPORT_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging Point Defects report with this uid already exists.\",\n  \"errorCode\" : \"CHARGING_POINT_DEFECTS_REPORT_ALREADY_EXISTS\"\n}"
-      },
-      "RAW_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging Point Defects raw report for given UID not found.\",\n  \"errorCode\" : \"RAW_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND\"\n}"
-      },
-      "PROCESSED_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Processed Charging Point Defects report for given UID not found.\",\n  \"errorCode\" : \"PROCESSED_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND\"\n}"
-      },
-      "RENEWAL_PROCESSED_CHARGING_POINT_REPORT_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Processed Renewal report with provided uid already exists.\",\n  \"errorCode\" : \"RENEWAL_PROCESSED_CHARGING_POINT_REPORT_ALREADY_EXISTS\"\n}"
-      },
-      "RENEWAL_PROCESSED_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID": {
-        "value": "{\n  \"message\" : \"[OBELIS] Processed renewal report does not exist for provide uid.\",\n  \"errorCode\" : \"RENEWAL_PROCESSED_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID\"\n}"
-      },
-      "HOTLINE_RATING_REPORT_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Hotline rating report for the provided month already exists.\",\n  \"errorCode\" : \"HOTLINE_RATING_REPORT_ALREADY_EXISTS\"\n}"
-      },
-      "HOTLINE_RATING_REPORT_MONTH_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Hotline raw rating report for given month not found.\",\n  \"errorCode\" : \"HOTLINE_RATING_REPORT_MONTH_NOT_FOUND\"\n}"
-      },
-      "HOTLINE_RATING_REPORT_UID_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Hotline raw rating report for given uid not found.\",\n  \"errorCode\" : \"HOTLINE_RATING_REPORT_UID_NOT_FOUND\"\n}"
-      },
-      "NON_DISCRIMINATORY_ACCESS_REPORT_ALREADY_EXISTS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Non-Discriminatory Access report for their provider group and month already exists.\",\n  \"errorCode\" : \"NON_DISCRIMINATORY_ACCESS_REPORT_ALREADY_EXISTS\"\n}"
-      },
-      "PROVIDER_GROUP_DO_NOT_START_WITH_2_CAPITAL_LETTERS": {
-        "value": "{\n  \"message\" : \"[OBELIS] The providerGroup must be 5 uppercase characters starting with 2 letters\",\n  \"errorCode\" : \"PROVIDER_GROUP_DO_NOT_START_WITH_2_CAPITAL_LETTERS\"\n}"
-      },
-      "NON_DISCRIMINATORY_ACCESS_REPORT_NOT_FOUND": {
-        "value": "{\n  \"message\" : \"[OBELIS] Non-Discriminatory Access report for given uid not found.\",\n  \"errorCode\" : \"NON_DISCRIMINATORY_ACCESS_REPORT_NOT_FOUND\"\n}"
-      },
-      "PROVIDER_GROUP_CHANGED": {
-        "value": "{\n  \"message\" : \"[OBELIS] The provider group cannot be modified in the non-discriminatory access report.\",\n  \"errorCode\" : \"PROVIDER_GROUP_CHANGED\"\n}"
-      },
-      "CHARGING_STATION_WITH_IDENTITY_KEY_DOES_NOT_EXIST": {
-        "value": "{\n  \"message\" : \"[OBELIS] Charging station with provided identity key does not exist.\",\n  \"errorCode\" : \"CHARGING_STATION_WITH_IDENTITY_KEY_DOES_NOT_EXIST\"\n}"
-      },
-      "DUPLICATED_CONNECTOR_UIDS": {
-        "value": "{\n  \"message\" : \"[OBELIS] Duplicate connector uids are not allowed.\",\n  \"errorCode\" : \"DUPLICATED_CONNECTOR_UIDS\"\n}"
-      },
-      "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FIX_DATE": {
-        "value": "{\n  \"message\" : \"[OBELIS] Emergence date is later than fix date.\",\n  \"errorCode\" : \"REPORT_EMERGENCE_DATE_IS_LATER_THAN_FIX_DATE\"\n}"
+      "OBELIS_EXTERNAL_API_REQUEST_FAILED_429": {
+        "value": "{\n  \"message\" : \"Request blocked by AWS WAF due to rate limiting. Please try again later.\",\n  \"errorCode\" : \"OBELIS_EXTERNAL_API_REQUEST_FAILED_429\"\n}"
       },
       "UNSORTABLE_COLUMN": {
         "value": "{\n  \"message\" : \"The entered sorting column is not sortable in ElasticSearch (Column is not a @Keyword).\",\n  \"errorCode\" : \"UNSORTABLE_COLUMN\"\n}"
       },
       "REST_STATUS_ELASTICSEARCH_RELATED": {
         "value": "{\n  \"message\" : \"RestStatusException related to ElasticSearch\",\n  \"errorCode\" : \"REST_STATUS_ELASTICSEARCH_RELATED\"\n}"
+      },
+      "OBELIS_EXTERNAL_API_REQUEST_FAILED_400": {
+        "value": "{\n  \"message\" : \"Coordinates are not within [postcode, city or state]\",\n  \"errorCode\" : \"OBELIS_EXTERNAL_API_REQUEST_FAILED_400\"\n}"
+      },
+      "OBELIS_EXTERNAL_API_REQUEST_FAILED_403": {
+        "value": "{\n  \"message\" : \"Too many requests were sent to geocoding API, try again later\",\n  \"errorCode\" : \"OBELIS_EXTERNAL_API_REQUEST_FAILED_403\"\n}"
       },
       "PROCESSING_ERROR": {
         "value": "{\n  \"message\" : \"Error while processing the data\",\n  \"errorCode\" : \"PROCESSING_ERROR\"\n}"
@@ -6762,6 +7610,198 @@
       "INVALID_ROLE": {
         "value": "{\n  \"message\" : \"Invalid role claim\",\n  \"errorCode\" : \"INVALID_ROLE\"\n}"
       },
+      "OBELIS_AUTHORIZATION_ERROR": {
+        "value": "{\n  \"message\" : \"[OBELIS] Could not authorize against OBELIS external service.\",\n  \"errorCode\" : \"OBELIS_AUTHORIZATION_ERROR\"\n}"
+      },
+      "CHARGING_HUB_DOES_NOT_EXIST": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging Hub with the provided ID could not be found.\",\n  \"errorCode\" : \"CHARGING_HUB_DOES_NOT_EXIST\"\n}"
+      },
+      "CHARGING_HUB_UID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging hub with the same id already exists.\",\n  \"errorCode\" : \"CHARGING_HUB_UID_ALREADY_EXISTS\"\n}"
+      },
+      "CHARGING_HUB_COORDINATES_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging hub with the same coordinates already exists.\",\n  \"errorCode\" : \"CHARGING_HUB_COORDINATES_ALREADY_EXISTS\"\n}"
+      },
+      "CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging station with the same identity key already exists.\",\n  \"errorCode\" : \"CHARGING_STATION_IDENTITY_KEY_ALREADY_EXISTS\"\n}"
+      },
+      "CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging station with identity key was not found.\",\n  \"errorCode\" : \"CHARGING_STATION_WITH_IDENTITY_KEY_WAS_NOT_FOUND\"\n}"
+      },
+      "CHARGING_STATION_HAS_ASSOCIATED_CHARGING_POINTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging station cannot be delete as long as charging points are assigned to it.\",\n  \"errorCode\" : \"CHARGING_STATION_HAS_ASSOCIATED_CHARGING_POINTS\"\n}"
+      },
+      "EVSE_ID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging point with the same evseId already exists.\",\n  \"errorCode\" : \"EVSE_ID_ALREADY_EXISTS\"\n}"
+      },
+      "CHARGING_HUB_HAS_ASSOCIATED_STATIONS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging Hub cannot be delete as long as charging station is assigned to it.\",\n  \"errorCode\" : \"CHARGING_HUB_HAS_ASSOCIATED_STATIONS\"\n}"
+      },
+      "CHARGING_SESSION_DOES_NOT_EXIST": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging session with provided uid does not exist.\",\n  \"errorCode\" : \"CHARGING_SESSION_DOES_NOT_EXIST\"\n}"
+      },
+      "CHARGING_SESSION_UID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging session with the same uid for provided charging point and charging hub already exists.\",\n  \"errorCode\" : \"CHARGING_SESSION_UID_ALREADY_EXISTS\"\n}"
+      },
+      "CHARGING_SESSION_START_TIME_NEEDS_TO_BE_BEFORE_SESSION_END_TIME": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging session start time needs to be before charging session end time.\",\n  \"errorCode\" : \"CHARGING_SESSION_START_TIME_NEEDS_TO_BE_BEFORE_SESSION_END_TIME\"\n}"
+      },
+      "CHARGING_PERIOD_START_TIME_NEEDS_TO_BE_INSIDE_CHARGING_SESSION_START_END_TIME_RANGE": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging period start time needs to be inside session start and end time range.\",\n  \"errorCode\" : \"CHARGING_PERIOD_START_TIME_NEEDS_TO_BE_INSIDE_CHARGING_SESSION_START_END_TIME_RANGE\"\n}"
+      },
+      "CHARGING_POINT_DOES_NOT_EXIST": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging point with the provided uid can not be found.\",\n  \"errorCode\" : \"CHARGING_POINT_DOES_NOT_EXIST\"\n}"
+      },
+      "CHARGING_POINT_CONNECTED_TO_PROVIDED_CHARGING_HUB_DOES_NOT_EXIST": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging point with provided uid connected to the charging hub with provided uid does not exist.\",\n  \"errorCode\" : \"CHARGING_POINT_CONNECTED_TO_PROVIDED_CHARGING_HUB_DOES_NOT_EXIST\"\n}"
+      },
+      "CONNECTOR_DOES_NOT_EXIST": {
+        "value": "{\n  \"message\" : \"[OBELIS] Connector with provided uid does not exist\",\n  \"errorCode\" : \"CONNECTOR_DOES_NOT_EXIST\"\n}"
+      },
+      "AD_HOC_TARIFF_REPORT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Ad Hoc Tariff report for their charging hub id and month already exists.\",\n  \"errorCode\" : \"AD_HOC_TARIFF_REPORT_ALREADY_EXISTS\"\n}"
+      },
+      "RAW_AD_HOC_TARIFF_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Raw ad-hoc tariff for given charging hub and month not found.\",\n  \"errorCode\" : \"RAW_AD_HOC_TARIFF_NOT_FOUND\"\n}"
+      },
+      "RAW_AD_HOC_TARIFF_UID_NUMBER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Raw ad-hoc tariff for given UID not found.\",\n  \"errorCode\" : \"RAW_AD_HOC_TARIFF_UID_NUMBER_NOT_FOUND\"\n}"
+      },
+      "MONTH_ON_REPORT_NOT_VALID": {
+        "value": "{\n  \"message\" : \"[OBELIS] Invalid month, accept only data for the previous month\",\n  \"errorCode\" : \"MONTH_ON_REPORT_NOT_VALID\"\n}"
+      },
+      "VALID_TO_DATE_IS_BEFORE_OR_EQUAL_TO_VALID_FROM": {
+        "value": "{\n  \"message\" : \"[OBELIS] ValidFrom date can't be before or equal to ValidTo date.\",\n  \"errorCode\" : \"VALID_TO_DATE_IS_BEFORE_OR_EQUAL_TO_VALID_FROM\"\n}"
+      },
+      "CHARGING_POINT_FOR_CHARGING_STATION_DOES_NOT_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging point with provided uid for specified charging station does not exist.\",\n  \"errorCode\" : \"CHARGING_POINT_FOR_CHARGING_STATION_DOES_NOT_EXISTS\"\n}"
+      },
+      "CHARGING_HUB_FOR_CHARGING_STATION_DOES_NOT_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging hub for specified charging station does not exist.\",\n  \"errorCode\" : \"CHARGING_HUB_FOR_CHARGING_STATION_DOES_NOT_EXISTS\"\n}"
+      },
+      "FACILITY_DAMAGES_REPORT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Facility Damages report with this uid already exists.\",\n  \"errorCode\" : \"FACILITY_DAMAGES_REPORT_ALREADY_EXISTS\"\n}"
+      },
+      "RAW_FACILITY_DAMAGES_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Raw facility damages report for given uid not found.\",\n  \"errorCode\" : \"RAW_FACILITY_DAMAGES_NOT_FOUND\"\n}"
+      },
+      "RAW_FACILITY_DAMAGES_UID_NUMBER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Raw facility damages for given UID not found.\",\n  \"errorCode\" : \"RAW_FACILITY_DAMAGES_UID_NUMBER_NOT_FOUND\"\n}"
+      },
+      "UNPROCESSED_RAW_FACILITY_DAMAGES": {
+        "value": "{\n  \"message\" : \"[OBELIS] Unprocessed Raw facility damages not found.\",\n  \"errorCode\" : \"UNPROCESSED_RAW_FACILITY_DAMAGES\"\n}"
+      },
+      "RATING_REPORT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Rating report for the charging hub id and month already exists.\",\n  \"errorCode\" : \"RATING_REPORT_ALREADY_EXISTS\"\n}"
+      },
+      "RATING_REPORT_FOR_CHARGING_POINT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Rating report for the charging point id associated with the charging hub id and montYear already exists.\",\n  \"errorCode\" : \"RATING_REPORT_FOR_CHARGING_POINT_ALREADY_EXISTS\"\n}"
+      },
+      "RAW_RATING_REPORT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Raw Rating report for given charging hub and month not found.\",\n  \"errorCode\" : \"RAW_RATING_REPORT_NOT_FOUND\"\n}"
+      },
+      "RAW_RATING_UID_NUMBER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Raw Rating report for given UID not found.\",\n  \"errorCode\" : \"RAW_RATING_UID_NUMBER_NOT_FOUND\"\n}"
+      },
+      "CANT_CHANGE_CHARGING_HUB_OF_AN_ALREADY_CREATED_STATION": {
+        "value": "{\n  \"message\" : \"[OBELIS] Operation not supported. Can not move charging station to a different charging hub.\",\n  \"errorCode\" : \"CANT_CHANGE_CHARGING_HUB_OF_AN_ALREADY_CREATED_STATION\"\n}"
+      },
+      "PROCESSED_RATING_UID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Processed Rating report for given UID not found.\",\n  \"errorCode\" : \"PROCESSED_RATING_UID_NOT_FOUND\"\n}"
+      },
+      "END_DATE_IS_BEFORE_TO_START_DATE": {
+        "value": "{\n  \"message\" : \"[OBELIS] EndDateTime is before startDateTime.\",\n  \"errorCode\" : \"END_DATE_IS_BEFORE_TO_START_DATE\"\n}"
+      },
+      "PROCESSED_FACILITY_DAMAGES_UID_NUMBER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Processed Facility Damages report for given UID not found.\",\n  \"errorCode\" : \"PROCESSED_FACILITY_DAMAGES_UID_NUMBER_NOT_FOUND\"\n}"
+      },
+      "RENEWAL_RAW_CHARGING_POINT_REPORT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Raw Renewal report with provided uid connected to provided charging hub and charging point already exist.\",\n  \"errorCode\" : \"RENEWAL_RAW_CHARGING_POINT_REPORT_ALREADY_EXISTS\"\n}"
+      },
+      "RENEWAL_START_TIME_NEEDS_TO_BE_BEFORE_END_TIME": {
+        "value": "{\n  \"message\" : \"[OBELIS] Renewal start time needs to be before renewal end time.\",\n  \"errorCode\" : \"RENEWAL_START_TIME_NEEDS_TO_BE_BEFORE_END_TIME\"\n}"
+      },
+      "CHARGING_POINT_NOT_ASSOCIATED_WITH_CHARGING_HUB": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging point uid is not associated with the provided charging hub uid.\",\n  \"errorCode\" : \"CHARGING_POINT_NOT_ASSOCIATED_WITH_CHARGING_HUB\"\n}"
+      },
+      "IDENTITY_KEY_NOT_ASSOCIATED_WITH_CHARGING_POINT": {
+        "value": "{\n  \"message\" : \"[OBELIS] The provided identity key is not associated either with charging point.\",\n  \"errorCode\" : \"IDENTITY_KEY_NOT_ASSOCIATED_WITH_CHARGING_POINT\"\n}"
+      },
+      "RENEWAL_RAW_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID": {
+        "value": "{\n  \"message\" : \"[OBELIS] Raw renewal report does not exist for provide uid\",\n  \"errorCode\" : \"RENEWAL_RAW_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID\"\n}"
+      },
+      "RAW_RATING_REPORT_FOR_IDENTITY_KEY_KEY_AND_MONTH_YEAR_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Raw Rating report for given charging identityKey and montYear were not found.\",\n  \"errorCode\" : \"RAW_RATING_REPORT_FOR_IDENTITY_KEY_KEY_AND_MONTH_YEAR_NOT_FOUND\"\n}"
+      },
+      "PROCESSED_RATING_REPORT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Processed Rating report for given uid were not found.\",\n  \"errorCode\" : \"PROCESSED_RATING_REPORT_NOT_FOUND\"\n}"
+      },
+      "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FORECAST_DATE": {
+        "value": "{\n  \"message\" : \"[OBELIS] Emergence date is later than forecast date.\",\n  \"errorCode\" : \"REPORT_EMERGENCE_DATE_IS_LATER_THAN_FORECAST_DATE\"\n}"
+      },
+      "CHARGING_POINT_DEFECTS_REPORT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging Point Defects report with this uid already exists.\",\n  \"errorCode\" : \"CHARGING_POINT_DEFECTS_REPORT_ALREADY_EXISTS\"\n}"
+      },
+      "RAW_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging Point Defects raw report for given UID not found.\",\n  \"errorCode\" : \"RAW_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND\"\n}"
+      },
+      "PROCESSED_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Processed Charging Point Defects report for given UID not found.\",\n  \"errorCode\" : \"PROCESSED_CHARGING_POINT_DEFECT_UID_NUMBER_NOT_FOUND\"\n}"
+      },
+      "RENEWAL_PROCESSED_CHARGING_POINT_REPORT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Processed Renewal report with provided uid already exists.\",\n  \"errorCode\" : \"RENEWAL_PROCESSED_CHARGING_POINT_REPORT_ALREADY_EXISTS\"\n}"
+      },
+      "RENEWAL_PROCESSED_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID": {
+        "value": "{\n  \"message\" : \"[OBELIS] Processed renewal report does not exist for provide uid.\",\n  \"errorCode\" : \"RENEWAL_PROCESSED_CHARGING_POINT_DOES_NOT_EXIST_FOR_PROVIDED_UID\"\n}"
+      },
+      "HOTLINE_RATING_REPORT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Hotline rating report for the provided month already exists.\",\n  \"errorCode\" : \"HOTLINE_RATING_REPORT_ALREADY_EXISTS\"\n}"
+      },
+      "HOTLINE_RATING_REPORT_MONTH_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Hotline raw rating report for given month not found.\",\n  \"errorCode\" : \"HOTLINE_RATING_REPORT_MONTH_NOT_FOUND\"\n}"
+      },
+      "HOTLINE_RATING_REPORT_UID_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Hotline raw rating report for given uid not found.\",\n  \"errorCode\" : \"HOTLINE_RATING_REPORT_UID_NOT_FOUND\"\n}"
+      },
+      "NON_DISCRIMINATORY_ACCESS_REPORT_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Non-Discriminatory Access report for their provider group and month already exists.\",\n  \"errorCode\" : \"NON_DISCRIMINATORY_ACCESS_REPORT_ALREADY_EXISTS\"\n}"
+      },
+      "PROVIDER_GROUP_DO_NOT_START_WITH_2_CAPITAL_LETTERS": {
+        "value": "{\n  \"message\" : \"[OBELIS] The providerGroup must be 5 uppercase characters starting with 2 letters\",\n  \"errorCode\" : \"PROVIDER_GROUP_DO_NOT_START_WITH_2_CAPITAL_LETTERS\"\n}"
+      },
+      "NON_DISCRIMINATORY_ACCESS_REPORT_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Non-Discriminatory Access report for given uid not found.\",\n  \"errorCode\" : \"NON_DISCRIMINATORY_ACCESS_REPORT_NOT_FOUND\"\n}"
+      },
+      "PROVIDER_GROUP_CHANGED": {
+        "value": "{\n  \"message\" : \"[OBELIS] The provider group cannot be modified in the non-discriminatory access report.\",\n  \"errorCode\" : \"PROVIDER_GROUP_CHANGED\"\n}"
+      },
+      "CHARGING_STATION_WITH_IDENTITY_KEY_DOES_NOT_EXIST": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging station with provided identity key does not exist.\",\n  \"errorCode\" : \"CHARGING_STATION_WITH_IDENTITY_KEY_DOES_NOT_EXIST\"\n}"
+      },
+      "DUPLICATED_CONNECTOR_UIDS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Duplicate connector uids are not allowed.\",\n  \"errorCode\" : \"DUPLICATED_CONNECTOR_UIDS\"\n}"
+      },
+      "REPORT_EMERGENCE_DATE_IS_LATER_THAN_FIX_DATE": {
+        "value": "{\n  \"message\" : \"[OBELIS] Emergence date is later than fix date.\",\n  \"errorCode\" : \"REPORT_EMERGENCE_DATE_IS_LATER_THAN_FIX_DATE\"\n}"
+      },
+      "RENEWAL_PROCESSED_CHARGING_POINT_REPORT_FOR_HUB_POINT_AND_UID_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Processed Renewal report with provided chargingHubUid, chargingPointUid and renewalUid already exists.\",\n  \"errorCode\" : \"RENEWAL_PROCESSED_CHARGING_POINT_REPORT_FOR_HUB_POINT_AND_UID_EXISTS\"\n}"
+      },
+      "NON_DISCRIMINATORY_ACCESS_REPORT_WITH_UID_ALREADY_EXISTS": {
+        "value": "{\n  \"message\" : \"[OBELIS] Non-Discriminatory Access report for the provided UID already exists.\",\n  \"errorCode\" : \"NON_DISCRIMINATORY_ACCESS_REPORT_WITH_UID_ALREADY_EXISTS\"\n}"
+      },
+      "PROCESSED_AD_HOC_TARIFF_UID_NUMBER_NOT_FOUND": {
+        "value": "{\n  \"message\" : \"[OBELIS] Processed ad-hoc tariff for given UID not found.\",\n  \"errorCode\" : \"PROCESSED_AD_HOC_TARIFF_UID_NUMBER_NOT_FOUND\"\n}"
+      },
+      "PROCESSED_DAMAGE_REPORT_NOT_YET_CLOSED": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging Hub Damage report for this facilityType already exists and is not yet closed.\",\n  \"errorCode\" : \"PROCESSED_DAMAGE_REPORT_NOT_YET_CLOSED\"\n}"
+      },
+      "PROCESSED_DEFECT_REPORT_NOT_YET_CLOSED": {
+        "value": "{\n  \"message\" : \"[OBELIS] Charging Point Defect report for this defect type already exists and is not yet closed.\",\n  \"errorCode\" : \"PROCESSED_DEFECT_REPORT_NOT_YET_CLOSED\"\n}"
+      },
+      "GEO_COORDINATES_OF_CHARGING_HUB_CHARGING_STATION_NOT_WITHIN_RADIUS": {
+        "value": "{\n  \"message\" : \"[OBELIS] The geo-coordinates of the charging station aren't located within a specific radius of the charging hub.\",\n  \"errorCode\" : \"GEO_COORDINATES_OF_CHARGING_HUB_CHARGING_STATION_NOT_WITHIN_RADIUS\"\n}"
+      },
       "USER_NOT_FOUND": {
         "value": "{\n  \"message\" : \"The entered user does not exist.\",\n  \"errorCode\" : \"USER_NOT_FOUND\"\n}"
       },
@@ -6808,13 +7848,13 @@
           "type": "string"
         }
       }
-    }
-  },
-  "securitySchemes": {
-    "bearerAuth": {
-      "type": "http",
-      "scheme": "Bearer",
-      "bearerFormat": "JWT"
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
     }
   }
 }

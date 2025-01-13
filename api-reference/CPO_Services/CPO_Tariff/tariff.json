@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://baseurl/tariff/v1",
+      "url": "https://p3-acc.energystacks.io/tariff/v1",
       "description": "Generated server url"
     }
   ],
@@ -65,16 +65,33 @@
             }
           },
           "400": {
-            "description": "Request's restrictions are not met"
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "END_DATE_NOT_VALID": {
+                    "description": "END_DATE_NOT_VALID",
+                    "$ref": "#/components/examples/END_DATE_NOT_VALID"
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "Tariff Not Found"
           },
           "409": {
             "description": "Tariff element dates are overlapping Tariff dates"
-          },
-          "400 ": {
-            "description": "End date can not be in the past"
           }
         }
       },
@@ -263,13 +280,51 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMessageDto"
+                    }
+                  ]
+                },
+                "examples": {
+                  "END_DATE_NOT_VALID": {
+                    "description": "END_DATE_NOT_VALID",
+                    "$ref": "#/components/examples/END_DATE_NOT_VALID"
+                  },
+                  "WRONG_TARIFF_DATE_FORMAT": {
+                    "description": "WRONG_TARIFF_DATE_FORMAT",
+                    "$ref": "#/components/examples/WRONG_TARIFF_DATE_FORMAT"
+                  }
+                }
+              }
+            }
           },
           "409": {
-            "description": "Tariff element dates overlap"
-          },
-          "400 ": {
-            "description": "End date can not be in the past"
+            "description": "Tariff element dates overlap",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessageDto"
+                },
+                "examples": {
+                  "TARIFF_ELEMENT_DATES_OVERLAP_TARIFF_DATES": {
+                    "description": "TARIFF_ELEMENT_DATES_OVERLAP_TARIFF_DATES",
+                    "$ref": "#/components/examples/TARIFF_ELEMENT_DATES_OVERLAP_TARIFF_DATES"
+                  },
+                  "TARIFF_ELEMENT_DATES_OVERLAP": {
+                    "description": "TARIFF_ELEMENT_DATES_OVERLAP",
+                    "$ref": "#/components/examples/TARIFF_ELEMENT_DATES_OVERLAP"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -279,8 +334,8 @@
         "tags": [
           "Tariff"
         ],
-        "summary": "Create tariff for Hager Bridge migration",
-        "description": "Creates a new tariff only for Hager Bridge migration purposes. This endpoint only differs to past end date validation which is removed. After migration, this endpoint should be removed. ",
+        "summary": "Create tariff no date validation",
+        "description": "Creates a new tariff without past end date validation.",
         "operationId": "createTariffMigration",
         "requestBody": {
           "content": {
@@ -309,7 +364,8 @@
           "409": {
             "description": "Tariff element dates are overlapping Tariff dates"
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/tariffs/{id}": {
@@ -908,6 +964,65 @@
           }
         },
         "description": "These restrictions are not for the entire Charging Session. They only describe if and when a TariffElement becomes active or inactive during a Charging Session."
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "Affected field"
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "description": "List of validation errors"
+      },
+      "ValidationErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "List of validation errors",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ErrorMessageDto": {
+        "required": [
+          "errorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Example error message"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "The error code",
+            "example": "EXAMPLE_ERROR_CODE"
+          }
+        }
       },
       "TariffUpdateRequest": {
         "required": [
