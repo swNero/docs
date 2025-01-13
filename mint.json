@@ -335,6 +335,55 @@
 
 
     {
+      "group": "Fleet Orchestrator",
+      "pages": [
+        {
+          "group": "Fleet Vehicle",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Orchestrator/fleet-vehicle/get-fleet-vehicle-by-vehicle-identification-number-vin",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-vehicle/update-fleet-vehicle",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-vehicle/delete-a-fleet-vehicle",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-vehicle/patch-an-existing-fleet-vehicle",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-vehicle/get-all-fleet-vehicles",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-vehicle/create-fleet-vehicle"
+          ]
+        },
+        {
+          "group": "Fleet Tours",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-tours/update-a-fleet-tour-by-tour-uid",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-tours/delete-a-fleet-tour",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-tours/get-all-fleet-tours",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-tours/create-multiple-fleet-tours",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-tours/get-fleet-tour-details-such-as-jobs-breaks-and-related-business-account-information",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-tours/get-fleet-tours-paginated-based-on-criteria-filters",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-tours/get-fleet-tours-at-depot-within-optional-time-range"
+          ]
+        },
+        {
+          "group": "Tour Optimization",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Orchestratortour-optimization/optimizes-an-existing-fleet-tour",
+            "api-reference/Fleet_Services/Fleet_Orchestratortour-optimization/optimizes-an-existing-fleet-tour-using-a-specific-job-precedence-sequence",
+            "api-reference/Fleet_Services/Fleet_Orchestratortour-optimization/creates-optimized-fleet-tours",
+            "api-reference/Fleet_Services/Fleet_Orchestratortour-optimization/create-a-new-optimized-fleet-tour-using-a-specific-job-precedence-sequence"
+          ]
+        },
+        {
+          "group": "Fleet Jobs",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-jobs/update-fleet-job",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-jobs/get-all-fleet-jobs",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-jobs/create-fleet-job",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-jobs/retrieves-jobs-paginated-based-on-criteria-filters",
+            "api-reference/Fleet_Services/Fleet_Orchestratorfleet-jobs/get-all-fleet-jobs-while-excluding-specific-of-them"
+          ]
+        }
+      ]
+    },
+
+
+    {
       "group": "Fleet Vehicle",
       "pages": [
         {
