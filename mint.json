@@ -209,6 +209,110 @@
         }      
       ]
     },
+
+
+    {
+      "group": "Fleet Gateway Navision",
+      "pages": [
+        {
+          "group": "Fleet Tours",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-tours/stop-a-fleet-tour",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-tours/start-a-fleet-tour",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-tours/get-all-fleet-tours",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-tours/get-all-fleet-tour-jobs-based-on-the-provided-tour-uid"
+          ]
+        },
+        {
+          "group": "Locations",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/locations/get-all-business-account-locations",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/locations/create-or-update-a-business-account-location"
+          ]
+        },
+        {
+          "group": "Location products",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/location-products/assign-or-update-already-assigned-business-account-location-product",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/location-products/get-the-business-account-location-products",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/location-products/remove-the-product-with-the-specified-unit-of-measure-from-the-business-account-location"
+          ]
+        },
+        {
+          "group": "Fleet Jobs",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-jobs/get-all-fleet-jobs",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-jobs/create-or-update-fleet-job",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-jobs/delete-a-fleet-job",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-jobs/update-fleet-job-status",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-jobs/update-fleet-job-status-1"
+          ]
+        },
+        {
+          "group": "Fleet Job Synchronization",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-job-synchronization/synchronize-biofleet-app-jobs-based-on-current-job-state-in-navision"
+          ]
+        },
+        {
+          "group": "Business Accounts",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/business-accounts/get-all-business-accounts",
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/business-accounts/create-or-update-a-business-account"
+          ]
+        },
+        {
+          "group": "Units Of Measure",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/units-of-measure/get-all-units-of-measure"
+          ]
+        },
+        {
+          "group": "Products",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/products/get-all-products"
+          ]
+        },
+        {
+          "group": "Location Types",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/location-types/get-all-location-types"
+          ]
+        },
+        {
+          "group": "Location Statuses",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/location-statuses/get-all-location-statuses"
+          ]
+        },
+        {
+          "group": "Location Risks",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/location-risks/get-all-location-risks"
+          ]
+        },
+        {
+          "group": "Location Address Types",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/location-address-types/get-all-location-address-types"
+          ]
+        },
+        {
+          "group": "Fleet Job Types",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/fleet-job-types/get-all-fleet-job-types"
+          ]
+        },
+        {
+          "group": "Business Account Types",
+          "pages": [
+            "api-reference/Fleet_Services/Fleet_Gateway_Navision/business-account-types/get-all-business-account-types"
+          ]
+        }      
+      ]
+    },
+
+
     {
       "group": "Fleet Vehicle",
       "pages": [
@@ -227,6 +331,8 @@
         }
       ]
     },
+
+    
     {
       "group": "Fleet Vehicle Core",
       "pages": [
