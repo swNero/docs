@@ -1195,6 +1195,247 @@
     },
 
     {
+      "group": "OCPP Broker",
+      "pages": [
+        {
+          "group": "Charging Station Connector Shadow",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-connector-shadow/get-charging-station-shadow-connector",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-connector-shadow/get-connector-details",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-connector-shadow/check-if-a-connector-with-provided-evse-id-exists"
+          ]
+        },
+        {
+          "group": "Location",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/location/get-location-by-uuid",
+            "api-reference/Broker_Services/OCPP_Broker/location/update-a-location",
+            "api-reference/Broker_Services/OCPP_Broker/location/delete-a-location",
+            "api-reference/Broker_Services/OCPP_Broker/location/get-all-locations",
+            "api-reference/Broker_Services/OCPP_Broker/location/add-a-new-location",
+            "api-reference/Broker_Services/OCPP_Broker/location/add-charging-stations-to-a-location",
+            "api-reference/Broker_Services/OCPP_Broker/location/remove-charging-stations-from-a-location"
+          ]
+        },
+        {
+          "group": "CSMS",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/csms/get-one-specific-csms",
+            "api-reference/Broker_Services/OCPP_Broker/csms/update-a-csms",
+            "api-reference/Broker_Services/OCPP_Broker/csms/delete-a-csms",
+            "api-reference/Broker_Services/OCPP_Broker/csms/updates-csms-credentials",
+            "api-reference/Broker_Services/OCPP_Broker/csms/get-all-csms",
+            "api-reference/Broker_Services/OCPP_Broker/csms/create-csms",
+            "api-reference/Broker_Services/OCPP_Broker/csms/get-csms-connectivity-status",
+            "api-reference/Broker_Services/OCPP_Broker/csms/get-one-specific-csms-by-display-name"
+          ]
+        },
+        {
+          "group": "Charging Station",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/charging-station/get-charging-station",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station/update-charging-station",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station/delete-charging-station",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station/disconnect-charging-station",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station/get-all-charging-stations",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station/add-charging-station"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Firmware Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-firmware-management/update-firmware",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-firmware-management/unpublish-firmware",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-firmware-management/publish-firmware"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Remote Control",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-remote-control/unlock-connector",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-remote-control/trigger-message"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Provisioning",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-provisioning/set-variables",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-provisioning/set-network-connection-profile",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-provisioning/reset",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-provisioning/get-variables",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-provisioning/get-custom-report",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-provisioning/get-base-report"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Diagnostics",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-diagnostics/set-variable-monitoring",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-diagnostics/set-monitoring-level",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-diagnostics/set-monitoring-report",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-diagnostics/get-monitoring-report",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-diagnostics/get-log",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-diagnostics/customer-information",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-diagnostics/clear-variable-monitoring"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Display Message",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-display-message/set-display-message",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-display-message/get-display-messages",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-display-message/clear-display-message"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Smart Charging",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-smart-charging/set-charging-profile",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-smart-charging/request-stop-transaction",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-smart-charging/request-start-transaction",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-smart-charging/get-composite-schedule",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-smart-charging/get-charging-profiles",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-smart-charging/clear-charging-profile"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Local Authorization List Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-local-authorization-list-management/send-local-list",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-local-authorization-list-management/get-local-list-version"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Reservation",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-reservation/reserve-now",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-reservation/cancel-reservation"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] ISO 15118 Certificate Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-iso-15118-certificate-management/install-certificate",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-iso-15118-certificate-management/get-installed-certificate-ids",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-iso-15118-certificate-management/delete-certificate"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Transaction",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-transaction/get-transaction-status"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Data Transfer",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-data-transfer/data-transfer"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Tariff and Cost",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-tariff-and-cost/cost-updated"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Authorization",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-authorization/clear-cache"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Availability",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-availability/change-availability"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Security",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-201]-security/certificate-signed"
+          ]
+        },
+        {
+          "group": "[OCPP 1.6] Firmware Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-firmware-management/update-firmware",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-firmware-management/diagnostics-request"
+          ]
+        },
+        {
+          "group": "[OCPP 1.6] Core Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-core-management/unlock-connector",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-core-management/reset",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-core-management/remote-stop-transaction",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-core-management/remote-start-transaction",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-core-management/get-configuration",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-core-management/change-configuration",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-core-management/clear-cache",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-core-management/change-availability"
+          ]
+        },
+        {
+          "group": "[OCPP 1.6] Remote Trigger",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-remote-trigger/trigger-message"
+          ]
+        },
+        {
+          "group": "[OCPP 1.6] Smart Charging",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-smart-charging/set-charging-profile",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-smart-charging/get-composite-schedule",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-smart-charging/clear-charging-profile"
+          ]
+        },
+        {
+          "group": "[OCPP 1.6] Reservation",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-reservation/reserve-now",
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-reservation/cancel-reservation"
+          ]
+        },
+        {
+          "group": "[OCPP 1.6] Data Transfer",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-data-transfer/data-transfer"
+          ]
+        },
+        {
+          "group": "Charging Station Transaction Shadow",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-transaction-shadow/get-all-transactions",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-transaction-shadow/get-transactions-for-identity",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-transaction-shadow/get-meter-values-for-transaction",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-transaction-shadow/search-broker-transactions"
+          ]
+        },
+        {
+          "group": "Charging Station Security Event Shadow",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-security-event-shadow/get-security-events",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-security-event-shadow/get-security-events-for-identity"
+          ]
+        },
+        {
+          "group": "Charging Station Configuration Shadow",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-configuration-shadow/[ocpp-201]-get-variables",
+            "api-reference/Broker_Services/OCPP_Broker/charging-station-configuration-shadow/[ocpp-16]-get-configuration"
+          ]
+        },
+        {
+          "group": "[OCPP 1.6] Local Auth List Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker/[ocpp-16]-local-auth-list-management/get-local-list-version"
+          ]
+        }
+      ]      
+    },
+
+    {
       "group": "OCPP Message Logs",
       "pages": [
         {

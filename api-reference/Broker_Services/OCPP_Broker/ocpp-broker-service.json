@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://baseurl/ocpp-broker/v1",
+      "url": "https://p3-acc.energystacks.io/ocpp-broker/v1",
       "description": "Generated server url"
     }
   ],
@@ -93,6 +93,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -109,68 +110,6 @@
           },
           "404": {
             "description": "Charging Station Shadow Connector not found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Charging Station Connector Shadow"
-        ],
-        "summary": "Update Charging Station Shadow Connector",
-        "description": "Update Charging Station Shadow Connector with the connector details",
-        "operationId": "updateConnectorDetails",
-        "parameters": [
-          {
-            "name": "identityKey",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "connectorId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "tenantId",
-            "in": "query",
-            "description": "Tenant ID",
-            "required": false,
-            "example": "12345"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ConnectorUpdateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuccessMessageDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Charging Station Shadow Connector not found"
-          },
-          "409": {
-            "description": "Provided EVSE ID already exists."
           }
         }
       }
@@ -198,6 +137,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -239,6 +179,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -290,6 +231,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -335,6 +277,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -376,6 +319,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -433,6 +377,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -482,6 +427,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -537,6 +483,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -577,6 +524,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -630,19 +578,13 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful Operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrokerChargingStationResponse"
-                }
-              }
-            }
+          "204": {
+            "description": "No Content"
           },
           "404": {
             "description": "Charging Station not found"
@@ -672,6 +614,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -714,6 +657,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -766,6 +710,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -818,6 +763,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -869,6 +815,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -918,6 +865,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -970,6 +918,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1022,6 +971,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1074,6 +1024,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1126,6 +1077,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1178,6 +1130,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1230,6 +1183,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1282,6 +1236,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1334,6 +1289,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1386,6 +1342,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1438,6 +1395,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1490,6 +1448,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1542,6 +1501,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1594,6 +1554,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1646,6 +1607,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1698,6 +1660,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1750,6 +1713,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1802,6 +1766,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1854,6 +1819,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1896,6 +1862,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -1948,6 +1915,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2000,6 +1968,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2052,6 +2021,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2104,6 +2074,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2156,6 +2127,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2208,6 +2180,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2260,6 +2233,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2312,6 +2286,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2364,6 +2339,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2416,6 +2392,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2468,6 +2445,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2520,6 +2498,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2572,6 +2551,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2614,6 +2594,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2666,6 +2647,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2718,6 +2700,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2770,6 +2753,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2822,6 +2806,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2876,6 +2861,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2928,6 +2914,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -2980,6 +2967,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3034,6 +3022,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3086,6 +3075,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3141,6 +3131,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3196,6 +3187,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3248,6 +3240,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3300,6 +3293,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3352,6 +3346,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3395,6 +3390,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3450,6 +3446,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3502,6 +3499,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3547,6 +3545,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3602,6 +3601,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3646,6 +3646,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3678,6 +3679,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3744,6 +3746,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3801,6 +3804,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3838,6 +3842,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3870,6 +3875,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3917,6 +3923,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -3949,6 +3956,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4032,6 +4040,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4110,6 +4119,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4160,6 +4170,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4254,6 +4265,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4288,6 +4300,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4330,6 +4343,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4372,6 +4386,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4439,6 +4454,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4481,6 +4497,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4523,6 +4540,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4566,6 +4584,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4613,6 +4632,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -4641,107 +4661,6 @@
         "properties": {
           "success": {
             "type": "boolean"
-          }
-        }
-      },
-      "ConnectorUpdateRequest": {
-        "type": "object",
-        "properties": {
-          "evseId": {
-            "maxLength": 48,
-            "minLength": 0,
-            "type": "string",
-            "description": "The EVSE ID of the connector",
-            "example": "DE*ERG*E10001*1"
-          },
-          "standard": {
-            "type": "string",
-            "description": "The standard of the installed connector.",
-            "enum": [
-              "CHADEMO",
-              "CHAOJI",
-              "DOMESTIC_A",
-              "DOMESTIC_B",
-              "DOMESTIC_C",
-              "DOMESTIC_D",
-              "DOMESTIC_E",
-              "DOMESTIC_F",
-              "DOMESTIC_G",
-              "DOMESTIC_H",
-              "DOMESTIC_I",
-              "DOMESTIC_J",
-              "DOMESTIC_K",
-              "DOMESTIC_L",
-              "DOMESTIC_M",
-              "DOMESTIC_N",
-              "DOMESTIC_O",
-              "GBT_AC",
-              "GBT_DC",
-              "IEC_60309_2_single_16",
-              "IEC_60309_2_three_16",
-              "IEC_60309_2_three_32",
-              "IEC_60309_2_three_64",
-              "IEC_62196_T1",
-              "IEC_62196_T1_COMBO",
-              "IEC_62196_T2",
-              "IEC_62196_T2_COMBO",
-              "IEC_62196_T3A",
-              "IEC_62196_T3C",
-              "NEMA_5_20",
-              "NEMA_6_30",
-              "NEMA_6_50",
-              "NEMA_10_30",
-              "NEMA_10_50",
-              "NEMA_14_30",
-              "NEMA_14_50",
-              "PANTOGRAPH_BOTTOM_UP",
-              "PANTOGRAPH_TOP_DOWN",
-              "TESLA_R",
-              "TESLA_S",
-              "UNKNOWN"
-            ]
-          },
-          "format": {
-            "type": "string",
-            "description": "The format (socket/cable) of the installed connector.",
-            "enum": [
-              "SOCKET",
-              "CABLE"
-            ]
-          },
-          "power_type": {
-            "type": "string",
-            "description": "The power type (socket/cable) of the installed connector.",
-            "enum": [
-              "AC_1_PHASE",
-              "AC_2_PHASE",
-              "AC_2_PHASE_SPLIT",
-              "AC_3_PHASE",
-              "DC"
-            ]
-          },
-          "max_voltage": {
-            "type": "integer",
-            "description": "Maximum voltage of the connector (line to neutral for AC_3_PHASE), in volt [V]. For example: DC Chargers might vary the voltage during charging when battery almost full.",
-            "format": "int32"
-          },
-          "max_amperage": {
-            "type": "integer",
-            "description": "Maximum amperage of the connector, in ampere [A].",
-            "format": "int32"
-          },
-          "max_electric_power": {
-            "type": "integer",
-            "description": "Maximum electric power that can be delivered by this connector, in Watts (W). When the maximum electric power is lower than the calculated value from voltage and amperage, this value should be set. \n    For example: A DC Charge Point which can delivers up to 920V and up to 400A can be limited to a maximum of 150kW (max_electric_power = 150000). Depending on the car, it may supply max voltage or current, but not both at the same time.\nFor AC Charge Points, the amount of phases used can also have influence on the maximum power.",
-            "format": "int32"
-          },
-          "tariff_id": {
-            "maxLength": 36,
-            "minLength": 0,
-            "pattern": "^(?i)[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89abAB][0-9A-F]{3}-[0-9A-F]{12}$",
-            "type": "string",
-            "description": "The tariff id of the connector",
-            "example": "aa0224e8-6ae3-47e8-bd31-2688d4eb9b5e"
           }
         }
       },
@@ -4790,330 +4709,6 @@
           }
         },
         "description": "Location charging stations"
-      },
-      "BrokerChargingStationShadow": {
-        "type": "object",
-        "properties": {
-          "ocppProtocol": {
-            "type": "string",
-            "description": "The negotiated OCPP version",
-            "example": "V_16",
-            "enum": [
-              "V_15",
-              "V_16",
-              "V_20",
-              "V_201"
-            ]
-          },
-          "chargingStationSerialNumber": {
-            "type": "string",
-            "description": "This contains a value that identifies the serial number of the Charging Station"
-          },
-          "chargingStationVendor": {
-            "type": "string",
-            "description": "This contains a value that identifies the vendor of the Charging Station",
-            "example": "ACME Inc."
-          },
-          "chargingStationVendorModel": {
-            "type": "string",
-            "description": "The charging station model as specified by the vendor",
-            "example": "Charger NG Pro"
-          },
-          "firmwareVersion": {
-            "type": "string",
-            "description": "This contains the firmware version of the Charging Station.",
-            "example": "V14.05-rc01"
-          },
-          "iccid": {
-            "type": "string",
-            "description": "This contains the ICCID of the modem’s SIM card.",
-            "example": "891004234814455936F"
-          },
-          "imsi": {
-            "type": "string",
-            "description": "This contains the IMSI of the modem’s SIM card.",
-            "example": "381410123456789"
-          },
-          "meterSerialNumber": {
-            "type": "string",
-            "description": "This contains the serial number of the main power meter of the Charging Station.",
-            "example": "37563972"
-          },
-          "meterType": {
-            "type": "string",
-            "description": "This contains the type of the main power meter of the Charging Station."
-          },
-          "chargingStationStatus": {
-            "type": "string",
-            "description": "The last known status of the charging station",
-            "example": "Available",
-            "enum": [
-              "Undefined",
-              "Available",
-              "Preparing",
-              "Charging",
-              "Occupied",
-              "SuspendedEVSE",
-              "SuspendedEV",
-              "Finishing",
-              "Reserved",
-              "Unavailable",
-              "Faulted"
-            ]
-          },
-          "ocppErrorCode": {
-            "type": "string",
-            "description": "The last known OCPP error code",
-            "example": "NoError",
-            "enum": [
-              "ConnectorLockFailure",
-              "EVCommunicationError",
-              "GroundFailure",
-              "HighTemperature",
-              "InternalError",
-              "LocalListConflict",
-              "NoError",
-              "OtherError",
-              "OverCurrentFailure",
-              "OverVoltage",
-              "PowerMeterFailure",
-              "PowerSwitchFailure",
-              "ReaderFailure",
-              "ResetFailure",
-              "UnderVoltage",
-              "WeakSignal"
-            ]
-          },
-          "ocppErrorInfo": {
-            "type": "string",
-            "description": "Additional free format information related to the error"
-          },
-          "vendorId": {
-            "type": "string",
-            "description": "Identifier of the vendor specific implementation"
-          },
-          "vendorErrorCode": {
-            "type": "string",
-            "description": "The vendor specific error code"
-          },
-          "dateLastStatus": {
-            "type": "string",
-            "description": "The date and time of the last status",
-            "format": "date-time",
-            "example": "2024-03-19T14:11:43Z"
-          },
-          "dateLastHeartBeat": {
-            "type": "string",
-            "description": "The date and time of the last received heartbeat.",
-            "format": "date-time",
-            "example": "2024-03-19T14:11:43Z"
-          },
-          "dateLastBoot": {
-            "type": "string",
-            "description": "The date and time of the last boot event.",
-            "format": "date-time",
-            "example": "2024-03-19T14:11:43Z"
-          },
-          "dateLastWebsocketPing": {
-            "type": "string",
-            "description": "The date and time of the last WebSocket ping.",
-            "format": "date-time",
-            "example": "2024-03-19T14:11:43Z"
-          },
-          "connectors": {
-            "type": "array",
-            "description": "The connector shadows of the charging station",
-            "items": {
-              "$ref": "#/components/schemas/BrokerConnectorShadow"
-            }
-          }
-        },
-        "description": "The charging station shadow"
-      },
-      "BrokerConnectorShadow": {
-        "type": "object",
-        "properties": {
-          "connectorId": {
-            "type": "integer",
-            "description": "The ID of the connector",
-            "format": "int32",
-            "example": 1
-          },
-          "evseId": {
-            "type": "string",
-            "description": "The EVSE ID of the connector",
-            "example": "DE*ERG*E10001*1"
-          },
-          "identityKey": {
-            "type": "string",
-            "description": "Identity key of the charging station",
-            "example": "ERG-WB-0238563"
-          },
-          "connectorStatus": {
-            "type": "string",
-            "description": "The last known status of the connector",
-            "example": "Available",
-            "enum": [
-              "Undefined",
-              "Available",
-              "Preparing",
-              "Charging",
-              "Occupied",
-              "SuspendedEVSE",
-              "SuspendedEV",
-              "Finishing",
-              "Reserved",
-              "Unavailable",
-              "Faulted"
-            ]
-          },
-          "ocppErrorCode": {
-            "type": "string",
-            "description": "The last known OCPP error code",
-            "example": "NoError",
-            "enum": [
-              "ConnectorLockFailure",
-              "EVCommunicationError",
-              "GroundFailure",
-              "HighTemperature",
-              "InternalError",
-              "LocalListConflict",
-              "NoError",
-              "OtherError",
-              "OverCurrentFailure",
-              "OverVoltage",
-              "PowerMeterFailure",
-              "PowerSwitchFailure",
-              "ReaderFailure",
-              "ResetFailure",
-              "UnderVoltage",
-              "WeakSignal"
-            ]
-          },
-          "ocppErrorInfo": {
-            "type": "string",
-            "description": "Additional free format information related to the error"
-          },
-          "vendorId": {
-            "type": "string",
-            "description": "Identifier of the vendor specific implementation"
-          },
-          "vendorErrorCode": {
-            "type": "string",
-            "description": "The vendor specific error code"
-          },
-          "standard": {
-            "type": "string",
-            "description": "The standard of the installed connector.",
-            "enum": [
-              "CHADEMO",
-              "CHAOJI",
-              "DOMESTIC_A",
-              "DOMESTIC_B",
-              "DOMESTIC_C",
-              "DOMESTIC_D",
-              "DOMESTIC_E",
-              "DOMESTIC_F",
-              "DOMESTIC_G",
-              "DOMESTIC_H",
-              "DOMESTIC_I",
-              "DOMESTIC_J",
-              "DOMESTIC_K",
-              "DOMESTIC_L",
-              "DOMESTIC_M",
-              "DOMESTIC_N",
-              "DOMESTIC_O",
-              "GBT_AC",
-              "GBT_DC",
-              "IEC_60309_2_single_16",
-              "IEC_60309_2_three_16",
-              "IEC_60309_2_three_32",
-              "IEC_60309_2_three_64",
-              "IEC_62196_T1",
-              "IEC_62196_T1_COMBO",
-              "IEC_62196_T2",
-              "IEC_62196_T2_COMBO",
-              "IEC_62196_T3A",
-              "IEC_62196_T3C",
-              "NEMA_5_20",
-              "NEMA_6_30",
-              "NEMA_6_50",
-              "NEMA_10_30",
-              "NEMA_10_50",
-              "NEMA_14_30",
-              "NEMA_14_50",
-              "PANTOGRAPH_BOTTOM_UP",
-              "PANTOGRAPH_TOP_DOWN",
-              "TESLA_R",
-              "TESLA_S",
-              "UNKNOWN"
-            ]
-          },
-          "format": {
-            "type": "string",
-            "description": "The format (socket/cable) of the installed connector.",
-            "enum": [
-              "SOCKET",
-              "CABLE"
-            ]
-          },
-          "dateLastUpdate": {
-            "type": "string",
-            "description": "The date and time of the last status update",
-            "format": "date-time",
-            "example": "2024-03-19T14:11:43Z"
-          },
-          "power_type": {
-            "type": "string",
-            "description": "The power type (socket/cable) of the installed connector.",
-            "enum": [
-              "AC_1_PHASE",
-              "AC_2_PHASE",
-              "AC_2_PHASE_SPLIT",
-              "AC_3_PHASE",
-              "DC"
-            ]
-          },
-          "max_voltage": {
-            "type": "integer",
-            "description": "Maximum voltage of the connector (line to neutral for AC_3_PHASE), in volt [V]. For example: DC Chargers might vary the voltage during charging when battery almost full.",
-            "format": "int32"
-          },
-          "max_amperage": {
-            "type": "integer",
-            "description": "Maximum amperage of the connector, in ampere [A].",
-            "format": "int32"
-          },
-          "max_electric_power": {
-            "type": "integer",
-            "description": "Maximum electric power that can be delivered by this connector, in Watts (W). When the maximum electric power is lower than the calculated value from voltage and amperage, this value should be set. \n    For example: A DC Charge Point which can delivers up to 920V and up to 400A can be limited to a maximum of 150kW (max_electric_power = 150000). Depending on the car, it may supply max voltage or current, but not both at the same time.\nFor AC Charge Points, the amount of phases used can also have influence on the maximum power.",
-            "format": "int32"
-          },
-          "current_voltage": {
-            "type": "integer",
-            "description": "Current voltage of the connector.",
-            "format": "int32"
-          },
-          "current_amperage": {
-            "type": "integer",
-            "description": "Current amperage of the connector, in ampere [A].",
-            "format": "int32"
-          },
-          "current_power": {
-            "type": "integer",
-            "description": "Current power of the connector.",
-            "format": "int32"
-          },
-          "tariff_id": {
-            "maxLength": 36,
-            "minLength": 0,
-            "pattern": "^(?i)[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89abAB][0-9A-F]{3}-[0-9A-F]{12}$",
-            "type": "string",
-            "description": "The tariff id of the connector",
-            "example": "aa0224e8-6ae3-47e8-bd31-2688d4eb9b5e"
-          }
-        },
-        "description": "The connector shadows of the charging station"
       },
       "BrokerLocationResponse": {
         "required": [
@@ -5450,7 +5045,6 @@
           "chargingStationName": {
             "maxLength": 255,
             "minLength": 0,
-            "pattern": "^[^@#`/%:;,=?^$()#|+~&%{}.!<>'\"\\[\\]\\\\]+?$",
             "type": "string",
             "description": "The name of the Charging Station if no name given: “<Model Name> + <Charger ID>“",
             "example": "WallBox NG Pro 21107439"
@@ -9183,183 +8777,6 @@
             "default": false
           }
         }
-      },
-      "BrokerChargingStationCreateRequest": {
-        "required": [
-          "csmsUuid",
-          "identityKey"
-        ],
-        "type": "object",
-        "properties": {
-          "identityKey": {
-            "maxLength": 32,
-            "minLength": 0,
-            "pattern": "([A-Za-z0-9\\-\\_\\.\\~\\:\\?\\#\\@\\!\\$\\&\\'\\(\\)\\*\\,\\+\\= ]+)",
-            "type": "string",
-            "description": "The Identity Key of the Charging Station",
-            "example": "ACE123"
-          },
-          "chargingStationModel": {
-            "maxLength": 20,
-            "minLength": 0,
-            "type": "string",
-            "description": "The model of the Charging Station",
-            "example": "WallBox NG Pro"
-          },
-          "chargingStationName": {
-            "maxLength": 255,
-            "minLength": 0,
-            "pattern": "^[^@#`/%:;,=?^$()#|+~&%{}.!<>'\"\\[\\]\\\\]+?$",
-            "type": "string",
-            "description": "The name of the Charging Station if no name given: “<Model Name> + <Charger ID>“",
-            "example": "WallBox NG Pro 21107439"
-          },
-          "ocppProtocol": {
-            "type": "string",
-            "description": "The  OCPP protocol type, if no provided then 1.6 is set as default",
-            "example": "V_16",
-            "default": "V_16",
-            "enum": [
-              "V_15",
-              "V_16",
-              "V_20",
-              "V_201"
-            ]
-          },
-          "csmsUuid": {
-            "maxLength": 36,
-            "minLength": 0,
-            "type": "string",
-            "description": "The UUID of the csms",
-            "example": "123e4567-e89b-42d3-a456-426614174000"
-          },
-          "coordinates": {
-            "$ref": "#/components/schemas/GeoLocation"
-          },
-          "locationUuid": {
-            "type": "string",
-            "description": "Uuid of charging site/location."
-          },
-          "connectors": {
-            "type": "array",
-            "description": "List of available connectors on the charging station.",
-            "items": {
-              "$ref": "#/components/schemas/ConnectorCreateRequest"
-            }
-          }
-        }
-      },
-      "ConnectorCreateRequest": {
-        "required": [
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "minimum": 1,
-            "type": "integer",
-            "description": "Identifier of the Connector within the EVSE. Two Connectors may have the same id as long as they do not belong to the same EVSE object.",
-            "format": "int32",
-            "example": 1
-          },
-          "evseId": {
-            "maxLength": 48,
-            "minLength": 0,
-            "type": "string",
-            "description": "The EVSE ID of the connector",
-            "example": "DE*ERG*E10001*1"
-          },
-          "standard": {
-            "type": "string",
-            "description": "The standard of the installed connector.",
-            "enum": [
-              "CHADEMO",
-              "CHAOJI",
-              "DOMESTIC_A",
-              "DOMESTIC_B",
-              "DOMESTIC_C",
-              "DOMESTIC_D",
-              "DOMESTIC_E",
-              "DOMESTIC_F",
-              "DOMESTIC_G",
-              "DOMESTIC_H",
-              "DOMESTIC_I",
-              "DOMESTIC_J",
-              "DOMESTIC_K",
-              "DOMESTIC_L",
-              "DOMESTIC_M",
-              "DOMESTIC_N",
-              "DOMESTIC_O",
-              "GBT_AC",
-              "GBT_DC",
-              "IEC_60309_2_single_16",
-              "IEC_60309_2_three_16",
-              "IEC_60309_2_three_32",
-              "IEC_60309_2_three_64",
-              "IEC_62196_T1",
-              "IEC_62196_T1_COMBO",
-              "IEC_62196_T2",
-              "IEC_62196_T2_COMBO",
-              "IEC_62196_T3A",
-              "IEC_62196_T3C",
-              "NEMA_5_20",
-              "NEMA_6_30",
-              "NEMA_6_50",
-              "NEMA_10_30",
-              "NEMA_10_50",
-              "NEMA_14_30",
-              "NEMA_14_50",
-              "PANTOGRAPH_BOTTOM_UP",
-              "PANTOGRAPH_TOP_DOWN",
-              "TESLA_R",
-              "TESLA_S",
-              "UNKNOWN"
-            ]
-          },
-          "format": {
-            "type": "string",
-            "description": "The format (socket/cable) of the installed connector.",
-            "enum": [
-              "SOCKET",
-              "CABLE"
-            ]
-          },
-          "power_type": {
-            "type": "string",
-            "description": "The power type (socket/cable) of the installed connector.",
-            "enum": [
-              "AC_1_PHASE",
-              "AC_2_PHASE",
-              "AC_2_PHASE_SPLIT",
-              "AC_3_PHASE",
-              "DC"
-            ]
-          },
-          "max_voltage": {
-            "type": "integer",
-            "description": "Maximum voltage of the connector (line to neutral for AC_3_PHASE), in volt [V]. For example: DC Chargers might vary the voltage during charging when battery almost full.",
-            "format": "int32"
-          },
-          "max_amperage": {
-            "type": "integer",
-            "description": "Maximum amperage of the connector, in ampere [A].",
-            "format": "int32"
-          },
-          "max_electric_power": {
-            "type": "integer",
-            "description": "Maximum electric power that can be delivered by this connector, in Watts (W). When the maximum electric power is lower than the calculated value from voltage and amperage, this value should be set. \n    For example: A DC Charge Point which can delivers up to 920V and up to 400A can be limited to a maximum of 150kW (max_electric_power = 150000). Depending on the car, it may supply max voltage or current, but not both at the same time.\nFor AC Charge Points, the amount of phases used can also have influence on the maximum power.",
-            "format": "int32"
-          },
-          "tariff_id": {
-            "maxLength": 36,
-            "minLength": 0,
-            "pattern": "^(?i)[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89abAB][0-9A-F]{3}-[0-9A-F]{12}$",
-            "type": "string",
-            "description": "The tariff id of the connector",
-            "example": "aa0224e8-6ae3-47e8-bd31-2688d4eb9b5e"
-          }
-        },
-        "description": "List of available connectors on the charging station."
       },
       "CsmsPatchRequest": {
         "type": "object",
