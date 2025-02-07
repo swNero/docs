@@ -617,6 +617,31 @@
       "group": "CPO Services",
       "pages": ["api-reference/CPO_Services/introduction"]
     },
+
+    {
+      "group": "CPO Alert Management",
+      "pages": [
+        {
+          "group": "Statistics",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Alert_Management/statistics/get-station-uptimes"
+          ]
+        },
+        {
+          "group": "Alert Management",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Alert_Management/alert-management/get-all-alerts",
+            "api-reference/CPO_Services/CPO_Alert_Management/alert-management/get-all-alerts-zip-for-a-specific-charging-station",
+            "api-reference/CPO_Services/CPO_Alert_Management/alert-management/get-all-alerts-for-a-specific-charging-station",
+            "api-reference/CPO_Services/CPO_Alert_Management/alert-management/get-all-alerts-csv-for-a-specific-charging-station",
+            "api-reference/CPO_Services/CPO_Alert_Management/alert-management/get-all-alerts-zip",
+            "api-reference/CPO_Services/CPO_Alert_Management/alert-management/get-all-alerts-csv"
+          ]
+        }
+      
+      ]
+    },
+
     {
       "group": "CPO Charging Station",
       "pages": [
