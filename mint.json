@@ -67,11 +67,6 @@
       "name": "ElectricRoutes Website",
       "icon": "globe",
       "url": "https://www.electricroutes.com/"
-    },
-    {
-      "name": "Old API Portal",
-      "icon": "book-open-cover",
-      "url": "https://developer.energystacks.io/"
     }
   ],
   "navigation": [
