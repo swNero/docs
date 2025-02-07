@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://baseurl/cpo-analytics/v1",
+      "url": "https://p3-acc.energystacks.io/cpo-analytics/v1",
       "description": "Generated server url"
     }
   ],
@@ -39,6 +39,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -82,6 +83,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -113,6 +115,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],

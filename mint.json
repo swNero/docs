@@ -643,6 +643,20 @@
     },
 
     {
+      "group": "CPO Analytics",
+      "pages": [
+        {
+          "group": "Dashboard",
+          "pages": [
+            "api-reference/CPO_Services/CPO_Analytics/dashboard/get-transaction-time-slices",
+            "api-reference/CPO_Services/CPO_Analytics/ashboard/get-transaction-stats",
+            "api-reference/CPO_Services/CPO_Analytics/dashboard/get-charging-station-stats"
+          ]
+        }
+      ]
+    },
+
+    {
       "group": "CPO Charging Station",
       "pages": [
         {
