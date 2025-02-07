@@ -1436,6 +1436,354 @@
     },
 
     {
+      "group": "OCPP Broker Web",
+      "pages": [
+        {
+          "group": "User",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/user/update-user",
+            "api-reference/Broker_Services/OCPP_Broker_Web/user/delete-user",
+            "api-reference/Broker_Services/OCPP_Broker_Web/user/request-access",
+            "api-reference/Broker_Services/OCPP_Broker_Web/user/get-all-users",
+            "api-reference/Broker_Services/OCPP_Broker_Web/user/get-all-roles",
+            "api-reference/Broker_Services/OCPP_Broker_Web/user/get-all-user-access-requests",
+            "api-reference/Broker_Services/OCPP_Broker_Web/user/get-current-user-info",
+            "api-reference/Broker_Services/OCPP_Broker_Web/user/delete-user-access-request"
+          ]
+        },
+        {
+          "group": "User Profile Picture",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/user-profile-picture/get-my-profile-picture",
+            "api-reference/Broker_Services/OCPP_Broker_Web/user-profile-picture/set-profile-picture",
+            "api-reference/Broker_Services/OCPP_Broker_Web/user-profile-picture/delete-profile-picture",
+            "api-reference/Broker_Services/OCPP_Broker_Web/user-profile-picture/get-profile-picture"
+          ]
+        },
+        {
+          "group": "Tariff",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/tariff/update-tariff",
+            "api-reference/Broker_Services/OCPP_Broker_Web/tariff/get-all-tariffs",
+            "api-reference/Broker_Services/OCPP_Broker_Web/tariff/create-tariff",
+            "api-reference/Broker_Services/OCPP_Broker_Web/tariff/get-one-tariff"
+          ]
+        },
+        {
+          "group": "Settings",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/settings/update-ui-branding",
+            "api-reference/Broker_Services/OCPP_Broker_Web/settings/update-oidc-config",
+            "api-reference/Broker_Services/OCPP_Broker_Web/settings/upload-logo",
+            "api-reference/Broker_Services/OCPP_Broker_Web/settings/update-google-maps-api-key",
+            "api-reference/Broker_Services/OCPP_Broker_Web/settings/upload-fav-icon",
+            "api-reference/Broker_Services/OCPP_Broker_Web/settings/get-email-config",
+            "api-reference/Broker_Services/OCPP_Broker_Web/settings/update-email-config",
+            "api-reference/Broker_Services/OCPP_Broker_Web/settings/test-email-configuration"
+          ]
+        },
+        {
+          "group": "Location",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/location/get-location-by-uuid",
+            "api-reference/Broker_Services/OCPP_Broker_Web/location/update-a-location",
+            "api-reference/Broker_Services/OCPP_Broker_Web/location/delete-a-location",
+            "api-reference/Broker_Services/OCPP_Broker_Web/location/get-all-locations",
+            "api-reference/Broker_Services/OCPP_Broker_Web/location/add-a-new-location",
+            "api-reference/Broker_Services/OCPP_Broker_Web/location/add-charging-stations-to-a-location",
+            "api-reference/Broker_Services/OCPP_Broker_Web/location/remove-charging-stations-from-a-location"
+          ]
+        },
+        {
+          "group": "Initial settings",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/initial-settings/update-oidc-config"
+          ]
+        },
+        {
+          "group": "CSMS",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/csms/get-one-specific-csms",
+            "api-reference/Broker_Services/OCPP_Broker_Web/csms/update-a-csms",
+            "api-reference/Broker_Services/OCPP_Broker_Web/csms/delete-a-csms",
+            "api-reference/Broker_Services/OCPP_Broker_Web/csms/updates-csms-credentials",
+            "api-reference/Broker_Services/OCPP_Broker_Web/csms/get-all-csms",
+            "api-reference/Broker_Services/OCPP_Broker_Web/csms/create-csms",
+            "api-reference/Broker_Services/OCPP_Broker_Web/csms/get-a-csms-connectivity-status"
+          ]
+        },
+        {
+          "group": "Charging Station",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station/get-charging-station",
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station/update-charging-station",
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station/delete-charging-station",
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station/get-all-charging-stations",
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station/add-charging-station"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Firmware Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-firmware-management/update-firmware",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-firmware-management/unpublish-firmware",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-firmware-management/publish-firmware"
+          ]
+        },
+        {
+          "group": "OCPP 2.0.1 Remote Control",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-201-remote-control/unlock-connector",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-201-remote-control/trigger-message"
+          ]
+        },
+        {
+          "group": "OCPP 2.0.1 Provisioning",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-201-provisioning/set-variables",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-201-provisioning/set-network-connection-profile",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-201-provisioning/reset",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-201-provisioning/get-variables",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-201-provisioning/get-custom-report",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-201-provisioning/get-base-report"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Diagnostics",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-diagnostics/set-variable-monitoring",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-diagnostics/set-monitoring-level",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-diagnostics/set-monitoring-report",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-diagnostics/get-monitoring-report",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-diagnostics/get-log",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-diagnostics/customer-information",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-diagnostics/clear-variable-monitoring"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Display Message",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-display-message/set-display-message",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-display-message/get-display-messages",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-display-message/clear-display-message"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Smart Charging",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-smart-charging/set-charging-profile",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-smart-charging/request-stop-transaction",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-smart-charging/request-start-transaction",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-smart-charging/get-composite-schedule",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-smart-charging/get-charging-profiles",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-smart-charging/clear-charging-profile"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Local Authorization List Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-local-authorization-list-management/send-local-list",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-local-authorization-list-management/get-local-list-version"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Reservation",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-reservation/reserve-now",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-reservation/cancel-reservation"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] ISO 15118 Certificate Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-iso-15118-certificate-management/install-certificate",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-iso-15118-certificate-management/get-installed-certificate-ids",
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-iso-15118-certificate-management/delete-certificate"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Transaction",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-transaction/get-transaction-status"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Data Transfer",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-data-transfer/data-transfer"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Tariff and Cost",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-tariff-and-cost/cost-updated"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Authorization",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-authorization/clear-cache"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Availability",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-availability/change-availability"
+          ]
+        },
+        {
+          "group": "[OCPP 2.0.1] Security",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/[ocpp-201]-security/certificate-signed"
+          ]
+        },
+        {
+          "group": "OCPP 1.6 Firmware Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-firmware-management/update-firmware",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-firmware-management/diagnostics-request"
+          ]
+        },
+        {
+          "group": "OCPP 1.6 Core Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-core-management/unlock-connector",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-core-management/reset",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-core-management/remote-stop-transaction",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-core-management/remote-start-transaction",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-core-management/get-configuration",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-core-management/change-configuration",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-core-management/clear-cache",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-core-management/change-availability"
+          ]
+        },
+        {
+          "group": "OCPP 1.6 Remote Trigger",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-remote-trigger/trigger-message"
+          ]
+        },
+        {
+          "group": "OCPP 1.6 Smart Charging",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-smart-charging/set-charging-profile",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-smart-charging/get-composite-schedule",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-smart-charging/clear-charging-profile"
+          ]
+        },
+        {
+          "group": "OCPP 1.6 Data Transfer",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-data-transfer/data-transfer"
+          ]
+        },
+        {
+          "group": "Imprint",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/imprint/get-imprint",
+            "api-reference/Broker_Services/OCPP_Broker_Web/imprint/create-or-update-imprint"
+          ]
+        },
+        {
+          "group": "Api Key Controller",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/api-key-controller/get-all-api-keys",
+            "api-reference/Broker_Services/OCPP_Broker_Web/api-key-controller/create-api-key",
+            "api-reference/Broker_Services/OCPP_Broker_Web/api-key-controller/revoke-api-key"
+          ]
+        },
+        {
+          "group": "Version info",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/version-info/get-version"
+          ]
+        },
+        {
+          "group": "UI Configuration",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/ui-configuration/get-ui-branding",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ui-configuration/get-ui-branding-css",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ui-configuration/get-oidc-config",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ui-configuration/get-ocpp-endpoint",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ui-configuration/get-logo",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ui-configuration/get-google-maps-api-key",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ui-configuration/get-fav-icon"
+          ]
+        },
+        {
+          "group": "Charging Station Transaction Shadow",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station-transaction-shadow/get-all-transactions",
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station-transaction-shadow/get-transactions-for-identity",
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station-transaction-shadow/get-meter-values-for-transaction",
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station-transaction-shadow/search-broker-transactions",
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station-transaction-shadow/get-security-events",
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station-transaction-shadow/get-security-events-for-identity"
+          ]
+        },
+        {
+          "group": "Registered Services Controller",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/registered-services-controller/get-all-registered-services"
+          ]
+        },
+        {
+          "group": "OCPP Messages",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-messages/get-all-ocpp-messages",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-messages/get-ocpp-messages-zip",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-messages/get-ocpp-messages-csv",
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-messages/get-ocpp-messages-by-search"
+          ]
+        },
+        {
+          "group": "Network Logs",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/network-logs/get-network-logs-for-charging-station-based-on-criteria-filters"
+          ]
+        },
+        {
+          "group": "OCPP 1.6 Local Auth List Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/ocpp-16-local-auth-list-management/get-configuration"
+          ]
+        },
+        {
+          "group": "Dashboard",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/dashboard/get-transaction-stats",
+            "api-reference/Broker_Services/OCPP_Broker_Web/dashboard/get-transaction-time-slices",
+            "api-reference/Broker_Services/OCPP_Broker_Web/dashboard/get-charging-station-stats"
+          ]
+        },
+        {
+          "group": "Charging Station Connector Shadow",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station-connector-shadow/check-if-connector-with-provided-evse-id-exists"
+          ]
+        },
+        {
+          "group": "Charging Station Shadow",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station-shadow/[ocpp-201]-get-variables",
+            "api-reference/Broker_Services/OCPP_Broker_Web/charging-station-shadow/[ocpp-16]-get-configuration"
+          ]
+        },
+        {
+          "group": "Alert Management",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Broker_Web/alert-management/get-all-alerts",
+            "api-reference/Broker_Services/OCPP_Broker_Web/alert-management/get-all-alerts-zip-for-a-specific-charging-station",
+            "api-reference/Broker_Services/OCPP_Broker_Web/alert-management/get-all-alerts-for-a-specific-charging-station",
+            "api-reference/Broker_Services/OCPP_Broker_Web/alert-management/get-alert-managementalerts-csv",
+            "api-reference/Broker_Services/OCPP_Broker_Web/alert-management/get-all-alerts-zip",
+            "api-reference/Broker_Services/OCPP_Broker_Web/alert-management/get-all-alerts-csv"
+          ]
+        }
+      ]      
+    },
+
+    {
       "group": "OCPP Message Logs",
       "pages": [
         {
