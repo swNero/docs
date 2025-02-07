@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/msp-web/v1",
+      "url": "https://baseurl/msp-web/v1",
       "description": "Generated server url"
     }
   ],

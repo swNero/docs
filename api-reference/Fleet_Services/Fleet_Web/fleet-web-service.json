@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.fleet.energystacks.io/fleet-web/v1",
+      "url": "https://baseurl/fleet-web/v1",
       "description": "Generated server url"
     }
   ],

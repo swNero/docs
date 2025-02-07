@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.fleet.energystacks.io/fleet-orchestrator/v1",
+      "url": "https://baseurl/fleet-orchestrator/v1",
       "description": "Generated server url"
     }
   ],

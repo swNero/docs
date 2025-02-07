@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://p3-acc.energystacks.io/cpo-analytics/v1",
+      "url": "https://baseurl/cpo-analytics/v1",
       "description": "Generated server url"
     }
   ],
