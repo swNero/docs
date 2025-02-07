@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://baseurl/ocpp-message-log/v1",
+      "url": "https://p3-acc.energystacks.io/ocpp-message-log/v1",
       "description": "Generated server url"
     }
   ],
@@ -46,6 +46,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -266,6 +267,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -446,6 +448,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -634,6 +637,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -747,6 +751,7 @@
             "in": "query",
             "description": "Tenant ID",
             "required": false,
+            "schema": {},
             "example": "12345"
           }
         ],
@@ -774,14 +779,28 @@
   "components": {
     "schemas": {
       "OcppMessageLogEntry": {
+        "required": [
+          "callId",
+          "identityKey",
+          "messageDirection",
+          "messageType",
+          "messageUuid",
+          "payload",
+          "procedureName",
+          "rawMessage"
+        ],
         "type": "object",
         "properties": {
           "messageUuid": {
+            "maxLength": 36,
+            "minLength": 0,
             "type": "string",
             "description": "The UUID of the OCPP message",
             "example": "123e4567-e89b-42d3-a456-426614174000"
           },
           "identityKey": {
+            "maxLength": 32,
+            "minLength": 0,
             "type": "string",
             "description": "The Charging Station Identity Key",
             "example": "ACE12578"
@@ -895,15 +914,21 @@
             ]
           },
           "callId": {
+            "maxLength": 36,
+            "minLength": 0,
             "type": "string",
             "description": "The unique identifier for matching request and result",
             "example": "19225418"
           },
           "payload": {
+            "maxLength": 255,
+            "minLength": 0,
             "type": "string",
             "description": "The JSON payload of the message"
           },
           "rawMessage": {
+            "maxLength": 255,
+            "minLength": 0,
             "type": "string",
             "description": "The raw message which was transported over the WebSocket"
           }
@@ -1058,17 +1083,23 @@
                 "type": "integer",
                 "format": "int64"
               },
+              "contentDisposition": {
+                "$ref": "#/components/schemas/ContentDisposition"
+              },
               "acceptCharset": {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
               },
-              "contentDisposition": {
-                "$ref": "#/components/schemas/ContentDisposition"
-              },
               "contentType": {
                 "$ref": "#/components/schemas/MediaType"
+              },
+              "range": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HttpRange"
+                }
               },
               "connection": {
                 "type": "array",
@@ -1079,12 +1110,6 @@
               "ifModifiedSince": {
                 "type": "integer",
                 "format": "int64"
-              },
-              "range": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/HttpRange"
-                }
               },
               "origin": {
                 "type": "string"
@@ -1099,9 +1124,11 @@
                   "$ref": "#/components/schemas/HttpMethod"
                 }
               },
-              "basicAuth": {
-                "type": "string",
-                "writeOnly": true
+              "accept": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
+                }
               },
               "contentLanguage": {
                 "type": "object",
@@ -1165,25 +1192,6 @@
               "etag": {
                 "type": "string"
               },
-              "acceptLanguage": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "range": {
-                      "type": "string"
-                    },
-                    "weight": {
-                      "type": "number",
-                      "format": "double"
-                    }
-                  }
-                }
-              },
-              "bearerAuth": {
-                "type": "string",
-                "writeOnly": true
-              },
               "expires": {
                 "type": "integer",
                 "format": "int64"
@@ -1216,7 +1224,7 @@
                   "type": "string"
                 }
               },
-              "accept": {
+              "acceptPatch": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/MediaType"
@@ -1318,14 +1326,31 @@
                   "type": "string"
                 }
               },
-              "acceptPatch": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/MediaType"
-                }
-              },
               "accessControlRequestMethod": {
                 "$ref": "#/components/schemas/HttpMethod"
+              },
+              "bearerAuth": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "acceptLanguage": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "range": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "type": "number",
+                      "format": "double"
+                    }
+                  }
+                }
+              },
+              "basicAuth": {
+                "type": "string",
+                "writeOnly": true
               }
             },
             "additionalProperties": {

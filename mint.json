@@ -1195,6 +1195,29 @@
         }
       ]
     },
+
+    {
+      "group": "OCPP Message Logs",
+      "pages": [
+        {
+          "group": "OCPP Messages",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Messages_Logs/ocpp-messages/get-all-ocpp-messages",
+            "api-reference/Broker_Services/OCPP_Messages_Logs/ocpp-messages/delete-all-message-log-for-charging-station",
+            "api-reference/Broker_Services/OCPP_Messages_Logs/ocpp-messages/get-ocpp-messages-zip",
+            "api-reference/Broker_Services/OCPP_Messages_Logs/ocpp-messages/get-ocpp-messages-csv",
+            "api-reference/Broker_Services/OCPP_Messages_Logs/ocpp-messages/get-ocpp-messages-by-search"
+          ]
+        },
+        {
+          "group": "Network Logs",
+          "pages": [
+            "api-reference/Broker_Services/OCPP_Messages_Logs/network-logs/get-network-logs-for-charging-station-based-on-criteria-filters"
+          ]
+        }
+      ]
+    },
+
     {
       "group": "OCPP Server",
       "pages": [
